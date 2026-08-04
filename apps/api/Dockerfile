@@ -8,6 +8,7 @@ FROM base AS build
 COPY . .
 RUN pnpm install --frozen-lockfile
 RUN pnpm --filter @izla/db generate
+RUN pnpm --filter @izla/db build
 RUN pnpm --filter @izla/api build
 
 FROM base AS runtime
