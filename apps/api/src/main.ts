@@ -25,7 +25,9 @@ async function bootstrap() {
     .build();
   SwaggerModule.setup('docs', app, SwaggerModule.createDocument(app, config));
 
-  await app.listen(env.API_PORT);
-  Logger.log(`🚀 Izla API: http://localhost:${env.API_PORT} — Swagger: /docs`, 'Bootstrap');
+  // Railway/Docker PORT'ni hurmat qiladi, aks holda API_PORT
+  const port = process.env.PORT ? Number(process.env.PORT) : env.API_PORT;
+  await app.listen(port, '0.0.0.0');
+  Logger.log(`🚀 Izla API: :${port} — Swagger: /docs`, 'Bootstrap');
 }
 bootstrap();
