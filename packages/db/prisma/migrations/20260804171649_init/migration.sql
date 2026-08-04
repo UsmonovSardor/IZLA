@@ -1,12 +1,3 @@
--- CreateExtension
-CREATE EXTENSION IF NOT EXISTS "pg_trgm";
-
--- CreateExtension
-CREATE EXTENSION IF NOT EXISTS "postgis";
-
--- CreateExtension
-CREATE EXTENSION IF NOT EXISTS "vector";
-
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('USER', 'VENDOR', 'MODERATOR', 'ADMIN', 'DEVELOPER', 'REALTOR', 'SELLER');
 
@@ -99,7 +90,6 @@ CREATE TABLE "vendors" (
     "socials" JSONB NOT NULL DEFAULT '{}',
     "photos" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "attributes" JSONB NOT NULL DEFAULT '{}',
-    "embedding" vector(1536),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -294,7 +284,6 @@ CREATE TABLE "properties" (
     "status" "PropertyStatus" NOT NULL DEFAULT 'AVAILABLE',
     "attributes" JSONB NOT NULL DEFAULT '{}',
     "photos" TEXT[] DEFAULT ARRAY[]::TEXT[],
-    "embedding" vector(1536),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "properties_pkey" PRIMARY KEY ("id")
