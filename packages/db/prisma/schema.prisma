@@ -1,0 +1,489 @@
+// Izla.uz — Prisma schema (TZ v2.0 asosida)
+// Postgres 16 + PostGIS (geo) + pgvector (AI/RAG) + pg_trgm (fuzzy search)
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis, vector, pg_trgm]
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+enum Role {
+  USER
+  VENDOR
+  MODERATOR
+  ADMIN
+  DEVELOPER // ko'chmas mulk: quruvchi kompaniya
+  REALTOR   // rieltor / agentlik
+  SELLER    // jismoniy shaxs sotuvchi
+}
+
+enum VendorStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+enum PaymentProvider {
+  PAYME
+  CLICK
+  UZUM
+  UZCARD
+  HUMO
+  WALLET
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum EscrowState {
+  NONE
+  HELD
+  RELEASED
+  REFUNDED
+}
+
+enum ReviewStatus {
+  PUBLISHED
+  PENDING
+  REJECTED
+}
+
+enum Channel {
+  SMS
+  PUSH
+  TELEGRAM
+  EMAIL
+}
+
+// --- Ko'chmas mulk ---
+enum PropertyType {
+  NEW          // yangi bino (novostroyka)
+  CONSTRUCTION // qurilayotgan
+  SECONDARY    // ikkilamchi (eski)
+  RENT         // ijara (kelajakda)
+}
+
+enum ComplexStatus {
+  PLANNING
+  CONSTRUCTION
+  ACTIVE
+  DONE
+}
+
+enum PropertyStatus {
+  AVAILABLE
+  RESERVED
+  SOLD
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  MEETING
+  CLOSED
+}
+
+enum RealEstateTarget {
+  DEVELOPER
+  COMPLEX
+}
+
+// ============================================================
+// CORE
+// ============================================================
+model User {
+  id        String   @id @default(cuid())
+  phone     String   @unique
+  name      String?
+  role      Role     @default(USER)
+  coins     Int      @default(0)
+  locale    String   @default("uz")
+  avatarUrl String?
+  lastLat   Float?
+  lastLng   Float?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  vendors         Vendor[]
+  bookings        Booking[]
+  reviews         Review[]
+  coinLedger      CoinLedger[]
+  notifications   Notification[]
+  aiConversations AiConversation[]
+  favorites       Favorite[]
+  propertyLeads   PropertyLead[]
+  geoAlertPref    GeoAlertPref?
+
+  @@index([role])
+  @@map("users")
+}
+
+model Category {
+  id         String   @id @default(cuid())
+  slug       String   @unique
+  name       String
+  nameRu     String?
+  nameEn     String?
+  icon       String?
+  attributes Json     @default("[]") // dinamik maydonlar sxemasi
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  vendors Vendor[]
+
+  @@map("categories")
+}
+
+model Vendor {
+  id          String       @id @default(cuid())
+  ownerId     String
+  categoryId  String
+  name        String
+  slug        String       @unique
+  description String?
+  lat         Float
+  lng         Float
+  address     String?
+  district    String?
+  status      VendorStatus @default(PENDING)
+  verified    Boolean      @default(false)
+  rating      Float        @default(0)
+  reviewCount Int          @default(0)
+  hours       Json         @default("{}") // ish vaqti jadvali
+  phone       String?
+  socials     Json         @default("{}")
+  photos      String[]     @default([])
+  attributes  Json         @default("{}") // kategoriyaga xos qiymatlar
+  // AI/RAG uchun embedding (pgvector) — raw SQL orqali to'ldiriladi
+  embedding   Unsupported("vector(1536)")?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  owner    User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  category Category  @relation(fields: [categoryId], references: [id])
+  services Service[]
+  staff    Staff[]
+  bookings Booking[]
+  reviews  Review[]
+
+  @@index([categoryId])
+  @@index([status])
+  @@index([district])
+  @@map("vendors")
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  vendorId    String
+  name        String
+  price       Decimal  @db.Decimal(12, 2)
+  durationMin Int      @default(30)
+  staffId     String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  vendor   Vendor    @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  staff    Staff?    @relation(fields: [staffId], references: [id])
+  bookings Booking[]
+
+  @@index([vendorId])
+  @@map("services")
+}
+
+model Staff {
+  id        String   @id @default(cuid())
+  vendorId  String
+  name      String
+  avatarUrl String?
+  schedule  Json     @default("{}")
+  createdAt DateTime @default(now())
+
+  vendor   Vendor    @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  services Service[]
+  bookings Booking[]
+
+  @@index([vendorId])
+  @@map("staff")
+}
+
+model Booking {
+  id        String        @id @default(cuid())
+  userId    String
+  vendorId  String
+  serviceId String
+  staffId   String?
+  slotStart DateTime
+  slotEnd   DateTime
+  status    BookingStatus @default(PENDING)
+  note      String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  user    User      @relation(fields: [userId], references: [id])
+  vendor  Vendor    @relation(fields: [vendorId], references: [id])
+  service Service   @relation(fields: [serviceId], references: [id])
+  staff   Staff?    @relation(fields: [staffId], references: [id])
+  payment Payment?
+  review  Review?
+
+  // double-booking himoyasi: bir usta bir vaqtda bitta bron
+  @@unique([staffId, slotStart])
+  @@index([userId])
+  @@index([vendorId])
+  @@index([slotStart])
+  @@map("bookings")
+}
+
+model Payment {
+  id          String          @id @default(cuid())
+  bookingId   String?         @unique
+  userId      String
+  amount      Decimal         @db.Decimal(12, 2)
+  currency    String          @default("UZS")
+  provider    PaymentProvider
+  status      PaymentStatus   @default(PENDING)
+  escrowState EscrowState     @default(NONE)
+  externalId  String?
+  createdAt   DateTime        @default(now())
+
+  booking Booking? @relation(fields: [bookingId], references: [id])
+
+  @@index([userId])
+  @@map("payments")
+}
+
+model Review {
+  id        String       @id @default(cuid())
+  userId    String
+  vendorId  String
+  bookingId String?      @unique
+  rating    Int // 1..5
+  text      String?
+  photos    String[]     @default([])
+  criteria  Json         @default("{}") // {service, cleanliness, price, staff}
+  vendorReply String?
+  status    ReviewStatus @default(PUBLISHED)
+  likes     Int          @default(0)
+  createdAt DateTime     @default(now())
+
+  user    User     @relation(fields: [userId], references: [id])
+  vendor  Vendor   @relation(fields: [vendorId], references: [id])
+  booking Booking? @relation(fields: [bookingId], references: [id])
+
+  @@index([vendorId])
+  @@map("reviews")
+}
+
+model CoinLedger {
+  id        String   @id @default(cuid())
+  userId    String
+  delta     Int
+  reason    String
+  balance   Int
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("coins_ledger")
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  channel   Channel
+  type      String
+  payload   Json      @default("{}")
+  sentAt    DateTime?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("notifications")
+}
+
+model AiConversation {
+  id        String   @id @default(cuid())
+  userId    String
+  messages  Json     @default("[]")
+  context   Json     @default("{}")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("ai_conversations")
+}
+
+model Favorite {
+  id         String   @id @default(cuid())
+  userId     String
+  vendorId   String?
+  propertyId String?
+  createdAt  DateTime @default(now())
+
+  user     User      @relation(fields: [userId], references: [id])
+  property Property? @relation(fields: [propertyId], references: [id])
+
+  @@unique([userId, vendorId])
+  @@unique([userId, propertyId])
+  @@map("favorites")
+}
+
+// ============================================================
+// KO'CHMAS MULK (Real Estate vertical)
+// ============================================================
+model Developer {
+  id            String   @id @default(cuid())
+  name          String
+  slug          String   @unique
+  logoUrl       String?
+  description   String?
+  verified      Boolean  @default(false)
+  rating        Float    @default(0)
+  phone         String?
+  address       String?
+  lat           Float?
+  lng           Float?
+  projectsCount Int      @default(0)
+  createdAt     DateTime @default(now())
+
+  complexes Complex[]
+
+  @@map("developers")
+}
+
+model Complex {
+  id                String        @id @default(cuid())
+  developerId       String
+  name              String
+  slug              String        @unique
+  lat               Float
+  lng               Float
+  district          String?
+  description       String?
+  status            ComplexStatus @default(CONSTRUCTION)
+  completionDate    DateTime?
+  readinessPercent  Int           @default(0)
+  priceFrom         Decimal?      @db.Decimal(14, 2)
+  pricePerM2        Decimal?      @db.Decimal(12, 2)
+  amenities         Json          @default("[]")
+  photos            String[]      @default([])
+  createdAt         DateTime      @default(now())
+
+  developer          Developer            @relation(fields: [developerId], references: [id], onDelete: Cascade)
+  properties         Property[]
+  constructionUpdates ConstructionUpdate[]
+  leads              PropertyLead[]
+
+  @@index([developerId])
+  @@index([status])
+  @@index([district])
+  @@map("complexes")
+}
+
+model Property {
+  id         String         @id @default(cuid())
+  type       PropertyType
+  complexId  String?
+  ownerId    String? // jismoniy shaxs / rieltor
+  title      String
+  description String?
+  price      Decimal        @db.Decimal(14, 2)
+  pricePerM2 Decimal?       @db.Decimal(12, 2)
+  currency   String         @default("UZS")
+  areaM2     Float
+  rooms      Int
+  floor      Int?
+  totalFloors Int?
+  lat        Float
+  lng        Float
+  district   String?
+  status     PropertyStatus @default(AVAILABLE)
+  attributes Json           @default("{}")
+  photos     String[]       @default([])
+  embedding  Unsupported("vector(1536)")?
+  createdAt  DateTime       @default(now())
+
+  complex   Complex?       @relation(fields: [complexId], references: [id])
+  leads     PropertyLead[]
+  favorites Favorite[]
+
+  @@index([type])
+  @@index([status])
+  @@index([district])
+  @@index([complexId])
+  @@map("properties")
+}
+
+model PropertyLead {
+  id         String     @id @default(cuid())
+  propertyId String?
+  complexId  String?
+  userId     String
+  name       String
+  phone      String
+  message    String?
+  status     LeadStatus @default(NEW)
+  createdAt  DateTime   @default(now())
+
+  property Property? @relation(fields: [propertyId], references: [id])
+  complex  Complex?  @relation(fields: [complexId], references: [id])
+  user     User      @relation(fields: [userId], references: [id])
+
+  @@index([status])
+  @@map("property_leads")
+}
+
+model ConstructionUpdate {
+  id               String   @id @default(cuid())
+  complexId        String
+  date             DateTime @default(now())
+  readinessPercent Int
+  note             String?
+  photos           String[] @default([])
+
+  complex Complex @relation(fields: [complexId], references: [id], onDelete: Cascade)
+
+  @@index([complexId])
+  @@map("construction_updates")
+}
+
+model GeoAlertPref {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  radiusKm  Int      @default(5)
+  districts String[] @default([])
+  priceMin  Decimal? @db.Decimal(14, 2)
+  priceMax  Decimal? @db.Decimal(14, 2)
+  types     String[] @default([])
+  channels  String[] @default(["PUSH"])
+  enabled   Boolean  @default(true)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("geo_alert_prefs")
+}

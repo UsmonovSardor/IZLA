@@ -1,0 +1,41 @@
+services:
+  postgres:
+    build: ./docker/postgres
+    container_name: izla_postgres
+    environment:
+      POSTGRES_USER: izla
+      POSTGRES_PASSWORD: izla
+      POSTGRES_DB: izla
+    ports:
+      - "5434:5432"
+    volumes:
+      - izla_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U izla -d izla"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: izla_redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - izla_redis:/data
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.11
+    container_name: izla_meili
+    environment:
+      MEILI_MASTER_KEY: izla_dev_master_key
+      MEILI_ENV: development
+    ports:
+      - "7701:7700"
+    volumes:
+      - izla_meili:/meili_data
+
+volumes:
+  izla_pg:
+  izla_redis:
+  izla_meili:
