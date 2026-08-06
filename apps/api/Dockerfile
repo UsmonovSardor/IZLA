@@ -17,4 +17,4 @@ COPY --from=build /app /app
 WORKDIR /app
 EXPOSE 4000
 # Har deploy'da migratsiyani qo'llaymiz, so'ng serverni ishga tushiramiz
-CMD ["sh", "-c", "pnpm --filter @izla/db exec prisma migrate deploy && node apps/api/dist/main.js"]
+CMD ["sh", "-c", "pnpm --filter @izla/db exec prisma migrate deploy && (pnpm --filter @izla/db seed || echo 'seed skip') && node apps/api/dist/main.js"]

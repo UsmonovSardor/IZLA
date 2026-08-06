@@ -52,6 +52,13 @@ const VENDOR_SEED: Array<{ cat: string; name: string; services: Array<[string, n
 async function main() {
   console.log('🌱 Seed boshlandi...');
 
+  // Idempotent: baza allaqachon to'ldirilgan bo'lsa — o'tkazib yuboramiz
+  const existing = await prisma.category.count();
+  if (existing > 0) {
+    console.log(`ℹ️  Baza allaqachon seed qilingan (${existing} kategoriya) — o'tkazib yuborildi.`);
+    return;
+  }
+
   // Kategoriyalar
   const catMap = new Map<string, string>();
   for (let i = 0; i < CATEGORIES.length; i++) {
