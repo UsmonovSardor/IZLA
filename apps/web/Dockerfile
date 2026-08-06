@@ -17,4 +17,7 @@ COPY --from=build /app/apps/web/.next/standalone ./
 COPY --from=build /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=build /app/apps/web/public ./apps/web/public
 EXPOSE 3000
+# Docker HOSTNAME'ni container-id qilib qo'yadi; Next standalone shunga bog'lanib
+# qoladi (Railway edge ulanolmaydi -> 502). 0.0.0.0'ga majburlaymiz.
+ENV HOSTNAME=0.0.0.0
 CMD ["node", "apps/web/server.js"]
