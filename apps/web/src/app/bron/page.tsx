@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { CalendarClock, CheckCircle2, Loader2, MapPin } from 'lucide-react';
 import { api, type Booking } from '@/lib/api';
-import { getToken, clearToken } from '@/lib/auth';
+import { useAuth } from '@/components/auth-provider';
 import { Button } from '@/components/ui/button';
 import { PayButtons } from '@/components/pay-buttons';
 import { formatUZS } from '@/lib/utils';
@@ -24,30 +24,26 @@ function fmt(iso: string) {
 }
 
 export default function BronPage() {
+  const { user, loading, openLogin } = useAuth();
   const [bookings, setBookings] = useState<Booking[] | null>(null);
-  const [noAuth, setNoAuth] = useState(false);
   const [error, setError] = useState('');
   const [cancelling, setCancelling] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    const token = getToken();
-    if (!token) { setNoAuth(true); return; }
+    if (!user) return;
     try {
-      setBookings(await api.myBookings(token));
-    } catch (e) {
-      if (e instanceof Error && /401/.test(e.message)) { clearToken(); setNoAuth(true); }
-      else setError('Bronlarni yuklab bo‘lmadi');
+      setBookings(await api.myBookings());
+    } catch {
+      setError('Bronlarni yuklab bo‘lmadi');
     }
-  }, []);
+  }, [user]);
 
-  useEffect(() => { void load(); }, [load]);
+  useEffect(() => { if (user) void load(); }, [user, load]);
 
   async function cancel(id: string) {
-    const token = getToken();
-    if (!token) return;
     setCancelling(id);
     try {
-      await api.cancelBooking(token, id);
+      await api.cancelBooking(id);
       await load();
     } catch {
       setError('Bekor qilib bo‘lmadi');
@@ -56,18 +52,18 @@ export default function BronPage() {
     }
   }
 
-  if (noAuth) {
+  if (!loading && !user) {
     return (
       <div className="max-w-md mx-auto text-center py-16">
         <CalendarClock className="h-10 w-10 text-brand mx-auto" />
         <h1 className="mt-3 font-display text-xl font-bold text-navy">Bronlaringiz</h1>
-        <p className="mt-2 text-slate2">Bronlarni ko‘rish uchun avval biror joyni bron qiling — telefon orqali kirasiz.</p>
-        <Link href="/qidiruv" className="mt-4 inline-block"><Button>Xizmat qidirish</Button></Link>
+        <p className="mt-2 text-slate2">Bronlarni ko‘rish uchun tizimga kiring.</p>
+        <Button className="mt-4" onClick={() => openLogin({ next: '/bron' })}>Kirish</Button>
       </div>
     );
   }
 
-  if (!bookings) {
+  if (loading || !bookings) {
     return (
       <div className="flex items-center justify-center gap-2 text-slate2 py-16">
         <Loader2 className="h-5 w-5 animate-spin" /> Yuklanmoqda…

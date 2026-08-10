@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { api, type PaymentProviderId } from '@/lib/api';
-import { getToken } from '@/lib/auth';
+import { useAuth } from './auth-provider';
 
 const PROVIDERS: { id: PaymentProviderId; label: string; cls: string }[] = [
   { id: 'PAYME', label: 'Payme', cls: 'bg-[#00c4b4] hover:bg-[#00b0a2]' },
@@ -14,16 +14,19 @@ const PROVIDERS: { id: PaymentProviderId; label: string; cls: string }[] = [
  * sahifasiga yo'naltiradi. Muvaffaqiyatdan so'ng foydalanuvchi /bron'ga qaytadi.
  */
 export function PayButtons({ bookingId, label = 'Oldindan to‘lash' }: { bookingId: string; label?: string }) {
+  const { user, openLogin } = useAuth();
   const [paying, setPaying] = useState<PaymentProviderId | null>(null);
   const [error, setError] = useState('');
 
   async function start(provider: PaymentProviderId) {
-    const token = getToken();
-    if (!token) return;
+    if (!user) {
+      openLogin();
+      return;
+    }
     setPaying(provider);
     setError('');
     try {
-      const inv = await api.createPayment(token, { bookingId, provider });
+      const inv = await api.createPayment({ bookingId, provider });
       window.location.href = inv.checkoutUrl;
     } catch (e) {
       setError(e instanceof Error ? e.message : 'To‘lovni boshlab bo‘lmadi');

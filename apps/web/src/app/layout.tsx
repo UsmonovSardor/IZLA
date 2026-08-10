@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import { Sora, Inter, JetBrains_Mono } from 'next/font/google';
 import Link from 'next/link';
 import { Search, Home, Sparkles, User } from 'lucide-react';
+import { AuthProvider } from '@/components/auth-provider';
+import { HeaderAuth } from '@/components/header-auth';
 import './globals.css';
 
 const sora = Sora({ subsets: ['latin'], variable: '--font-sora', display: 'swap' });
@@ -25,39 +27,42 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="uz" className={`${sora.variable} ${inter.variable} ${mono.variable}`}>
       <body className="font-sans min-h-screen pb-20 md:pb-0">
-        <header className="sticky top-0 z-40 bg-surface/90 backdrop-blur border-b border-line">
-          <div className="mx-auto max-w-6xl px-4 h-16 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-lg bg-brand-gradient text-white font-display font-bold">i</span>
-              <span className="font-display text-xl font-bold text-navy">
-                izla<span className="text-teal">.uz</span>
-              </span>
-            </Link>
-            <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-ink">
-              <Link href="/qidiruv" className="hover:text-brand">Qidiruv</Link>
-              <Link href="/uylar" className="hover:text-brand">Ko‘chmas mulk</Link>
-              <Link href="/bron" className="hover:text-brand">Bronlarim</Link>
-              <Link href="/tg" className="hover:text-brand">Telegram</Link>
-            </nav>
-          </div>
-        </header>
+        <AuthProvider>
+          <header className="sticky top-0 z-40 bg-surface/90 backdrop-blur border-b border-line">
+            <div className="mx-auto max-w-6xl px-4 h-16 flex items-center justify-between">
+              <Link href="/" className="flex items-center gap-2">
+                <span className="grid h-9 w-9 place-items-center rounded-lg bg-brand-gradient text-white font-display font-bold">i</span>
+                <span className="font-display text-xl font-bold text-navy">
+                  izla<span className="text-teal">.uz</span>
+                </span>
+              </Link>
+              <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-ink">
+                <Link href="/qidiruv" className="hover:text-brand">Qidiruv</Link>
+                <Link href="/uylar" className="hover:text-brand">Ko‘chmas mulk</Link>
+                <Link href="/bron" className="hover:text-brand">Bronlarim</Link>
+                <Link href="/tg" className="hover:text-brand">Telegram</Link>
+              </nav>
+              <HeaderAuth />
+            </div>
+          </header>
 
-        <main className="mx-auto max-w-6xl px-4 py-6">{children}</main>
+          <main className="mx-auto max-w-6xl px-4 py-6">{children}</main>
 
-        {/* Mobil bottom-nav (TZ: mobil-birinchi) */}
-        <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-surface border-t border-line grid grid-cols-4 h-16">
-          {[
-            { href: '/', icon: Home, label: 'Asosiy' },
-            { href: '/qidiruv', icon: Search, label: 'Qidiruv' },
-            { href: '/uylar', icon: Sparkles, label: 'Uylar' },
-            { href: '/tg', icon: User, label: 'Profil' },
-          ].map((t) => (
-            <Link key={t.href} href={t.href} className="flex flex-col items-center justify-center gap-0.5 text-[11px] text-slate2 hover:text-brand">
-              <t.icon className="h-5 w-5" />
-              {t.label}
-            </Link>
-          ))}
-        </nav>
+          {/* Mobil bottom-nav (TZ: mobil-birinchi) */}
+          <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-surface border-t border-line grid grid-cols-4 h-16">
+            {[
+              { href: '/', icon: Home, label: 'Asosiy' },
+              { href: '/qidiruv', icon: Search, label: 'Qidiruv' },
+              { href: '/uylar', icon: Sparkles, label: 'Uylar' },
+              { href: '/profil', icon: User, label: 'Profil' },
+            ].map((t) => (
+              <Link key={t.href} href={t.href} className="flex flex-col items-center justify-center gap-0.5 text-[11px] text-slate2 hover:text-brand">
+                <t.icon className="h-5 w-5" />
+                {t.label}
+              </Link>
+            ))}
+          </nav>
+        </AuthProvider>
       </body>
     </html>
   );

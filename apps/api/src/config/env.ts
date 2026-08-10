@@ -13,6 +13,15 @@ const schema = z.object({
 
   // Web (redirect return_url uchun). CORS_ORIGIN'ning birinchi qiymatiga fallback.
   WEB_URL: z.string().optional().default(''),
+  // Ommaviy API URL (Google OAuth redirect, Telegram webhook default).
+  PUBLIC_API_URL: z.string().optional().default(''),
+  // Prod'da cookie SameSite=None;Secure kerak (cross-site). Dev'da Lax.
+  COOKIE_SECURE: z.coerce.boolean().optional().default(false),
+
+  // --- Google OAuth — bo'sh bo'lsa Google kirish o'chiq ---
+  GOOGLE_CLIENT_ID: z.string().optional().default(''),
+  GOOGLE_CLIENT_SECRET: z.string().optional().default(''),
+  GOOGLE_REDIRECT_URI: z.string().optional().default(''),
 
   // --- SMS (Eskiz) — bo'sh bo'lsa SMS o'chiq (log rejimi) ---
   ESKIZ_EMAIL: z.string().optional().default(''),

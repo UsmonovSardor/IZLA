@@ -115,7 +115,9 @@ enum RealEstateTarget {
 // ============================================================
 model User {
   id        String   @id @default(cuid())
-  phone     String   @unique
+  phone     String   @unique // real telefon yoki sintetik identifikator: tg:<id> / google:<sub>
+  email     String?  @unique
+  googleId  String?  @unique
   name      String?
   role      Role     @default(USER)
   coins     Int      @default(0)
@@ -135,9 +137,42 @@ model User {
   favorites       Favorite[]
   propertyLeads   PropertyLead[]
   geoAlertPref    GeoAlertPref?
+  sessions        Session[]
 
   @@index([role])
   @@map("users")
+}
+
+// Refresh-token sessiyalari (httpOnly cookie). Rotatsiya + qurilma ro'yxati + revoke.
+model Session {
+  id          String    @id @default(cuid())
+  userId      String
+  refreshHash String    @unique // refresh token sha256 hash (xom token faqat cookie'da)
+  userAgent   String?
+  ip          String?
+  createdAt   DateTime  @default(now())
+  lastUsedAt  DateTime  @default(now())
+  expiresAt   DateTime
+  revokedAt   DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+// Telefon OTP challenge (kod hash, TTL, urinishlar, rate-limit uchun izlar).
+model OtpChallenge {
+  id         String    @id @default(cuid())
+  phone      String
+  codeHash   String
+  expiresAt  DateTime
+  attempts   Int       @default(0)
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([phone])
+  @@map("otp_challenges")
 }
 
 model Category {

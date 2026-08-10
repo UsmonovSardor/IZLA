@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import Script from 'next/script';
 import Link from 'next/link';
 import { api, type Category } from '@/lib/api';
+import { telegramLogin } from '@/lib/auth';
+import { useAuth } from '@/components/auth-provider';
 
 // Telegram WebApp tiplari (minimal)
 interface TgWebApp {
@@ -20,6 +22,7 @@ declare global {
 }
 
 export default function TgMiniApp() {
+  const { applyUser } = useAuth();
   const [name, setName] = useState<string>('');
   const [authed, setAuthed] = useState<boolean>(false);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -37,15 +40,13 @@ export default function TgMiniApp() {
     setName(tg.initDataUnsafe.user?.first_name ?? 'Foydalanuvchi');
     setReady(true);
 
-    // Backend'ga initData yuborib autentifikatsiya (HMAC tekshiruvi server tomonda)
+    // initData'ni backendga yuborib sessiya ochamiz (HMAC tekshiruvi serverda)
     if (tg.initData) {
-      fetch(`${api.base}/auth/telegram`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ initData: tg.initData }),
-      })
-        .then((r) => (r.ok ? r.json() : Promise.reject()))
-        .then(() => setAuthed(true))
+      telegramLogin(tg.initData)
+        .then((r) => {
+          applyUser(r.user);
+          setAuthed(true);
+        })
         .catch(() => setAuthed(false));
     }
   }

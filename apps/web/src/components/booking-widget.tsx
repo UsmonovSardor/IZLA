@@ -3,14 +3,14 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { CalendarClock, Check, ChevronLeft, Clock, Loader2 } from 'lucide-react';
 import { api, type Slot, type Booking } from '@/lib/api';
-import { getToken, getSavedPhone, requestOtp, verifyOtp } from '@/lib/auth';
+import { useAuth } from './auth-provider';
 import { Button } from './ui/button';
 import { PayButtons } from './pay-buttons';
 import { formatUZS } from '@/lib/utils';
 
 interface ServiceLite { id: string; name: string; price: string; durationMin: number }
 
-type Step = 'pick' | 'auth' | 'review' | 'done';
+type Step = 'pick' | 'review' | 'done';
 
 const TZ = 'Asia/Tashkent';
 const WEEKDAYS = ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan'];
@@ -20,7 +20,6 @@ const MONTHS = ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'Iyn', 'Iyl', 'Avg', 'Sen', '
 function nextDays(n: number): { value: string; wd: string; label: string }[] {
   const out: { value: string; wd: string; label: string }[] = [];
   const now = new Date();
-  // Toshkent bugungi kunidan boshlaymiz
   const base = new Date(now.getTime() + 5 * 60 * 60 * 1000);
   for (let i = 0; i < n; i++) {
     const d = new Date(base.getTime() + i * 24 * 60 * 60 * 1000);
@@ -44,6 +43,7 @@ function slotDateLabel(iso: string): string {
 }
 
 export function BookingWidget({ services, vendorName }: { services: ServiceLite[]; vendorName: string }) {
+  const { user, openLogin } = useAuth();
   const days = useMemo(() => nextDays(14), []);
   const [serviceId, setServiceId] = useState(services[0]?.id ?? '');
   const [date, setDate] = useState(days[0]?.value ?? '');
@@ -54,13 +54,6 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
 
   const [step, setStep] = useState<Step>('pick');
   const [note, setNote] = useState('');
-
-  // Auth substep
-  const [phone, setPhone] = useState('+998');
-  const [code, setCode] = useState('');
-  const [otpSent, setOtpSent] = useState(false);
-  const [devHint, setDevHint] = useState<string | undefined>();
-
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [booking, setBooking] = useState<Booking | null>(null);
@@ -87,69 +80,29 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
     void loadSlots();
   }, [loadSlots]);
 
-  useEffect(() => {
-    setPhone(getSavedPhone());
-  }, []);
-
   function goToConfirm() {
     if (!selected) return;
     setError('');
-    if (getToken()) setStep('review');
-    else setStep('auth');
-  }
-
-  async function sendOtp() {
-    setError('');
-    if (!/^\+998\d{9}$/.test(phone)) {
-      setError('Telefon +998XXXXXXXXX formatida bo‘lishi kerak');
-      return;
-    }
-    setSubmitting(true);
-    try {
-      const r = await requestOtp(phone);
-      setOtpSent(true);
-      setDevHint(r.devHint);
-    } catch {
-      setError('SMS yuborib bo‘lmadi. Qayta urinib ko‘ring.');
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
-  async function confirmOtp() {
-    setError('');
-    setSubmitting(true);
-    try {
-      await verifyOtp(phone, code);
-      setStep('review');
-    } catch {
-      setError('Kod noto‘g‘ri.');
-    } finally {
-      setSubmitting(false);
-    }
+    if (user) setStep('review');
+    else openLogin({ onDone: () => setStep('review') });
   }
 
   async function submitBooking() {
     if (!selected) return;
-    const token = getToken();
-    if (!token) { setStep('auth'); return; }
     setSubmitting(true);
     setError('');
     try {
-      const b = await api.createBooking(token, {
-        serviceId,
-        slotStart: selected.start,
-        note: note || undefined,
-      });
+      const b = await api.createBooking({ serviceId, slotStart: selected.start, note: note || undefined });
       setBooking(b);
       setStep('done');
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Xatolik';
-      // Slot band bo'lib qolgan bo'lsa — qaytadan tanlashga qaytaramiz
       if (/band/i.test(msg)) {
         setError('Afsus, bu vaqt endigina band bo‘ldi. Boshqa vaqt tanlang.');
         setStep('pick');
         void loadSlots();
+      } else if ((e as { status?: number })?.status === 401) {
+        openLogin({ onDone: () => setStep('review') });
       } else {
         setError(msg);
       }
@@ -281,46 +234,6 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
             {selected ? `${slotTime(selected.start)} — davom etish` : 'Vaqt tanlang'}
           </Button>
         </>
-      )}
-
-      {/* ---------- AUTH ---------- */}
-      {step === 'auth' && (
-        <div className="space-y-3">
-          <BackButton onClick={() => setStep('pick')} />
-          <p className="text-sm text-slate2">Bronni tasdiqlash uchun telefon raqamingizni kiriting.</p>
-          <input
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="+998 XX XXX XX XX"
-            inputMode="tel"
-            disabled={otpSent}
-            className="w-full rounded-md border border-line px-3 py-2.5 text-sm outline-none focus:border-brand disabled:bg-bg"
-          />
-          {otpSent && (
-            <>
-              <input
-                value={code}
-                onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                placeholder="SMS kod (6 raqam)"
-                inputMode="numeric"
-                className="w-full rounded-md border border-line px-3 py-2.5 text-sm outline-none focus:border-brand tracking-widest"
-              />
-              {devHint && (
-                <p className="text-xs text-slate2">Dev rejim: kod <span className="font-mono font-semibold">{devHint}</span></p>
-              )}
-            </>
-          )}
-          {error && <p className="text-sm text-danger">{error}</p>}
-          {!otpSent ? (
-            <Button className="w-full" disabled={submitting} onClick={sendOtp}>
-              {submitting ? 'Yuborilmoqda…' : 'Kod olish'}
-            </Button>
-          ) : (
-            <Button className="w-full" disabled={submitting || code.length !== 6} onClick={confirmOtp}>
-              {submitting ? 'Tekshirilmoqda…' : 'Tasdiqlash'}
-            </Button>
-          )}
-        </div>
       )}
 
       {/* ---------- REVIEW ---------- */}

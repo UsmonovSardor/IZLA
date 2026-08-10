@@ -1,3 +1,5 @@
+import { authFetch } from './auth';
+
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
 async function get<T>(path: string): Promise<T> {
@@ -6,11 +8,11 @@ async function get<T>(path: string): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-async function authed<T>(path: string, token: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${BASE}${path}`, {
+// Avtorizatsiyali so'rov — authFetch (Bearer xotiradan + 401'da jim refresh).
+async function authed<T>(path: string, init?: RequestInit): Promise<T> {
+  const res = await authFetch(path, {
     ...init,
-    cache: 'no-store',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, ...(init?.headers ?? {}) },
+    headers: { 'Content-Type': 'application/json', ...(init?.headers ?? {}) },
   });
   if (!res.ok) {
     let msg = `API ${path} → ${res.status}`;
@@ -18,7 +20,9 @@ async function authed<T>(path: string, token: string, init?: RequestInit): Promi
       const body = await res.json();
       if (body?.message) msg = Array.isArray(body.message) ? body.message.join(', ') : body.message;
     } catch { /* ignore */ }
-    throw new Error(msg);
+    const e = new Error(msg) as Error & { status?: number };
+    e.status = res.status;
+    throw e;
   }
   return res.json() as Promise<T>;
 }
@@ -31,14 +35,13 @@ export const api = {
   property: (id: string) => get<PropertyDetail>(`/properties/${id}`),
   availability: (serviceId: string, date: string) =>
     get<Availability>(`/bookings/availability?serviceId=${encodeURIComponent(serviceId)}&date=${date}`),
-  createBooking: (token: string, body: { serviceId: string; slotStart: string; note?: string }) =>
-    authed<Booking>('/bookings', token, { method: 'POST', body: JSON.stringify(body) }),
-  myBookings: (token: string) => authed<Booking[]>('/bookings/me', token),
-  cancelBooking: (token: string, id: string) =>
-    authed<Booking>(`/bookings/${id}/cancel`, token, { method: 'PATCH' }),
-  createPayment: (token: string, body: { bookingId: string; provider: 'PAYME' | 'CLICK' }) =>
-    authed<PaymentInvoice>('/payments', token, { method: 'POST', body: JSON.stringify(body) }),
-  paymentStatus: (token: string, id: string) => authed<Payment>(`/payments/${id}`, token),
+  createBooking: (body: { serviceId: string; slotStart: string; note?: string }) =>
+    authed<Booking>('/bookings', { method: 'POST', body: JSON.stringify(body) }),
+  myBookings: () => authed<Booking[]>('/bookings/me'),
+  cancelBooking: (id: string) => authed<Booking>(`/bookings/${id}/cancel`, { method: 'PATCH' }),
+  createPayment: (body: { bookingId: string; provider: 'PAYME' | 'CLICK' }) =>
+    authed<PaymentInvoice>('/payments', { method: 'POST', body: JSON.stringify(body) }),
+  paymentStatus: (id: string) => authed<Payment>(`/payments/${id}`),
   base: BASE,
 };
 

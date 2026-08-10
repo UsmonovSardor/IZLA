@@ -6,6 +6,6 @@ import { SmsService } from './sms.service';
 @Module({
   imports: [TelegramModule],
   providers: [NotificationsService, SmsService],
-  exports: [NotificationsService],
+  exports: [NotificationsService, SmsService],
 })
 export class NotificationsModule {}
