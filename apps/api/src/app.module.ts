@@ -6,6 +6,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { VendorsModule } from './modules/vendors/vendors.module';
 import { PropertiesModule } from './modules/properties/properties.module';
+import { BookingsModule } from './modules/bookings/bookings.module';
 import { TelegramModule } from './modules/telegram/telegram.module';
 
 @Module({
@@ -17,6 +18,7 @@ import { TelegramModule } from './modules/telegram/telegram.module';
     CategoriesModule,
     VendorsModule,
     PropertiesModule,
+    BookingsModule,
     TelegramModule,
   ],
 })

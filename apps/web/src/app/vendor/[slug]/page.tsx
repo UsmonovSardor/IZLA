@@ -4,6 +4,7 @@ import { BadgeCheck, Clock, MapPin, Phone } from 'lucide-react';
 import { api, type VendorDetail } from '@/lib/api';
 import { Rating } from '@/components/ui/rating';
 import { Button } from '@/components/ui/button';
+import { BookingWidget } from '@/components/booking-widget';
 import { formatUZS } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
@@ -68,10 +69,16 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
 
       {/* Sticky bron paneli */}
       <aside className="md:sticky md:top-20 h-fit space-y-3">
+        {v.services.length > 0 ? (
+          <BookingWidget services={v.services} vendorName={v.name} />
+        ) : (
+          <div className="rounded-lg border border-line bg-surface p-4 shadow-card">
+            <Button className="w-full" disabled>Bron mavjud emas</Button>
+          </div>
+        )}
         <div className="rounded-lg border border-line bg-surface p-4 shadow-card">
           {v.phone && <a href={`tel:${v.phone}`} className="mb-2 flex items-center gap-2 text-sm text-ink"><Phone className="h-4 w-4 text-brand" />{v.phone}</a>}
-          <Button className="w-full">Bron qilish</Button>
-          <Button variant="secondary" className="w-full mt-2">Taksi chaqir</Button>
+          <Button variant="secondary" className="w-full">Taksi chaqir</Button>
         </div>
       </aside>
     </div>

@@ -36,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-ink">
               <Link href="/qidiruv" className="hover:text-brand">Qidiruv</Link>
               <Link href="/uylar" className="hover:text-brand">Ko‘chmas mulk</Link>
+              <Link href="/bron" className="hover:text-brand">Bronlarim</Link>
               <Link href="/tg" className="hover:text-brand">Telegram</Link>
             </nav>
           </div>
