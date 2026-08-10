@@ -1,0 +1,130 @@
+import { Injectable, Logger } from '@nestjs/common';
+import type { Prisma } from '@izla/db';
+import { PrismaService } from '../../prisma/prisma.service';
+import { TelegramService } from '../telegram/telegram.service';
+import { SmsService } from './sms.service';
+
+const TZ = 'Asia/Tashkent';
+
+function fmtMoney(amount: unknown): string {
+  return `${new Intl.NumberFormat('ru-RU').format(Number(amount))} so‘m`;
+}
+function fmtDateTime(d: Date): string {
+  return new Intl.DateTimeFormat('ru-RU', {
+    day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', timeZone: TZ,
+  }).format(d);
+}
+
+/**
+ * To'lov hodisalari bo'yicha foydalanuvchiga bildirishnoma (Telegram yoki SMS).
+ * Kanal `user.phone` ga qarab tanlanadi: `tg:<id>` → Telegram, aks holda SMS.
+ * Barcha jo'natishlar best-effort — chaqiruvchini hech qachon bloklamaydi.
+ */
+@Injectable()
+export class NotificationsService {
+  private readonly logger = new Logger('Notifications');
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly telegram: TelegramService,
+    private readonly sms: SmsService,
+  ) {}
+
+  /** To'lov muvaffaqiyatli — bron tasdiqlandi. */
+  async paymentPaid(paymentId: string): Promise<void> {
+    const ctx = await this.load(paymentId);
+    if (!ctx) return;
+    const { user, serviceName, vendorName, when, amount } = ctx;
+
+    const tgText =
+      `✅ To‘lov qabul qilindi!\n\n` +
+      `${serviceName} — ${vendorName}\n` +
+      `🗓 ${when}\n💳 ${amount}\n\n` +
+      `Broningiz tasdiqlandi. Rahmat! 🎉`;
+    const smsText = `Izla.uz: ${amount} to'lov qabul qilindi. ${serviceName}, ${when}. Bron tasdiqlandi.`;
+
+    await this.dispatch(user, 'payment_paid', tgText, smsText, { paymentId, amount });
+  }
+
+  /** To'lov qaytarildi — bron bekor qilindi. */
+  async paymentRefunded(paymentId: string): Promise<void> {
+    const ctx = await this.load(paymentId);
+    if (!ctx) return;
+    const { user, serviceName, vendorName, when, amount } = ctx;
+
+    const tgText =
+      `↩️ To‘lov qaytarildi.\n\n` +
+      `${serviceName} — ${vendorName}\n🗓 ${when}\n💳 ${amount}\n\n` +
+      `Bron bekor qilindi. Mablag‘ hisobingizga qaytariladi.`;
+    const smsText = `Izla.uz: ${amount} qaytarildi. ${serviceName} broni bekor qilindi.`;
+
+    await this.dispatch(user, 'payment_refunded', tgText, smsText, { paymentId, amount });
+  }
+
+  // --- ichki ---
+
+  private async load(paymentId: string) {
+    const payment = await this.prisma.payment.findUnique({
+      where: { id: paymentId },
+      include: {
+        booking: {
+          include: {
+            service: { select: { name: true } },
+            vendor: { select: { name: true } },
+          },
+        },
+      },
+    });
+    if (!payment) return null;
+    // Payment'da `user` relation yo'q (faqat userId) — alohida yuklaymiz
+    const user = await this.prisma.user.findUnique({
+      where: { id: payment.userId },
+      select: { id: true, phone: true },
+    });
+    if (!user) return null;
+    return {
+      user,
+      amount: fmtMoney(payment.amount),
+      serviceName: payment.booking?.service.name ?? 'Xizmat',
+      vendorName: payment.booking?.vendor.name ?? 'Izla',
+      when: payment.booking ? fmtDateTime(payment.booking.slotStart) : '',
+    };
+  }
+
+  private async dispatch(
+    user: { id: string; phone: string },
+    type: string,
+    tgText: string,
+    smsText: string,
+    payload: Prisma.InputJsonObject,
+  ) {
+    try {
+      if (user.phone.startsWith('tg:')) {
+        const chatId = user.phone.slice(3);
+        const res = await this.telegram.call('sendMessage', { chat_id: chatId, text: tgText });
+        await this.record(user.id, 'TELEGRAM', type, payload, (res as { ok?: boolean })?.ok === true);
+      } else {
+        const ok = await this.sms.send(user.phone, smsText);
+        await this.record(user.id, 'SMS', type, payload, ok);
+      }
+    } catch (e) {
+      this.logger.error(`Bildirishnoma xato (${type}): ${(e as Error).message}`);
+    }
+  }
+
+  private async record(
+    userId: string,
+    channel: 'TELEGRAM' | 'SMS',
+    type: string,
+    payload: Prisma.InputJsonObject,
+    sent: boolean,
+  ) {
+    try {
+      await this.prisma.notification.create({
+        data: { userId, channel, type, payload, sentAt: sent ? new Date() : null },
+      });
+    } catch (e) {
+      this.logger.error(`Notification yozib bo‘lmadi: ${(e as Error).message}`);
+    }
+  }
+}

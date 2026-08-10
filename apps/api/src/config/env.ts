@@ -14,6 +14,12 @@ const schema = z.object({
   // Web (redirect return_url uchun). CORS_ORIGIN'ning birinchi qiymatiga fallback.
   WEB_URL: z.string().optional().default(''),
 
+  // --- SMS (Eskiz) — bo'sh bo'lsa SMS o'chiq (log rejimi) ---
+  ESKIZ_EMAIL: z.string().optional().default(''),
+  ESKIZ_PASSWORD: z.string().optional().default(''),
+  ESKIZ_FROM: z.string().default('4546'),
+  ESKIZ_BASE: z.string().default('https://notify.eskiz.uz/api'),
+
   // --- Payme (Paycom) Merchant API ---
   PAYME_MERCHANT_ID: z.string().optional().default(''),
   // Endpoint Basic-auth kaliti (test yoki prod). Bo'sh bo'lsa Payme callback'lari o'chiq.

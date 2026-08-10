@@ -4,10 +4,11 @@ import { PaymentsController } from './payments.controller';
 import { PaymentsService } from './payments.service';
 import { PaymeService } from './payme/payme.service';
 import { ClickService } from './click/click.service';
+import { NotificationsModule } from '../notifications/notifications.module';
 import { JwtAuthGuard } from '../../common/jwt.guard';
 
 @Module({
-  imports: [JwtModule.register({})],
+  imports: [JwtModule.register({}), NotificationsModule],
   controllers: [PaymentsController],
   providers: [PaymentsService, PaymeService, ClickService, JwtAuthGuard],
 })

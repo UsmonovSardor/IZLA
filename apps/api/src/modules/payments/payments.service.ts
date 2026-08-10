@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import type { Payment, PaymentProvider } from '@izla/db';
 import { PrismaService } from '../../prisma/prisma.service';
+import { NotificationsService } from '../notifications/notifications.service';
 import { env } from '../../config/env';
 import { toTiyin } from './money';
 
@@ -15,7 +16,10 @@ type CheckoutProvider = (typeof CHECKOUT_PROVIDERS)[number];
 
 @Injectable()
 export class PaymentsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notifications: NotificationsService,
+  ) {}
 
   private webUrl(): string {
     return (env.WEB_URL || env.CORS_ORIGIN.split(',')[0] || 'http://localhost:3000').replace(/\/$/, '');
@@ -100,6 +104,8 @@ export class PaymentsService {
         });
       }
     });
+    // Best-effort bildirishnoma (callback javobini bloklamaydi)
+    void this.notifications.paymentPaid(paymentId);
   }
 
   /** To'lov bekor qilindi (to'lanmagan holatda). */
@@ -124,6 +130,7 @@ export class PaymentsService {
         });
       }
     });
+    void this.notifications.paymentRefunded(paymentId);
   }
 
   // ---------- checkout URL quruvchi ----------
