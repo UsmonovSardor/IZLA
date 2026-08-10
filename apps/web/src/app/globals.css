@@ -19,3 +19,31 @@ body { background: #F8FAFC; color: #1E293B; }
   transform: translateX(-100%); animation: shimmer 1.4s infinite;
 }
 @keyframes shimmer { 100% { transform: translateX(100%); } }
+
+/* ===== Brend logo animatsiyasi (pin-i) ===== */
+.izla-pin { transform-box: fill-box; transform-origin: 50% 60%; }
+.izla-ping { transform-box: fill-box; transform-origin: center; opacity: 0; pointer-events: none; }
+
+/* Kirishda pin tushib-sakraydi (map-pin drop) */
+.izla-drop .izla-pin { animation: izla-drop .75s cubic-bezier(.22, 1.3, .36, 1) both; }
+
+/* Header hover: pin ko'tariladi + radar ping tarqaladi */
+.izla-hover .izla-pin { transition: transform .35s cubic-bezier(.22, 1.3, .36, 1); }
+.izla-hover:hover .izla-pin { transform: translateY(-2px) scale(1.06); }
+.izla-hover:hover .izla-ping { animation: izla-ping 1.5s ease-out infinite; }
+
+@keyframes izla-drop {
+  0%   { transform: translateY(-45%) scale(.85); opacity: 0; }
+  55%  { transform: translateY(6%)   scale(1.03); opacity: 1; }
+  74%  { transform: translateY(-3%)  scale(.99); }
+  100% { transform: translateY(0)    scale(1); opacity: 1; }
+}
+@keyframes izla-ping {
+  0%   { transform: scale(.45); opacity: .5; }
+  100% { transform: scale(2);   opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .izla-pin, .izla-ping { animation: none !important; transition: none !important; transform: none !important; opacity: 1; }
+  .izla-ping { opacity: 0; }
+}

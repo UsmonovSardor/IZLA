@@ -9,17 +9,24 @@ const PIN =
 export function LogoMark({
   size = 32,
   variant = 'mark',
+  animate = 'none',
+  ping = false,
   className,
 }: {
   size?: number;
   variant?: 'mark' | 'tile';
+  /** 'drop' — kirishda pin tushib-sakraydi (bir marta). */
+  animate?: 'none' | 'drop';
+  /** header hover uchun radar ping halqasi. */
+  ping?: boolean;
   className?: string;
 }) {
   const uid = useId().replace(/:/g, '');
   const gid = `izg${uid}`;
   const mid = `izm${uid}`;
+  const rootCls = ['izla-mark', animate === 'drop' ? 'izla-drop' : '', className].filter(Boolean).join(' ');
   return (
-    <svg width={size} height={size} viewBox="0 0 100 100" fill="none" className={className} role="img" aria-label="Izla logo">
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none" className={rootCls} role="img" aria-label="Izla logo">
       <defs>
         <linearGradient id={gid} x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
           <stop offset="0" stopColor="#2563EB" />
@@ -31,23 +38,28 @@ export function LogoMark({
           <rect x="44" y="44" width="12" height="24" rx="6" fill="#000" />
         </mask>
       </defs>
-      {variant === 'tile' ? (
-        <>
-          <rect x="4" y="4" width="92" height="92" rx="22" fill={`url(#${gid})`} />
-          <path d={PIN} fill="#fff" mask={`url(#${mid})`} />
-        </>
-      ) : (
-        <path d={PIN} fill={`url(#${gid})`} mask={`url(#${mid})`} />
+      {ping && (
+        <circle className="izla-ping" cx="50" cy="42" r="20" fill="none" stroke="#14B8A6" strokeWidth="4" />
       )}
+      <g className="izla-pin">
+        {variant === 'tile' ? (
+          <>
+            <rect x="4" y="4" width="92" height="92" rx="22" fill={`url(#${gid})`} />
+            <path d={PIN} fill="#fff" mask={`url(#${mid})`} />
+          </>
+        ) : (
+          <path d={PIN} fill={`url(#${gid})`} mask={`url(#${mid})`} />
+        )}
+      </g>
     </svg>
   );
 }
 
-/** To'liq logo: belgi + «izla.uz» so'z belgisi (Sora). */
+/** To'liq logo: belgi + «izla.uz» so'z belgisi (Sora). Header'da hover animatsiyasi. */
 export function Logo({ className }: { className?: string }) {
   return (
-    <span className={`flex items-center gap-2 ${className ?? ''}`}>
-      <LogoMark size={34} />
+    <span className={`izla-hover flex items-center gap-2 ${className ?? ''}`}>
+      <LogoMark size={34} ping />
       <span className="font-display text-xl font-bold text-navy leading-none">
         izla<span className="text-teal">.uz</span>
       </span>

@@ -41,7 +41,7 @@ export function LoginModal({
           <X className="h-4 w-4" />
         </button>
         <div className="mb-4 text-center">
-          <LogoMark size={48} variant="tile" className="mx-auto" />
+          <LogoMark size={48} variant="tile" animate="drop" className="mx-auto" />
           <h2 className="mt-2 font-display text-lg font-bold text-navy">Izla.uz ga kirish</h2>
           <p className="text-sm text-slate2">Bron, sevimlilar va profil uchun</p>
         </div>

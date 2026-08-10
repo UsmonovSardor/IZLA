@@ -46,7 +46,7 @@ function KirishInner() {
     <div className="mx-auto max-w-sm py-10">
       <div className="rounded-2xl border border-line bg-surface p-6 shadow-card">
         <div className="mb-5 text-center">
-          <LogoMark size={52} variant="tile" className="mx-auto" />
+          <LogoMark size={52} variant="tile" animate="drop" className="mx-auto" />
           <h1 className="mt-3 font-display text-xl font-bold text-navy">Xush kelibsiz</h1>
           <p className="text-sm text-slate2">Izla.uz hisobingizga kiring yoki ro‘yxatdan o‘ting</p>
         </div>
