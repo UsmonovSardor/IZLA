@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Search, Home, Sparkles, User } from 'lucide-react';
 import { AuthProvider } from '@/components/auth-provider';
 import { HeaderAuth } from '@/components/header-auth';
+import { Logo } from '@/components/logo';
 import './globals.css';
 
 const sora = Sora({ subsets: ['latin'], variable: '--font-sora', display: 'swap' });
@@ -30,11 +31,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           <header className="sticky top-0 z-40 bg-surface/90 backdrop-blur border-b border-line">
             <div className="mx-auto max-w-6xl px-4 h-16 flex items-center justify-between">
-              <Link href="/" className="flex items-center gap-2">
-                <span className="grid h-9 w-9 place-items-center rounded-lg bg-brand-gradient text-white font-display font-bold">i</span>
-                <span className="font-display text-xl font-bold text-navy">
-                  izla<span className="text-teal">.uz</span>
-                </span>
+              <Link href="/" aria-label="Izla.uz bosh sahifa">
+                <Logo />
               </Link>
               <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-ink">
                 <Link href="/qidiruv" className="hover:text-brand">Qidiruv</Link>

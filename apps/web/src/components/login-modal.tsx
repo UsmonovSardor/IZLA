@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { type AuthUser, type Providers } from '@/lib/auth';
 import { LoginForm } from './login-form';
+import { LogoMark } from './logo';
 
 export function LoginModal({
   open,
@@ -40,9 +41,7 @@ export function LoginModal({
           <X className="h-4 w-4" />
         </button>
         <div className="mb-4 text-center">
-          <span className="grid h-11 w-11 mx-auto place-items-center rounded-xl bg-brand-gradient text-white font-display text-lg font-bold">
-            i
-          </span>
+          <LogoMark size={48} variant="tile" className="mx-auto" />
           <h2 className="mt-2 font-display text-lg font-bold text-navy">Izla.uz ga kirish</h2>
           <p className="text-sm text-slate2">Bron, sevimlilar va profil uchun</p>
         </div>

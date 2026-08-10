@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { useAuth } from '@/components/auth-provider';
 import { LoginForm } from '@/components/login-form';
+import { LogoMark } from '@/components/logo';
 
 const ERRORS: Record<string, string> = {
   google_off: 'Google kirish hozircha yoqilmagan.',
@@ -45,9 +46,7 @@ function KirishInner() {
     <div className="mx-auto max-w-sm py-10">
       <div className="rounded-2xl border border-line bg-surface p-6 shadow-card">
         <div className="mb-5 text-center">
-          <span className="grid h-12 w-12 mx-auto place-items-center rounded-xl bg-brand-gradient text-xl font-display font-bold text-white">
-            i
-          </span>
+          <LogoMark size={52} variant="tile" className="mx-auto" />
           <h1 className="mt-3 font-display text-xl font-bold text-navy">Xush kelibsiz</h1>
           <p className="text-sm text-slate2">Izla.uz hisobingizga kiring yoki ro‘yxatdan o‘ting</p>
         </div>
