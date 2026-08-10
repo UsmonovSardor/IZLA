@@ -141,6 +141,7 @@ export class BookingsService {
         vendor: { select: { name: true, slug: true, address: true, phone: true } },
         service: { select: { name: true, price: true, durationMin: true } },
         staff: { select: { name: true } },
+        payment: { select: { id: true, status: true, amount: true, provider: true, paidAt: true } },
       },
     });
   }

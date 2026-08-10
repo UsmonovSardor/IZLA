@@ -1,10 +1,11 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { CalendarClock, Loader2, MapPin } from 'lucide-react';
+import { CalendarClock, CheckCircle2, Loader2, MapPin } from 'lucide-react';
 import { api, type Booking } from '@/lib/api';
 import { getToken, clearToken } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
+import { PayButtons } from '@/components/pay-buttons';
 import { formatUZS } from '@/lib/utils';
 
 const TZ = 'Asia/Tashkent';
@@ -111,6 +112,16 @@ export default function BronPage() {
                   )}
                 </div>
                 {b.staff?.name && <p className="mt-1 text-xs text-slate2">Mutaxassis: {b.staff.name}</p>}
+                {b.payment?.status === 'PAID' && (
+                  <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-1 text-xs font-medium text-success">
+                    <CheckCircle2 className="h-3.5 w-3.5" /> To‘langan
+                  </p>
+                )}
+                {active && upcoming && b.payment?.status !== 'PAID' && b.service && Number(b.service.price) > 0 && (
+                  <div className="mt-3 border-t border-line pt-3">
+                    <PayButtons bookingId={b.id} label="Oldindan to‘lash" />
+                  </div>
+                )}
                 {active && upcoming && (
                   <button
                     onClick={() => cancel(b.id)}

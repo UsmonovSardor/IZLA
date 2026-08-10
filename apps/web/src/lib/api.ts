@@ -36,6 +36,9 @@ export const api = {
   myBookings: (token: string) => authed<Booking[]>('/bookings/me', token),
   cancelBooking: (token: string, id: string) =>
     authed<Booking>(`/bookings/${id}/cancel`, token, { method: 'PATCH' }),
+  createPayment: (token: string, body: { bookingId: string; provider: 'PAYME' | 'CLICK' }) =>
+    authed<PaymentInvoice>('/payments', token, { method: 'POST', body: JSON.stringify(body) }),
+  paymentStatus: (token: string, id: string) => authed<Payment>(`/payments/${id}`, token),
   base: BASE,
 };
 
@@ -61,6 +64,16 @@ export interface Booking {
   vendor?: { name: string; slug: string; address?: string; phone?: string };
   service?: { name: string; price: string; durationMin: number };
   staff?: { name: string } | null;
+  payment?: Payment | null;
+}
+export type PaymentProviderId = 'PAYME' | 'CLICK';
+export type PaymentStatus = 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED';
+export interface Payment {
+  id: string; status: PaymentStatus; amount: string; provider: string; paidAt?: string | null;
+  bookingId?: string | null; currency?: string; createdAt?: string;
+}
+export interface PaymentInvoice extends Payment {
+  checkoutUrl: string;
 }
 export interface Property {
   id: string; type: string; title: string; price: string; pricePerM2?: string;

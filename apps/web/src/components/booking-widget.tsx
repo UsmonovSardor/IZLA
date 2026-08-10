@@ -5,6 +5,7 @@ import { CalendarClock, Check, ChevronLeft, Clock, Loader2 } from 'lucide-react'
 import { api, type Slot, type Booking } from '@/lib/api';
 import { getToken, getSavedPhone, requestOtp, verifyOtp } from '@/lib/auth';
 import { Button } from './ui/button';
+import { PayButtons } from './pay-buttons';
 import { formatUZS } from '@/lib/utils';
 
 interface ServiceLite { id: string; name: string; price: string; durationMin: number }
@@ -176,7 +177,15 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
           <Row k="Vaqt" v={`${slotTime(booking.slotStart)}–${slotTime(booking.slotEnd)}`} />
           {service && Number(service.price) > 0 && <Row k="Narx" v={formatUZS(service.price)} />}
         </dl>
-        <Link href="/bron" className="mt-4 block">
+        {service && Number(service.price) > 0 && (
+          <div className="mt-4 border-t border-line pt-3">
+            <PayButtons bookingId={booking.id} label="Oldindan to‘lash (ixtiyoriy)" />
+            <p className="mt-1.5 text-[11px] text-slate2 text-center">
+              To‘lasangiz bron avtomatik tasdiqlanadi. Aks holda vendor qo‘ng‘iroq qiladi.
+            </p>
+          </div>
+        )}
+        <Link href="/bron" className="mt-3 block">
           <Button variant="secondary" className="w-full">Mening bronlarim</Button>
         </Link>
       </div>

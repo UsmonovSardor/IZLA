@@ -10,6 +10,21 @@ const schema = z.object({
   JWT_ACCESS_TTL: z.string().default('15m'),
   JWT_REFRESH_TTL: z.string().default('30d'),
   TELEGRAM_BOT_TOKEN: z.string().optional().default(''),
+
+  // Web (redirect return_url uchun). CORS_ORIGIN'ning birinchi qiymatiga fallback.
+  WEB_URL: z.string().optional().default(''),
+
+  // --- Payme (Paycom) Merchant API ---
+  PAYME_MERCHANT_ID: z.string().optional().default(''),
+  // Endpoint Basic-auth kaliti (test yoki prod). Bo'sh bo'lsa Payme callback'lari o'chiq.
+  PAYME_MERCHANT_KEY: z.string().optional().default(''),
+  PAYME_CHECKOUT_URL: z.string().default('https://checkout.paycom.uz'),
+
+  // --- Click Merchant (SHOP) API ---
+  CLICK_SERVICE_ID: z.string().optional().default(''),
+  CLICK_MERCHANT_ID: z.string().optional().default(''),
+  CLICK_SECRET_KEY: z.string().optional().default(''),
+  CLICK_CHECKOUT_URL: z.string().default('https://my.click.uz/services/pay'),
 });
 
 export const env = schema.parse(process.env);

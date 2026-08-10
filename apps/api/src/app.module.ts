@@ -7,6 +7,7 @@ import { CategoriesModule } from './modules/categories/categories.module';
 import { VendorsModule } from './modules/vendors/vendors.module';
 import { PropertiesModule } from './modules/properties/properties.module';
 import { BookingsModule } from './modules/bookings/bookings.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 import { TelegramModule } from './modules/telegram/telegram.module';
 
 @Module({
@@ -19,6 +20,7 @@ import { TelegramModule } from './modules/telegram/telegram.module';
     VendorsModule,
     PropertiesModule,
     BookingsModule,
+    PaymentsModule,
     TelegramModule,
   ],
 })
