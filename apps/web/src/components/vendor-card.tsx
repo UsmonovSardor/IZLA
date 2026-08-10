@@ -1,32 +1,62 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { BadgeCheck, MapPin } from 'lucide-react';
-import { Card } from './ui/card';
-import { Rating } from './ui/rating';
+import { BadgeCheck, MapPin, Star } from 'lucide-react';
 import type { Vendor } from '@/lib/api';
 
-export function VendorCard({ v }: { v: Vendor }) {
+export function VendorCard({ v, priority = false }: { v: Vendor; priority?: boolean }) {
+  const cover = v.photos?.[0] ?? 'https://picsum.photos/seed/izla/800/600';
   return (
-    <Link href={`/vendor/${v.slug}`}>
-      <Card className="hover:shadow-pop transition group">
-        <div className="relative aspect-[4/3] bg-bg">
-          <Image src={v.photos[0] ?? 'https://picsum.photos/seed/izla/800/600'} alt={v.name} fill className="object-cover group-hover:scale-105 transition" sizes="(max-width:768px) 100vw, 33vw" />
-          <span className="absolute top-2 left-2 rounded-full bg-white/90 px-2 py-0.5 text-xs">{v.category?.icon} {v.category?.name}</span>
-        </div>
-        <div className="p-3">
-          <div className="flex items-center justify-between gap-2">
-            <h3 className="font-semibold text-ink truncate flex items-center gap-1">
-              {v.name}
-              {v.verified && <BadgeCheck className="h-4 w-4 text-brand shrink-0" />}
+    <Link href={`/vendor/${v.slug}`} className="group block">
+      <article className="relative overflow-hidden rounded-xl bg-white border border-line shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-pop">
+        {/* Rasm */}
+        <div className="relative aspect-[4/3] overflow-hidden bg-bg">
+          <Image
+            src={cover}
+            alt={v.name}
+            fill
+            priority={priority}
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
+            sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 25vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-navy/10 to-transparent" />
+
+          {/* Kategoriya chip (glass) */}
+          {v.category && (
+            <span className="chip absolute top-3 left-3 bg-white/85 backdrop-blur text-navy shadow-sm">
+              <span>{v.category.icon}</span>
+              {v.category.name}
+            </span>
+          )}
+
+          {/* Reyting pill */}
+          <span className="chip absolute top-3 right-3 bg-navy/70 backdrop-blur text-white">
+            <Star className="h-3.5 w-3.5 fill-warning text-warning" />
+            <span className="font-semibold">{v.rating.toFixed(1)}</span>
+          </span>
+
+          {/* Nom (rasm ustida) */}
+          <div className="absolute bottom-0 inset-x-0 p-3.5">
+            <h3 className="flex items-center gap-1 font-display font-semibold text-white text-[15px] leading-tight drop-shadow">
+              <span className="truncate">{v.name}</span>
+              {v.verified && <BadgeCheck className="h-4 w-4 shrink-0 text-teal-400" />}
             </h3>
-            <Rating value={v.rating} count={v.reviewCount} />
           </div>
-          <p className="mt-1 text-sm text-slate2 flex items-center gap-1">
-            <MapPin className="h-3.5 w-3.5" /> {v.district ?? 'Toshkent'}
-            {v.distanceKm != null && <span className="ml-auto text-brand">{v.distanceKm} km</span>}
-          </p>
         </div>
-      </Card>
+
+        {/* Pastki qator */}
+        <div className="flex items-center justify-between gap-2 px-3.5 py-3 text-sm">
+          <span className="flex items-center gap-1 text-slate2 truncate">
+            <MapPin className="h-3.5 w-3.5 shrink-0 text-brand" />
+            <span className="truncate">{v.district ?? 'Toshkent'}</span>
+          </span>
+          <span className="text-slate2">
+            {v.reviewCount} sharh
+          </span>
+          {v.distanceKm != null && (
+            <span className="chip bg-brand-50 text-brand">{v.distanceKm} km</span>
+          )}
+        </div>
+      </article>
     </Link>
   );
 }
