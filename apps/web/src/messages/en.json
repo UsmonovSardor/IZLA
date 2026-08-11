@@ -70,7 +70,8 @@
     "sortRating": "Rating",
     "verified": "Verified",
     "clear": "Clear",
-    "filtersTitle": "Filters"
+    "filtersTitle": "Filters",
+    "openNow": "Open now"
   },
   "hero": {
     "m1": "Book in 30 seconds",

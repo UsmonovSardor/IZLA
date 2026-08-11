@@ -55,6 +55,26 @@ export function windowForDay(hours: Hours, weekday: number): [number, number] | 
   return [open, close];
 }
 
+/** Toshkent "hozir": hafta kuni (0=Yak..6=Shan), kun ichidagi daqiqa va hours kaliti. */
+export function tashkentNow(now: Date = new Date()): {
+  weekday: number;
+  minute: number;
+  dayKey: 'mon_fri' | 'sat' | 'sun';
+} {
+  const t = new Date(now.getTime() + TZ_OFFSET_MIN * 60_000);
+  const weekday = t.getUTCDay();
+  const minute = t.getUTCHours() * 60 + t.getUTCMinutes();
+  const dayKey = weekday === 0 ? 'sun' : weekday === 6 ? 'sat' : 'mon_fri';
+  return { weekday, minute, dayKey };
+}
+
+/** Vendor `hours` JSON asosida hozir ish vaqti oynasida ochiqmi. */
+export function isOpenNow(hours: unknown, now: Date = new Date()): boolean {
+  const { weekday, minute } = tashkentNow(now);
+  const win = windowForDay((hours ?? {}) as Hours, weekday);
+  return win != null && minute >= win[0] && minute < win[1];
+}
+
 export interface GenerateSlotsOpts {
   dateStr: string;
   hours: Hours;

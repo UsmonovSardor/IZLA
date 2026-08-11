@@ -1,7 +1,7 @@
 'use client';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { Check, Star, X } from 'lucide-react';
+import { Check, Clock, Star, X } from 'lucide-react';
 import type { FacetCategory } from '@/lib/api';
 
 /** Qidiruv filtr paneli — kategoriya facets (count bilan) + sort + verified + reyting. URL param'lar bilan. */
@@ -14,6 +14,7 @@ export function SearchFilters({ categories }: { categories: FacetCategory[] }) {
   const activeCat = params.get('category');
   const sort = params.get('sort') ?? '';
   const verified = params.get('verified') === 'true';
+  const openNow = params.get('openNow') === 'true';
   const minRating = params.get('minRating');
   const hasQ = !!params.get('q');
 
@@ -33,7 +34,7 @@ export function SearchFilters({ categories }: { categories: FacetCategory[] }) {
     router.push(`${pathname}${p.toString() ? `?${p}` : ''}`, { scroll: false });
   }
 
-  const hasFilters = !!(activeCat || verified || minRating || sort);
+  const hasFilters = !!(activeCat || verified || openNow || minRating || sort);
   const chip = (on: boolean) =>
     `inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition ${
       on ? 'border-brand bg-brand text-white shadow-sm' : 'border-line bg-surface text-ink hover:border-brand/40 hover:bg-brand-50'
@@ -72,6 +73,10 @@ export function SearchFilters({ categories }: { categories: FacetCategory[] }) {
           {hasQ && <option value="">{t('sortRelevance')}</option>}
           <option value="rating">{t('sortRating')}</option>
         </select>
+
+        <button onClick={() => apply({ openNow: openNow ? null : 'true' })} className={chip(openNow)}>
+          <Clock className="h-3.5 w-3.5" /> {t('openNow')}
+        </button>
 
         <button onClick={() => apply({ verified: verified ? null : 'true' })} className={chip(verified)}>
           <Check className="h-3.5 w-3.5" /> {t('verified')}

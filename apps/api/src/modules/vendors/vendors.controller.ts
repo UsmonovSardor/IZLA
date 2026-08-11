@@ -19,6 +19,7 @@ export class VendorsController {
   @ApiQuery({ name: 'minRating', required: false, type: Number })
   @ApiQuery({ name: 'priceMin', required: false, type: Number })
   @ApiQuery({ name: 'priceMax', required: false, type: Number })
+  @ApiQuery({ name: 'openNow', required: false, type: Boolean })
   @ApiQuery({ name: 'lang', required: false, enum: ['uz', 'ru', 'en'] })
   list(
     @Query('category') category?: string,
@@ -31,6 +32,7 @@ export class VendorsController {
     @Query('minRating') minRating?: string,
     @Query('priceMin') priceMin?: string,
     @Query('priceMax') priceMax?: string,
+    @Query('openNow') openNow?: string,
     @Query('lang') lang?: string,
     @Headers('accept-language') acceptLanguage?: string,
   ) {
@@ -45,6 +47,7 @@ export class VendorsController {
       minRating: minRating ? Number(minRating) : undefined,
       priceMin: priceMin ? Number(priceMin) : undefined,
       priceMax: priceMax ? Number(priceMax) : undefined,
+      openNow: openNow === 'true' ? true : undefined,
       lang: resolveLang(lang, acceptLanguage),
     });
   }
@@ -68,6 +71,7 @@ export class VendorsController {
   @ApiQuery({ name: 'minRating', required: false, type: Number })
   @ApiQuery({ name: 'priceMin', required: false, type: Number })
   @ApiQuery({ name: 'priceMax', required: false, type: Number })
+  @ApiQuery({ name: 'openNow', required: false, type: Boolean })
   @ApiQuery({ name: 'lang', required: false, enum: ['uz', 'ru', 'en'] })
   facets(
     @Query('q') q?: string,
@@ -76,6 +80,7 @@ export class VendorsController {
     @Query('minRating') minRating?: string,
     @Query('priceMin') priceMin?: string,
     @Query('priceMax') priceMax?: string,
+    @Query('openNow') openNow?: string,
     @Query('lang') lang?: string,
     @Headers('accept-language') acceptLanguage?: string,
   ) {
@@ -86,6 +91,7 @@ export class VendorsController {
       minRating: minRating ? Number(minRating) : undefined,
       priceMin: priceMin ? Number(priceMin) : undefined,
       priceMax: priceMax ? Number(priceMax) : undefined,
+      openNow: openNow === 'true' ? true : undefined,
       lang: resolveLang(lang, acceptLanguage),
     });
   }

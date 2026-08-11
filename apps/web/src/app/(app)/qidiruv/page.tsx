@@ -11,7 +11,7 @@ export function generateMetadata(): Metadata {
   return { alternates: { canonical: '/qidiruv' } };
 }
 
-const FILTER_KEYS = ['category', 'q', 'district', 'verified', 'minRating', 'priceMin', 'priceMax'] as const;
+const FILTER_KEYS = ['category', 'q', 'district', 'verified', 'minRating', 'priceMin', 'priceMax', 'openNow'] as const;
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const sp = await searchParams;

@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@izla/db';
 import { PrismaService } from '../../prisma/prisma.service';
 import { localizedName, type Lang } from '../../common/i18n';
+import { isOpenNow, tashkentNow } from '../bookings/slots';
 
 export interface VendorQuery {
   category?: string;
@@ -16,6 +17,19 @@ export interface VendorQuery {
   minRating?: number;
   priceMin?: number;
   priceMax?: number;
+  openNow?: boolean;
+}
+
+/**
+ * Vendor `hours` JSON dan berilgan kun kaliti (mon_fri/sat/sun) uchun "hozir ochiq"
+ * SQL sharti. Format `"HH:MM-HH:MM"` (bo'shliqlarga bardoshli); noto'g'ri/`off`/bo'sh → false.
+ * `::int` cast xatosidan saqlanish uchun avval regex CASE-guard qilinadi.
+ */
+function openNowSql(dayKey: string, nowMin: number): Prisma.Sql {
+  const val = Prisma.sql`btrim(v.hours->>${dayKey})`;
+  const openMin = Prisma.sql`(split_part(btrim(split_part(${val}, '-', 1)), ':', 1)::int * 60 + split_part(btrim(split_part(${val}, '-', 1)), ':', 2)::int)`;
+  const closeMin = Prisma.sql`(split_part(btrim(split_part(${val}, '-', 2)), ':', 1)::int * 60 + split_part(btrim(split_part(${val}, '-', 2)), ':', 2)::int)`;
+  return Prisma.sql`CASE WHEN ${val} ~ '^[0-9]{1,2}:[0-9]{2}[[:space:]]*-[[:space:]]*[0-9]{1,2}:[0-9]{2}$' THEN ${nowMin} >= ${openMin} AND ${nowMin} < ${closeMin} ELSE false END`;
 }
 
 /** Include qilingan kategoriya nomini tanlangan tilga o'girib, Ru/En maydonlarni tashlaydi. */
@@ -82,13 +96,19 @@ export class VendorsService {
       };
     }
 
+    // "Hozir ochiq" filtri JSON `hours` ustida JS'da baholanadi — kesilishdan oldin
+    // kerakli soni qolishi uchun ochiq bo'lmaganlarni hisobga olib ko'proq olamiz.
+    const rawTake = query.openNow ? Math.max(take * 5, 200) : take;
     const vendors = await this.prisma.vendor.findMany({
       where,
-      take,
+      take: rawTake,
       include: { category: { select: CATEGORY_SELECT } },
       orderBy: query.sort === 'rating' ? { rating: 'desc' } : { createdAt: 'desc' },
     });
-    return this.shape(vendors, query, lang);
+    const filtered = query.openNow
+      ? vendors.filter((v) => isOpenNow(v.hours)).slice(0, take)
+      : vendors;
+    return this.shape(filtered, query, lang);
   }
 
   /** Lokalizatsiya + masofa hisoblash + (kerak bo'lsa) saralash (masofa/reyting). */
@@ -129,6 +149,10 @@ export class VendorsService {
     if (query.minRating != null) conds.push(Prisma.sql`v.rating >= ${query.minRating}`);
     if (query.priceMin != null) conds.push(Prisma.sql`svc.min_price >= ${query.priceMin}`);
     if (query.priceMax != null) conds.push(Prisma.sql`svc.max_price <= ${query.priceMax}`);
+    if (query.openNow) {
+      const { dayKey, minute } = tashkentNow();
+      conds.push(openNowSql(dayKey, minute));
+    }
     const where = Prisma.join(conds, ' AND ');
 
     const rows = await this.prisma.$queryRaw<Array<{ id: string }>>(Prisma.sql`
@@ -221,6 +245,10 @@ export class VendorsService {
     if (query.minRating != null) conds.push(Prisma.sql`v.rating >= ${query.minRating}`);
     if (query.priceMin != null) conds.push(Prisma.sql`svc.min_price >= ${query.priceMin}`);
     if (query.priceMax != null) conds.push(Prisma.sql`svc.max_price <= ${query.priceMax}`);
+    if (query.openNow) {
+      const { dayKey, minute } = tashkentNow();
+      conds.push(openNowSql(dayKey, minute));
+    }
     const where = Prisma.join(conds, ' AND ');
 
     const textMatch = term
