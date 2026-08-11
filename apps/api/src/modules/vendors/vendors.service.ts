@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@izla/db';
 import { PrismaService } from '../../prisma/prisma.service';
+import { localizedName, type Lang } from '../../common/i18n';
 
 export interface VendorQuery {
   category?: string;
@@ -10,7 +11,22 @@ export interface VendorQuery {
   lng?: number;
   sort?: 'rating' | 'distance' | 'popular';
   take?: number;
+  lang?: Lang;
 }
+
+/** Include qilingan kategoriya nomini tanlangan tilga o'girib, Ru/En maydonlarni tashlaydi. */
+function localizeCategory<T extends { category: { name: string; nameRu?: string | null; nameEn?: string | null } | null }>(
+  row: T,
+  lang: Lang,
+): T {
+  if (row.category) {
+    const { nameRu, nameEn, ...rest } = row.category;
+    (row as { category: unknown }).category = { ...rest, name: localizedName({ name: rest.name, nameRu, nameEn }, lang) };
+  }
+  return row;
+}
+
+const CATEGORY_SELECT = { slug: true, name: true, nameRu: true, nameEn: true, icon: true } as const;
 
 function haversineKm(aLat: number, aLng: number, bLat: number, bLng: number): number {
   const R = 6371;
@@ -35,17 +51,23 @@ export class VendorsService {
     const vendors = await this.prisma.vendor.findMany({
       where,
       take: query.take ?? 50,
-      include: { category: { select: { slug: true, name: true, icon: true } } },
+      include: { category: { select: CATEGORY_SELECT } },
       orderBy: query.sort === 'rating' ? { rating: 'desc' } : { createdAt: 'desc' },
     });
 
-    let result = vendors.map((v) => ({
-      ...v,
-      distanceKm:
-        query.lat != null && query.lng != null
-          ? haversineKm(query.lat, query.lng, v.lat, v.lng)
-          : null,
-    }));
+    const lang: Lang = query.lang ?? 'uz';
+    let result = vendors.map((v) =>
+      localizeCategory(
+        {
+          ...v,
+          distanceKm:
+            query.lat != null && query.lng != null
+              ? haversineKm(query.lat, query.lng, v.lat, v.lng)
+              : null,
+        },
+        lang,
+      ),
+    );
 
     if (query.sort === 'distance' && query.lat != null && query.lng != null) {
       result = result.sort((a, b) => (a.distanceKm ?? 1e9) - (b.distanceKm ?? 1e9));
@@ -53,11 +75,11 @@ export class VendorsService {
     return result;
   }
 
-  async detail(slug: string) {
+  async detail(slug: string, lang: Lang = 'uz') {
     const vendor = await this.prisma.vendor.findUnique({
       where: { slug },
       include: {
-        category: { select: { slug: true, name: true, icon: true } },
+        category: { select: CATEGORY_SELECT },
         services: { where: { active: true }, orderBy: { price: 'asc' } },
         staff: true,
         reviews: {
@@ -69,6 +91,6 @@ export class VendorsService {
       },
     });
     if (!vendor) throw new NotFoundException('Vendor topilmadi');
-    return vendor;
+    return localizeCategory(vendor, lang);
   }
 }

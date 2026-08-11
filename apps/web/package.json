@@ -10,13 +10,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.469.0",
+    "maplibre-gl": "^4.7.1",
     "next": "^15.1.11",
+    "next-intl": "^4.13.6",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^2.6.0",
-    "lucide-react": "^0.469.0",
-    "maplibre-gl": "^4.7.1"
+    "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",

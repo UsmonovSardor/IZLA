@@ -1,0 +1,59 @@
+{
+  "metadata": {
+    "title": "Izla.uz — All services in one app",
+    "description": "Uzbekistan's #1 services super-platform. Search, find on the map, book online."
+  },
+  "nav": {
+    "search": "Search",
+    "realEstate": "Real estate",
+    "bookings": "My bookings",
+    "telegram": "Telegram"
+  },
+  "mobileNav": {
+    "home": "Home",
+    "search": "Search",
+    "realEstate": "Homes",
+    "profile": "Profile"
+  },
+  "footer": {
+    "tagline": "All services in one app."
+  },
+  "common": {
+    "all": "See all",
+    "viewDetails": "Details",
+    "reviews": "{count} reviews",
+    "loading": "Loading…"
+  },
+  "lang": {
+    "switchLabel": "Select language"
+  },
+  "home": {
+    "badge": "Uzbekistan's #1 services platform",
+    "titleA": "All services —",
+    "titleB": "in one app",
+    "subtitle": "Clinics, salons, restaurants, fitness, housing… Search, find the nearest on the map and book online — no queues.",
+    "searchPlaceholder": "Search a service, place or category…",
+    "searchBtn": "Search",
+    "statPlaces": "Verified places",
+    "statDirections": "Categories",
+    "statSecure": "Secure payment",
+    "statBooking": "Online booking",
+    "catTitle": "Categories",
+    "catSub": "Choose what you need",
+    "topTitle": "Top places",
+    "topSub": "Highest-rated services",
+    "restoranTitle": "Restaurants & cafés",
+    "gozallikTitle": "Beauty salons",
+    "ctaTitle": "Carry Izla in your pocket",
+    "ctaSub": "Find any place via the Telegram Mini App and book in one tap.",
+    "ctaTelegram": "Open in Telegram",
+    "ctaStart": "Start searching"
+  },
+  "search": {
+    "title": "Search results",
+    "found": "{count} places found",
+    "list": "List",
+    "map": "Map",
+    "empty": "Nothing found or the API is down."
+  }
+}

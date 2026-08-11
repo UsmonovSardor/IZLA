@@ -1,9 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { BadgeCheck, MapPin, Star } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
 import type { Vendor } from '@/lib/api';
 
-export function VendorCard({ v, priority = false }: { v: Vendor; priority?: boolean }) {
+export async function VendorCard({ v, priority = false }: { v: Vendor; priority?: boolean }) {
+  const t = await getTranslations('common');
   const cover = v.photos?.[0] ?? 'https://picsum.photos/seed/izla/800/600';
   return (
     <Link href={`/vendor/${v.slug}`} className="group block">
@@ -49,9 +51,7 @@ export function VendorCard({ v, priority = false }: { v: Vendor; priority?: bool
             <MapPin className="h-3.5 w-3.5 shrink-0 text-brand" />
             <span className="truncate">{v.district ?? 'Toshkent'}</span>
           </span>
-          <span className="text-slate2">
-            {v.reviewCount} sharh
-          </span>
+          <span className="text-slate2">{t('reviews', { count: v.reviewCount })}</span>
           {v.distanceKm != null && (
             <span className="chip bg-brand-50 text-brand">{v.distanceKm} km</span>
           )}

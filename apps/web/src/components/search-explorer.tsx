@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { BadgeCheck, List, MapPin, Star, MapIcon } from 'lucide-react';
 import type { Vendor } from '@/lib/api';
 import { VendorMap } from './vendor-map';
@@ -10,6 +11,8 @@ import { VendorMap } from './vendor-map';
 type Props = { vendors: Vendor[] };
 
 export function SearchExplorer({ vendors }: Props) {
+  const t = useTranslations('search');
+  const tc = useTranslations('common');
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [mobileView, setMobileView] = useState<'list' | 'map'>('list');
@@ -25,7 +28,7 @@ export function SearchExplorer({ vendors }: Props) {
   if (vendors.length === 0) {
     return (
       <div className="rounded-lg border border-line bg-surface p-8 text-center text-slate2">
-        Hech narsa topilmadi yoki API ishga tushmagan.
+        {t('empty')}
       </div>
     );
   }
@@ -40,7 +43,7 @@ export function SearchExplorer({ vendors }: Props) {
             mobileView === 'list' ? 'bg-brand text-white shadow-sm' : 'text-slate2'
           }`}
         >
-          <List className="h-4 w-4" /> Ro'yxat
+          <List className="h-4 w-4" /> {t('list')}
         </button>
         <button
           onClick={() => setMobileView('map')}
@@ -48,7 +51,7 @@ export function SearchExplorer({ vendors }: Props) {
             mobileView === 'map' ? 'bg-brand text-white shadow-sm' : 'text-slate2'
           }`}
         >
-          <MapIcon className="h-4 w-4" /> Xarita
+          <MapIcon className="h-4 w-4" /> {t('map')}
         </button>
       </div>
 
@@ -82,6 +85,7 @@ export function SearchExplorer({ vendors }: Props) {
             selectedId={selectedId}
             hoveredId={hoveredId}
             onSelect={setSelectedId}
+            labels={{ details: tc('viewDetails'), reviews: (n) => tc('reviews', { count: n }) }}
             className="h-full w-full overflow-hidden rounded-2xl border border-line shadow-card"
           />
         </div>
@@ -101,6 +105,7 @@ function ResultRow({
   onHover: (id: string | null) => void;
   onSelect: (id: string) => void;
 }) {
+  const tc = useTranslations('common');
   const cover = v.photos?.[0];
   return (
     <div
@@ -147,7 +152,7 @@ function ResultRow({
             <MapPin className="h-3.5 w-3.5 text-brand" />
             {v.district ?? 'Toshkent'}
           </span>
-          <span>{v.reviewCount} sharh</span>
+          <span>{tc('reviews', { count: v.reviewCount })}</span>
           {v.distanceKm != null && (
             <span className="chip bg-brand-50 text-brand !px-2 !py-0.5">{v.distanceKm} km</span>
           )}
@@ -158,7 +163,7 @@ function ResultRow({
             onClick={(e) => e.stopPropagation()}
             className="text-xs font-semibold text-brand hover:underline"
           >
-            Batafsil →
+            {tc('viewDetails')} →
           </Link>
         </div>
       </div>

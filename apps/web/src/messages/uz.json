@@ -1,0 +1,59 @@
+{
+  "metadata": {
+    "title": "Izla.uz — Barcha xizmatlar bitta ilovada",
+    "description": "O'zbekiston №1 xizmatlar super-platformasi. Qidiring, xaritadan toping, online bron qiling."
+  },
+  "nav": {
+    "search": "Qidiruv",
+    "realEstate": "Ko'chmas mulk",
+    "bookings": "Bronlarim",
+    "telegram": "Telegram"
+  },
+  "mobileNav": {
+    "home": "Asosiy",
+    "search": "Qidiruv",
+    "realEstate": "Uylar",
+    "profile": "Profil"
+  },
+  "footer": {
+    "tagline": "Barcha xizmatlar bitta ilovada."
+  },
+  "common": {
+    "all": "Barchasi",
+    "viewDetails": "Batafsil",
+    "reviews": "{count} sharh",
+    "loading": "Ma'lumot yuklanmoqda…"
+  },
+  "lang": {
+    "switchLabel": "Tilni tanlash"
+  },
+  "home": {
+    "badge": "O'zbekiston №1 xizmatlar platformasi",
+    "titleA": "Barcha xizmatlar —",
+    "titleB": "bitta ilovada",
+    "subtitle": "Klinika, salon, restoran, fitnes, uy-joy… Qidiring, xaritadan eng yaqinini toping va navbatsiz online bron qiling.",
+    "searchPlaceholder": "Xizmat, joy yoki kategoriya qidiring…",
+    "searchBtn": "Qidirish",
+    "statPlaces": "Tekshirilgan joy",
+    "statDirections": "Yo'nalish",
+    "statSecure": "Xavfsiz to'lov",
+    "statBooking": "Onlayn bron",
+    "catTitle": "Kategoriyalar",
+    "catSub": "Kerakli yo'nalishni tanlang",
+    "topTitle": "Top joylar",
+    "topSub": "Eng yuqori reytingli xizmatlar",
+    "restoranTitle": "Restoran va kafelar",
+    "gozallikTitle": "Go'zallik salonlari",
+    "ctaTitle": "Izla'ni cho'ntagingizda olib yuring",
+    "ctaSub": "Telegram Mini App orqali istalgan joyni toping va bir tegishda bron qiling.",
+    "ctaTelegram": "Telegram'da ochish",
+    "ctaStart": "Qidirishni boshlash"
+  },
+  "search": {
+    "title": "Qidiruv natijalari",
+    "found": "{count} ta joy topildi",
+    "list": "Ro'yxat",
+    "map": "Xarita",
+    "empty": "Hech narsa topilmadi yoki API ishga tushmagan."
+  }
+}

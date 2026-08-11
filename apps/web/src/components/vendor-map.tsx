@@ -23,11 +23,14 @@ function esc(s: unknown): string {
   );
 }
 
+type MapLabels = { details: string; reviews: (n: number) => string };
+
 type Props = {
   vendors: Vendor[];
   selectedId: string | null;
   hoveredId: string | null;
   onSelect: (id: string | null) => void;
+  labels: MapLabels;
   className?: string;
 };
 
@@ -54,7 +57,7 @@ function toGeoJSON(vendors: Vendor[]): GeoJSON.FeatureCollection {
   };
 }
 
-function popupHTML(p: Record<string, unknown>): string {
+function popupHTML(p: Record<string, unknown>, labels: MapLabels): string {
   const rating = Number(p.rating).toFixed(1);
   const img = p.photo
     ? `<span class="izla-pop-img" style="background-image:url('${esc(p.photo)}')"></span>`
@@ -64,14 +67,14 @@ function popupHTML(p: Record<string, unknown>): string {
     ${img}
     <span class="izla-pop-body">
       <span class="izla-pop-title">${esc(p.name)}</span>
-      <span class="izla-pop-meta"><b>★ ${rating}</b> · ${esc(p.reviews)} sharh</span>
+      <span class="izla-pop-meta"><b>★ ${rating}</b> · ${esc(labels.reviews(Number(p.reviews) || 0))}</span>
       <span class="izla-pop-cat">${esc(p.icon)} ${loc}</span>
-      <span class="izla-pop-link">Batafsil →</span>
+      <span class="izla-pop-link">${esc(labels.details)} →</span>
     </span>
   </a>`;
 }
 
-export function VendorMap({ vendors, selectedId, hoveredId, onSelect, className }: Props) {
+export function VendorMap({ vendors, selectedId, hoveredId, onSelect, labels, className }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const popupRef = useRef<maplibregl.Popup | null>(null);
@@ -84,6 +87,8 @@ export function VendorMap({ vendors, selectedId, hoveredId, onSelect, className 
   onSelectRef.current = onSelect;
   const vendorsRef = useRef(vendors);
   vendorsRef.current = vendors;
+  const labelsRef = useRef(labels);
+  labelsRef.current = labels;
 
   // ── Xarita init (bir marta) ──────────────────────────────────────────────
   useEffect(() => {
@@ -299,7 +304,7 @@ export function VendorMap({ vendors, selectedId, hoveredId, onSelect, className 
           cat: v.category?.name ?? '',
           icon: v.category?.icon ?? '📍',
           photo: v.photos?.[0] ?? '',
-        }),
+        }, labelsRef.current),
       )
       .addTo(map);
   }, [selectedId]);

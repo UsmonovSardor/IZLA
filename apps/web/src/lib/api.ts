@@ -27,10 +27,16 @@ async function authed<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+/** So'rov satriga `lang` ni to'g'ri ulaydi (? yoki & bilan). */
+function withLang(qs: string, lang?: string): string {
+  if (!lang) return qs;
+  return qs.includes('?') ? `${qs}&lang=${lang}` : `${qs}?lang=${lang}`;
+}
+
 export const api = {
-  categories: () => get<Category[]>('/categories'),
-  vendors: (qs = '') => get<Vendor[]>(`/vendors${qs}`),
-  vendor: (slug: string) => get<VendorDetail>(`/vendors/${slug}`),
+  categories: (lang?: string) => get<Category[]>(withLang('/categories', lang)),
+  vendors: (qs = '', lang?: string) => get<Vendor[]>(withLang(`/vendors${qs}`, lang)),
+  vendor: (slug: string, lang?: string) => get<VendorDetail>(withLang(`/vendors/${slug}`, lang)),
   properties: (qs = '') => get<Property[]>(`/properties${qs}`),
   property: (id: string) => get<PropertyDetail>(`/properties/${id}`),
   availability: (serviceId: string, date: string) =>
