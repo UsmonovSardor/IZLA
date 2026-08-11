@@ -6,7 +6,7 @@ import { VendorCard } from '@/components/vendor-card';
 import { Reveal } from '@/components/reveal';
 import { HeroAurora } from '@/components/hero-aurora';
 import { HeroMarquee } from '@/components/hero-marquee';
-import { HeroVideo } from '@/components/hero-video';
+import { HeroVisual } from '@/components/hero-visual';
 import { RotatingWord } from '@/components/rotating-word';
 import { StatsRow, type Stat } from '@/components/stats-row';
 
@@ -130,9 +130,9 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* VIDEO — mobil 2-chi (pastda), desktop O'NGDA */}
+            {/* JONLI XARITA (Variant B) — mobil 2-chi (pastda), desktop O'NGDA */}
             <div className="relative lg:order-2">
-              <HeroVideo />
+              <HeroVisual />
             </div>
           </div>
 
