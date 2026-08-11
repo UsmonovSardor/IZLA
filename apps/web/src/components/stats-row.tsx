@@ -56,33 +56,43 @@ export function StatsRow({ stats }: { stats: Stat[] }) {
   );
 }
 
+const NUM_RE = /^(\d+)([+%]?)$/;
+
 /** Raqamning boshidagi sonni 0 dan target'gacha sanaydi (suffix +/% saqlanadi). */
 function CountUp({ value, active }: { value: string; active: boolean }) {
   const reduce = useReducedMotion();
-  const match = value.match(/^(\d+)([+%]?)$/);
   // Initial holat DETERMINISTIK (server=klient) — hidratsiya mos kelishi uchun.
-  const [display, setDisplay] = useState(() => (match ? `0${match[2]}` : value));
+  const [display, setDisplay] = useState(() => {
+    const m = value.match(NUM_RE);
+    return m ? `0${m[2]}` : value;
+  });
 
+  // DIQQAT: `match`ni deps'ga QO'YMASLIK kerak — u har render'da yangi obyekt,
+  // effektni qayta ishga tushirib animatsiyani 0'da qotiradi. value yetarli.
   useEffect(() => {
-    if (!match || reduce || !active) {
+    const m = value.match(NUM_RE);
+    if (!m || reduce || !active) {
       setDisplay(value);
       return;
     }
-    const target = parseInt(match[1], 10);
-    const suffix = match[2];
+    const target = parseInt(m[1], 10);
+    const suffix = m[2];
     const duration = 1100;
     const start = performance.now();
     let raf = 0;
     const tick = (now: number) => {
       const p = Math.min(1, (now - start) / duration);
       const eased = 1 - Math.pow(1 - p, 3);
-      setDisplay(`${Math.round(target * eased)}${suffix}`);
-      if (p < 1) raf = requestAnimationFrame(tick);
-      else setDisplay(value);
+      if (p < 1) {
+        setDisplay(`${Math.round(target * eased)}${suffix}`);
+        raf = requestAnimationFrame(tick);
+      } else {
+        setDisplay(value);
+      }
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [active, value, reduce, match]);
+  }, [active, value, reduce]);
 
   return <>{display}</>;
 }
