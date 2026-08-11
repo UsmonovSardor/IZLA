@@ -15,6 +15,10 @@ export class VendorsController {
   @ApiQuery({ name: 'lat', required: false })
   @ApiQuery({ name: 'lng', required: false })
   @ApiQuery({ name: 'sort', required: false, enum: ['rating', 'distance', 'popular'] })
+  @ApiQuery({ name: 'verified', required: false, type: Boolean })
+  @ApiQuery({ name: 'minRating', required: false, type: Number })
+  @ApiQuery({ name: 'priceMin', required: false, type: Number })
+  @ApiQuery({ name: 'priceMax', required: false, type: Number })
   @ApiQuery({ name: 'lang', required: false, enum: ['uz', 'ru', 'en'] })
   list(
     @Query('category') category?: string,
@@ -23,6 +27,10 @@ export class VendorsController {
     @Query('lat') lat?: string,
     @Query('lng') lng?: string,
     @Query('sort') sort?: 'rating' | 'distance' | 'popular',
+    @Query('verified') verified?: string,
+    @Query('minRating') minRating?: string,
+    @Query('priceMin') priceMin?: string,
+    @Query('priceMax') priceMax?: string,
     @Query('lang') lang?: string,
     @Headers('accept-language') acceptLanguage?: string,
   ) {
@@ -33,8 +41,24 @@ export class VendorsController {
       lat: lat ? Number(lat) : undefined,
       lng: lng ? Number(lng) : undefined,
       sort,
+      verified: verified === 'true' ? true : undefined,
+      minRating: minRating ? Number(minRating) : undefined,
+      priceMin: priceMin ? Number(priceMin) : undefined,
+      priceMax: priceMax ? Number(priceMax) : undefined,
       lang: resolveLang(lang, acceptLanguage),
     });
+  }
+
+  // MUHIM: 'suggest' :slug'dan OLDIN e'lon qilinadi — aks holda slug sifatida qabul qilinadi.
+  @Get('suggest')
+  @ApiQuery({ name: 'q', required: false })
+  @ApiQuery({ name: 'lang', required: false, enum: ['uz', 'ru', 'en'] })
+  suggest(
+    @Query('q') q?: string,
+    @Query('lang') lang?: string,
+    @Headers('accept-language') acceptLanguage?: string,
+  ) {
+    return this.vendors.suggest(q ?? '', resolveLang(lang, acceptLanguage));
   }
 
   @Get(':slug')

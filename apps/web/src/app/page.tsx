@@ -1,11 +1,12 @@
 import Link from 'next/link';
-import { Search, Sparkles, ArrowRight, Send, BadgeCheck, ShieldCheck, Clock, MapPin } from 'lucide-react';
+import { Sparkles, ArrowRight, Send, BadgeCheck, ShieldCheck, Clock, MapPin } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { api, type Category, type Vendor } from '@/lib/api';
 import { VendorCard } from '@/components/vendor-card';
 import { Reveal } from '@/components/reveal';
 import { RotatingWord } from '@/components/rotating-word';
 import { StatsRow, type Stat } from '@/components/stats-row';
+import { SearchAutocomplete } from '@/components/search-autocomplete';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -102,21 +103,10 @@ export default async function HomePage() {
                 </span>
               </p>
 
-              {/* Qidiruv (glass) */}
-              <form
-                action="/qidiruv"
-                className="mt-6 flex items-center gap-2 rounded-2xl bg-white p-2 shadow-pop max-w-xl animate-fade-up"
-              >
-                <Search className="ml-3 h-5 w-5 text-slate2" />
-                <input
-                  name="q"
-                  placeholder={t('searchPlaceholder')}
-                  className="min-w-0 flex-1 bg-transparent px-1 py-2.5 text-ink outline-none placeholder:text-slate2"
-                />
-                <button className="shrink-0 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white shadow-glow transition hover:bg-brand-700">
-                  {t('searchBtn')}
-                </button>
-              </form>
+              {/* Qidiruv — intellektual autocomplete (debounced takliflar) */}
+              <div className="mt-6 animate-fade-up">
+                <SearchAutocomplete placeholder={t('searchPlaceholder')} buttonLabel={t('searchBtn')} />
+              </div>
 
               {/* Tezkor kategoriya piluslari + xarita CTA */}
               <div className="mt-5 flex flex-wrap items-center gap-2 animate-fade-up">
