@@ -2,8 +2,13 @@ import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { api, type Property } from '@/lib/api';
 import { PropertyCard } from '@/components/property-card';
+import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+export function generateMetadata(): Metadata {
+  return { alternates: { canonical: '/uylar' } };
+}
 
 const TABS = [
   { key: '', labelKey: 'tabAll' },

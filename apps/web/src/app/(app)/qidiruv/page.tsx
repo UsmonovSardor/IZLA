@@ -1,8 +1,14 @@
 import { getLocale, getTranslations } from 'next-intl/server';
 import { api, type Vendor } from '@/lib/api';
 import { SearchExplorer } from '@/components/search-explorer';
+import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+// Qidiruv query kombinatsiyalari duplicate bo'lmasligi uchun asosiy sahifaga canonical.
+export function generateMetadata(): Metadata {
+  return { alternates: { canonical: '/qidiruv' } };
+}
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const sp = await searchParams;

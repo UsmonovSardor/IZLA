@@ -6,23 +6,69 @@ import { api, type PropertyDetail } from '@/lib/api';
 import { Badge } from '@/components/ui/badge';
 import { LeadForm } from '@/components/lead-form';
 import { formatUZS } from '@/lib/utils';
+import { JsonLd } from '@/components/json-ld';
+import { abs, breadcrumbJsonLd } from '@/lib/seo';
+import type { Metadata } from 'next';
+import { cache } from 'react';
 
 export const dynamic = 'force-dynamic';
 
 const TYPE_KEY: Record<string, string> = { NEW: 'typeNewLong', CONSTRUCTION: 'typeConstruction', SECONDARY: 'typeSecondary', RENT: 'typeRent' };
+
+const loadProperty = cache((id: string) => api.property(id));
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  try {
+    const p = await loadProperty(id);
+    const title = p.title;
+    const description = `${p.title} — ${p.rooms}-xona, ${p.areaM2} m²${p.district ? `, ${p.district}` : ''}. Narx: ${formatUZS(p.price)}. Izla.uz.`.slice(0, 165);
+    const img = p.photos?.[0];
+    return {
+      title,
+      description,
+      alternates: { canonical: `/uylar/${id}` },
+      openGraph: { type: 'website', title, description, url: abs(`/uylar/${id}`), ...(img ? { images: [img] } : {}) },
+      twitter: { card: 'summary_large_image', title, description, ...(img ? { images: [img] } : {}) },
+    };
+  } catch {
+    return { title: 'Topilmadi', robots: { index: false } };
+  }
+}
 
 export default async function PropertyPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const t = await getTranslations('realEstate');
   let p: PropertyDetail;
   try {
-    p = await api.property(id);
+    p = await loadProperty(id);
   } catch {
     notFound();
   }
 
+  const productLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: p.title,
+    ...(p.photos?.length ? { image: p.photos } : {}),
+    description: `${p.rooms}-xona · ${p.areaM2} m²${p.district ? ` · ${p.district}` : ''}`,
+    offers: {
+      '@type': 'Offer',
+      price: String(p.price).replace(/[^\d.]/g, ''),
+      priceCurrency: 'UZS',
+      availability: 'https://schema.org/InStock',
+      url: abs(`/uylar/${p.id}`),
+    },
+  };
+  const crumbs = [
+    { name: 'Bosh sahifa', path: '/' },
+    { name: "Ko'chmas mulk", path: '/uylar' },
+    { name: p.title, path: `/uylar/${p.id}` },
+  ];
+
   return (
     <div className="grid md:grid-cols-3 gap-6">
+      <JsonLd data={[productLd, breadcrumbJsonLd(crumbs)]} />
       <div className="md:col-span-2 space-y-5">
         <div className="relative aspect-[16/9] rounded-lg overflow-hidden bg-bg">
           <Image src={p.photos[0] ?? 'https://picsum.photos/seed/uy/1200/700'} alt={p.title} fill className="object-cover" sizes="66vw" />

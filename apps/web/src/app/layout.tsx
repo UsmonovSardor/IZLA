@@ -10,7 +10,11 @@ import { HeroMarquee } from '@/components/hero-marquee';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { Logo } from '@/components/logo';
 import { SmoothScroll } from '@/components/smooth-scroll';
+import { JsonLd } from '@/components/json-ld';
+import { SITE_URL, organizationJsonLd, websiteJsonLd } from '@/lib/seo';
 import './globals.css';
+
+const OG_LOCALE: Record<string, string> = { uz: 'uz_UZ', ru: 'ru_RU', en: 'en_US' };
 
 const sora = Sora({ subsets: ['latin'], variable: '--font-sora', display: 'swap' });
 const inter = Inter({ subsets: ['latin', 'cyrillic'], variable: '--font-inter', display: 'swap' });
@@ -18,10 +22,32 @@ const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', displ
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('metadata');
+  const locale = await getLocale();
+  const title = t('title');
+  const description = t('description');
   return {
-    title: t('title'),
-    description: t('description'),
+    metadataBase: new URL(SITE_URL),
+    title: { default: title, template: '%s — Izla.uz' },
+    description,
+    applicationName: 'Izla.uz',
     manifest: '/manifest.webmanifest',
+    keywords: ['izla', 'xizmatlar', 'online bron', 'klinika', 'stomatologiya', 'salon', 'restoran', 'fitnes', 'uy-joy', 'Toshkent', "O'zbekiston"],
+    authors: [{ name: 'Izla.uz' }],
+    openGraph: {
+      type: 'website',
+      siteName: 'Izla.uz',
+      title,
+      description,
+      url: SITE_URL,
+      locale: OG_LOCALE[locale] ?? 'uz_UZ',
+    },
+    twitter: { card: 'summary_large_image', title, description },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 },
+    },
+    formatDetection: { telephone: true },
   };
 }
 
@@ -55,6 +81,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="font-sans min-h-screen bg-bg bg-aurora-soft pb-20 md:pb-0">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <SmoothScroll />
+          <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
           <AuthProvider>
             {/* Qiymat-taklif lentasi — eng tepada (navbar'dan yuqorida), kafil uslubi */}
             <HeroMarquee />

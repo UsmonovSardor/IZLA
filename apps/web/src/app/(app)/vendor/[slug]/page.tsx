@@ -7,8 +7,35 @@ import { Rating } from '@/components/ui/rating';
 import { Button } from '@/components/ui/button';
 import { BookingWidget } from '@/components/booking-widget';
 import { formatUZS } from '@/lib/utils';
+import { JsonLd } from '@/components/json-ld';
+import { abs, breadcrumbJsonLd, vendorJsonLd } from '@/lib/seo';
+import type { Metadata } from 'next';
+import { cache } from 'react';
 
 export const dynamic = 'force-dynamic';
+
+// generateMetadata va sahifa bir xil vendorni oladi — cache() ikki so'rovni birlashtiradi.
+const loadVendor = cache((slug: string, locale: string) => api.vendor(slug, locale));
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const locale = await getLocale();
+  try {
+    const v = await loadVendor(slug, locale);
+    const title = v.district ? `${v.name} — ${v.district}` : v.name;
+    const description = (v.description || `${v.name} — Izla.uz'da reyting, xizmatlar va narxlar. Online navbatsiz bron qiling.`).slice(0, 165);
+    const img = v.photos?.[0];
+    return {
+      title,
+      description,
+      alternates: { canonical: `/vendor/${slug}` },
+      openGraph: { type: 'website', title, description, url: abs(`/vendor/${slug}`), ...(img ? { images: [img] } : {}) },
+      twitter: { card: 'summary_large_image', title, description, ...(img ? { images: [img] } : {}) },
+    };
+  } catch {
+    return { title: 'Topilmadi', robots: { index: false } };
+  }
+}
 
 export default async function VendorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -16,13 +43,18 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
   const t = await getTranslations('vendor');
   let v: VendorDetail;
   try {
-    v = await api.vendor(slug, locale);
+    v = await loadVendor(slug, locale);
   } catch {
     notFound();
   }
 
+  const crumbs = [{ name: 'Bosh sahifa', path: '/' }];
+  if (v.category) crumbs.push({ name: v.category.name, path: `/qidiruv?category=${v.category.slug}` });
+  crumbs.push({ name: v.name, path: `/vendor/${v.slug}` });
+
   return (
     <div className="grid md:grid-cols-3 gap-6">
+      <JsonLd data={[vendorJsonLd(v), breadcrumbJsonLd(crumbs)]} />
       <div className="md:col-span-2 space-y-6">
         <div className="relative aspect-[16/9] rounded-lg overflow-hidden bg-bg">
           <Image src={v.photos[0] ?? 'https://picsum.photos/seed/izla/1200/700'} alt={v.name} fill className="object-cover" sizes="66vw" />

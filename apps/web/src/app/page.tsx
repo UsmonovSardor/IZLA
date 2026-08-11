@@ -6,8 +6,13 @@ import { VendorCard } from '@/components/vendor-card';
 import { Reveal } from '@/components/reveal';
 import { RotatingWord } from '@/components/rotating-word';
 import { StatsRow, type Stat } from '@/components/stats-row';
+import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+export function generateMetadata(): Metadata {
+  return { alternates: { canonical: '/' } };
+}
 
 async function safe<T>(p: Promise<T>, fallback: T): Promise<T> {
   try {
