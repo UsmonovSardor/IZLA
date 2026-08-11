@@ -70,6 +70,8 @@ export default async function HomePage() {
             {/* Blend qatlamlari — yupqa (video ko'proq ko'rinadi), matn baribir o'qiladi */}
             <div className="absolute inset-0 bg-gradient-to-b from-[#0a1b30]/72 via-[#0a1b30]/78 to-[#0a1b30]/90 lg:hidden" aria-hidden />
             <div className="absolute inset-0 hidden bg-[linear-gradient(90deg,rgba(10,27,48,0.94)_0%,rgba(10,27,48,0.6)_40%,rgba(10,27,48,0.15)_62%,transparent_80%)] lg:block" aria-hidden />
+            {/* Pastki-o'ng burchak vinetka — video ichidagi ✦ ikonkani yashiradi */}
+            <div className="pointer-events-none absolute bottom-0 right-0 z-[2] h-[42%] w-[38%] bg-[radial-gradient(130%_130%_at_100%_100%,rgba(10,27,48,0.97)_0%,rgba(10,27,48,0.82)_32%,transparent_70%)]" aria-hidden />
             {/* Aurora urg'u */}
             <div className="pointer-events-none absolute -left-16 -top-16 h-72 w-72 rounded-full bg-brand/25 blur-3xl" aria-hidden />
             <div className="pointer-events-none absolute -bottom-12 left-1/3 h-64 w-64 rounded-full bg-teal/[0.18] blur-3xl" aria-hidden />
