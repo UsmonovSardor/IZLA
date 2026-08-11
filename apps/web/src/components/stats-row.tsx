@@ -64,7 +64,9 @@ export function StatsRow({ stats }: { stats: Stat[] }) {
 function CountUp({ value, active }: { value: string; active: boolean }) {
   const reduce = useReducedMotion();
   const match = value.match(/^(\d+)([+%]?)$/);
-  const [display, setDisplay] = useState(() => (match && !reduce ? `0${match[2]}` : value));
+  // Initial holat DETERMINISTIK (server=klient) — hidratsiya mos kelishi uchun
+  // `reduce`ga bog'lanmaydi; reduced-motion effektda hal qilinadi.
+  const [display, setDisplay] = useState(() => (match ? `0${match[2]}` : value));
 
   useEffect(() => {
     if (!match || reduce || !active) {
