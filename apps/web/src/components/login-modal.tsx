@@ -1,5 +1,6 @@
 'use client';
 import { useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { X } from 'lucide-react';
 import { type AuthUser, type Providers } from '@/lib/auth';
 import { LoginForm } from './login-form';
@@ -16,6 +17,7 @@ export function LoginModal({
   onClose: () => void;
   onSuccess: (u: AuthUser) => void;
 }) {
+  const t = useTranslations('auth');
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
@@ -35,15 +37,15 @@ export function LoginModal({
       <div className="relative z-10 w-full max-w-sm rounded-t-2xl sm:rounded-2xl border border-line bg-surface p-6 shadow-xl animate-[slideUp_.2s_ease]">
         <button
           onClick={onClose}
-          aria-label="Yopish"
+          aria-label={t('close')}
           className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full text-slate2 hover:bg-bg hover:text-ink"
         >
           <X className="h-4 w-4" />
         </button>
         <div className="mb-4 text-center">
           <LogoMark size={48} variant="tile" animate="drop" className="mx-auto" />
-          <h2 className="mt-2 font-display text-lg font-bold text-navy">Izla.uz ga kirish</h2>
-          <p className="text-sm text-slate2">Bron, sevimlilar va profil uchun</p>
+          <h2 className="mt-2 font-display text-lg font-bold text-navy">{t('modalTitle')}</h2>
+          <p className="text-sm text-slate2">{t('modalSub')}</p>
         </div>
         <LoginForm providers={providers} onSuccess={onSuccess} />
       </div>

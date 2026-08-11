@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { ChevronLeft, Loader2, Phone, Send, ShieldCheck } from 'lucide-react';
 import {
   type AuthUser,
@@ -34,6 +35,7 @@ export function LoginForm({
   onSuccess: (u: AuthUser) => void;
   autoFocus?: boolean;
 }) {
+  const t = useTranslations('auth');
   const [step, setStep] = useState<'phone' | 'otp'>('phone');
   const [phone, setPhone] = useState('+998');
   const [code, setCode] = useState('');
@@ -49,8 +51,8 @@ export function LoginForm({
 
   useEffect(() => {
     if (resendIn <= 0) return;
-    const t = setInterval(() => setResendIn((s) => Math.max(0, s - 1)), 1000);
-    return () => clearInterval(t);
+    const timer = setInterval(() => setResendIn((s) => Math.max(0, s - 1)), 1000);
+    return () => clearInterval(timer);
   }, [resendIn]);
 
   useEffect(() => {
@@ -60,7 +62,7 @@ export function LoginForm({
   async function sendOtp() {
     setError('');
     if (!/^\+998\d{9}$/.test(phone)) {
-      setError('Telefon +998XXXXXXXXX formatida bo‘lishi kerak');
+      setError(t('phoneFormat'));
       return;
     }
     setSubmitting(true);
@@ -70,7 +72,7 @@ export function LoginForm({
       setResendIn(r.resendAfter ?? 60);
       setStep('otp');
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Kod yuborib bo‘lmadi');
+      setError(e instanceof Error ? e.message : t('sendError'));
     } finally {
       setSubmitting(false);
     }
@@ -83,7 +85,7 @@ export function LoginForm({
       const { user } = await verifyOtp(phone, code);
       onSuccess(user);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Kod noto‘g‘ri');
+      setError(e instanceof Error ? e.message : t('codeError'));
     } finally {
       setSubmitting(false);
     }
@@ -93,15 +95,13 @@ export function LoginForm({
     return (
       <div className="space-y-4">
         <button onClick={() => setStep('phone')} className="flex items-center gap-1 text-sm text-slate2 hover:text-ink">
-          <ChevronLeft className="h-4 w-4" /> Orqaga
+          <ChevronLeft className="h-4 w-4" /> {t('back')}
         </button>
         <div className="text-center">
           <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-brand/10">
             <ShieldCheck className="h-6 w-6 text-brand" />
           </div>
-          <p className="mt-2 text-sm text-slate2">
-            <span className="font-medium text-ink">{phone}</span> raqamiga yuborilgan 6 xonali kodni kiriting
-          </p>
+          <p className="mt-2 text-sm text-slate2">{t('otpSent', { phone })}</p>
         </div>
         <input
           ref={otpRef}
@@ -114,19 +114,19 @@ export function LoginForm({
         />
         {devHint && (
           <p className="text-center text-xs text-slate2">
-            Dev rejim: kod <span className="font-mono font-semibold text-ink">{devHint}</span>
+            {t('devMode')} <span className="font-mono font-semibold text-ink">{devHint}</span>
           </p>
         )}
         {error && <p className="text-sm text-danger text-center">{error}</p>}
         <Button className="w-full" disabled={submitting || code.length !== 6} onClick={confirm}>
-          {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Tasdiqlash va kirish'}
+          {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : t('confirm')}
         </Button>
         <div className="text-center text-xs text-slate2">
           {resendIn > 0 ? (
-            <span>Qayta yuborish: {resendIn}s</span>
+            <span>{t('resendIn', { sec: resendIn })}</span>
           ) : (
             <button onClick={sendOtp} disabled={submitting} className="font-medium text-brand hover:underline">
-              Kodni qayta yuborish
+              {t('resend')}
             </button>
           )}
         </div>
@@ -137,7 +137,7 @@ export function LoginForm({
   return (
     <div className="space-y-4">
       <label className="block">
-        <span className="text-xs font-medium text-slate2">Telefon raqam</span>
+        <span className="text-xs font-medium text-slate2">{t('phoneLabel')}</span>
         <div className="mt-1 flex items-center rounded-lg border border-line focus-within:border-brand">
           <Phone className="ml-3 h-4 w-4 text-slate2" />
           <input
@@ -153,13 +153,13 @@ export function LoginForm({
       </label>
       {error && <p className="text-sm text-danger">{error}</p>}
       <Button className="w-full" disabled={submitting} onClick={sendOtp}>
-        {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : 'SMS kod olish'}
+        {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : t('getCode')}
       </Button>
 
       {(providers.google || providers.telegram) && (
         <div className="flex items-center gap-3 py-1">
           <div className="h-px flex-1 bg-line" />
-          <span className="text-xs text-slate2">yoki</span>
+          <span className="text-xs text-slate2">{t('or')}</span>
           <div className="h-px flex-1 bg-line" />
         </div>
       )}
@@ -169,7 +169,7 @@ export function LoginForm({
             href={googleLoginUrl()}
             className="flex w-full items-center justify-center gap-2 rounded-lg border border-line bg-white px-3 py-2.5 text-sm font-medium text-ink transition hover:bg-bg"
           >
-            <GoogleIcon /> Google bilan davom etish
+            <GoogleIcon /> {t('google')}
           </a>
         )}
         {providers.telegram && (
@@ -179,13 +179,11 @@ export function LoginForm({
             rel="noopener noreferrer"
             className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#229ED9] px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-[#1e8bc0]"
           >
-            <Send className="h-4 w-4" /> Telegram orqali
+            <Send className="h-4 w-4" /> {t('telegram')}
           </a>
         )}
       </div>
-      <p className="text-center text-[11px] text-slate2">
-        Davom etish orqali siz foydalanish shartlariga rozilik bildirasiz.
-      </p>
+      <p className="text-center text-[11px] text-slate2">{t('terms')}</p>
     </div>
   );
 }

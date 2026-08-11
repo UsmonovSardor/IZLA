@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { BadgeCheck, Clock, MapPin, Phone } from 'lucide-react';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { api, type VendorDetail } from '@/lib/api';
 import { Rating } from '@/components/ui/rating';
 import { Button } from '@/components/ui/button';
@@ -11,9 +12,11 @@ export const dynamic = 'force-dynamic';
 
 export default async function VendorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const locale = await getLocale();
+  const t = await getTranslations('vendor');
   let v: VendorDetail;
   try {
-    v = await api.vendor(slug);
+    v = await api.vendor(slug, locale);
   } catch {
     notFound();
   }
@@ -37,13 +40,13 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
         </div>
 
         <section>
-          <h2 className="font-display text-lg font-bold text-navy mb-3">Xizmatlar</h2>
+          <h2 className="font-display text-lg font-bold text-navy mb-3">{t('services')}</h2>
           <div className="divide-y divide-line rounded-lg border border-line bg-surface">
             {v.services.map((s) => (
               <div key={s.id} className="flex items-center justify-between p-3">
                 <div>
                   <div className="font-medium text-ink">{s.name}</div>
-                  <div className="text-xs text-slate2 flex items-center gap-1"><Clock className="h-3 w-3" />{s.durationMin} daqiqa</div>
+                  <div className="text-xs text-slate2 flex items-center gap-1"><Clock className="h-3 w-3" />{t('minutes', { count: s.durationMin })}</div>
                 </div>
                 <div className="font-mono font-semibold text-navy">{formatUZS(s.price)}</div>
               </div>
@@ -52,12 +55,12 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
         </section>
 
         <section>
-          <h2 className="font-display text-lg font-bold text-navy mb-3">Sharhlar ({v.reviews.length})</h2>
+          <h2 className="font-display text-lg font-bold text-navy mb-3">{t('reviewsTitle', { count: v.reviews.length })}</h2>
           <div className="space-y-3">
             {v.reviews.map((r) => (
               <div key={r.id} className="rounded-lg border border-line bg-surface p-3">
                 <div className="flex items-center justify-between">
-                  <span className="font-medium text-ink">{r.user?.name ?? 'Foydalanuvchi'}</span>
+                  <span className="font-medium text-ink">{r.user?.name ?? t('anonUser')}</span>
                   <Rating value={r.rating} />
                 </div>
                 {r.text && <p className="mt-1 text-sm text-slate2">{r.text}</p>}
@@ -73,12 +76,12 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
           <BookingWidget services={v.services} vendorName={v.name} />
         ) : (
           <div className="rounded-lg border border-line bg-surface p-4 shadow-card">
-            <Button className="w-full" disabled>Bron mavjud emas</Button>
+            <Button className="w-full" disabled>{t('noBooking')}</Button>
           </div>
         )}
         <div className="rounded-lg border border-line bg-surface p-4 shadow-card">
           {v.phone && <a href={`tel:${v.phone}`} className="mb-2 flex items-center gap-2 text-sm text-ink"><Phone className="h-4 w-4 text-brand" />{v.phone}</a>}
-          <Button variant="secondary" className="w-full">Taksi chaqir</Button>
+          <Button variant="secondary" className="w-full">{t('callTaxi')}</Button>
         </div>
       </aside>
     </div>

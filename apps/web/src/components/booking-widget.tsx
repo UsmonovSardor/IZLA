@@ -1,6 +1,7 @@
 'use client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useLocale, useTranslations } from 'next-intl';
 import { CalendarClock, Check, ChevronLeft, Clock, Loader2 } from 'lucide-react';
 import { api, type Slot, type Booking } from '@/lib/api';
 import { useAuth } from './auth-provider';
@@ -13,38 +14,41 @@ interface ServiceLite { id: string; name: string; price: string; durationMin: nu
 type Step = 'pick' | 'review' | 'done';
 
 const TZ = 'Asia/Tashkent';
-const WEEKDAYS = ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan'];
-const MONTHS = ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'Iyn', 'Iyl', 'Avg', 'Sen', 'Okt', 'Noy', 'Dek'];
 
-/** Toshkent sanasidan keyingi N kunni YYYY-MM-DD ro'yxati sifatida beradi. */
-function nextDays(n: number): { value: string; wd: string; label: string }[] {
+/** Toshkent sanasidan keyingi N kunni beradi (weekday/oy nomi tanlangan tilda). */
+function nextDays(n: number, locale: string, todayLabel: string, tomorrowLabel: string) {
   const out: { value: string; wd: string; label: string }[] = [];
-  const now = new Date();
-  const base = new Date(now.getTime() + 5 * 60 * 60 * 1000);
+  const base = new Date(Date.now() + 5 * 60 * 60 * 1000); // +5 → Toshkent kuni
+  const wdFmt = new Intl.DateTimeFormat(locale, { weekday: 'short', timeZone: 'UTC' });
+  const lblFmt = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', timeZone: 'UTC' });
   for (let i = 0; i < n; i++) {
     const d = new Date(base.getTime() + i * 24 * 60 * 60 * 1000);
-    const value = d.toISOString().slice(0, 10);
     out.push({
-      value,
-      wd: i === 0 ? 'Bugun' : i === 1 ? 'Ertaga' : WEEKDAYS[d.getUTCDay()]!,
-      label: `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`,
+      value: d.toISOString().slice(0, 10),
+      wd: i === 0 ? todayLabel : i === 1 ? tomorrowLabel : wdFmt.format(d),
+      label: lblFmt.format(d),
     });
   }
   return out;
 }
 
-function slotTime(iso: string): string {
-  return new Date(iso).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', timeZone: TZ });
+function slotTime(iso: string, locale: string): string {
+  return new Date(iso).toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: TZ });
 }
-function slotDateLabel(iso: string): string {
-  return new Date(iso).toLocaleDateString('ru-RU', {
+function slotDateLabel(iso: string, locale: string): string {
+  return new Date(iso).toLocaleDateString(locale, {
     weekday: 'short', day: 'numeric', month: 'long', timeZone: TZ,
   });
 }
 
 export function BookingWidget({ services, vendorName }: { services: ServiceLite[]; vendorName: string }) {
   const { user, openLogin } = useAuth();
-  const days = useMemo(() => nextDays(14), []);
+  const t = useTranslations('booking');
+  const locale = useLocale();
+  const days = useMemo(() => nextDays(14, locale, t('today'), t('tomorrow')), [locale, t]);
+  const fmtTime = useCallback((iso: string) => slotTime(iso, locale), [locale]);
+  const fmtDate = useCallback((iso: string) => slotDateLabel(iso, locale), [locale]);
+
   const [serviceId, setServiceId] = useState(services[0]?.id ?? '');
   const [date, setDate] = useState(days[0]?.value ?? '');
   const [slots, setSlots] = useState<Slot[] | null>(null);
@@ -69,12 +73,12 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
       const av = await api.availability(serviceId, date);
       setSlots(av.slots);
     } catch {
-      setSlotErr('Slotlarni yuklab bo‘lmadi');
+      setSlotErr(t('slotsError'));
       setSlots([]);
     } finally {
       setLoadingSlots(false);
     }
-  }, [serviceId, date]);
+  }, [serviceId, date, t]);
 
   useEffect(() => {
     void loadSlots();
@@ -96,9 +100,9 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
       setBooking(b);
       setStep('done');
     } catch (e) {
-      const msg = e instanceof Error ? e.message : 'Xatolik';
+      const msg = e instanceof Error ? e.message : t('error');
       if (/band/i.test(msg)) {
-        setError('Afsus, bu vaqt endigina band bo‘ldi. Boshqa vaqt tanlang.');
+        setError(t('slotTaken'));
         setStep('pick');
         void loadSlots();
       } else if ((e as { status?: number })?.status === 401) {
@@ -119,27 +123,25 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
           <div className="h-12 w-12 rounded-full bg-success/10 flex items-center justify-center">
             <Check className="h-6 w-6 text-success" />
           </div>
-          <p className="mt-3 font-display font-bold text-navy">Bron qabul qilindi</p>
-          <p className="text-sm text-slate2 mt-0.5">Holat: kutilmoqda (tasdiq)</p>
+          <p className="mt-3 font-display font-bold text-navy">{t('done')}</p>
+          <p className="text-sm text-slate2 mt-0.5">{t('statusPending')}</p>
         </div>
         <dl className="mt-3 space-y-2 text-sm border-t border-line pt-3">
-          <Row k="Xizmat" v={booking.service?.name ?? service?.name ?? '—'} />
-          <Row k="Joy" v={booking.vendor?.name ?? vendorName} />
-          {booking.staff?.name && <Row k="Mutaxassis" v={booking.staff.name} />}
-          <Row k="Sana" v={slotDateLabel(booking.slotStart)} />
-          <Row k="Vaqt" v={`${slotTime(booking.slotStart)}–${slotTime(booking.slotEnd)}`} />
-          {service && Number(service.price) > 0 && <Row k="Narx" v={formatUZS(service.price)} />}
+          <Row k={t('service')} v={booking.service?.name ?? service?.name ?? '—'} />
+          <Row k={t('place')} v={booking.vendor?.name ?? vendorName} />
+          {booking.staff?.name && <Row k={t('specialist')} v={booking.staff.name} />}
+          <Row k={t('date')} v={fmtDate(booking.slotStart)} />
+          <Row k={t('time')} v={`${fmtTime(booking.slotStart)}–${fmtTime(booking.slotEnd)}`} />
+          {service && Number(service.price) > 0 && <Row k={t('price')} v={formatUZS(service.price)} />}
         </dl>
         {service && Number(service.price) > 0 && (
           <div className="mt-4 border-t border-line pt-3">
-            <PayButtons bookingId={booking.id} label="Oldindan to‘lash (ixtiyoriy)" />
-            <p className="mt-1.5 text-[11px] text-slate2 text-center">
-              To‘lasangiz bron avtomatik tasdiqlanadi. Aks holda vendor qo‘ng‘iroq qiladi.
-            </p>
+            <PayButtons bookingId={booking.id} label={t('prepay')} />
+            <p className="mt-1.5 text-[11px] text-slate2 text-center">{t('prepayNote')}</p>
           </div>
         )}
         <Link href="/bron" className="mt-3 block">
-          <Button variant="secondary" className="w-full">Mening bronlarim</Button>
+          <Button variant="secondary" className="w-full">{t('myBookings')}</Button>
         </Link>
       </div>
     );
@@ -149,7 +151,7 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
     <div className="rounded-lg border border-line bg-surface p-4 shadow-card space-y-4">
       <div className="flex items-center gap-2">
         <CalendarClock className="h-5 w-5 text-brand" />
-        <h3 className="font-display font-bold text-navy">Bron qilish</h3>
+        <h3 className="font-display font-bold text-navy">{t('title')}</h3>
       </div>
 
       {/* ---------- PICK ---------- */}
@@ -157,7 +159,7 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
         <>
           {services.length > 1 && (
             <label className="block">
-              <span className="text-xs font-medium text-slate2">Xizmat</span>
+              <span className="text-xs font-medium text-slate2">{t('service')}</span>
               <select
                 value={serviceId}
                 onChange={(e) => setServiceId(e.target.value)}
@@ -165,7 +167,7 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
               >
                 {services.map((s) => (
                   <option key={s.id} value={s.id}>
-                    {s.name} · {s.durationMin} daq{Number(s.price) > 0 ? ` · ${formatUZS(s.price)}` : ''}
+                    {s.name} · {t('durationMin', { count: s.durationMin })}{Number(s.price) > 0 ? ` · ${formatUZS(s.price)}` : ''}
                   </option>
                 ))}
               </select>
@@ -173,7 +175,7 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
           )}
 
           <div>
-            <span className="text-xs font-medium text-slate2">Sana</span>
+            <span className="text-xs font-medium text-slate2">{t('date')}</span>
             <div className="mt-1 flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
               {days.map((d) => (
                 <button
@@ -192,18 +194,18 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
 
           <div>
             <span className="text-xs font-medium text-slate2 flex items-center gap-1">
-              <Clock className="h-3 w-3" /> Bo‘sh vaqtlar
+              <Clock className="h-3 w-3" /> {t('freeSlots')}
             </span>
             {loadingSlots ? (
               <div className="mt-2 flex items-center gap-2 text-sm text-slate2 py-4 justify-center">
-                <Loader2 className="h-4 w-4 animate-spin" /> Yuklanmoqda…
+                <Loader2 className="h-4 w-4 animate-spin" /> {t('loading')}
               </div>
             ) : slotErr ? (
               <p className="mt-2 text-sm text-danger">{slotErr}</p>
             ) : slots && slots.length === 0 ? (
-              <p className="mt-2 text-sm text-slate2 py-3 text-center">Bu kunda ish vaqti yo‘q.</p>
+              <p className="mt-2 text-sm text-slate2 py-3 text-center">{t('noHours')}</p>
             ) : slots && slots.every((s) => !s.available) ? (
-              <p className="mt-2 text-sm text-slate2 py-3 text-center">Barcha vaqtlar band. Boshqa kun tanlang.</p>
+              <p className="mt-2 text-sm text-slate2 py-3 text-center">{t('allBusy')}</p>
             ) : (
               <div className="mt-2 grid grid-cols-3 gap-2">
                 {slots?.map((s) => {
@@ -221,7 +223,7 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
                             : 'border-line/60 text-slate2/40 line-through cursor-not-allowed'
                       }`}
                     >
-                      {slotTime(s.start)}
+                      {fmtTime(s.start)}
                     </button>
                   );
                 })}
@@ -231,7 +233,7 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
 
           {error && <p className="text-sm text-danger">{error}</p>}
           <Button className="w-full" disabled={!selected} onClick={goToConfirm}>
-            {selected ? `${slotTime(selected.start)} — davom etish` : 'Vaqt tanlang'}
+            {selected ? t('continue', { time: fmtTime(selected.start) }) : t('pickTime')}
           </Button>
         </>
       )}
@@ -239,27 +241,27 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
       {/* ---------- REVIEW ---------- */}
       {step === 'review' && selected && (
         <div className="space-y-3">
-          <BackButton onClick={() => setStep('pick')} />
+          <BackButton onClick={() => setStep('pick')} label={t('back')} />
           <dl className="space-y-2 text-sm rounded-md border border-line bg-bg/50 p-3">
-            <Row k="Xizmat" v={service?.name ?? '—'} />
-            <Row k="Joy" v={vendorName} />
-            <Row k="Sana" v={slotDateLabel(selected.start)} />
-            <Row k="Vaqt" v={`${slotTime(selected.start)}–${slotTime(selected.end)}`} />
-            {service && <Row k="Davomiylik" v={`${service.durationMin} daqiqa`} />}
-            {service && Number(service.price) > 0 && <Row k="Narx" v={formatUZS(service.price)} />}
+            <Row k={t('service')} v={service?.name ?? '—'} />
+            <Row k={t('place')} v={vendorName} />
+            <Row k={t('date')} v={fmtDate(selected.start)} />
+            <Row k={t('time')} v={`${fmtTime(selected.start)}–${fmtTime(selected.end)}`} />
+            {service && <Row k={t('duration')} v={t('durationMin', { count: service.durationMin })} />}
+            {service && Number(service.price) > 0 && <Row k={t('price')} v={formatUZS(service.price)} />}
           </dl>
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            placeholder="Izoh (ixtiyoriy)"
+            placeholder={t('notePlaceholder')}
             rows={2}
             className="w-full rounded-md border border-line px-3 py-2.5 text-sm outline-none focus:border-brand"
           />
           {error && <p className="text-sm text-danger">{error}</p>}
           <Button className="w-full" disabled={submitting} onClick={submitBooking}>
-            {submitting ? 'Bron qilinmoqda…' : 'Bronni tasdiqlash'}
+            {submitting ? t('confirming') : t('confirm')}
           </Button>
-          <p className="text-[11px] text-slate2 text-center">To‘lovsiz — joyni band qilasiz, tasdiqni vendor beradi.</p>
+          <p className="text-[11px] text-slate2 text-center">{t('freeNote')}</p>
         </div>
       )}
     </div>
@@ -275,10 +277,10 @@ function Row({ k, v }: { k: string; v: string }) {
   );
 }
 
-function BackButton({ onClick }: { onClick: () => void }) {
+function BackButton({ onClick, label }: { onClick: () => void; label: string }) {
   return (
     <button onClick={onClick} className="flex items-center gap-1 text-sm text-slate2 hover:text-ink">
-      <ChevronLeft className="h-4 w-4" /> Orqaga
+      <ChevronLeft className="h-4 w-4" /> {label}
     </button>
   );
 }

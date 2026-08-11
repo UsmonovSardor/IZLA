@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { CalendarClock, ChevronDown, LayoutDashboard, LogOut, User as UserIcon } from 'lucide-react';
 import { useAuth } from './auth-provider';
 import { Button } from './ui/button';
@@ -10,18 +11,11 @@ function initials(name?: string | null): string {
   return name.trim().slice(0, 1).toUpperCase();
 }
 
-const ROLE_LABEL: Record<string, string> = {
-  USER: 'Foydalanuvchi',
-  VENDOR: 'Vendor',
-  MODERATOR: 'Moderator',
-  ADMIN: 'Administrator',
-  DEVELOPER: 'Quruvchi',
-  REALTOR: 'Rieltor',
-  SELLER: 'Sotuvchi',
-};
-
 export function HeaderAuth() {
   const { user, loading, openLogin, signOut } = useAuth();
+  const t = useTranslations('headerAuth');
+  const tc = useTranslations('common');
+  const tr = useTranslations('roles');
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -40,12 +34,13 @@ export function HeaderAuth() {
   if (!user) {
     return (
       <Button className="h-9 px-4 text-sm" onClick={() => openLogin()}>
-        Kirish
+        {tc('login')}
       </Button>
     );
   }
 
   const isStaff = user.role !== 'USER';
+  const roleLabel = tr.has(user.role) ? tr(user.role) : user.role;
 
   return (
     <div className="relative" ref={ref}>
@@ -62,7 +57,7 @@ export function HeaderAuth() {
           </span>
         )}
         <span className="hidden sm:block max-w-[100px] truncate text-sm font-medium text-ink">
-          {user.name ?? user.phone ?? 'Profil'}
+          {user.name ?? user.phone ?? t('fallbackName')}
         </span>
         <ChevronDown className="h-4 w-4 text-slate2" />
       </button>
@@ -70,24 +65,24 @@ export function HeaderAuth() {
       {open && (
         <div className="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border border-line bg-surface shadow-xl">
           <div className="border-b border-line px-4 py-3">
-            <p className="truncate text-sm font-semibold text-navy">{user.name ?? 'Foydalanuvchi'}</p>
-            <p className="truncate text-xs text-slate2">{user.email ?? user.phone ?? ROLE_LABEL[user.role]}</p>
+            <p className="truncate text-sm font-semibold text-navy">{user.name ?? t('anonUser')}</p>
+            <p className="truncate text-xs text-slate2">{user.email ?? user.phone ?? roleLabel}</p>
             {isStaff && (
               <span className="mt-1.5 inline-block rounded-full bg-brand/10 px-2 py-0.5 text-[11px] font-medium text-brand">
-                {ROLE_LABEL[user.role] ?? user.role}
+                {roleLabel}
               </span>
             )}
           </div>
           <nav className="p-1 text-sm">
             <Link href="/profil" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2 text-ink hover:bg-bg">
-              <UserIcon className="h-4 w-4 text-slate2" /> Profil
+              <UserIcon className="h-4 w-4 text-slate2" /> {t('profile')}
             </Link>
             <Link href="/bron" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2 text-ink hover:bg-bg">
-              <CalendarClock className="h-4 w-4 text-slate2" /> Mening bronlarim
+              <CalendarClock className="h-4 w-4 text-slate2" /> {t('myBookings')}
             </Link>
             {isStaff && (
               <Link href="/profil" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2 text-ink hover:bg-bg">
-                <LayoutDashboard className="h-4 w-4 text-slate2" /> Kabinet
+                <LayoutDashboard className="h-4 w-4 text-slate2" /> {t('cabinet')}
               </Link>
             )}
             <button
@@ -97,7 +92,7 @@ export function HeaderAuth() {
               }}
               className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-danger hover:bg-danger/5"
             >
-              <LogOut className="h-4 w-4" /> Chiqish
+              <LogOut className="h-4 w-4" /> {t('logout')}
             </button>
           </nav>
         </div>

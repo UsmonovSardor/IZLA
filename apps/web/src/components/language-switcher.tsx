@@ -4,14 +4,7 @@ import { useEffect, useRef, useState, useTransition } from 'react';
 import { useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { Check, Globe } from 'lucide-react';
-import {
-  LOCALE_COOKIE,
-  localeFlag,
-  localeNames,
-  localeShort,
-  locales,
-  type Locale,
-} from '@/i18n/config';
+import { LOCALE_COOKIE, localeNames, localeShort, locales, type Locale } from '@/i18n/config';
 
 export function LanguageSwitcher() {
   const active = useLocale() as Locale;
@@ -60,7 +53,13 @@ export function LanguageSwitcher() {
                 l === active ? 'font-semibold text-brand' : 'text-ink'
               }`}
             >
-              <span className="text-base leading-none">{localeFlag[l]}</span>
+              <span
+                className={`grid h-6 w-8 shrink-0 place-items-center rounded-md text-[11px] font-bold ${
+                  l === active ? 'bg-brand text-white' : 'bg-bg text-slate2'
+                }`}
+              >
+                {localeShort[l]}
+              </span>
               <span className="flex-1 text-left">{localeNames[l]}</span>
               {l === active && <Check className="h-4 w-4 text-brand" />}
             </button>
