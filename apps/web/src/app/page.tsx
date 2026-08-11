@@ -1,10 +1,11 @@
 import Link from 'next/link';
-import { Search, MapPin, Sparkles, ShieldCheck, Clock, ArrowRight, Send } from 'lucide-react';
+import { Search, Sparkles, ArrowRight, Send } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { api, type Category, type Vendor } from '@/lib/api';
 import { VendorCard } from '@/components/vendor-card';
 import { Reveal } from '@/components/reveal';
 import { HeroAurora } from '@/components/hero-aurora';
+import { StatsRow, type Stat } from '@/components/stats-row';
 
 export const dynamic = 'force-dynamic';
 
@@ -38,11 +39,11 @@ export default async function HomePage() {
     safe<Vendor[]>(api.vendors('?category=gozallik&sort=rating', locale), []),
   ]);
 
-  const stats = [
-    { icon: MapPin, value: `${topVendors.length || 50}+`, label: t('statPlaces') },
-    { icon: Sparkles, value: `${categories.length || 12}`, label: t('statDirections') },
-    { icon: ShieldCheck, value: '100%', label: t('statSecure') },
-    { icon: Clock, value: '24/7', label: t('statBooking') },
+  const stats: Stat[] = [
+    { iconKey: 'pin', value: `${topVendors.length || 50}+`, label: t('statPlaces'), from: '#2563EB', to: '#14B8A6', numGrad: 'linear-gradient(120deg,#5eead4,#ffffff)' },
+    { iconKey: 'sparkles', value: `${categories.length || 12}`, label: t('statDirections'), from: '#3b82f6', to: '#6366f1', numGrad: 'linear-gradient(120deg,#93c5fd,#ffffff)' },
+    { iconKey: 'shield', value: '100%', label: t('statSecure'), from: '#7c3aed', to: '#a855f7', numGrad: 'linear-gradient(120deg,#c4b5fd,#ffffff)' },
+    { iconKey: 'clock', value: '24/7', label: t('statBooking'), from: '#f59e0b', to: '#f97316', numGrad: 'linear-gradient(120deg,#fcd34d,#ffffff)' },
   ];
 
   return (
@@ -97,16 +98,8 @@ export default async function HomePage() {
             )}
           </div>
 
-          {/* Stats */}
-          <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl">
-            {stats.map((s) => (
-              <div key={s.label} className="glass-dark rounded-xl p-4">
-                <s.icon className="h-5 w-5 text-teal-400" />
-                <div className="mt-2 font-display text-2xl font-bold text-white">{s.value}</div>
-                <div className="text-sm text-white/60">{s.label}</div>
-              </div>
-            ))}
-          </div>
+          {/* Stats (Variant A — frosted glass + gradient, count-up) */}
+          <StatsRow stats={stats} />
         </div>
       </section>
 
