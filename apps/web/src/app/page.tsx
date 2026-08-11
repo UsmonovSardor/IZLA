@@ -5,7 +5,6 @@ import { api, type Category, type Vendor } from '@/lib/api';
 import { VendorCard } from '@/components/vendor-card';
 import { Reveal } from '@/components/reveal';
 import { HeroAurora } from '@/components/hero-aurora';
-import { HeroVideo } from '@/components/hero-video';
 import { RotatingWord } from '@/components/rotating-word';
 import { StatsRow, type Stat } from '@/components/stats-row';
 
@@ -59,9 +58,28 @@ export default async function HomePage() {
         <HeroAurora />
 
         <div className="container-wide relative z-10 py-14 md:py-20 lg:py-24">
-          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-            {/* KONTENT — mobil 1-chi, desktop CHAPDA */}
-            <div className="max-w-2xl lg:order-1">
+          {/* ===== YAGONA BANNER (kafil uslubi): video to'ldiradi, kontent chapda ustida blend ===== */}
+          <div className="relative overflow-hidden rounded-[28px] border border-white/[0.12] bg-gradient-to-br from-[#0b1f3a] via-[#0c2338] to-[#0a2c31] shadow-[0_40px_100px_-30px_rgba(0,0,0,.85)] lg:min-h-[520px]">
+            {/* Jonli video — butun bannerni to'ldiradi */}
+            <video
+              className="absolute inset-0 h-full w-full object-cover"
+              src="/izla.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              aria-hidden
+            />
+            {/* Blend qatlamlari — matn o'qilishi uchun video qoraytiriladi */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#0a1b30]/82 via-[#0a1b30]/85 to-[#0a1b30]/93 lg:hidden" aria-hidden />
+            <div className="absolute inset-0 hidden bg-gradient-to-r from-[#0a1b30] via-[#0a1b30] via-50% to-transparent lg:block" aria-hidden />
+            {/* Aurora urg'u */}
+            <div className="pointer-events-none absolute -left-16 -top-16 h-72 w-72 rounded-full bg-brand/25 blur-3xl" aria-hidden />
+            <div className="pointer-events-none absolute -bottom-12 left-1/3 h-64 w-64 rounded-full bg-teal/[0.18] blur-3xl" aria-hidden />
+
+            {/* KONTENT — banner ustida, chapda */}
+            <div className="relative z-10 max-w-xl px-6 py-10 sm:px-9 md:py-14 lg:max-w-[56%] lg:px-14 lg:py-16">
               <span className="chip bg-white/10 text-white/90 border border-white/20 animate-fade-up">
                 <Sparkles className="h-3.5 w-3.5 text-teal-400" /> {t('badge')}
               </span>
@@ -122,11 +140,6 @@ export default async function HomePage() {
                 <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-teal-400" /> {th('trustSecure')}</span>
                 <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4 text-teal-400" /> {th('trustOnline')}</span>
               </div>
-            </div>
-
-            {/* VIDEO — mobil 2-chi (pastda), desktop O'NGDA (to'liq balandlik, kafil banner uslubi) */}
-            <div className="relative lg:order-2 lg:self-stretch">
-              <HeroVideo />
             </div>
           </div>
 
