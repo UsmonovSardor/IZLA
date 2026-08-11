@@ -27,6 +27,17 @@ async function authed<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+/** Ochiq (avtorizatsiyasiz) POST — JSON. */
+async function post<T>(path: string, body: unknown): Promise<T> {
+  const res = await fetch(`${BASE}${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`API ${path} → ${res.status}`);
+  return res.json() as Promise<T>;
+}
+
 /** So'rov satriga `lang` ni to'g'ri ulaydi (? yoki & bilan). */
 function withLang(qs: string, lang?: string): string {
   if (!lang) return qs;
@@ -38,6 +49,9 @@ export const api = {
   vendors: (qs = '', lang?: string) => get<Vendor[]>(withLang(`/vendors${qs}`, lang)),
   vendor: (slug: string, lang?: string) => get<VendorDetail>(withLang(`/vendors/${slug}`, lang)),
   facets: (qs = '', lang?: string) => get<Facets>(withLang(`/vendors/facets${qs}`, lang)),
+  assistantStatus: () => get<{ enabled: boolean }>('/assistant/status'),
+  assistantChat: (messages: ChatTurn[], lang?: string) =>
+    post<AssistantReply>('/assistant/chat', { messages, lang }),
   properties: (qs = '') => get<Property[]>(`/properties${qs}`),
   property: (id: string) => get<PropertyDetail>(`/properties/${id}`),
   availability: (serviceId: string, date: string) =>
@@ -53,6 +67,13 @@ export const api = {
 };
 
 export interface Category { id: string; slug: string; name: string; icon?: string; _count?: { vendors: number } }
+export interface ChatTurn { role: 'user' | 'assistant'; content: string }
+export interface AssistantReply {
+  reply: string;
+  vendors: Vendor[];
+  filters: Record<string, string | number | boolean> | null;
+  searchUrl: string | null;
+}
 export interface FacetCategory { slug: string; name: string; icon?: string; count: number }
 export interface PriceRange { min: number; max: number }
 export interface Facets { total: number; categories: FacetCategory[]; priceRange?: PriceRange | null }

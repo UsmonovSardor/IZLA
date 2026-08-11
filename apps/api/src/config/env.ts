@@ -40,6 +40,10 @@ const schema = z.object({
   CLICK_MERCHANT_ID: z.string().optional().default(''),
   CLICK_SECRET_KEY: z.string().optional().default(''),
   CLICK_CHECKOUT_URL: z.string().default('https://my.click.uz/services/pay'),
+
+  // AI Izla Assistant (Claude) — kalitsiz o'chiq
+  ANTHROPIC_API_KEY: z.string().optional().default(''),
+  ASSISTANT_MODEL: z.string().default('claude-opus-5'),
 });
 
 export const env = schema.parse(process.env);

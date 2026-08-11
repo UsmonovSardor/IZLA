@@ -251,5 +251,20 @@
     "realEstate": "Real estate",
     "authNote": "For auth, TELEGRAM_BOT_TOKEN must be set in the backend .env.",
     "anonUser": "User"
+  },
+  "assistant": {
+    "title": "Izla AI assistant",
+    "subtitle": "I will find the right place",
+    "close": "Close",
+    "greeting": "Hi! I am the Izla AI assistant. Tell me what place or service you need — I will find it.",
+    "sug1": "Open dentist in Chilonzor now",
+    "sug2": "Affordable beauty salon",
+    "sug3": "Top-rated restaurant",
+    "placeholder": "Type a message…",
+    "send": "Send",
+    "soon": "The AI assistant is coming soon",
+    "error": "Something went wrong. Please try again later.",
+    "allResults": "All results",
+    "thinking": "Searching…"
   }
 }

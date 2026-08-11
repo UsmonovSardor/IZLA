@@ -251,5 +251,20 @@
     "realEstate": "Ko'chmas mulk",
     "authNote": "Auth uchun TELEGRAM_BOT_TOKEN backend .env'da sozlangan bo'lishi kerak.",
     "anonUser": "Foydalanuvchi"
+  },
+  "assistant": {
+    "title": "Izla AI yordamchi",
+    "subtitle": "Kerakli joyni topaman",
+    "close": "Yopish",
+    "greeting": "Salom! Men Izla AI yordamchisiman. Qanday joy yoki xizmat kerakligini yozing — men topib beraman.",
+    "sug1": "Chilonzorda hozir ochiq stomatologiya",
+    "sug2": "Arzon go‘zallik saloni",
+    "sug3": "Reytingi yuqori restoran",
+    "placeholder": "Xabar yozing…",
+    "send": "Yuborish",
+    "soon": "AI yordamchi tez kunda ishga tushadi",
+    "error": "Xatolik yuz berdi. Birozdan so‘ng qayta urining.",
+    "allResults": "Barcha natijalar",
+    "thinking": "Qidiryapman…"
   }
 }
