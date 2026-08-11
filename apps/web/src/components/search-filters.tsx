@@ -1,8 +1,11 @@
 'use client';
+import { useState } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { Check, Clock, Star, X } from 'lucide-react';
+import { Check, Clock, LocateFixed, Star, X } from 'lucide-react';
 import type { FacetCategory } from '@/lib/api';
+
+const RADII = [1, 3, 5, 10] as const;
 
 /** Qidiruv filtr paneli — kategoriya facets (count bilan) + sort + verified + reyting. URL param'lar bilan. */
 export function SearchFilters({ categories }: { categories: FacetCategory[] }) {
@@ -17,6 +20,40 @@ export function SearchFilters({ categories }: { categories: FacetCategory[] }) {
   const openNow = params.get('openNow') === 'true';
   const minRating = params.get('minRating');
   const hasQ = !!params.get('q');
+
+  const near = !!(params.get('lat') && params.get('lng') && params.get('radiusKm'));
+  const radiusKm = params.get('radiusKm');
+  const [locating, setLocating] = useState(false);
+  const [geoError, setGeoError] = useState(false);
+
+  function toggleNear() {
+    if (near) {
+      apply({ lat: null, lng: null, radiusKm: null, sort: null });
+      return;
+    }
+    if (typeof navigator === 'undefined' || !navigator.geolocation) {
+      setGeoError(true);
+      return;
+    }
+    setLocating(true);
+    setGeoError(false);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setLocating(false);
+        apply({
+          lat: pos.coords.latitude.toFixed(6),
+          lng: pos.coords.longitude.toFixed(6),
+          radiusKm: '5',
+          sort: 'distance',
+        });
+      },
+      () => {
+        setLocating(false);
+        setGeoError(true);
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 },
+    );
+  }
 
   function apply(updates: Record<string, string | null>) {
     const p = new URLSearchParams(params.toString());
@@ -34,7 +71,7 @@ export function SearchFilters({ categories }: { categories: FacetCategory[] }) {
     router.push(`${pathname}${p.toString() ? `?${p}` : ''}`, { scroll: false });
   }
 
-  const hasFilters = !!(activeCat || verified || openNow || minRating || sort);
+  const hasFilters = !!(activeCat || verified || openNow || near || minRating || sort);
   const chip = (on: boolean) =>
     `inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition ${
       on ? 'border-brand bg-brand text-white shadow-sm' : 'border-line bg-surface text-ink hover:border-brand/40 hover:bg-brand-50'
@@ -74,6 +111,22 @@ export function SearchFilters({ categories }: { categories: FacetCategory[] }) {
           <option value="rating">{t('sortRating')}</option>
         </select>
 
+        <button onClick={toggleNear} disabled={locating} className={`${chip(near)} disabled:opacity-60`}>
+          <LocateFixed className={`h-3.5 w-3.5 ${locating ? 'animate-spin' : ''}`} />
+          {locating ? t('locating') : t('near')}
+        </button>
+
+        {near &&
+          RADII.map((r) => (
+            <button
+              key={r}
+              onClick={() => apply({ radiusKm: String(r) })}
+              className={chip(radiusKm === String(r))}
+            >
+              {r} km
+            </button>
+          ))}
+
         <button onClick={() => apply({ openNow: openNow ? null : 'true' })} className={chip(openNow)}>
           <Clock className="h-3.5 w-3.5" /> {t('openNow')}
         </button>
@@ -95,6 +148,8 @@ export function SearchFilters({ categories }: { categories: FacetCategory[] }) {
           </button>
         )}
       </div>
+
+      {geoError && <p className="text-xs text-danger">{t('geoError')}</p>}
     </div>
   );
 }

@@ -18,6 +18,29 @@ export interface VendorQuery {
   priceMin?: number;
   priceMax?: number;
   openNow?: boolean;
+  radiusKm?: number;
+}
+
+/**
+ * Radius uchun tez Prisma pre-filtri — lat/lng bo'yicha bounding box (to'rtburchak).
+ * Aniq radius (doira) JS haversine bilan keyin qirqiladi; bu faqat nomzodlarni toraytiradi.
+ */
+function bboxWhere(lat: number, lng: number, radiusKm: number): Prisma.VendorWhereInput {
+  const latDelta = radiusKm / 111.0; // 1° kenglik ≈ 111 km
+  const cosLat = Math.max(Math.cos((lat * Math.PI) / 180), 0.01);
+  const lngDelta = radiusKm / (111.0 * cosLat);
+  return {
+    lat: { gte: lat - latDelta, lte: lat + latDelta },
+    lng: { gte: lng - lngDelta, lte: lng + lngDelta },
+  };
+}
+
+/** Vendordan (`v.lat`/`v.lng`) berilgan nuqtagacha masofa (km) — haversine, PostGIS'siz sof SQL. */
+function haversineSqlKm(lat: number, lng: number): Prisma.Sql {
+  return Prisma.sql`(6371 * 2 * asin(sqrt(
+    power(sin(radians((v.lat - ${lat}) / 2)), 2) +
+    cos(radians(${lat})) * cos(radians(v.lat)) * power(sin(radians((v.lng - ${lng}) / 2)), 2)
+  )))`;
 }
 
 /**
@@ -96,19 +119,28 @@ export class VendorsService {
       };
     }
 
-    // "Hozir ochiq" filtri JSON `hours` ustida JS'da baholanadi — kesilishdan oldin
-    // kerakli soni qolishi uchun ochiq bo'lmaganlarni hisobga olib ko'proq olamiz.
-    const rawTake = query.openNow ? Math.max(take * 5, 200) : take;
+    // Radius: bounding-box tez pre-filtri (aniq doira JS haversine bilan quyida qirqiladi).
+    const hasGeo = query.radiusKm != null && query.lat != null && query.lng != null;
+    if (hasGeo) Object.assign(where, bboxWhere(query.lat!, query.lng!, query.radiusKm!));
+
+    // "Hozir ochiq" (JSON `hours`) va radius (aniq masofa) JS'da baholanadi — kesilishdan
+    // oldin kerakli soni qolishi uchun mos kelmaydiganlarni hisobga olib ko'proq olamiz.
+    const needsPostFilter = query.openNow || hasGeo;
     const vendors = await this.prisma.vendor.findMany({
       where,
-      take: rawTake,
+      take: needsPostFilter ? Math.max(take * 5, 200) : take,
       include: { category: { select: CATEGORY_SELECT } },
       orderBy: query.sort === 'rating' ? { rating: 'desc' } : { createdAt: 'desc' },
     });
-    const filtered = query.openNow
-      ? vendors.filter((v) => isOpenNow(v.hours)).slice(0, take)
-      : vendors;
-    return this.shape(filtered, query, lang);
+
+    // shape() masofani hisoblaydi va sort (masofa/reyting) qo'llaydi.
+    let result = this.shape(vendors, query, lang);
+    if (query.openNow) result = result.filter((v) => isOpenNow(v.hours));
+    if (hasGeo) {
+      const r = query.radiusKm!;
+      result = result.filter((v) => v.distanceKm != null && v.distanceKm <= r);
+    }
+    return needsPostFilter ? result.slice(0, take) : result;
   }
 
   /** Lokalizatsiya + masofa hisoblash + (kerak bo'lsa) saralash (masofa/reyting). */
@@ -152,6 +184,9 @@ export class VendorsService {
     if (query.openNow) {
       const { dayKey, minute } = tashkentNow();
       conds.push(openNowSql(dayKey, minute));
+    }
+    if (query.radiusKm != null && query.lat != null && query.lng != null) {
+      conds.push(Prisma.sql`${haversineSqlKm(query.lat, query.lng)} <= ${query.radiusKm}`);
     }
     const where = Prisma.join(conds, ' AND ');
 
@@ -248,6 +283,9 @@ export class VendorsService {
     if (query.openNow) {
       const { dayKey, minute } = tashkentNow();
       conds.push(openNowSql(dayKey, minute));
+    }
+    if (query.radiusKm != null && query.lat != null && query.lng != null) {
+      conds.push(Prisma.sql`${haversineSqlKm(query.lat, query.lng)} <= ${query.radiusKm}`);
     }
     const where = Prisma.join(conds, ' AND ');
 

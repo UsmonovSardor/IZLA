@@ -20,6 +20,7 @@ export class VendorsController {
   @ApiQuery({ name: 'priceMin', required: false, type: Number })
   @ApiQuery({ name: 'priceMax', required: false, type: Number })
   @ApiQuery({ name: 'openNow', required: false, type: Boolean })
+  @ApiQuery({ name: 'radiusKm', required: false, type: Number })
   @ApiQuery({ name: 'lang', required: false, enum: ['uz', 'ru', 'en'] })
   list(
     @Query('category') category?: string,
@@ -33,6 +34,7 @@ export class VendorsController {
     @Query('priceMin') priceMin?: string,
     @Query('priceMax') priceMax?: string,
     @Query('openNow') openNow?: string,
+    @Query('radiusKm') radiusKm?: string,
     @Query('lang') lang?: string,
     @Headers('accept-language') acceptLanguage?: string,
   ) {
@@ -48,6 +50,7 @@ export class VendorsController {
       priceMin: priceMin ? Number(priceMin) : undefined,
       priceMax: priceMax ? Number(priceMax) : undefined,
       openNow: openNow === 'true' ? true : undefined,
+      radiusKm: radiusKm ? Number(radiusKm) : undefined,
       lang: resolveLang(lang, acceptLanguage),
     });
   }
@@ -72,6 +75,9 @@ export class VendorsController {
   @ApiQuery({ name: 'priceMin', required: false, type: Number })
   @ApiQuery({ name: 'priceMax', required: false, type: Number })
   @ApiQuery({ name: 'openNow', required: false, type: Boolean })
+  @ApiQuery({ name: 'lat', required: false })
+  @ApiQuery({ name: 'lng', required: false })
+  @ApiQuery({ name: 'radiusKm', required: false, type: Number })
   @ApiQuery({ name: 'lang', required: false, enum: ['uz', 'ru', 'en'] })
   facets(
     @Query('q') q?: string,
@@ -81,6 +87,9 @@ export class VendorsController {
     @Query('priceMin') priceMin?: string,
     @Query('priceMax') priceMax?: string,
     @Query('openNow') openNow?: string,
+    @Query('lat') lat?: string,
+    @Query('lng') lng?: string,
+    @Query('radiusKm') radiusKm?: string,
     @Query('lang') lang?: string,
     @Headers('accept-language') acceptLanguage?: string,
   ) {
@@ -92,6 +101,9 @@ export class VendorsController {
       priceMin: priceMin ? Number(priceMin) : undefined,
       priceMax: priceMax ? Number(priceMax) : undefined,
       openNow: openNow === 'true' ? true : undefined,
+      lat: lat ? Number(lat) : undefined,
+      lng: lng ? Number(lng) : undefined,
+      radiusKm: radiusKm ? Number(radiusKm) : undefined,
       lang: resolveLang(lang, acceptLanguage),
     });
   }

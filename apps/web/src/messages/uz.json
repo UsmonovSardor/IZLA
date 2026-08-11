@@ -71,7 +71,10 @@
     "verified": "Tasdiqlangan",
     "clear": "Tozalash",
     "filtersTitle": "Filtrlar",
-    "openNow": "Hozir ochiq"
+    "openNow": "Hozir ochiq",
+    "near": "Menga yaqin",
+    "locating": "Aniqlanmoqda…",
+    "geoError": "Joylashuv aniqlanmadi. Brauzerda ruxsat bering."
   },
   "hero": {
     "m1": "30 soniyada bron",

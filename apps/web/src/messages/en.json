@@ -71,7 +71,10 @@
     "verified": "Verified",
     "clear": "Clear",
     "filtersTitle": "Filters",
-    "openNow": "Open now"
+    "openNow": "Open now",
+    "near": "Near me",
+    "locating": "Locating…",
+    "geoError": "Could not get your location. Allow access in the browser."
   },
   "hero": {
     "m1": "Book in 30 seconds",

@@ -11,7 +11,7 @@ export function generateMetadata(): Metadata {
   return { alternates: { canonical: '/qidiruv' } };
 }
 
-const FILTER_KEYS = ['category', 'q', 'district', 'verified', 'minRating', 'priceMin', 'priceMax', 'openNow'] as const;
+const FILTER_KEYS = ['category', 'q', 'district', 'verified', 'minRating', 'priceMin', 'priceMax', 'openNow', 'lat', 'lng', 'radiusKm'] as const;
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const sp = await searchParams;
@@ -21,8 +21,8 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   // Ro'yxat uchun — barcha filtrlar + sort
   const listQs = new URLSearchParams();
   for (const k of FILTER_KEYS) if (sp[k]) listQs.set(k, sp[k]);
-  // Sort: aniq berilsa — o'sha; aks holda q bo'lsa relevance (sort'siz), bo'lmasa rating
-  const sort = sp.sort || (sp.q ? '' : 'rating');
+  // Sort: aniq berilsa — o'sha; radius bo'lsa masofa; q bo'lsa relevance (sort'siz); aks holda rating
+  const sort = sp.sort || (sp.radiusKm ? 'distance' : sp.q ? '' : 'rating');
   if (sort) listQs.set('sort', sort);
 
   // Facets uchun — kategoriyadan tashqari barcha filtrlar
