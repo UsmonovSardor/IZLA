@@ -184,6 +184,7 @@ export class VendorsService {
           v.name ILIKE ${like}
           OR c.name ILIKE ${like}
           OR word_similarity(${t}, v.name) > 0.4
+          OR word_similarity(${t}, c.name) > 0.4
           OR to_tsvector('simple', coalesce(v.name, '') || ' ' || coalesce(v.description, '')) @@ websearch_to_tsquery('simple', ${t})
         )
       ORDER BY (
