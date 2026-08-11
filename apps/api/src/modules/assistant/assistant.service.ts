@@ -1,5 +1,5 @@
 import { Injectable, ServiceUnavailableException } from '@nestjs/common';
-import Anthropic from '@anthropic-ai/sdk';
+import OpenAI from 'openai';
 import { env } from '../../config/env';
 import { PrismaService } from '../../prisma/prisma.service';
 import { VendorsService } from '../vendors/vendors.service';
@@ -38,13 +38,16 @@ const SYSTEM_LANG_NOTE: Record<Lang, string> = {
 
 @Injectable()
 export class AssistantService {
-  private readonly client: Anthropic | null;
+  // Groq — OpenAI-mos endpoint (base URL almashtirilgan).
+  private readonly client: OpenAI | null;
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly vendors: VendorsService,
   ) {
-    this.client = env.ANTHROPIC_API_KEY ? new Anthropic({ apiKey: env.ANTHROPIC_API_KEY }) : null;
+    this.client = env.GROQ_API_KEY
+      ? new OpenAI({ apiKey: env.GROQ_API_KEY, baseURL: env.ASSISTANT_BASE_URL })
+      : null;
   }
 
   get enabled(): boolean {
@@ -70,23 +73,26 @@ export class AssistantService {
     };
   }
 
-  private tool(): Anthropic.Tool {
+  private tool(): OpenAI.Chat.Completions.ChatCompletionTool {
     return {
-      name: 'search_vendors',
-      description:
-        "Izla katalogidan joy/xizmat qidiradi. Foydalanuvchi so'rovidagi shartlarni (kategoriya, tuman, narx, ish vaqti, reyting) mos filtrlarga aylantirib chaqir. Kamida bitta filtr yoki q berilishi kerak.",
-      input_schema: {
-        type: 'object',
-        properties: {
-          q: { type: 'string', description: 'Erkin matnli kalit (nom yoki xizmat, masalan "plomba", "massaj"). Kategoriya slug mos kelsa q bermay category ishlat.' },
-          category: { type: 'string', description: 'Kategoriya slug — faqat berilgan ro\'yxatdan.' },
-          district: { type: 'string', description: 'Toshkent tumani — faqat berilgan ro\'yxatdan (aniq yozilishi bilan).' },
-          priceMin: { type: 'number', description: "Minimal narx (so'm)." },
-          priceMax: { type: 'number', description: "Maksimal narx (so'm). \"arzon\" so'ralsa mos qiymat qo'y." },
-          openNow: { type: 'boolean', description: 'Faqat hozir ochiq joylar.' },
-          minRating: { type: 'number', description: 'Minimal reyting: 4 yoki 4.5.' },
-          verified: { type: 'boolean', description: 'Faqat tasdiqlangan joylar.' },
-          sort: { type: 'string', enum: ['rating', 'distance'], description: 'Saralash: reyting bo\'yicha.' },
+      type: 'function',
+      function: {
+        name: 'search_vendors',
+        description:
+          "Izla katalogidan joy/xizmat qidiradi. Foydalanuvchi so'rovidagi shartlarni (kategoriya, tuman, narx, ish vaqti, reyting) mos filtrlarga aylantirib chaqir. Kamida bitta filtr yoki q berilishi kerak.",
+        parameters: {
+          type: 'object',
+          properties: {
+            q: { type: 'string', description: 'Erkin matnli kalit (nom yoki xizmat, masalan "plomba", "massaj"). Kategoriya slug mos kelsa q bermay category ishlat.' },
+            category: { type: 'string', description: "Kategoriya slug — faqat berilgan ro'yxatdan." },
+            district: { type: 'string', description: "Toshkent tumani — faqat berilgan ro'yxatdan (aniq yozilishi bilan)." },
+            priceMin: { type: 'number', description: "Minimal narx (so'm)." },
+            priceMax: { type: 'number', description: "Maksimal narx (so'm). \"arzon\" so'ralsa mos qiymat qo'y." },
+            openNow: { type: 'boolean', description: 'Faqat hozir ochiq joylar.' },
+            minRating: { type: 'number', description: 'Minimal reyting: 4 yoki 4.5.' },
+            verified: { type: 'boolean', description: 'Faqat tasdiqlangan joylar.' },
+            sort: { type: 'string', enum: ['rating', 'distance'], description: "Saralash: reyting bo'yicha." },
+          },
         },
       },
     };
@@ -103,7 +109,7 @@ export class AssistantService {
 
   async chat(turns: ChatTurn[], lang: Lang = 'uz'): Promise<AssistantReply> {
     if (!this.client) {
-      throw new ServiceUnavailableException('AI yordamchi hozircha o\'chiq (kalit sozlanmagan).');
+      throw new ServiceUnavailableException("AI yordamchi hozircha o'chiq (kalit sozlanmagan).");
     }
 
     const { categories, districts } = await this.catalog(lang);
@@ -112,53 +118,58 @@ export class AssistantService {
     const system = [
       "Sen — Izla.uz platformasining AI yordamchisisan. Izla — O'zbekiston uchun ko'p-vendorli xizmatlar platformasi (klinikalar, go'zallik, restoran, fitnes, avto va h.k.), onlayn bron va to'lov bilan.",
       SYSTEM_LANG_NOTE[lang],
-      'VAZIFANG: foydalanuvchiga kerakli joy/xizmatni topishga yordam berish. Joy qidirish kerak bo\'lsa — HAR DOIM search_vendors tool\'ini chaqir, o\'zingdan joy nomi to\'qib chiqarma.',
+      "VAZIFANG: foydalanuvchiga kerakli joy/xizmatni topishga yordam berish. Joy qidirish kerak bo'lsa — HAR DOIM search_vendors funksiyasini chaqir, o'zingdan joy nomi to'qib chiqarma.",
       'Faqat quyidagi kategoriya sluglaridan foydalan:',
       catLines,
       `Mavjud tumanlar: ${districts.join(', ')}.`,
-      'QOIDALAR: qisqa va samimiy javob ber. Natijalarni tool qaytargandan keyin 1-2 jumlada xulosala — kartalar alohida ko\'rsatiladi, ularni qayta sanab chiqma. Agar hech narsa topilmasa, filtrlarni yumshatishni taklif qil. Salomlashuv yoki umumiy savolga qisqa javob ber va nima qila olishingni ayt (masalan: "Chilonzorda hozir ochiq stomatologiya toping").',
+      "QOIDALAR: qisqa va samimiy javob ber. Natijalarni funksiya qaytargandan keyin 1-2 jumlada xulosala — kartalar alohida ko'rsatiladi, ularni qayta sanab chiqma. Agar hech narsa topilmasa, filtrlarni yumshatishni taklif qil. Salomlashuv yoki umumiy savolga qisqa javob ber va nima qila olishingni ayt.",
     ].join('\n');
 
-    const messages: Anthropic.MessageParam[] = turns.map((t) => ({ role: t.role, content: t.content }));
+    const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+      { role: 'system', content: system },
+      ...turns.map((t) => ({ role: t.role, content: t.content })),
+    ];
 
     let vendors: AssistantReply['vendors'] = [];
     let filters: SearchFilters | null = null;
 
-    // Tool-use tsikli — Claude filtrlarni tanlaydi, biz mavjud qidiruvni ishga tushiramiz.
+    // Tool-use tsikli — model filtrlarni tanlaydi, biz mavjud qidiruvni ishga tushiramiz.
     for (let step = 0; step < 4; step++) {
-      const resp = await this.client.messages.create({
+      const resp = await this.client.chat.completions.create({
         model: env.ASSISTANT_MODEL,
         max_tokens: 1024,
-        output_config: { effort: 'low' },
-        system,
-        tools: [this.tool()],
+        temperature: 0.3,
         messages,
+        tools: [this.tool()],
+        tool_choice: 'auto',
       });
 
-      if (resp.stop_reason === 'refusal') {
-        return { reply: this.fallbackText(lang), vendors, filters, searchUrl: null };
-      }
+      const msg = resp.choices[0]?.message;
+      if (!msg) return { reply: this.fallbackText(lang), vendors, filters, searchUrl: null };
+      messages.push(msg);
 
-      if (resp.stop_reason !== 'tool_use') {
-        const reply = resp.content
-          .filter((b): b is Anthropic.TextBlock => b.type === 'text')
-          .map((b) => b.text)
-          .join('\n')
-          .trim();
+      const calls = msg.tool_calls ?? [];
+      if (calls.length === 0) {
         return {
-          reply: reply || this.fallbackText(lang),
+          reply: (msg.content ?? '').trim() || this.fallbackText(lang),
           vendors,
           filters,
           searchUrl: filters ? this.buildSearchUrl(filters) : null,
         };
       }
 
-      messages.push({ role: 'assistant', content: resp.content });
-      const toolResults: Anthropic.ToolResultBlockParam[] = [];
-
-      for (const block of resp.content) {
-        if (block.type !== 'tool_use' || block.name !== 'search_vendors') continue;
-        const input = (block.input ?? {}) as SearchFilters;
+      for (const tc of calls) {
+        if (tc.type !== 'function') continue;
+        if (tc.function.name !== 'search_vendors') {
+          messages.push({ role: 'tool', tool_call_id: tc.id, content: 'noma\'lum funksiya' });
+          continue;
+        }
+        let input: SearchFilters = {};
+        try {
+          input = JSON.parse(tc.function.arguments || '{}');
+        } catch {
+          input = {};
+        }
         filters = input;
         const found = await this.vendors.list({
           q: input.q,
@@ -179,15 +190,9 @@ export class AssistantService {
               .slice(0, 8)
               .map((v) => `- ${v.name} · ${v.category?.name ?? ''} · ${v.district ?? ''} · reyting ${v.rating}`)
               .join('\n')
-          : "(hech narsa topilmadi)";
-        toolResults.push({
-          type: 'tool_result',
-          tool_use_id: block.id,
-          content: `${found.length} ta natija:\n${summary}`,
-        });
+          : '(hech narsa topilmadi)';
+        messages.push({ role: 'tool', tool_call_id: tc.id, content: `${found.length} ta natija:\n${summary}` });
       }
-
-      messages.push({ role: 'user', content: toolResults });
     }
 
     return {

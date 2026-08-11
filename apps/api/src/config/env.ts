@@ -41,9 +41,10 @@ const schema = z.object({
   CLICK_SECRET_KEY: z.string().optional().default(''),
   CLICK_CHECKOUT_URL: z.string().default('https://my.click.uz/services/pay'),
 
-  // AI Izla Assistant (Claude) — kalitsiz o'chiq
-  ANTHROPIC_API_KEY: z.string().optional().default(''),
-  ASSISTANT_MODEL: z.string().default('claude-opus-5'),
+  // AI Izla Assistant (Groq — OpenAI-mos) — kalitsiz o'chiq
+  GROQ_API_KEY: z.string().optional().default(''),
+  ASSISTANT_MODEL: z.string().default('llama-3.3-70b-versatile'),
+  ASSISTANT_BASE_URL: z.string().default('https://api.groq.com/openai/v1'),
 });
 
 export const env = schema.parse(process.env);
