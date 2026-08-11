@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { api, type Category, type Vendor } from '@/lib/api';
 import { VendorCard } from '@/components/vendor-card';
 import { Reveal } from '@/components/reveal';
+import { HeroAurora } from '@/components/hero-aurora';
 
 export const dynamic = 'force-dynamic';
 
@@ -48,10 +49,8 @@ export default async function HomePage() {
     <div>
       {/* ===== HERO (aurora, full-bleed) ===== */}
       <section className="relative overflow-hidden bg-aurora">
-        {/* Animatsion aurora bloklar */}
-        <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-brand/30 blur-3xl animate-aurora-shift" />
-        <div className="pointer-events-none absolute -bottom-32 right-0 h-[28rem] w-[28rem] rounded-full bg-teal/25 blur-3xl animate-float" />
-        <div className="pointer-events-none absolute top-10 right-1/3 h-72 w-72 rounded-full bg-violet/25 blur-3xl animate-aurora-shift" />
+        {/* Animatsion aurora bloklar (scroll parallaks) */}
+        <HeroAurora />
 
         <div className="container-wide relative z-10 py-20 md:py-28 lg:py-32">
           <div className="max-w-3xl">

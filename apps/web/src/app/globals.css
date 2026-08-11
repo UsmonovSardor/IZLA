@@ -11,6 +11,13 @@
 html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
 body { background: #F6F8FC; color: #1E293B; }
 
+/* ===== Lenis silliq scroll (Phase 4) ===== */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
 /* ===== Reusable premium primitives ===== */
 @layer components {
   /* Full-bleed sahifa konteyneri (to'liq kenglik + responsive padding) */

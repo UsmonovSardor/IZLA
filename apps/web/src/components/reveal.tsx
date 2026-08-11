@@ -1,42 +1,38 @@
 'use client';
-import { useEffect, useRef, type ElementType, type ReactNode } from 'react';
+import { motion, useReducedMotion, type Variants } from 'framer-motion';
+import type { ReactNode } from 'react';
 
 /**
- * Yengil scroll-reveal (Phase 1). Framer-motion Phase 4'da qo'shiladi.
- * Element ko'rinishga kirganda `is-in` klassini qo'shadi (CSS orqali animatsiya).
+ * Scroll-reveal (Phase 4 — framer-motion). Element ko'rinishga kirganda yumshoq
+ * ko'tarilib paydo bo'ladi. `prefers-reduced-motion` bo'lsa animatsiya o'chadi.
+ * API Phase 1 bilan bir xil (children, delay ms, className).
  */
+const variants: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0 },
+};
+
 export function Reveal({
   children,
-  as: Tag = 'div',
   delay = 0,
   className = '',
 }: {
   children: ReactNode;
-  as?: ElementType;
   delay?: number;
   className?: string;
 }) {
-  const ref = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            el.classList.add('is-in');
-            io.unobserve(el);
-          }
-        }
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+  const reduce = useReducedMotion();
+  if (reduce) return <div className={className}>{children}</div>;
   return (
-    <Tag ref={ref as never} data-reveal className={className} style={{ ['--reveal-delay' as string]: `${delay}ms` }}>
+    <motion.div
+      className={className}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.15, margin: '0px 0px -8% 0px' }}
+      variants={variants}
+      transition={{ duration: 0.6, delay: delay / 1000, ease: [0.22, 1, 0.36, 1] }}
+    >
       {children}
-    </Tag>
+    </motion.div>
   );
 }

@@ -8,6 +8,7 @@ import { AuthProvider } from '@/components/auth-provider';
 import { HeaderAuth } from '@/components/header-auth';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { Logo } from '@/components/logo';
+import { SmoothScroll } from '@/components/smooth-scroll';
 import './globals.css';
 
 const sora = Sora({ subsets: ['latin'], variable: '--font-sora', display: 'swap' });
@@ -52,6 +53,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang={locale} className={`${sora.variable} ${inter.variable} ${mono.variable}`}>
       <body className="font-sans min-h-screen bg-bg bg-aurora-soft pb-20 md:pb-0">
         <NextIntlClientProvider locale={locale} messages={messages}>
+          <SmoothScroll />
           <AuthProvider>
             <header className="sticky top-0 z-40 border-b border-white/50 bg-white/70 backdrop-blur-xl">
               <div className="container-wide h-16 flex items-center justify-between gap-4">

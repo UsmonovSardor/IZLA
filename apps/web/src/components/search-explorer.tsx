@@ -59,6 +59,7 @@ export function SearchExplorer({ vendors }: Props) {
         {/* Ro'yxat */}
         <div
           ref={listRef}
+          data-lenis-prevent
           className={`${
             mobileView === 'map' ? 'hidden' : 'block'
           } lg:block lg:max-h-[calc(100dvh-8rem)] lg:overflow-y-auto lg:pr-2 -mr-2 space-y-3`}
@@ -76,6 +77,7 @@ export function SearchExplorer({ vendors }: Props) {
 
         {/* Xarita (desktopda sticky, mobil almashtirgichda) */}
         <div
+          data-lenis-prevent
           className={`${
             mobileView === 'list' ? 'hidden' : 'block'
           } lg:block lg:sticky lg:top-20 h-[calc(100dvh-11rem)] lg:h-[calc(100dvh-8rem)]`}
