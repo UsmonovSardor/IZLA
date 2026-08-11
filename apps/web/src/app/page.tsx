@@ -4,7 +4,6 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { api, type Category, type Vendor } from '@/lib/api';
 import { VendorCard } from '@/components/vendor-card';
 import { Reveal } from '@/components/reveal';
-import { HeroAurora } from '@/components/hero-aurora';
 import { RotatingWord } from '@/components/rotating-word';
 import { StatsRow, type Stat } from '@/components/stats-row';
 
@@ -52,12 +51,9 @@ export default async function HomePage() {
 
   return (
     <div>
-      {/* ===== HERO (aurora, full-bleed, split + marquee + jonli vizual) ===== */}
-      <section className="relative overflow-hidden bg-aurora">
-        {/* Animatsion aurora bloklar (scroll parallaks) */}
-        <HeroAurora />
-
-        <div className="container-wide relative z-10 py-14 md:py-20 lg:py-24">
+      {/* ===== HERO (ochiq fon + to'q banner — kafil uslubi) ===== */}
+      <section className="relative overflow-hidden bg-aurora-soft">
+        <div className="container-wide relative z-10 py-12 md:py-16 lg:py-20">
           {/* ===== YAGONA BANNER (kafil uslubi): video to'ldiradi, kontent chapda ustida blend ===== */}
           <div className="relative overflow-hidden rounded-[28px] border border-white/[0.12] bg-gradient-to-br from-[#0b1f3a] via-[#0c2338] to-[#0a2c31] shadow-[0_40px_100px_-30px_rgba(0,0,0,.85)] lg:min-h-[520px]">
             {/* Jonli video — butun bannerni to'ldiradi */}
@@ -71,9 +67,9 @@ export default async function HomePage() {
               preload="metadata"
               aria-hidden
             />
-            {/* Blend qatlamlari — matn o'qilishi uchun video qoraytiriladi */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0a1b30]/82 via-[#0a1b30]/85 to-[#0a1b30]/93 lg:hidden" aria-hidden />
-            <div className="absolute inset-0 hidden bg-gradient-to-r from-[#0a1b30] via-[#0a1b30] via-50% to-transparent lg:block" aria-hidden />
+            {/* Blend qatlamlari — yupqa (video ko'proq ko'rinadi), matn baribir o'qiladi */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#0a1b30]/72 via-[#0a1b30]/78 to-[#0a1b30]/90 lg:hidden" aria-hidden />
+            <div className="absolute inset-0 hidden bg-[linear-gradient(90deg,rgba(10,27,48,0.94)_0%,rgba(10,27,48,0.6)_40%,rgba(10,27,48,0.15)_62%,transparent_80%)] lg:block" aria-hidden />
             {/* Aurora urg'u */}
             <div className="pointer-events-none absolute -left-16 -top-16 h-72 w-72 rounded-full bg-brand/25 blur-3xl" aria-hidden />
             <div className="pointer-events-none absolute -bottom-12 left-1/3 h-64 w-64 rounded-full bg-teal/[0.18] blur-3xl" aria-hidden />
@@ -143,8 +139,8 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Stats (ixcham, ochiq shisha, count-up) */}
-          <StatsRow stats={stats} />
+          {/* Stats (ixcham, ochiq fon uchun oq kartalar, count-up) */}
+          <StatsRow stats={stats} light />
         </div>
       </section>
 

@@ -19,11 +19,18 @@ export type Stat = {
   numGrad: string;
 };
 
-/** Hero stat kartalari (Variant 1 — ixcham horizontal, ochiq shisha). Count-up + stagger. */
-export function StatsRow({ stats }: { stats: Stat[] }) {
+/** Hero stat kartalari (ixcham horizontal). Count-up + stagger.
+ *  `light` — ochiq fon uchun (oq kartalar, to'q matn); default to'q (shisha). */
+export function StatsRow({ stats, light = false }: { stats: Stat[]; light?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
   const reduce = useReducedMotion();
+
+  const cardCls = light
+    ? 'border border-line bg-white shadow-card hover:border-brand/30 hover:shadow-pop'
+    : 'border border-white/20 bg-white/[0.13] backdrop-blur-md hover:border-white/30 hover:bg-white/[0.18]';
+  const numCls = light ? 'text-ink' : 'text-white';
+  const labelCls = light ? 'text-slate2' : 'text-white/70';
 
   return (
     <div ref={ref} className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl">
@@ -35,7 +42,7 @@ export function StatsRow({ stats }: { stats: Stat[] }) {
             initial={reduce ? false : { opacity: 0, y: 16 }}
             animate={inView && !reduce ? { opacity: 1, y: 0 } : undefined}
             transition={{ duration: 0.45, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
-            className="group flex items-center gap-3 rounded-2xl border border-white/20 bg-white/[0.13] px-3.5 py-3 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/[0.18]"
+            className={`group flex items-center gap-3 rounded-2xl px-3.5 py-3 transition-all duration-300 hover:-translate-y-0.5 ${cardCls}`}
           >
             <div
               className="grid h-9 w-9 shrink-0 place-items-center rounded-xl shadow-md"
@@ -44,10 +51,10 @@ export function StatsRow({ stats }: { stats: Stat[] }) {
               <Icon className="h-[18px] w-[18px] text-white" />
             </div>
             <div className="min-w-0">
-              <div className="font-display text-[22px] font-bold leading-none text-white">
+              <div className={`font-display text-[22px] font-bold leading-none ${numCls}`}>
                 <CountUp value={s.value} active={inView} />
               </div>
-              <div className="mt-1 text-[13px] leading-tight text-white/70">{s.label}</div>
+              <div className={`mt-1 text-[13px] leading-tight ${labelCls}`}>{s.label}</div>
             </div>
           </motion.div>
         );
