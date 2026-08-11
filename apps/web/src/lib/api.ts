@@ -48,6 +48,7 @@ export const api = {
 export interface Category { id: string; slug: string; name: string; icon?: string; _count?: { vendors: number } }
 export interface Vendor {
   id: string; slug: string; name: string; description?: string; district?: string;
+  lat: number; lng: number; address?: string | null; phone?: string | null;
   rating: number; reviewCount: number; photos: string[]; verified: boolean;
   distanceKm?: number | null; category?: { slug: string; name: string; icon?: string };
 }

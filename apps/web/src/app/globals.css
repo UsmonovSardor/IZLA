@@ -57,6 +57,27 @@ body { background: #F6F8FC; color: #1E293B; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
+/* ===== MapLibre popup (premium vendor mini-karta) ===== */
+.izla-popup .maplibregl-popup-content {
+  padding: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 16px 50px rgba(15, 31, 51, .22);
+  border: 1px solid #E6EBF2;
+}
+.izla-popup .maplibregl-popup-tip { border-top-color: #fff; border-bottom-color: #fff; }
+.izla-pop { display: flex; gap: 10px; width: 250px; text-decoration: none; color: #0B1F33; }
+.izla-pop-img {
+  width: 84px; align-self: stretch; flex-shrink: 0;
+  background-size: cover; background-position: center; background-color: #F6F8FC;
+}
+.izla-pop-body { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px 10px 2px; min-width: 0; }
+.izla-pop-title { font-family: var(--font-sora), system-ui, sans-serif; font-weight: 600; font-size: 14px; line-height: 1.25; }
+.izla-pop-meta { font-size: 12px; color: #64748B; }
+.izla-pop-meta b { color: #F59E0B; font-weight: 700; }
+.izla-pop-cat { font-size: 12px; color: #64748B; }
+.izla-pop-link { margin-top: 4px; font-size: 12px; font-weight: 700; color: #2563EB; }
+
 /* ===== Brend logo animatsiyasi (pin-i) ===== */
 .izla-pin { transform-box: fill-box; transform-origin: 50% 60%; }
 .izla-ping { transform-box: fill-box; transform-origin: center; opacity: 0; pointer-events: none; }
