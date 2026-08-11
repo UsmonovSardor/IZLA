@@ -54,7 +54,8 @@ export const api = {
 
 export interface Category { id: string; slug: string; name: string; icon?: string; _count?: { vendors: number } }
 export interface FacetCategory { slug: string; name: string; icon?: string; count: number }
-export interface Facets { total: number; categories: FacetCategory[] }
+export interface PriceRange { min: number; max: number }
+export interface Facets { total: number; categories: FacetCategory[]; priceRange?: PriceRange | null }
 export interface Vendor {
   id: string; slug: string; name: string; description?: string; district?: string;
   lat: number; lng: number; address?: string | null; phone?: string | null;

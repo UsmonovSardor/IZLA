@@ -74,7 +74,9 @@
     "openNow": "Hozir ochiq",
     "near": "Menga yaqin",
     "locating": "Aniqlanmoqda…",
-    "geoError": "Joylashuv aniqlanmadi. Brauzerda ruxsat bering."
+    "geoError": "Joylashuv aniqlanmadi. Brauzerda ruxsat bering.",
+    "price": "Narx",
+    "som": "so‘m"
   },
   "hero": {
     "m1": "30 soniyada bron",

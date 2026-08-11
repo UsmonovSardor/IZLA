@@ -324,7 +324,34 @@ export class VendorsService {
       icon: r.icon ?? undefined,
       count: Number(r.count),
     }));
-    return { total: categories.reduce((s, c) => s + c.count, 0), categories };
+
+    // Narx slideri chegaralari — narx filtridan MUSTAQIL (aks holda slider o'zini
+    // qisqartiradi), lekin joriy kategoriya + boshqa filtrlar kontekstida.
+    const priceConds: Prisma.Sql[] = [Prisma.sql`v.status = 'ACTIVE'`, Prisma.sql`s.active = true`];
+    if (query.category) priceConds.push(Prisma.sql`c.slug = ${query.category}`);
+    if (query.district) priceConds.push(Prisma.sql`v.district = ${query.district}`);
+    if (query.verified) priceConds.push(Prisma.sql`v.verified = true`);
+    if (query.minRating != null) priceConds.push(Prisma.sql`v.rating >= ${query.minRating}`);
+    if (query.openNow) {
+      const { dayKey, minute } = tashkentNow();
+      priceConds.push(openNowSql(dayKey, minute));
+    }
+    if (query.radiusKm != null && query.lat != null && query.lng != null) {
+      priceConds.push(Prisma.sql`${haversineSqlKm(query.lat, query.lng)} <= ${query.radiusKm}`);
+    }
+    const [pr] = await this.prisma.$queryRaw<Array<{ min: number | null; max: number | null }>>(Prisma.sql`
+      SELECT MIN(s.price)::float AS min, MAX(s.price)::float AS max
+      FROM services s
+      JOIN vendors v ON v.id = s."vendorId"
+      JOIN categories c ON c.id = v."categoryId"
+      WHERE ${Prisma.join(priceConds, ' AND ')}
+    `);
+    const priceRange =
+      pr && pr.min != null && pr.max != null && pr.max > pr.min
+        ? { min: Math.floor(pr.min), max: Math.ceil(pr.max) }
+        : null;
+
+    return { total: categories.reduce((s, c) => s + c.count, 0), categories, priceRange };
   }
 
   async detail(slug: string, lang: Lang = 'uz') {

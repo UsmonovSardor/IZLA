@@ -3,12 +3,13 @@ import { useState } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Check, Clock, LocateFixed, Star, X } from 'lucide-react';
-import type { FacetCategory } from '@/lib/api';
+import type { FacetCategory, PriceRange } from '@/lib/api';
+import { PriceRangeFilter } from './price-range';
 
 const RADII = [1, 3, 5, 10] as const;
 
 /** Qidiruv filtr paneli — kategoriya facets (count bilan) + sort + verified + reyting. URL param'lar bilan. */
-export function SearchFilters({ categories }: { categories: FacetCategory[] }) {
+export function SearchFilters({ categories, priceRange }: { categories: FacetCategory[]; priceRange?: PriceRange | null }) {
   const router = useRouter();
   const params = useSearchParams();
   const pathname = usePathname();
@@ -71,7 +72,8 @@ export function SearchFilters({ categories }: { categories: FacetCategory[] }) {
     router.push(`${pathname}${p.toString() ? `?${p}` : ''}`, { scroll: false });
   }
 
-  const hasFilters = !!(activeCat || verified || openNow || near || minRating || sort);
+  const hasPrice = !!(params.get('priceMin') || params.get('priceMax'));
+  const hasFilters = !!(activeCat || verified || openNow || near || minRating || hasPrice || sort);
   const chip = (on: boolean) =>
     `inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition ${
       on ? 'border-brand bg-brand text-white shadow-sm' : 'border-line bg-surface text-ink hover:border-brand/40 hover:bg-brand-50'
@@ -150,6 +152,13 @@ export function SearchFilters({ categories }: { categories: FacetCategory[] }) {
       </div>
 
       {geoError && <p className="text-xs text-danger">{t('geoError')}</p>}
+
+      {/* Narx oralig'i slideri */}
+      {priceRange && priceRange.max > priceRange.min && (
+        <div className="max-w-sm">
+          <PriceRangeFilter bounds={priceRange} />
+        </div>
+      )}
     </div>
   );
 }
