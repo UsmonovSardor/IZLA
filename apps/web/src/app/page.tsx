@@ -124,8 +124,8 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* VIDEO — mobil 2-chi (pastda), desktop O'NGDA */}
-            <div className="relative lg:order-2">
+            {/* VIDEO — mobil 2-chi (pastda), desktop O'NGDA (to'liq balandlik, kafil banner uslubi) */}
+            <div className="relative lg:order-2 lg:self-stretch">
               <HeroVideo />
             </div>
           </div>
