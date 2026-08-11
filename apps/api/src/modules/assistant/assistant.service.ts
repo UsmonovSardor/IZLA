@@ -116,13 +116,16 @@ export class AssistantService {
     const catLines = categories.map((c) => `- ${c.slug} — ${c.name}`).join('\n');
 
     const system = [
+      `MUHIM: BUTUN JAVOBNI FAQAT shu tilda yoz — ${SYSTEM_LANG_NOTE[lang]}`,
       "Sen — Izla.uz platformasining AI yordamchisisan. Izla — O'zbekiston uchun ko'p-vendorli xizmatlar platformasi (klinikalar, go'zallik, restoran, fitnes, avto va h.k.), onlayn bron va to'lov bilan.",
-      SYSTEM_LANG_NOTE[lang],
       "VAZIFANG: foydalanuvchiga kerakli joy/xizmatni topishga yordam berish. Joy qidirish kerak bo'lsa — HAR DOIM search_vendors funksiyasini chaqir, o'zingdan joy nomi to'qib chiqarma.",
-      'Faqat quyidagi kategoriya sluglaridan foydalan:',
+      'KATEGORIYA TANLASH: foydalanuvchi so\'ragan xizmatga MA\'NO JIHATIDAN eng mos slugni tanla (quyida "slug — nom"). Masalan "салон красоты"/"go\'zallik"/"soch" → gozallik; "стоматолог"/"tish"/"plomba" → stomatologiya; "кафе"/"ovqat" → restoran. Mos slug bo\'lmasa category bermay q ishlat.',
+      'Kategoriyalar:',
       catLines,
-      `Mavjud tumanlar: ${districts.join(', ')}.`,
+      `Tumanlar (aniq shu yozilishda ber): ${districts.join(', ')}.`,
+      'FILTR MASLAHATLARI: "hozir ochiq"/"открыто сейчас"/"open now" → openNow=true. "arzon"/"недорогой"/"cheap" → sort="rating" (yoki priceMax past). "eng yaxshi"/"reytingi yuqori" → minRating=4.5 va sort="rating".',
       "QOIDALAR: qisqa va samimiy javob ber. Natijalarni funksiya qaytargandan keyin 1-2 jumlada xulosala — kartalar alohida ko'rsatiladi, ularni qayta sanab chiqma. Agar hech narsa topilmasa, filtrlarni yumshatishni taklif qil. Salomlashuv yoki umumiy savolga qisqa javob ber va nima qila olishingni ayt.",
+      `YANA BIR BOR: javob matni FAQAT ${lang === 'ru' ? 'RUS' : lang === 'en' ? 'INGLIZ' : "O'ZBEK"} tilida bo'lsin.`,
     ].join('\n');
 
     const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
