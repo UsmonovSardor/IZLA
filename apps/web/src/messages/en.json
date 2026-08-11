@@ -66,6 +66,18 @@
     "map": "Map",
     "empty": "Nothing found or the API is down."
   },
+  "hero": {
+    "m1": "Book in 30 seconds",
+    "m2": "Find the nearest on the map",
+    "m3": "Secure payment — Payme & Click",
+    "m4": "50+ verified places",
+    "m5": "Online 24/7",
+    "lookingFor": "What do you need today?",
+    "ctaMap": "View on map",
+    "trustVerified": "Verified places",
+    "trustSecure": "Secure payment",
+    "trustOnline": "Online 24/7"
+  },
   "vendor": {
     "services": "Services",
     "reviewsTitle": "Reviews ({count})",

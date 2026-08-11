@@ -1,10 +1,13 @@
 import Link from 'next/link';
-import { Search, Sparkles, ArrowRight, Send } from 'lucide-react';
+import { Search, Sparkles, ArrowRight, Send, BadgeCheck, ShieldCheck, Clock, MapPin } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { api, type Category, type Vendor } from '@/lib/api';
 import { VendorCard } from '@/components/vendor-card';
 import { Reveal } from '@/components/reveal';
 import { HeroAurora } from '@/components/hero-aurora';
+import { HeroMarquee } from '@/components/hero-marquee';
+import { HeroVisual } from '@/components/hero-visual';
+import { RotatingWord } from '@/components/rotating-word';
 import { StatsRow, type Stat } from '@/components/stats-row';
 
 export const dynamic = 'force-dynamic';
@@ -30,6 +33,7 @@ export default async function HomePage() {
   const locale = await getLocale();
   const t = await getTranslations('home');
   const tc = await getTranslations('common');
+  const th = await getTranslations('hero');
   const allLabel = tc('all');
 
   const [categories, topVendors, restoran, gozallik] = await Promise.all([
@@ -38,6 +42,8 @@ export default async function HomePage() {
     safe<Vendor[]>(api.vendors('?category=restoran&sort=rating', locale), []),
     safe<Vendor[]>(api.vendors('?category=gozallik&sort=rating', locale), []),
   ]);
+
+  const rotatingWords = categories.slice(0, 6).map((c) => c.name);
 
   const stats: Stat[] = [
     { iconKey: 'pin', value: `${topVendors.length || 50}+`, label: t('statPlaces'), from: '#2563EB', to: '#14B8A6', numGrad: 'linear-gradient(120deg,#5eead4,#ffffff)' },
@@ -48,44 +54,58 @@ export default async function HomePage() {
 
   return (
     <div>
-      {/* ===== HERO (aurora, full-bleed) ===== */}
+      {/* ===== HERO (aurora, full-bleed, split + marquee + jonli vizual) ===== */}
       <section className="relative overflow-hidden bg-aurora">
         {/* Animatsion aurora bloklar (scroll parallaks) */}
         <HeroAurora />
 
-        <div className="container-wide relative z-10 py-20 md:py-28 lg:py-32">
-          <div className="max-w-3xl">
-            <span className="chip bg-white/10 text-white/90 border border-white/20 animate-fade-up">
-              <Sparkles className="h-3.5 w-3.5 text-teal-400" /> {t('badge')}
-            </span>
-            <h1 className="mt-5 font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] text-white animate-fade-up">
-              {t('titleA')}{' '}
-              <span className="bg-gradient-to-r from-teal-400 via-white to-brand-100 bg-clip-text text-transparent">
-                {t('titleB')}
+        {/* Qiymat-taklif lentasi */}
+        <div className="relative z-20">
+          <HeroMarquee />
+        </div>
+
+        <div className="container-wide relative z-10 py-14 md:py-20 lg:py-24">
+          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+            {/* CHAP — kontent */}
+            <div className="max-w-2xl">
+              <span className="chip bg-white/10 text-white/90 border border-white/20 animate-fade-up">
+                <Sparkles className="h-3.5 w-3.5 text-teal-400" /> {t('badge')}
               </span>
-            </h1>
-            <p className="mt-5 text-lg text-white/80 max-w-2xl animate-fade-up">{t('subtitle')}</p>
+              <h1 className="mt-5 font-display text-4xl sm:text-5xl lg:text-[3.4rem] font-bold leading-[1.05] text-white animate-fade-up">
+                {t('titleA')}{' '}
+                <span className="bg-gradient-to-r from-teal-400 via-white to-brand-100 bg-clip-text text-transparent">
+                  {t('titleB')}
+                </span>
+              </h1>
+              <p className="mt-5 text-lg text-white/80 animate-fade-up">{t('subtitle')}</p>
 
-            {/* Qidiruv (glass) */}
-            <form
-              action="/qidiruv"
-              className="mt-8 flex items-center gap-2 rounded-2xl bg-white p-2 shadow-pop max-w-2xl animate-fade-up"
-            >
-              <Search className="ml-3 h-5 w-5 text-slate2" />
-              <input
-                name="q"
-                placeholder={t('searchPlaceholder')}
-                className="flex-1 bg-transparent px-1 py-2.5 text-ink outline-none placeholder:text-slate2"
-              />
-              <button className="rounded-xl bg-brand px-6 py-3 text-sm font-semibold text-white shadow-glow transition hover:bg-brand-700">
-                {t('searchBtn')}
-              </button>
-            </form>
+              {/* Aylanuvchi kategoriya so'zi */}
+              <p className="mt-5 flex items-center gap-2 text-white/70 animate-fade-up">
+                <span>{th('lookingFor')}</span>
+                <span className="font-display text-xl font-bold">
+                  <RotatingWord words={rotatingWords} />
+                </span>
+              </p>
 
-            {/* Tezkor kategoriya piluslari */}
-            {categories.length > 0 && (
-              <div className="mt-5 flex flex-wrap gap-2 animate-fade-up">
-                {categories.slice(0, 7).map((c) => (
+              {/* Qidiruv (glass) */}
+              <form
+                action="/qidiruv"
+                className="mt-6 flex items-center gap-2 rounded-2xl bg-white p-2 shadow-pop max-w-xl animate-fade-up"
+              >
+                <Search className="ml-3 h-5 w-5 text-slate2" />
+                <input
+                  name="q"
+                  placeholder={t('searchPlaceholder')}
+                  className="min-w-0 flex-1 bg-transparent px-1 py-2.5 text-ink outline-none placeholder:text-slate2"
+                />
+                <button className="shrink-0 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white shadow-glow transition hover:bg-brand-700">
+                  {t('searchBtn')}
+                </button>
+              </form>
+
+              {/* Tezkor kategoriya piluslari + xarita CTA */}
+              <div className="mt-5 flex flex-wrap items-center gap-2 animate-fade-up">
+                {categories.slice(0, 6).map((c) => (
                   <Link
                     key={c.id}
                     href={`/qidiruv?category=${c.slug}`}
@@ -94,11 +114,29 @@ export default async function HomePage() {
                     <span>{c.icon}</span> {c.name}
                   </Link>
                 ))}
+                <Link
+                  href="/qidiruv"
+                  className="chip border border-white/25 bg-transparent font-semibold text-white transition hover:bg-white/10"
+                >
+                  <MapPin className="h-3.5 w-3.5 text-teal-400" /> {th('ctaMap')}
+                </Link>
               </div>
-            )}
+
+              {/* Ishonch chiplari */}
+              <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/70">
+                <span className="inline-flex items-center gap-1.5"><BadgeCheck className="h-4 w-4 text-teal-400" /> {th('trustVerified')}</span>
+                <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-teal-400" /> {th('trustSecure')}</span>
+                <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4 text-teal-400" /> {th('trustOnline')}</span>
+              </div>
+            </div>
+
+            {/* O'NG — jonli vizual */}
+            <div className="relative hidden lg:block">
+              <HeroVisual />
+            </div>
           </div>
 
-          {/* Stats (Variant A — frosted glass + gradient, count-up) */}
+          {/* Stats (ixcham, ochiq shisha, count-up) */}
           <StatsRow stats={stats} />
         </div>
       </section>

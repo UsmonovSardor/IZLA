@@ -66,6 +66,18 @@
     "map": "Xarita",
     "empty": "Hech narsa topilmadi yoki API ishga tushmagan."
   },
+  "hero": {
+    "m1": "30 soniyada bron",
+    "m2": "Xaritadan eng yaqinini toping",
+    "m3": "Xavfsiz to'lov — Payme va Click",
+    "m4": "50+ tekshirilgan joy",
+    "m5": "24/7 online xizmat",
+    "lookingFor": "Bugun nima kerak?",
+    "ctaMap": "Xaritada ko'rish",
+    "trustVerified": "Tekshirilgan joylar",
+    "trustSecure": "Xavfsiz to'lov",
+    "trustOnline": "24/7 online"
+  },
   "vendor": {
     "services": "Xizmatlar",
     "reviewsTitle": "Sharhlar ({count})",
