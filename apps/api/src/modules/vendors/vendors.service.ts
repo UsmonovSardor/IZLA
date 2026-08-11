@@ -113,8 +113,8 @@ export class VendorsService {
 
   /**
    * Intellektual qidiruv — Postgres full-text (tsvector/websearch_to_tsquery) + ko'p-maydon
-   * (nom, tavsif, tuman, kategoriya uz/ru/en, xizmatlar nomi) + ILIKE recall + ranking (ts_rank + rating).
-   * Relevantlik bo'yicha tartiblangan vendor id'larini qaytaradi. pg_trgm SHART EMAS (core FTS).
+   * (nom, tavsif, tuman, kategoriya uz/ru/en, xizmatlar nomi) + pg_trgm typo-tolerantlik
+   * (similarity/word_similarity) + ILIKE recall + ranking. Relevantlik bo'yicha tartiblangan id'lar.
    */
   private async searchIds(query: VendorQuery, take: number): Promise<string[]> {
     const term = query.q!.trim();
@@ -152,9 +152,12 @@ export class VendorsService {
       SELECT id FROM scored
       WHERE to_tsvector('simple', doc) @@ websearch_to_tsquery('simple', ${term})
          OR doc ILIKE ${like}
+         OR word_similarity(${term}, doc) > 0.4
       ORDER BY (
         ts_rank(to_tsvector('simple', doc), websearch_to_tsquery('simple', ${term})) * 4
-        + (CASE WHEN vname ILIKE ${like} THEN 2 ELSE 0 END)
+        + similarity(vname, ${term}) * 3
+        + word_similarity(${term}, doc) * 2
+        + (CASE WHEN vname ILIKE ${like} THEN 1.5 ELSE 0 END)
         + rating / 5.0
       ) DESC
       LIMIT ${take}
@@ -180,10 +183,12 @@ export class VendorsService {
         AND (
           v.name ILIKE ${like}
           OR c.name ILIKE ${like}
+          OR word_similarity(${t}, v.name) > 0.4
           OR to_tsvector('simple', coalesce(v.name, '') || ' ' || coalesce(v.description, '')) @@ websearch_to_tsquery('simple', ${t})
         )
       ORDER BY (
         (CASE WHEN v.name ILIKE ${prefix} THEN 3 WHEN v.name ILIKE ${like} THEN 2 ELSE 0 END)
+        + similarity(v.name, ${t}) * 2
         + v.rating / 5.0
       ) DESC
       LIMIT ${take}
