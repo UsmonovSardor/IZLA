@@ -6,7 +6,7 @@ import { VendorCard } from '@/components/vendor-card';
 import { Reveal } from '@/components/reveal';
 import { HeroAurora } from '@/components/hero-aurora';
 import { HeroMarquee } from '@/components/hero-marquee';
-import { HeroVisual } from '@/components/hero-visual';
+import { HeroVideo } from '@/components/hero-video';
 import { RotatingWord } from '@/components/rotating-word';
 import { StatsRow, type Stat } from '@/components/stats-row';
 
@@ -65,9 +65,9 @@ export default async function HomePage() {
         </div>
 
         <div className="container-wide relative z-10 py-14 md:py-20 lg:py-24">
-          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-            {/* CHAP — kontent */}
-            <div className="max-w-2xl">
+          <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
+            {/* KONTENT — mobil 1-chi, desktop O'NGDA */}
+            <div className="max-w-2xl lg:order-2">
               <span className="chip bg-white/10 text-white/90 border border-white/20 animate-fade-up">
                 <Sparkles className="h-3.5 w-3.5 text-teal-400" /> {t('badge')}
               </span>
@@ -130,9 +130,9 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* O'NG — jonli vizual */}
-            <div className="relative hidden lg:block">
-              <HeroVisual />
+            {/* VIDEO — mobil 2-chi (pastda), desktop CHAPDA */}
+            <div className="relative lg:order-1">
+              <HeroVideo />
             </div>
           </div>
 
