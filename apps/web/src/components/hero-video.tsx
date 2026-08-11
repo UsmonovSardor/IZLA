@@ -1,7 +1,7 @@
 /** Hero jonli video (izla.mp4) — shisha ramka + aurora yog'du, avto-play loop muted. */
 export function HeroVideo() {
   return (
-    <div className="relative mx-auto w-full max-w-xl">
+    <div className="relative mx-auto w-full max-w-md lg:mr-0 lg:ml-auto">
       {/* Orqa aurora yog'du */}
       <div
         className="pointer-events-none absolute -inset-4 -z-10 rounded-[36px] bg-gradient-to-br from-brand/25 via-violet/10 to-teal/25 blur-2xl"

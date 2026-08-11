@@ -24,7 +24,7 @@ export function HeroMarquee() {
     </div>
   );
   return (
-    <div className="marquee-mask relative flex overflow-hidden border-b border-white/10 bg-white/[0.04] py-2.5">
+    <div className="marquee-mask relative flex overflow-hidden border-b border-white/10 bg-gradient-to-r from-[#091627] via-[#12294a] to-[#091627] py-2">
       {row}
       {row}
     </div>

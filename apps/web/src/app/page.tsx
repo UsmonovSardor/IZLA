@@ -5,7 +5,6 @@ import { api, type Category, type Vendor } from '@/lib/api';
 import { VendorCard } from '@/components/vendor-card';
 import { Reveal } from '@/components/reveal';
 import { HeroAurora } from '@/components/hero-aurora';
-import { HeroMarquee } from '@/components/hero-marquee';
 import { HeroVideo } from '@/components/hero-video';
 import { RotatingWord } from '@/components/rotating-word';
 import { StatsRow, type Stat } from '@/components/stats-row';
@@ -58,11 +57,6 @@ export default async function HomePage() {
       <section className="relative overflow-hidden bg-aurora">
         {/* Animatsion aurora bloklar (scroll parallaks) */}
         <HeroAurora />
-
-        {/* Qiymat-taklif lentasi */}
-        <div className="relative z-20">
-          <HeroMarquee />
-        </div>
 
         <div className="container-wide relative z-10 py-14 md:py-20 lg:py-24">
           <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">

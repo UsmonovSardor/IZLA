@@ -6,6 +6,7 @@ import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import { Search, Home, Sparkles, User } from 'lucide-react';
 import { AuthProvider } from '@/components/auth-provider';
 import { HeaderAuth } from '@/components/header-auth';
+import { HeroMarquee } from '@/components/hero-marquee';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { Logo } from '@/components/logo';
 import { SmoothScroll } from '@/components/smooth-scroll';
@@ -55,6 +56,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <NextIntlClientProvider locale={locale} messages={messages}>
           <SmoothScroll />
           <AuthProvider>
+            {/* Qiymat-taklif lentasi — eng tepada (navbar'dan yuqorida), kafil uslubi */}
+            <HeroMarquee />
+
             <header className="sticky top-0 z-40 border-b border-white/50 bg-white/70 backdrop-blur-xl">
               <div className="container-wide h-16 flex items-center justify-between gap-4">
                 <Link href="/" aria-label="Izla.uz" className="shrink-0">
