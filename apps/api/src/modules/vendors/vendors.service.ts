@@ -91,9 +91,9 @@ export class VendorsService {
     return this.shape(vendors, query, lang);
   }
 
-  /** Lokalizatsiya + masofa hisoblash + (kerak bo'lsa) masofa bo'yicha saralash. */
+  /** Lokalizatsiya + masofa hisoblash + (kerak bo'lsa) saralash (masofa/reyting). */
   private shape<
-    T extends { lat: number; lng: number; category: { name: string; nameRu?: string | null; nameEn?: string | null } | null },
+    T extends { lat: number; lng: number; rating: number; category: { name: string; nameRu?: string | null; nameEn?: string | null } | null },
   >(vendors: T[], query: VendorQuery, lang: Lang) {
     let result = vendors.map((v) =>
       localizeCategory(
@@ -107,6 +107,8 @@ export class VendorsService {
     );
     if (query.sort === 'distance' && query.lat != null && query.lng != null) {
       result = result.sort((a, b) => (a.distanceKm ?? 1e9) - (b.distanceKm ?? 1e9));
+    } else if (query.sort === 'rating') {
+      result = result.sort((a, b) => b.rating - a.rating);
     }
     return result;
   }
@@ -202,6 +204,61 @@ export class VendorsService {
       icon: r.icon ?? undefined,
       category: localizedName({ name: r.categoryName, nameRu: r.categoryNameRu, nameEn: r.categoryNameEn }, lang),
     }));
+  }
+
+  /**
+   * Facets — joriy so'rov+filtrlar (KATEGORIYADAN tashqari) bo'yicha kategoriya sanoqlari.
+   * Foydalanuvchi kategoriyalar orasida almashtira olishi uchun kategoriya filtri hisobga olinmaydi.
+   */
+  async facets(query: VendorQuery) {
+    const lang: Lang = query.lang ?? 'uz';
+    const term = query.q?.trim();
+    const like = term ? `%${term}%` : '';
+
+    const conds: Prisma.Sql[] = [Prisma.sql`v.status = 'ACTIVE'`];
+    if (query.district) conds.push(Prisma.sql`v.district = ${query.district}`);
+    if (query.verified) conds.push(Prisma.sql`v.verified = true`);
+    if (query.minRating != null) conds.push(Prisma.sql`v.rating >= ${query.minRating}`);
+    if (query.priceMin != null) conds.push(Prisma.sql`svc.min_price >= ${query.priceMin}`);
+    if (query.priceMax != null) conds.push(Prisma.sql`svc.max_price <= ${query.priceMax}`);
+    const where = Prisma.join(conds, ' AND ');
+
+    const textMatch = term
+      ? Prisma.sql`(to_tsvector('simple', doc) @@ websearch_to_tsquery('simple', ${term}) OR doc ILIKE ${like} OR word_similarity(${term}, doc) > 0.4)`
+      : Prisma.sql`TRUE`;
+
+    const rows = await this.prisma.$queryRaw<
+      Array<{ slug: string; name: string; nameRu: string | null; nameEn: string | null; icon: string | null; count: number }>
+    >(Prisma.sql`
+      WITH svc AS (
+        SELECT "vendorId", string_agg(name, ' ') AS service_names, MIN(price) AS min_price, MAX(price) AS max_price
+        FROM services WHERE active = true GROUP BY "vendorId"
+      ),
+      docs AS (
+        SELECT v.id, v."categoryId",
+          (coalesce(v.name, '') || ' ' || coalesce(v.description, '') || ' ' || coalesce(v.district, '') || ' ' ||
+           coalesce(c.name, '') || ' ' || coalesce(c."nameRu", '') || ' ' || coalesce(c."nameEn", '') || ' ' ||
+           coalesce(svc.service_names, '')) AS doc
+        FROM vendors v
+        JOIN categories c ON c.id = v."categoryId"
+        LEFT JOIN svc ON svc."vendorId" = v.id
+        WHERE ${where}
+      ),
+      matched AS ( SELECT id, "categoryId" FROM docs WHERE ${textMatch} )
+      SELECT c.slug, c.name, c."nameRu" AS "nameRu", c."nameEn" AS "nameEn", c.icon, COUNT(m.id)::int AS count
+      FROM categories c
+      JOIN matched m ON m."categoryId" = c.id
+      GROUP BY c.id, c.slug, c.name, c."nameRu", c."nameEn", c.icon, c."sortOrder"
+      ORDER BY count DESC, c."sortOrder" ASC
+    `);
+
+    const categories = rows.map((r) => ({
+      slug: r.slug,
+      name: localizedName({ name: r.name, nameRu: r.nameRu, nameEn: r.nameEn }, lang),
+      icon: r.icon ?? undefined,
+      count: Number(r.count),
+    }));
+    return { total: categories.reduce((s, c) => s + c.count, 0), categories };
   }
 
   async detail(slug: string, lang: Lang = 'uz') {

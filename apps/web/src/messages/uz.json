@@ -64,7 +64,13 @@
     "found": "{count} ta joy topildi",
     "list": "Ro'yxat",
     "map": "Xarita",
-    "empty": "Hech narsa topilmadi yoki API ishga tushmagan."
+    "empty": "Hech narsa topilmadi yoki API ishga tushmagan.",
+    "allCategories": "Barchasi",
+    "sortRelevance": "Muvofiqlik",
+    "sortRating": "Reyting",
+    "verified": "Tasdiqlangan",
+    "clear": "Tozalash",
+    "filtersTitle": "Filtrlar"
   },
   "hero": {
     "m1": "30 soniyada bron",

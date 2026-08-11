@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from 'next-intl/server';
-import { api, type Vendor } from '@/lib/api';
+import { api, type Vendor, type Facets } from '@/lib/api';
 import { SearchExplorer } from '@/components/search-explorer';
+import { SearchFilters } from '@/components/search-filters';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -10,20 +11,31 @@ export function generateMetadata(): Metadata {
   return { alternates: { canonical: '/qidiruv' } };
 }
 
+const FILTER_KEYS = ['category', 'q', 'district', 'verified', 'minRating', 'priceMin', 'priceMax'] as const;
+
 export default async function SearchPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const sp = await searchParams;
   const locale = await getLocale();
   const t = await getTranslations('search');
 
-  const qs = new URLSearchParams();
-  if (sp.category) qs.set('category', sp.category);
-  if (sp.q) qs.set('q', sp.q);
-  if (sp.district) qs.set('district', sp.district);
-  qs.set('sort', 'rating');
+  // Ro'yxat uchun — barcha filtrlar + sort
+  const listQs = new URLSearchParams();
+  for (const k of FILTER_KEYS) if (sp[k]) listQs.set(k, sp[k]);
+  // Sort: aniq berilsa — o'sha; aks holda q bo'lsa relevance (sort'siz), bo'lmasa rating
+  const sort = sp.sort || (sp.q ? '' : 'rating');
+  if (sort) listQs.set('sort', sort);
+
+  // Facets uchun — kategoriyadan tashqari barcha filtrlar
+  const facetQs = new URLSearchParams();
+  for (const k of FILTER_KEYS) if (k !== 'category' && sp[k]) facetQs.set(k, sp[k]);
 
   let vendors: Vendor[] = [];
+  let facets: Facets = { total: 0, categories: [] };
   try {
-    vendors = await api.vendors(`?${qs.toString()}`, locale);
+    [vendors, facets] = await Promise.all([
+      api.vendors(`?${listQs.toString()}`, locale),
+      api.facets(facetQs.toString() ? `?${facetQs.toString()}` : '', locale),
+    ]);
   } catch {
     vendors = [];
   }
@@ -31,10 +43,9 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   return (
     <div>
       <h1 className="font-display text-2xl font-bold text-navy mb-1">{t('title')}</h1>
-      <p className="text-slate2 text-sm mb-6">
-        {t('found', { count: vendors.length })}
-        {sp.category ? ` · ${sp.category}` : ''}
-      </p>
+      <p className="text-slate2 text-sm mb-5">{t('found', { count: vendors.length })}</p>
+
+      <SearchFilters categories={facets.categories} />
       <SearchExplorer vendors={vendors} />
     </div>
   );

@@ -37,6 +37,7 @@ export const api = {
   categories: (lang?: string) => get<Category[]>(withLang('/categories', lang)),
   vendors: (qs = '', lang?: string) => get<Vendor[]>(withLang(`/vendors${qs}`, lang)),
   vendor: (slug: string, lang?: string) => get<VendorDetail>(withLang(`/vendors/${slug}`, lang)),
+  facets: (qs = '', lang?: string) => get<Facets>(withLang(`/vendors/facets${qs}`, lang)),
   properties: (qs = '') => get<Property[]>(`/properties${qs}`),
   property: (id: string) => get<PropertyDetail>(`/properties/${id}`),
   availability: (serviceId: string, date: string) =>
@@ -52,6 +53,8 @@ export const api = {
 };
 
 export interface Category { id: string; slug: string; name: string; icon?: string; _count?: { vendors: number } }
+export interface FacetCategory { slug: string; name: string; icon?: string; count: number }
+export interface Facets { total: number; categories: FacetCategory[] }
 export interface Vendor {
   id: string; slug: string; name: string; description?: string; district?: string;
   lat: number; lng: number; address?: string | null; phone?: string | null;
