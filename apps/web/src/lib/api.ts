@@ -2,8 +2,16 @@ import { authFetch } from './auth';
 
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
-async function get<T>(path: string): Promise<T> {
-  const res = await fetch(`${BASE}${path}`, { cache: 'no-store' });
+/**
+ * Ochiq GET. `revalidate` (soniya) berilsa — Next ISR keshi (katalog uchun: tez
+ * TTFB, masshtab). Berilmasa — no-store (har doim yangi; foydalanuvchiga bog'liq
+ * yoki tez o'zgaruvchi ma'lumot uchun).
+ */
+async function get<T>(path: string, revalidate?: number): Promise<T> {
+  const res = await fetch(
+    `${BASE}${path}`,
+    revalidate != null ? { next: { revalidate } } : { cache: 'no-store' },
+  );
   if (!res.ok) throw new Error(`API ${path} → ${res.status}`);
   return res.json() as Promise<T>;
 }
@@ -45,15 +53,17 @@ function withLang(qs: string, lang?: string): string {
 }
 
 export const api = {
-  categories: (lang?: string) => get<Category[]>(withLang('/categories', lang)),
-  vendors: (qs = '', lang?: string) => get<Vendor[]>(withLang(`/vendors${qs}`, lang)),
-  vendor: (slug: string, lang?: string) => get<VendorDetail>(withLang(`/vendors/${slug}`, lang)),
-  facets: (qs = '', lang?: string) => get<Facets>(withLang(`/vendors/facets${qs}`, lang)),
-  assistantStatus: () => get<{ enabled: boolean }>('/assistant/status'),
+  // --- Ommaviy katalog (ISR keshlangan — kam o'zgaradi, tez TTFB) ---
+  categories: (lang?: string) => get<Category[]>(withLang('/categories', lang), 300),
+  vendors: (qs = '', lang?: string) => get<Vendor[]>(withLang(`/vendors${qs}`, lang), 60),
+  vendor: (slug: string, lang?: string) => get<VendorDetail>(withLang(`/vendors/${slug}`, lang), 120),
+  facets: (qs = '', lang?: string) => get<Facets>(withLang(`/vendors/facets${qs}`, lang), 120),
+  assistantStatus: () => get<{ enabled: boolean }>('/assistant/status', 300),
   assistantChat: (messages: ChatTurn[], lang?: string) =>
     post<AssistantReply>('/assistant/chat', { messages, lang }),
-  properties: (qs = '') => get<Property[]>(`/properties${qs}`),
-  property: (id: string) => get<PropertyDetail>(`/properties/${id}`),
+  properties: (qs = '') => get<Property[]>(`/properties${qs}`, 120),
+  property: (id: string) => get<PropertyDetail>(`/properties/${id}`, 120),
+  // Slotlar tez o'zgaradi (bron bo'ladi) — har doim yangi.
   availability: (serviceId: string, date: string) =>
     get<Availability>(`/bookings/availability?serviceId=${encodeURIComponent(serviceId)}&date=${date}`),
   createBooking: (body: { serviceId: string; slotStart: string; note?: string }) =>
