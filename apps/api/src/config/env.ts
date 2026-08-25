@@ -49,3 +49,27 @@ const schema = z.object({
 
 export const env = schema.parse(process.env);
 export type Env = z.infer<typeof schema>;
+
+/**
+ * Prod'da xavfsizlik darvozasi — jarayon boshlanishida (bootstrap) chaqiriladi.
+ * Zaif/default sirlar bilan production ishga tushishini QAT'IY bloklaydi.
+ */
+export function assertProductionSafety(): void {
+  if (env.NODE_ENV !== 'production') return;
+  const errors: string[] = [];
+  if (!env.JWT_ACCESS_SECRET || env.JWT_ACCESS_SECRET === 'dev-access' || env.JWT_ACCESS_SECRET.length < 24)
+    errors.push('JWT_ACCESS_SECRET zaif/default — kamida 24 belgili maxfiy qiymat bering');
+  if (!env.JWT_REFRESH_SECRET || env.JWT_REFRESH_SECRET === 'dev-refresh' || env.JWT_REFRESH_SECRET.length < 24)
+    errors.push('JWT_REFRESH_SECRET zaif/default — kamida 24 belgili maxfiy qiymat bering');
+  if (env.JWT_ACCESS_SECRET === env.JWT_REFRESH_SECRET)
+    errors.push('JWT_ACCESS_SECRET va JWT_REFRESH_SECRET bir xil bo‘lmasin');
+  if (!env.COOKIE_SECURE)
+    errors.push('COOKIE_SECURE=true bo‘lishi shart (cross-site httpOnly cookie)');
+  if (env.CORS_ORIGIN.split(',').some((o) => o.includes('localhost')))
+    errors.push('CORS_ORIGIN prod domenlari bo‘lishi kerak (localhost emas)');
+  if (errors.length) {
+    throw new Error(
+      'PRODUCTION XAVFSIZLIK TEKSHIRUVI MUVAFFAQIYATSIZ:\n  - ' + errors.join('\n  - '),
+    );
+  }
+}

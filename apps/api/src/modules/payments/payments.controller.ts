@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
+import { SkipThrottle } from '@nestjs/throttler';
 import { PaymentsService } from './payments.service';
 import { PaymeService } from './payme/payme.service';
 import { ClickService } from './click/click.service';
@@ -54,6 +55,7 @@ export class PaymentsController {
   // ---------- Payme Merchant API (ochiq, Basic-auth) ----------
 
   @Post('payme')
+  @SkipThrottle()
   @ApiExcludeEndpoint()
   async paymeCallback(
     @Headers('authorization') auth: string | undefined,
@@ -73,12 +75,14 @@ export class PaymentsController {
   // ---------- Click SHOP API (ochiq, imzo tekshiruvi ichida) ----------
 
   @Post('click/prepare')
+  @SkipThrottle()
   @ApiExcludeEndpoint()
   clickPrepare(@Body() body: Record<string, string>) {
     return this.click.prepare(body);
   }
 
   @Post('click/complete')
+  @SkipThrottle()
   @ApiExcludeEndpoint()
   clickComplete(@Body() body: Record<string, string>) {
     return this.click.complete(body);
