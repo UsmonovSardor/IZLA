@@ -266,5 +266,308 @@
     "error": "Something went wrong. Please try again later.",
     "allResults": "All results",
     "thinking": "Searching…"
+  },
+  "vendorPage": {
+    "hero": {
+      "book": "Book appointment",
+      "call": "Call",
+      "basedOn": "Based on {count} reviews",
+      "established": "Since {year}",
+      "verified": "Verified"
+    },
+    "sections": {
+      "servicesSub": "Services & pricing",
+      "whyChooseSub": "Why choose us",
+      "teamSub": "Our team",
+      "howSub": "How it works",
+      "gallerySub": "Gallery",
+      "galleryTitle": "Take a look inside",
+      "reviewsSub": "Testimonials",
+      "reviewsTitle": "What our clients say",
+      "mapTitle": "Location & address",
+      "aboutTitle": "About",
+      "hoursTitle": "Working hours",
+      "contactTitle": "Contact",
+      "directions": "Get directions",
+      "details": "Details"
+    },
+    "services": {
+      "dental": "Dental services",
+      "clinic": "Medical services",
+      "default": "Services",
+      "from": "from",
+      "free": "Free",
+      "menu": "Menu"
+    },
+    "team": {
+      "doctors": "Our doctors",
+      "masters": "Our masters",
+      "staff": "Our team",
+      "exp": "{years} yrs exp",
+      "chefs": "Our chefs"
+    },
+    "reviews": {
+      "rating": "For quality service",
+      "anon": "Guest",
+      "word": "reviews"
+    },
+    "minutes": "{count} min",
+    "hours": {
+      "monFri": "Mon–Fri",
+      "sat": "Saturday",
+      "sun": "Sunday",
+      "closed": "Closed",
+      "openNow": "Open now",
+      "closedNow": "Closed now"
+    },
+    "noBooking": "Booking unavailable",
+    "cat": {
+      "stomatologiya": {
+        "whyTitle": "The best for your teeth",
+        "howTitle": "What we do for your teeth",
+        "highlights": {
+          "experiencedDoctors": {
+            "t": "Experienced doctors",
+            "d": "Certified specialists who treated thousands of patients."
+          },
+          "emergency": {
+            "t": "Emergency care",
+            "d": "In pain? We see you without a queue, any time."
+          },
+          "personalCare": {
+            "t": "Personalized care",
+            "d": "A dedicated treatment plan for every patient."
+          },
+          "positiveReviews": {
+            "t": "Positive reviews",
+            "d": "95% of clients recommend us to friends."
+          },
+          "flexiblePayment": {
+            "t": "Flexible payment",
+            "d": "Installments and online payment via Payme & Click."
+          },
+          "latestTech": {
+            "t": "Latest technology",
+            "d": "Digital X-ray, 3D scanner and pain-free treatment."
+          }
+        },
+        "steps": {
+          "book": {
+            "t": "Book online",
+            "d": "Pick a convenient time and book in seconds."
+          },
+          "consult": {
+            "t": "Consultation & exam",
+            "d": "The dentist examines your teeth and plans treatment."
+          },
+          "treatment": {
+            "t": "Treatment",
+            "d": "Quality care with modern pain-free methods."
+          },
+          "aftercare": {
+            "t": "Warranty & aftercare",
+            "d": "Warranty and a free follow-up after treatment."
+          }
+        }
+      },
+      "klinika": {
+        "whyTitle": "Your health in safe hands",
+        "howTitle": "How to book a visit",
+        "highlights": {
+          "experiencedDoctors": {
+            "t": "Experienced doctors",
+            "d": "A team of top-category specialists."
+          },
+          "emergency": {
+            "t": "Emergency care",
+            "d": "We accept emergencies around the clock."
+          },
+          "modernLab": {
+            "t": "Modern laboratory",
+            "d": "Fast, accurate lab results within a day."
+          },
+          "positiveReviews": {
+            "t": "Positive reviews",
+            "d": "Most of our patients keep coming back."
+          },
+          "insurance": {
+            "t": "Insurance accepted",
+            "d": "We work with most insurance policies."
+          },
+          "licensed": {
+            "t": "Licensed clinic",
+            "d": "Licensed by the Ministry of Health."
+          }
+        },
+        "steps": {
+          "book": {
+            "t": "Book online",
+            "d": "Choose a doctor and a convenient time."
+          },
+          "consult": {
+            "t": "Exam & diagnosis",
+            "d": "The doctor examines you and makes a diagnosis."
+          },
+          "treatment": {
+            "t": "Treatment plan",
+            "d": "We build an individual treatment plan."
+          },
+          "aftercare": {
+            "t": "Follow-up",
+            "d": "Monitoring and advice after treatment."
+          }
+        }
+      },
+      "gozallik": {
+        "whyTitle": "Beauty is our craft",
+        "howTitle": "How to book",
+        "highlights": {
+          "topMasters": {
+            "t": "Top masters",
+            "d": "Experienced, certified beauty masters."
+          },
+          "personalCare": {
+            "t": "Personalized care",
+            "d": "A unique style and solution for each client."
+          },
+          "hygiene": {
+            "t": "Sterile cleanliness",
+            "d": "Every tool is individual and sterilized."
+          },
+          "positiveReviews": {
+            "t": "Positive reviews",
+            "d": "Clients always love the result."
+          },
+          "flexiblePayment": {
+            "t": "Flexible payment",
+            "d": "Cash, card and online payment."
+          },
+          "premiumProducts": {
+            "t": "Premium products",
+            "d": "Only original, certified cosmetics."
+          }
+        },
+        "steps": {
+          "book": {
+            "t": "Book online",
+            "d": "Choose a master and a convenient time."
+          },
+          "consult": {
+            "t": "Consultation",
+            "d": "The master listens and suggests a style."
+          },
+          "treatment": {
+            "t": "Service",
+            "d": "Professional work with quality materials."
+          },
+          "aftercare": {
+            "t": "Aftercare tips",
+            "d": "Advice to keep the result longer."
+          }
+        }
+      },
+      "default": {
+        "whyTitle": "Why people choose us",
+        "howTitle": "How it works",
+        "highlights": {
+          "trusted": {
+            "t": "Trusted service",
+            "d": "Quality proven over the years."
+          },
+          "fastBooking": {
+            "t": "Fast booking",
+            "d": "Book online in a few seconds."
+          },
+          "personalCare": {
+            "t": "Personalized care",
+            "d": "Attention to every client."
+          },
+          "positiveReviews": {
+            "t": "Positive reviews",
+            "d": "Our clients recommend us."
+          },
+          "flexiblePayment": {
+            "t": "Flexible payment",
+            "d": "Cash, card and online payment."
+          },
+          "verified": {
+            "t": "Verified",
+            "d": "Business verified by Izla."
+          }
+        },
+        "steps": {
+          "choose": {
+            "t": "Choose",
+            "d": "Find the service that fits you."
+          },
+          "book": {
+            "t": "Book",
+            "d": "Pick a convenient time."
+          },
+          "confirm": {
+            "t": "Confirm",
+            "d": "Get your booking confirmation."
+          },
+          "enjoy": {
+            "t": "Enjoy",
+            "d": "Arrive at your scheduled time."
+          }
+        }
+      },
+      "restoran": {
+        "whyTitle": "The best place for taste and comfort",
+        "howTitle": "From reservation to your first bite",
+        "highlights": {
+          "chef": {
+            "t": "Experienced chefs",
+            "d": "Dishes crafted by masters of local and world cuisine."
+          },
+          "freshIngredients": {
+            "t": "Fresh ingredients",
+            "d": "Natural, locally sourced produce delivered daily."
+          },
+          "atmosphere": {
+            "t": "Cozy atmosphere",
+            "d": "A warm setting for family dinners and friendly gatherings."
+          },
+          "positiveReviews": {
+            "t": "Positive reviews",
+            "d": "95% of guests recommend coming back again."
+          },
+          "reservation": {
+            "t": "Online table booking",
+            "d": "Reserve a convenient time and table in seconds."
+          },
+          "delivery": {
+            "t": "Delivery",
+            "d": "Your favorite dishes delivered hot and fast to your door."
+          }
+        },
+        "steps": {
+          "reserve": {
+            "t": "Book a table",
+            "d": "Pick a convenient time and reserve online."
+          },
+          "arrive": {
+            "t": "Come in",
+            "d": "Arrive at your time — your table is ready."
+          },
+          "enjoy": {
+            "t": "Enjoy the food",
+            "d": "Freshly prepared dishes and warm service."
+          },
+          "share": {
+            "t": "Leave a review",
+            "d": "Rate your experience and recommend us to friends."
+          }
+        }
+      }
+    },
+    "counters": {
+      "rating": "Average rating",
+      "reviews": "Reviews",
+      "doctors": "Specialists",
+      "experience": "Years experience"
+    }
   }
 }

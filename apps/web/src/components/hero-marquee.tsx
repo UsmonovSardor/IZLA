@@ -1,5 +1,6 @@
 'use client';
 import { useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
 import { BadgeCheck, Clock, MapPin, ShieldCheck, Zap } from 'lucide-react';
 
 const ITEMS = [
@@ -13,6 +14,9 @@ const ITEMS = [
 /** Hero tepasidagi qiymat-taklif lentasi (marquee). Hover'da to'xtaydi. */
 export function HeroMarquee() {
   const t = useTranslations('hero');
+  const pathname = usePathname();
+  // Faqat bosh sahifada ko'rsatiladi — ichki sahifalarda (vendor, qidiruv, profil...) chiqmaydi.
+  if (pathname !== '/') return null;
   const row = (
     <div className="marquee-track flex shrink-0 items-center gap-8 pr-8">
       {ITEMS.map(({ key, Icon }) => (

@@ -83,11 +83,39 @@ export interface Vendor {
   rating: number; reviewCount: number; photos: string[]; verified: boolean;
   distanceKm?: number | null; category?: { slug: string; name: string; icon?: string };
 }
+/** Ijtimoiy tarmoq havolalari (`Vendor.socials` JSON). */
+export interface VendorSocials {
+  instagram?: string; telegram?: string; facebook?: string; youtube?: string; website?: string;
+}
+/** Kategoriyaga xos boy kontent (`Vendor.attributes` JSON). Barcha maydonlar ixtiyoriy. */
+export interface VendorAttributes {
+  tagline?: string;
+  established?: number;
+  experienceYears?: number;
+  /** Statistika counterlari (hero ostidagi raqamlar). value raqam yoki "12+" ko'rinishida. */
+  counters?: { value: string; label: string }[];
+  /** Jamoa/shifokorlar — ko'rsatish uchun (bron uchun `staff` alohida). */
+  team?: { name: string; role?: string; photo?: string; exp?: string }[];
+  /** Qo'shimcha galereya rasmlari (`photos`dan tashqari). */
+  gallery?: string[];
+  /** Imkoniyatlar/qulayliklar teglari. */
+  amenities?: string[];
+  guarantee?: string;
+  emergency?: boolean;
+  insurance?: string[];
+  priceNote?: string;
+}
 export interface VendorDetail extends Vendor {
   phone?: string; address?: string; hours?: Record<string, string>;
+  socials?: VendorSocials;
+  attributes?: VendorAttributes;
   services: { id: string; name: string; price: string; durationMin: number }[];
-  staff: { id: string; name: string }[];
-  reviews: { id: string; rating: number; text?: string; createdAt: string; user?: { name?: string } }[];
+  staff: { id: string; name: string; avatarUrl?: string | null; role?: string | null }[];
+  reviews: {
+    id: string; rating: number; text?: string; createdAt: string;
+    photos?: string[]; criteria?: Record<string, number>;
+    user?: { name?: string; avatarUrl?: string | null };
+  }[];
 }
 export interface Slot { start: string; end: string; available: boolean }
 export interface Availability {

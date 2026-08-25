@@ -266,5 +266,308 @@
     "error": "Xatolik yuz berdi. Birozdan so‘ng qayta urining.",
     "allResults": "Barcha natijalar",
     "thinking": "Qidiryapman…"
+  },
+  "vendorPage": {
+    "hero": {
+      "book": "Bron qilish",
+      "call": "Qo'ng'iroq",
+      "basedOn": "{count} sharh asosida",
+      "established": "{year}-yildan beri",
+      "verified": "Tasdiqlangan"
+    },
+    "sections": {
+      "servicesSub": "Xizmatlar va narxlar",
+      "whyChooseSub": "Nega aynan biz",
+      "teamSub": "Bizning jamoa",
+      "howSub": "Qanday ishlaydi",
+      "gallerySub": "Galereya",
+      "galleryTitle": "Ichki ko'rinish",
+      "reviewsSub": "Mijozlar fikri",
+      "reviewsTitle": "Mijozlar nima deydi",
+      "mapTitle": "Manzil va joylashuv",
+      "aboutTitle": "Biz haqimizda",
+      "hoursTitle": "Ish vaqti",
+      "contactTitle": "Aloqa",
+      "directions": "Yo’l ko’rsatish",
+      "details": "Batafsil"
+    },
+    "services": {
+      "dental": "Stomatologiya xizmatlari",
+      "clinic": "Tibbiy xizmatlar",
+      "default": "Xizmatlar",
+      "from": "boshlab",
+      "free": "Bepul",
+      "menu": "Menyu"
+    },
+    "team": {
+      "doctors": "Bizning shifokorlar",
+      "masters": "Bizning ustalar",
+      "staff": "Bizning jamoa",
+      "exp": "{years} yil tajriba",
+      "chefs": "Bizning oshpazlar"
+    },
+    "reviews": {
+      "rating": "Xizmat sifati uchun",
+      "anon": "Foydalanuvchi",
+      "word": "sharh"
+    },
+    "minutes": "{count} daqiqa",
+    "hours": {
+      "monFri": "Dush–Juma",
+      "sat": "Shanba",
+      "sun": "Yakshanba",
+      "closed": "Dam olish",
+      "openNow": "Hozir ochiq",
+      "closedNow": "Hozir yopiq"
+    },
+    "noBooking": "Bron mavjud emas",
+    "cat": {
+      "stomatologiya": {
+        "whyTitle": "Tishlaringiz uchun eng yaxshisi",
+        "howTitle": "Tishlaringiz uchun nima qilamiz",
+        "highlights": {
+          "experiencedDoctors": {
+            "t": "Tajribali shifokorlar",
+            "d": "Minglab bemorni davolagan sertifikatlangan mutaxassislar."
+          },
+          "emergency": {
+            "t": "Shoshilinch yordam",
+            "d": "Og'riq bo'lsa — navbatsiz, kunning istalgan vaqtida qabul."
+          },
+          "personalCare": {
+            "t": "Individual yondashuv",
+            "d": "Har bir bemor uchun alohida davolash rejasi."
+          },
+          "positiveReviews": {
+            "t": "Ijobiy sharhlar",
+            "d": "Mijozlarning 95% bizni do'stlariga tavsiya qiladi."
+          },
+          "flexiblePayment": {
+            "t": "Qulay to'lov",
+            "d": "Bo'lib to'lash, Payme va Click orqali onlayn."
+          },
+          "latestTech": {
+            "t": "Zamonaviy texnologiya",
+            "d": "Raqamli rentgen, 3D skaner va og'riqsiz davolash."
+          }
+        },
+        "steps": {
+          "book": {
+            "t": "Onlayn bron qiling",
+            "d": "Qulay vaqtni tanlab, bir necha soniyada navbat oling."
+          },
+          "consult": {
+            "t": "Konsultatsiya va ko'rik",
+            "d": "Shifokor tishlaringizni tekshirib, aniq reja tuzadi."
+          },
+          "treatment": {
+            "t": "Davolash",
+            "d": "Zamonaviy va og'riqsiz usullar bilan sifatli davolash."
+          },
+          "aftercare": {
+            "t": "Kafolat va parvarish",
+            "d": "Davolashdan so’ng kafolat va bepul nazorat ko’rigi."
+          }
+        }
+      },
+      "klinika": {
+        "whyTitle": "Sog'lig'ingiz ishonchli qo'llarda",
+        "howTitle": "Qabulga qanday yoziladi",
+        "highlights": {
+          "experiencedDoctors": {
+            "t": "Tajribali shifokorlar",
+            "d": "Yuqori toifali, tajribali mutaxassislar jamoasi."
+          },
+          "emergency": {
+            "t": "Tez tibbiy yordam",
+            "d": "Shoshilinch holatlarda kunu-tun qabul qilamiz."
+          },
+          "modernLab": {
+            "t": "Zamonaviy laboratoriya",
+            "d": "Tez va aniq tahlil natijalari bir kun ichida."
+          },
+          "positiveReviews": {
+            "t": "Ijobiy sharhlar",
+            "d": "Bemorlarimizning aksariyati bizga qaytadi."
+          },
+          "insurance": {
+            "t": "Sug’urta qabul qilinadi",
+            "d": "Ko’pgina sug’urta polislari bilan ishlaymiz."
+          },
+          "licensed": {
+            "t": "Litsenziyalangan klinika",
+            "d": "Sog’liqni saqlash vazirligi litsenziyasiga ega."
+          }
+        },
+        "steps": {
+          "book": {
+            "t": "Onlayn yoziling",
+            "d": "Shifokor va qulay vaqtni tanlab navbat oling."
+          },
+          "consult": {
+            "t": "Ko'rik va tashxis",
+            "d": "Shifokor sizni ko’rikdan o’tkazib, tashxis qo’yadi."
+          },
+          "treatment": {
+            "t": "Davolash rejasi",
+            "d": "Individual davolash yoki tekshiruv rejasi tuziladi."
+          },
+          "aftercare": {
+            "t": "Nazorat",
+            "d": "Davolashdan keyin nazorat va maslahat."
+          }
+        }
+      },
+      "gozallik": {
+        "whyTitle": "Go'zallik — bizning san'atimiz",
+        "howTitle": "Qanday yoziladi",
+        "highlights": {
+          "topMasters": {
+            "t": "Top ustalar",
+            "d": "Tajribali va sertifikatlangan go’zallik ustalari."
+          },
+          "personalCare": {
+            "t": "Individual yondashuv",
+            "d": "Har bir mijoz uchun alohida uslub va yechim."
+          },
+          "hygiene": {
+            "t": "Steril tozalik",
+            "d": "Har bir asbob individual va sterilizatsiya qilinadi."
+          },
+          "positiveReviews": {
+            "t": "Ijobiy sharhlar",
+            "d": "Mijozlarimiz natijadan doimo mamnun."
+          },
+          "flexiblePayment": {
+            "t": "Qulay to'lov",
+            "d": "Naqd, karta va onlayn to’lov imkoniyati."
+          },
+          "premiumProducts": {
+            "t": "Premium mahsulotlar",
+            "d": "Faqat original, sertifikatlangan kosmetika."
+          }
+        },
+        "steps": {
+          "book": {
+            "t": "Onlayn bron qiling",
+            "d": "Usta va qulay vaqtni tanlab navbat oling."
+          },
+          "consult": {
+            "t": "Maslahat",
+            "d": "Usta xohishingizni tinglab, uslub taklif qiladi."
+          },
+          "treatment": {
+            "t": "Xizmat",
+            "d": "Sifatli materiallar bilan professional xizmat."
+          },
+          "aftercare": {
+            "t": "Parvarish maslahati",
+            "d": "Natijani saqlash bo’yicha tavsiyalar."
+          }
+        }
+      },
+      "default": {
+        "whyTitle": "Nega bizni tanlashadi",
+        "howTitle": "Qanday ishlaydi",
+        "highlights": {
+          "trusted": {
+            "t": "Ishonchli xizmat",
+            "d": "Yillar davomida sinovdan o’tgan sifat."
+          },
+          "fastBooking": {
+            "t": "Tez bron",
+            "d": "Bir necha soniyada onlayn navbat oling."
+          },
+          "personalCare": {
+            "t": "Individual yondashuv",
+            "d": "Har bir mijozga alohida e’tibor."
+          },
+          "positiveReviews": {
+            "t": "Ijobiy sharhlar",
+            "d": "Mijozlarimiz bizni tavsiya qiladi."
+          },
+          "flexiblePayment": {
+            "t": "Qulay to'lov",
+            "d": "Naqd, karta va onlayn to’lov."
+          },
+          "verified": {
+            "t": "Tasdiqlangan",
+            "d": "Izla tomonidan tekshirilgan biznes."
+          }
+        },
+        "steps": {
+          "choose": {
+            "t": "Tanlang",
+            "d": "Sizga mos xizmatni toping."
+          },
+          "book": {
+            "t": "Bron qiling",
+            "d": "Qulay vaqtni tanlab navbat oling."
+          },
+          "confirm": {
+            "t": "Tasdiqlang",
+            "d": "Bron tasdig’ini oling."
+          },
+          "enjoy": {
+            "t": "Xizmatdan bahramand bo’ling",
+            "d": "Belgilangan vaqtda tashrif buyuring."
+          }
+        }
+      },
+      "restoran": {
+        "whyTitle": "Ta'm va hordiq uchun eng yaxshi manzil",
+        "howTitle": "Stol bandlashdan lazzatgacha",
+        "highlights": {
+          "chef": {
+            "t": "Tajribali oshpazlar",
+            "d": "Milliy va jahon oshxonasi ustalari tayyorlagan taomlar."
+          },
+          "freshIngredients": {
+            "t": "Yangi mahsulotlar",
+            "d": "Har kuni yetkazib beriladigan tabiiy va mahalliy mahsulotlar."
+          },
+          "atmosphere": {
+            "t": "Qulay muhit",
+            "d": "Oilaviy kechalar va do'stona uchrashuvlar uchun issiq muhit."
+          },
+          "positiveReviews": {
+            "t": "Ijobiy sharhlar",
+            "d": "Mijozlarning 95% bizga yana tashrif buyurishni tavsiya qiladi."
+          },
+          "reservation": {
+            "t": "Onlayn stol bandlash",
+            "d": "Bir necha soniyada qulay vaqt va stolni band qiling."
+          },
+          "delivery": {
+            "t": "Yetkazib berish",
+            "d": "Sevimli taomlaringiz tez va issiq holda uyingizgacha."
+          }
+        },
+        "steps": {
+          "reserve": {
+            "t": "Stol band qiling",
+            "d": "Qulay vaqtni tanlab, onlayn bron qiling."
+          },
+          "arrive": {
+            "t": "Tashrif buyuring",
+            "d": "Belgilangan vaqtda keling — stolingiz tayyor."
+          },
+          "enjoy": {
+            "t": "Taomdan bahramand bo‘ling",
+            "d": "Yangi pishirilgan taomlar va samimiy xizmat."
+          },
+          "share": {
+            "t": "Fikringizni qoldiring",
+            "d": "Tajribangizni baholang va do'stlaringizga tavsiya qiling."
+          }
+        }
+      }
+    },
+    "counters": {
+      "rating": "O’rtacha reyting",
+      "reviews": "Sharhlar",
+      "doctors": "Mutaxassislar",
+      "experience": "Yillik tajriba"
+    }
   }
 }

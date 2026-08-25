@@ -16,5 +16,5 @@ ENV NODE_ENV=production
 COPY --from=build /app /app
 WORKDIR /app
 EXPOSE 4000
-# Har deploy'da migratsiyani qo'llaymiz, so'ng serverni ishga tushiramiz
-CMD ["sh", "-c", "pnpm --filter @izla/db exec prisma migrate deploy && (pnpm --filter @izla/db seed || echo 'seed skip') && node apps/api/dist/main.js"]
+# Har deploy'da migratsiya + seed + (idempotent) kategoriya boyitish, so'ng server
+CMD ["sh", "-c", "pnpm --filter @izla/db exec prisma migrate deploy && (pnpm --filter @izla/db seed || echo 'seed skip') && (pnpm --filter @izla/db exec tsx prisma/enrich-dental.ts || echo 'enrich skip') && (pnpm --filter @izla/db exec tsx prisma/enrich-restaurant.ts || echo 'enrich-restaurant skip') && node apps/api/dist/main.js"]
