@@ -7,6 +7,8 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Prisma } from '@izla/db';
+import * as Sentry from '@sentry/node';
+import { sentryEnabled } from '../instrument';
 import type { Request, Response } from 'express';
 
 /**
@@ -54,6 +56,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         `${req.method} ${req.url} → ${code}`,
         exception instanceof Error ? exception.stack : String(exception),
       );
+      if (sentryEnabled) Sentry.captureException(exception);
       if (this.isProd) message = 'Ichki server xatosi';
     }
 

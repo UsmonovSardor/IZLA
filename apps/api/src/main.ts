@@ -1,7 +1,9 @@
+import './instrument'; // Sentry init — hamma narsadan oldin
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe, Logger } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Logger as PinoLogger } from 'nestjs-pino';
 import helmet from 'helmet';
 import compression from 'compression';
 import { AppModule } from './app.module';
@@ -12,7 +14,8 @@ async function bootstrap() {
   // Zaif/default sirlar bilan prod ishga tushishini bloklaydi
   assertProductionSafety();
 
-  const app = await NestFactory.create(AppModule, { cors: false });
+  const app = await NestFactory.create(AppModule, { cors: false, bufferLogs: true });
+  app.useLogger(app.get(PinoLogger)); // strukturaviy log (pino)
 
   // Railway/proxy orqasida haqiqiy mijoz IP'sini olish (rate-limit to'g'ri ishlashi uchun)
   app.getHttpAdapter().getInstance().set('trust proxy', 1);
@@ -46,6 +49,6 @@ async function bootstrap() {
   // Railway/Docker PORT'ni hurmat qiladi, aks holda API_PORT
   const port = process.env.PORT ? Number(process.env.PORT) : env.API_PORT;
   await app.listen(port, '0.0.0.0');
-  Logger.log(`🚀 Izla API: :${port}`, 'Bootstrap');
+  app.get(PinoLogger).log(`🚀 Izla API: :${port}`, 'Bootstrap');
 }
 bootstrap();
