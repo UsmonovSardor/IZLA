@@ -22,13 +22,13 @@ const csp = [
   "frame-ancestors 'none'",
   "form-action 'self'",
   // Next.js gidratsiya inline skriptlaridan foydalanadi
-  "script-src 'self' 'unsafe-inline'",
+  "script-src 'self' 'unsafe-inline' https://eu-assets.i.posthog.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://images.unsplash.com https://picsum.photos https://*.basemaps.cartocdn.com https://lh3.googleusercontent.com https://t.me",
   "font-src 'self' data:",
   // MapLibre web-worker'lari blob'dan yuklanadi
   "worker-src 'self' blob:",
-  `connect-src 'self' ${API_ORIGIN} https://*.basemaps.cartocdn.com https://demotiles.maplibre.org`.trim(),
+  `connect-src 'self' ${API_ORIGIN} https://*.basemaps.cartocdn.com https://demotiles.maplibre.org https://eu.i.posthog.com https://eu-assets.i.posthog.com`.trim(),
   "manifest-src 'self'",
 ].join('; ');
 

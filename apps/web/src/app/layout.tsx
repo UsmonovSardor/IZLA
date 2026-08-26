@@ -12,6 +12,7 @@ import { Logo } from '@/components/logo';
 import { SmoothScroll } from '@/components/smooth-scroll';
 import { AiAssistant } from '@/components/ai-assistant';
 import { PwaRegister } from '@/components/pwa-register';
+import { Analytics } from '@/components/analytics';
 import { JsonLd } from '@/components/json-ld';
 import { SITE_URL, organizationJsonLd, websiteJsonLd } from '@/lib/seo';
 import './globals.css';
@@ -118,6 +119,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
             {/* PWA: service worker registratsiyasi + o'rnatish banneri */}
             <PwaRegister />
+
+            {/* Analitika (PostHog — kalitsiz o'chiq) */}
+            <Analytics />
 
             {/* Footer */}
             <footer className="mt-20 border-t border-line bg-white/60">
