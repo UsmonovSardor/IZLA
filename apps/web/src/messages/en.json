@@ -569,5 +569,14 @@
       "doctors": "Specialists",
       "experience": "Years experience"
     }
+  },
+  "pwa": {
+    "installTitle": "Install the Izla app",
+    "installBody": "Add to your home screen for quick access",
+    "install": "Install",
+    "dismiss": "Dismiss",
+    "offlineTitle": "You are offline",
+    "offlineBody": "Check your connection and try again.",
+    "home": "Home"
   }
 }

@@ -135,3 +135,13 @@ html.lenis, html.lenis body { height: auto; }
   [data-reveal] { opacity: 1 !important; transform: none !important; }
   .animate-float, .animate-aurora-shift { animation: none !important; }
 }
+
+/* PWA o'rnatish banneri */
+@keyframes pwa-slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.pwa-banner { animation: pwa-slide-up .32s cubic-bezier(.2,.7,.2,1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .pwa-banner { animation: none !important; }
+}

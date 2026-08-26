@@ -569,5 +569,14 @@
       "doctors": "Mutaxassislar",
       "experience": "Yillik tajriba"
     }
+  },
+  "pwa": {
+    "installTitle": "Izla ilovasini o‘rnating",
+    "installBody": "Tezkor kirish uchun bosh ekranga qo‘shing",
+    "install": "O‘rnatish",
+    "dismiss": "Yopish",
+    "offlineTitle": "Internet aloqasi yo‘q",
+    "offlineBody": "Ulanishingizni tekshirib, qayta urinib ko‘ring.",
+    "home": "Bosh sahifa"
   }
 }
