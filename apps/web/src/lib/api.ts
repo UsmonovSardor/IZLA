@@ -74,6 +74,11 @@ export const api = {
     authed<PaymentInvoice>('/payments', { method: 'POST', body: JSON.stringify(body) }),
   paymentStatus: (id: string) => authed<Payment>(`/payments/${id}`),
 
+  // --- Izla Ish (vakansiyalar, ochiq) ---
+  jobs: (qs = '') => get<JobsResult>(`/jobs${qs}`, 60),
+  jobFacets: () => get<JobFacets>('/jobs/facets', 120),
+  job: (id: string) => get<JobDetail>(`/jobs/${id}`, 60),
+
   // --- Kabinet (vendor egasi) ---
   kabinetVendors: () => authed<KabinetVendor[]>('/kabinet/vendors'),
   kabinetVendor: (id: string) => authed<KabinetVendorDetail>(`/kabinet/vendors/${id}`),
@@ -92,6 +97,26 @@ export const api = {
 
   base: BASE,
 };
+
+export type JobEmployment = 'FULL_TIME' | 'PART_TIME' | 'CONTRACT' | 'INTERNSHIP';
+export type JobExperience = 'NONE' | 'JUNIOR' | 'MIDDLE' | 'SENIOR';
+export interface JobCompany {
+  id?: string; name: string; slug: string; logo?: string | null; verified: boolean;
+  district?: string | null; cover?: string | null; about?: string | null;
+  industry?: string | null; size?: string | null; website?: string | null;
+}
+export interface Job {
+  id: string; title: string; description: string; employment: JobEmployment; remote: boolean;
+  region?: string | null; experience: JobExperience; salaryMin?: number | null; salaryMax?: number | null;
+  currency: string; skills: string[]; category?: string | null; featured: boolean; views: number;
+  createdAt: string; company?: JobCompany;
+}
+export interface JobDetail extends Job { applicants: number; company: JobCompany }
+export interface JobsResult { total: number; page: number; limit: number; items: Job[] }
+export interface JobFacets {
+  total: number; employment: Record<string, number>; experience: Record<string, number>;
+  categories: { name: string; count: number }[];
+}
 
 export interface KabinetVendor {
   id: string; slug: string; name: string; status: string; verified: boolean;

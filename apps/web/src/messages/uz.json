@@ -7,7 +7,8 @@
     "search": "Qidiruv",
     "realEstate": "Ko'chmas mulk",
     "bookings": "Bronlarim",
-    "telegram": "Telegram"
+    "telegram": "Telegram",
+    "jobs": "Ish"
   },
   "mobileNav": {
     "home": "Asosiy",
@@ -639,5 +640,56 @@
       "NO_SHOW": "Kelmadi"
     },
     "sum": "so‘m"
+  },
+  "ish": {
+    "heroTitle": "Kelajagingizni shu yerdan boshlang",
+    "heroSub": "O‘zbekiston bo‘ylab eng yaxshi vakansiyalar — bir joyda. Orzuyingizdagi ishni toping.",
+    "searchPlaceholder": "Lavozim, kompaniya yoki ko‘nikma...",
+    "search": "Qidirish",
+    "filters": "Filtrlar",
+    "clear": "Tozalash",
+    "all": "Barchasi",
+    "employment": "Bandlik turi",
+    "experience": "Tajriba",
+    "remote": "Masofaviy",
+    "remoteOnly": "Faqat masofaviy",
+    "salary": "Maosh (mln, dan)",
+    "category": "Yo‘nalish",
+    "emp": {
+      "FULL_TIME": "To‘liq stavka",
+      "PART_TIME": "Yarim stavka",
+      "CONTRACT": "Shartnoma",
+      "INTERNSHIP": "Amaliyot"
+    },
+    "exp": {
+      "NONE": "Tajribasiz",
+      "JUNIOR": "1–3 yil",
+      "MIDDLE": "3–6 yil",
+      "SENIOR": "6+ yil"
+    },
+    "featured": "Tavsiya etilgan",
+    "negotiable": "Kelishilgan holda",
+    "perMonth": "oyiga",
+    "from": "dan",
+    "views": "ko‘rish",
+    "applicants": "nomzod",
+    "posted": "joylandi",
+    "apply": "Ariza topshirish",
+    "applySoon": "Ariza — tez orada",
+    "save": "Saqlash",
+    "backToJobs": "Barcha vakansiyalar",
+    "aboutRole": "Vazifa haqida",
+    "skills": "Ko‘nikmalar",
+    "aboutCompany": "Kompaniya haqida",
+    "similar": "O‘xshash vakansiyalar",
+    "results": "{count} ta vakansiya",
+    "empty": "Bu filtrlarga mos vakansiya topilmadi",
+    "emptyHint": "Filtrlarni o‘zgartirib ko‘ring.",
+    "postJob": "Vakansiya joylash",
+    "forEmployers": "Ish beruvchilarga",
+    "sum": "so‘m",
+    "mln": "mln",
+    "today": "bugun",
+    "daysAgo": "{count} kun oldin"
   }
 }

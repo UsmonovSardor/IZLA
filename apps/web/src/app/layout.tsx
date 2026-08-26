@@ -68,6 +68,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   const navLinks = [
     { href: '/qidiruv', label: t('nav.search') },
+    { href: '/ish', label: t('nav.jobs') },
     { href: '/uylar', label: t('nav.realEstate') },
     { href: '/bron', label: t('nav.bookings') },
     { href: '/tg', label: t('nav.telegram') },
