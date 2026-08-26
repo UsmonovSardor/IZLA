@@ -720,7 +720,8 @@
       "HIRED": "Hired",
       "REJECTED": "Rejected"
     },
-    "createResume": "Create resume"
+    "createResume": "Create resume",
+    "forEmployersCta": "Are you hiring? Open cabinet"
   },
   "rezyume": {
     "title": "Resume",
@@ -769,5 +770,80 @@
     "doneHint": "You can now apply to jobs in one click.",
     "browseJobs": "Browse jobs",
     "editResume": "Keep editing"
+  },
+  "ishKabinet": {
+    "title": "Employer cabinet",
+    "subtitle": "Manage your jobs and applications.",
+    "loginNeeded": "Sign in to open the cabinet.",
+    "login": "Sign in",
+    "createCompanyTitle": "Create a company profile",
+    "createCompanyHint": "Add your company before posting jobs.",
+    "createCompany": "Create company",
+    "companyName": "Company name",
+    "companyNameRequired": "Company name is required",
+    "industry": "Industry",
+    "size": "Team size",
+    "about": "About the company",
+    "aboutPlaceholder": "What does your company do?",
+    "district": "Address / district",
+    "website": "Website",
+    "logo": "Logo (URL)",
+    "cover": "Cover (URL)",
+    "saved": "Saved",
+    "saveError": "Save failed",
+    "save": "Save",
+    "tabs": {
+      "jobs": "Jobs",
+      "profile": "Company profile"
+    },
+    "stats": {
+      "activeJobs": "Active jobs",
+      "applications": "Applications",
+      "new": "New applications",
+      "hired": "Hired"
+    },
+    "newJob": "New job",
+    "editJob": "Edit job",
+    "noJobs": "No jobs posted yet.",
+    "edit": "Edit",
+    "archive": "Archive",
+    "cancel": "Cancel",
+    "jobTitle": "Job title",
+    "jobTitlePlaceholder": "e.g. Frontend Developer",
+    "jobDescription": "Description",
+    "jobDescriptionPlaceholder": "Responsibilities, requirements and terms...",
+    "jobRequired": "Job title and description are required",
+    "region": "Region",
+    "category": "Category",
+    "salaryMin": "Salary (from)",
+    "salaryMax": "Salary (to)",
+    "remoteJob": "Remote job",
+    "status": "Status",
+    "jobStatus": {
+      "ACTIVE": "Active",
+      "DRAFT": "Draft",
+      "CLOSED": "Closed",
+      "ARCHIVED": "Archived"
+    },
+    "from": "from",
+    "thousand": "K",
+    "applicantsN": "{count} applicants",
+    "backToJobs": "Back to jobs",
+    "allStage": "All",
+    "noApplicants": "No applications yet.",
+    "unnamed": "Candidate",
+    "viewResume": "View resume",
+    "experienceLbl": "Experience",
+    "educationLbl": "Education",
+    "present": "present",
+    "moveTo": "Move to stage:",
+    "appStatus": {
+      "NEW": "New",
+      "VIEWED": "Viewed",
+      "INTERVIEW": "Interview",
+      "OFFER": "Offer",
+      "HIRED": "Hired",
+      "REJECTED": "Rejected"
+    }
   }
 }

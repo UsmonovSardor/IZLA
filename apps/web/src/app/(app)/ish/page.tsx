@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-import { FileText, ClipboardList } from 'lucide-react';
+import { FileText, ClipboardList, Building2 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { JobBoard } from '@/components/jobs/job-board';
 
@@ -45,6 +45,9 @@ export default async function IshPage() {
               <ClipboardList size={16} /> {t('myApplications')}
             </Link>
           </div>
+          <Link href="/ish/kabinet" className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-violet-700 transition hover:gap-2.5">
+            <Building2 size={15} /> {t('forEmployersCta')}
+          </Link>
         </div>
       </section>
 

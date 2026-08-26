@@ -720,7 +720,8 @@
       "HIRED": "Qabul qilindi",
       "REJECTED": "Rad etildi"
     },
-    "createResume": "Rezyume yaratish"
+    "createResume": "Rezyume yaratish",
+    "forEmployersCta": "Ish beruvchimisiz? Kabinetga o‘ting"
   },
   "rezyume": {
     "title": "Rezyume",
@@ -769,5 +770,80 @@
     "doneHint": "Endi vakansiyalarga bir bosishda ariza topshirishingiz mumkin.",
     "browseJobs": "Vakansiyalarni ko‘rish",
     "editResume": "Tahrirlashda davom etish"
+  },
+  "ishKabinet": {
+    "title": "Ish beruvchi kabineti",
+    "subtitle": "Vakansiyalar va arizalarni boshqaring.",
+    "loginNeeded": "Kabinetga kirish uchun tizimga kiring.",
+    "login": "Kirish",
+    "createCompanyTitle": "Kompaniya profilini yarating",
+    "createCompanyHint": "Vakansiya joylashdan oldin kompaniyangizni qo‘shing.",
+    "createCompany": "Kompaniya yaratish",
+    "companyName": "Kompaniya nomi",
+    "companyNameRequired": "Kompaniya nomi kiritilishi shart",
+    "industry": "Soha",
+    "size": "Hodimlar soni",
+    "about": "Kompaniya haqida",
+    "aboutPlaceholder": "Kompaniyangiz nima bilan shug‘ullanadi?",
+    "district": "Manzil / tuman",
+    "website": "Veb-sayt",
+    "logo": "Logotip (URL)",
+    "cover": "Muqova (URL)",
+    "saved": "Saqlandi",
+    "saveError": "Saqlashda xatolik",
+    "save": "Saqlash",
+    "tabs": {
+      "jobs": "Vakansiyalar",
+      "profile": "Kompaniya profili"
+    },
+    "stats": {
+      "activeJobs": "Faol vakansiya",
+      "applications": "Arizalar",
+      "new": "Yangi arizalar",
+      "hired": "Qabul qilingan"
+    },
+    "newJob": "Yangi vakansiya",
+    "editJob": "Vakansiyani tahrirlash",
+    "noJobs": "Hali vakansiya joylanmagan.",
+    "edit": "Tahrirlash",
+    "archive": "Arxivlash",
+    "cancel": "Bekor qilish",
+    "jobTitle": "Lavozim nomi",
+    "jobTitlePlaceholder": "Masalan: Frontend Dasturchi",
+    "jobDescription": "Tavsif",
+    "jobDescriptionPlaceholder": "Vazifalar, talablar va shartlar...",
+    "jobRequired": "Lavozim nomi va tavsif kiritilishi shart",
+    "region": "Hudud",
+    "category": "Yo‘nalish",
+    "salaryMin": "Maosh (dan)",
+    "salaryMax": "Maosh (gacha)",
+    "remoteJob": "Masofaviy ish",
+    "status": "Holat",
+    "jobStatus": {
+      "ACTIVE": "Faol",
+      "DRAFT": "Qoralama",
+      "CLOSED": "Yopiq",
+      "ARCHIVED": "Arxivlangan"
+    },
+    "from": "dan",
+    "thousand": "ming",
+    "applicantsN": "{count} nomzod",
+    "backToJobs": "Vakansiyalarga qaytish",
+    "allStage": "Barchasi",
+    "noApplicants": "Hali ariza yo‘q.",
+    "unnamed": "Nomzod",
+    "viewResume": "Rezyumeni ko‘rish",
+    "experienceLbl": "Tajriba",
+    "educationLbl": "Ta’lim",
+    "present": "hozir",
+    "moveTo": "Bosqichga o‘tkazish:",
+    "appStatus": {
+      "NEW": "Yangi",
+      "VIEWED": "Ko‘rildi",
+      "INTERVIEW": "Suhbat",
+      "OFFER": "Taklif",
+      "HIRED": "Qabul qilindi",
+      "REJECTED": "Rad etildi"
+    }
   }
 }

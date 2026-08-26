@@ -720,7 +720,8 @@
       "HIRED": "Принят",
       "REJECTED": "Отклонён"
     },
-    "createResume": "Создать резюме"
+    "createResume": "Создать резюме",
+    "forEmployersCta": "Вы работодатель? Открыть кабинет"
   },
   "rezyume": {
     "title": "Резюме",
@@ -769,5 +770,80 @@
     "doneHint": "Теперь вы можете откликаться на вакансии в один клик.",
     "browseJobs": "Смотреть вакансии",
     "editResume": "Продолжить редактирование"
+  },
+  "ishKabinet": {
+    "title": "Кабинет работодателя",
+    "subtitle": "Управляйте вакансиями и откликами.",
+    "loginNeeded": "Войдите, чтобы открыть кабинет.",
+    "login": "Войти",
+    "createCompanyTitle": "Создайте профиль компании",
+    "createCompanyHint": "Добавьте компанию перед публикацией вакансий.",
+    "createCompany": "Создать компанию",
+    "companyName": "Название компании",
+    "companyNameRequired": "Укажите название компании",
+    "industry": "Отрасль",
+    "size": "Кол-во сотрудников",
+    "about": "О компании",
+    "aboutPlaceholder": "Чем занимается ваша компания?",
+    "district": "Адрес / район",
+    "website": "Веб-сайт",
+    "logo": "Логотип (URL)",
+    "cover": "Обложка (URL)",
+    "saved": "Сохранено",
+    "saveError": "Ошибка сохранения",
+    "save": "Сохранить",
+    "tabs": {
+      "jobs": "Вакансии",
+      "profile": "Профиль компании"
+    },
+    "stats": {
+      "activeJobs": "Активные вакансии",
+      "applications": "Отклики",
+      "new": "Новые отклики",
+      "hired": "Приняты"
+    },
+    "newJob": "Новая вакансия",
+    "editJob": "Редактировать вакансию",
+    "noJobs": "Вакансий пока нет.",
+    "edit": "Изменить",
+    "archive": "В архив",
+    "cancel": "Отмена",
+    "jobTitle": "Название должности",
+    "jobTitlePlaceholder": "Например: Frontend разработчик",
+    "jobDescription": "Описание",
+    "jobDescriptionPlaceholder": "Задачи, требования и условия...",
+    "jobRequired": "Укажите название должности и описание",
+    "region": "Регион",
+    "category": "Направление",
+    "salaryMin": "Зарплата (от)",
+    "salaryMax": "Зарплата (до)",
+    "remoteJob": "Удалённая работа",
+    "status": "Статус",
+    "jobStatus": {
+      "ACTIVE": "Активна",
+      "DRAFT": "Черновик",
+      "CLOSED": "Закрыта",
+      "ARCHIVED": "В архиве"
+    },
+    "from": "от",
+    "thousand": "тыс.",
+    "applicantsN": "{count} откликов",
+    "backToJobs": "К вакансиям",
+    "allStage": "Все",
+    "noApplicants": "Откликов пока нет.",
+    "unnamed": "Кандидат",
+    "viewResume": "Открыть резюме",
+    "experienceLbl": "Опыт",
+    "educationLbl": "Образование",
+    "present": "сейчас",
+    "moveTo": "Перевести на этап:",
+    "appStatus": {
+      "NEW": "Новый",
+      "VIEWED": "Просмотрен",
+      "INTERVIEW": "Собеседование",
+      "OFFER": "Оффер",
+      "HIRED": "Принят",
+      "REJECTED": "Отклонён"
+    }
   }
 }

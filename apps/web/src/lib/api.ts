@@ -87,6 +87,24 @@ export const api = {
   resumeMe: () => authed<Resume | null>('/resume/me'),
   saveResume: (body: ResumeInput) => authed<Resume>('/resume', { method: 'PUT', body: JSON.stringify(body) }),
 
+  // --- Ish beruvchi kabineti + mini-ATS ---
+  employerCompanies: () => authed<EmployerCompany[]>('/employer/companies'),
+  employerCreateCompany: (body: EmployerCompanyInput) =>
+    authed<EmployerCompany>('/employer/companies', { method: 'POST', body: JSON.stringify(body) }),
+  employerCompany: (id: string) => authed<EmployerCompany>(`/employer/companies/${id}`),
+  employerUpdateCompany: (id: string, body: Partial<EmployerCompanyInput>) =>
+    authed<EmployerCompany>(`/employer/companies/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+  employerStats: (id: string) => authed<EmployerStats>(`/employer/companies/${id}/stats`),
+  employerJobs: (id: string) => authed<EmployerJob[]>(`/employer/companies/${id}/jobs`),
+  employerCreateJob: (companyId: string, body: EmployerJobInput) =>
+    authed<EmployerJob>(`/employer/companies/${companyId}/jobs`, { method: 'POST', body: JSON.stringify(body) }),
+  employerUpdateJob: (id: string, body: Partial<EmployerJobInput>) =>
+    authed<EmployerJob>(`/employer/jobs/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+  employerArchiveJob: (id: string) => authed<EmployerJob>(`/employer/jobs/${id}`, { method: 'DELETE' }),
+  employerJobApplications: (id: string) => authed<AtsApplication[]>(`/employer/jobs/${id}/applications`),
+  employerUpdateApplication: (id: string, status: ApplicationStatusValue) =>
+    authed<{ id: string; status: ApplicationStatusValue }>(`/employer/applications/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) }),
+
   // --- Kabinet (vendor egasi) ---
   kabinetVendors: () => authed<KabinetVendor[]>('/kabinet/vendors'),
   kabinetVendor: (id: string) => authed<KabinetVendorDetail>(`/kabinet/vendors/${id}`),
@@ -150,6 +168,43 @@ export interface Resume extends ResumeInput {
   id: string; userId: string; skills: string[]; experienceYears: number;
   experience: ResumeExperience[]; education: ResumeEducation[];
   fileUrl?: string | null; createdAt: string; updatedAt: string;
+}
+
+export interface EmployerCompanyInput {
+  name: string; industry?: string; size?: string; about?: string;
+  district?: string; website?: string; logo?: string; cover?: string;
+}
+export interface EmployerCompany {
+  id: string; slug: string; name: string; verified: boolean; jobCount?: number;
+  logo: string | null; cover: string | null; industry: string | null;
+  size: string | null; about: string | null; district: string | null; website: string | null;
+}
+export interface EmployerJobInput {
+  title: string; description: string; employment?: JobEmployment; remote?: boolean;
+  region?: string; experience?: JobExperience; salaryMin?: number; salaryMax?: number;
+  currency?: string; skills?: string[]; category?: string; status?: JobStatusValue;
+}
+export type JobStatusValue = 'DRAFT' | 'ACTIVE' | 'CLOSED' | 'ARCHIVED';
+export interface EmployerJob {
+  id: string; title: string; description: string; employment: JobEmployment; remote: boolean;
+  region: string | null; experience: JobExperience; salaryMin: number | null; salaryMax: number | null;
+  currency: string; skills: string[]; category: string | null; status: JobStatusValue;
+  featured: boolean; views: number; createdAt: string; applicants: number;
+}
+export interface EmployerStats {
+  jobsTotal: number; jobsActive: number; jobsByStatus: Record<string, number>;
+  applicationsTotal: number; applicationsByStatus: Record<string, number>;
+  applicationsNew: number; hired: number; views: number;
+}
+export interface AtsResume {
+  headline: string; summary: string | null; skills: string[]; experienceYears: number;
+  phone: string | null; email: string | null;
+  experience: ResumeExperience[]; education: ResumeEducation[];
+}
+export interface AtsApplication {
+  id: string; status: ApplicationStatusValue; coverNote: string | null; aiScore: number | null; createdAt: string;
+  applicant: { name: string | null; phone: string | null; email: string | null; avatarUrl: string | null };
+  resume: AtsResume | null;
 }
 
 export interface KabinetVendor {
