@@ -106,7 +106,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
                 <div className="text-xs text-slate2">{t('salary').replace(/\s*\(.*\)/, '')}</div>
                 <div className="font-display text-xl font-bold text-navy">{salaryText(job, t('mln'), t('sum'), t('negotiable'), t('from'))}<span className="text-sm font-normal text-slate2"> / {t('perMonth')}</span></div>
               </div>
-              <ApplyButton />
+              <ApplyButton jobId={job.id} />
             </div>
 
             <div className="mt-8">
@@ -146,7 +146,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
               {fact(<Users size={16} />, t('applicants'), `${job.applicants}`)}
               {fact(<Eye size={16} />, t('views'), `${job.views}`)}
             </div>
-            <div className="mt-5"><ApplyButton block /></div>
+            <div className="mt-5"><ApplyButton jobId={job.id} block /></div>
           </div>
 
           <div className="rounded-2xl border border-line bg-white p-5">

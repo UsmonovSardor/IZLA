@@ -79,6 +79,14 @@ export const api = {
   jobFacets: () => get<JobFacets>('/jobs/facets', 120),
   job: (id: string) => get<JobDetail>(`/jobs/${id}`, 60),
 
+  // --- Izla Ish (ariza + rezyume, avtorizatsiyali) ---
+  applyJob: (id: string, coverNote?: string) =>
+    authed<ApplyResult>(`/jobs/${id}/apply`, { method: 'POST', body: JSON.stringify({ coverNote }) }),
+  jobApplicationStatus: (id: string) => authed<ApplicationStatus>(`/jobs/${id}/application`),
+  myApplications: () => authed<MyApplication[]>('/jobs/me/applications'),
+  resumeMe: () => authed<Resume | null>('/resume/me'),
+  saveResume: (body: ResumeInput) => authed<Resume>('/resume', { method: 'PUT', body: JSON.stringify(body) }),
+
   // --- Kabinet (vendor egasi) ---
   kabinetVendors: () => authed<KabinetVendor[]>('/kabinet/vendors'),
   kabinetVendor: (id: string) => authed<KabinetVendorDetail>(`/kabinet/vendors/${id}`),
@@ -116,6 +124,32 @@ export interface JobsResult { total: number; page: number; limit: number; items:
 export interface JobFacets {
   total: number; employment: Record<string, number>; experience: Record<string, number>;
   categories: { name: string; count: number }[];
+}
+
+export type ApplicationStatusValue = 'NEW' | 'VIEWED' | 'INTERVIEW' | 'OFFER' | 'HIRED' | 'REJECTED';
+export interface ApplyResult { id: string; status: ApplicationStatusValue; createdAt: string; hasResume: boolean }
+export interface ApplicationStatus {
+  applied: boolean;
+  application: { id: string; status: ApplicationStatusValue; createdAt: string } | null;
+}
+export interface MyApplication {
+  id: string; status: ApplicationStatusValue; coverNote: string | null; createdAt: string;
+  job: {
+    id: string; title: string; employment: JobEmployment; remote: boolean; region: string | null;
+    salaryMin: number | null; salaryMax: number | null; currency: string; status: string;
+    company: { name: string; slug: string; logo: string | null; verified: boolean };
+  };
+}
+export interface ResumeExperience { title: string; company: string; from?: string; to?: string; desc?: string }
+export interface ResumeEducation { degree: string; school: string; year?: string }
+export interface ResumeInput {
+  headline: string; summary?: string; skills?: string[]; experienceYears?: number;
+  phone?: string; email?: string; experience?: ResumeExperience[]; education?: ResumeEducation[];
+}
+export interface Resume extends ResumeInput {
+  id: string; userId: string; skills: string[]; experienceYears: number;
+  experience: ResumeExperience[]; education: ResumeEducation[];
+  fileUrl?: string | null; createdAt: string; updatedAt: string;
 }
 
 export interface KabinetVendor {

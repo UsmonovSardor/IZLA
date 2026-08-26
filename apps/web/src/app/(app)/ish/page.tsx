@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
+import { FileText, ClipboardList } from 'lucide-react';
 import { api } from '@/lib/api';
 import { JobBoard } from '@/components/jobs/job-board';
 
@@ -35,6 +37,14 @@ export default async function IshPage() {
             {t('heroTitle')}
           </h1>
           <p className="mt-4 max-w-xl text-lg text-slate2">{t('heroSub')}</p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link href="/rezyume" className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-violet-700">
+              <FileText size={16} /> {t('createResume')}
+            </Link>
+            <Link href="/ish/arizalarim" className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-sm font-semibold text-navy transition hover:bg-bg">
+              <ClipboardList size={16} /> {t('myApplications')}
+            </Link>
+          </div>
         </div>
       </section>
 
