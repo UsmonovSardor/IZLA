@@ -15,6 +15,7 @@ import { TelegramModule } from './modules/telegram/telegram.module';
 import { AssistantModule } from './modules/assistant/assistant.module';
 import { KabinetModule } from './modules/kabinet/kabinet.module';
 import { JobsModule } from './modules/jobs/jobs.module';
+import { ResumeModule } from './modules/resume/resume.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { JobsModule } from './modules/jobs/jobs.module';
     AssistantModule,
     KabinetModule,
     JobsModule,
+    ResumeModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
