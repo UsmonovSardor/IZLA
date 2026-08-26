@@ -81,7 +81,7 @@ export function HeaderAuth() {
               <CalendarClock className="h-4 w-4 text-slate2" /> {t('myBookings')}
             </Link>
             {isStaff && (
-              <Link href="/profil" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2 text-ink hover:bg-bg">
+              <Link href="/kabinet" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2 text-ink hover:bg-bg">
                 <LayoutDashboard className="h-4 w-4 text-slate2" /> {t('cabinet')}
               </Link>
             )}

@@ -578,5 +578,66 @@
     "offlineTitle": "You are offline",
     "offlineBody": "Check your connection and try again.",
     "home": "Home"
+  },
+  "kabinet": {
+    "title": "Dashboard",
+    "subtitle": "Manage your business",
+    "loginNeeded": "Sign in to continue",
+    "login": "Sign in",
+    "noVendor": "You have no business yet",
+    "noVendorHint": "Sign in with an owner account to manage your business here.",
+    "tabs": {
+      "profile": "Profile",
+      "services": "Services",
+      "bookings": "Bookings"
+    },
+    "stats": {
+      "totalBookings": "Total bookings",
+      "confirmed": "Confirmed",
+      "rating": "Rating",
+      "revenue": "Revenue"
+    },
+    "profile": {
+      "name": "Name",
+      "description": "Description",
+      "phone": "Phone",
+      "address": "Address",
+      "district": "District",
+      "hours": "Working hours",
+      "save": "Save",
+      "saved": "Saved",
+      "monFri": "Mon–Fri",
+      "sat": "Saturday",
+      "sun": "Sunday",
+      "closed": "Closed"
+    },
+    "services": {
+      "add": "Add service",
+      "name": "Name",
+      "price": "Price",
+      "duration": "Duration (min)",
+      "active": "Active",
+      "inactive": "Inactive",
+      "delete": "Delete",
+      "empty": "No services yet",
+      "added": "Added"
+    },
+    "bookings": {
+      "empty": "No bookings yet",
+      "customer": "Customer",
+      "noService": "Service",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "complete": "Complete",
+      "noshow": "No-show"
+    },
+    "status": {
+      "PENDING": "Pending",
+      "CONFIRMED": "Confirmed",
+      "CANCELLED": "Cancelled",
+      "COMPLETED": "Completed",
+      "NO_SHOW": "No-show"
+    },
+    "sum": "UZS"
   }
 }

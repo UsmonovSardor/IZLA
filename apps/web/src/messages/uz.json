@@ -578,5 +578,66 @@
     "offlineTitle": "Internet aloqasi yo‘q",
     "offlineBody": "Ulanishingizni tekshirib, qayta urinib ko‘ring.",
     "home": "Bosh sahifa"
+  },
+  "kabinet": {
+    "title": "Kabinet",
+    "subtitle": "Biznesingizni boshqaring",
+    "loginNeeded": "Davom etish uchun tizimga kiring",
+    "login": "Kirish",
+    "noVendor": "Sizda hali biznes yo‘q",
+    "noVendorHint": "Vendor egasi hisobingiz bilan kirsangiz, biznesingiz shu yerda ko‘rinadi.",
+    "tabs": {
+      "profile": "Profil",
+      "services": "Xizmatlar",
+      "bookings": "Bronlar"
+    },
+    "stats": {
+      "totalBookings": "Jami bron",
+      "confirmed": "Tasdiqlangan",
+      "rating": "Reyting",
+      "revenue": "Daromad"
+    },
+    "profile": {
+      "name": "Nomi",
+      "description": "Tavsif",
+      "phone": "Telefon",
+      "address": "Manzil",
+      "district": "Tuman",
+      "hours": "Ish vaqti",
+      "save": "Saqlash",
+      "saved": "Saqlandi",
+      "monFri": "Dush–Juma",
+      "sat": "Shanba",
+      "sun": "Yakshanba",
+      "closed": "Yopiq"
+    },
+    "services": {
+      "add": "Xizmat qo‘shish",
+      "name": "Nomi",
+      "price": "Narx",
+      "duration": "Davomiylik (daq)",
+      "active": "Faol",
+      "inactive": "Nofaol",
+      "delete": "O‘chirish",
+      "empty": "Hali xizmat yo‘q",
+      "added": "Qo‘shildi"
+    },
+    "bookings": {
+      "empty": "Hali bron yo‘q",
+      "customer": "Mijoz",
+      "noService": "Xizmat",
+      "confirm": "Tasdiqlash",
+      "cancel": "Bekor qilish",
+      "complete": "Yakunlandi",
+      "noshow": "Kelmadi"
+    },
+    "status": {
+      "PENDING": "Kutilmoqda",
+      "CONFIRMED": "Tasdiqlangan",
+      "CANCELLED": "Bekor qilingan",
+      "COMPLETED": "Yakunlangan",
+      "NO_SHOW": "Kelmadi"
+    },
+    "sum": "so‘m"
   }
 }

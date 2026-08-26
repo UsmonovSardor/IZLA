@@ -73,8 +73,54 @@ export const api = {
   createPayment: (body: { bookingId: string; provider: 'PAYME' | 'CLICK' }) =>
     authed<PaymentInvoice>('/payments', { method: 'POST', body: JSON.stringify(body) }),
   paymentStatus: (id: string) => authed<Payment>(`/payments/${id}`),
+
+  // --- Kabinet (vendor egasi) ---
+  kabinetVendors: () => authed<KabinetVendor[]>('/kabinet/vendors'),
+  kabinetVendor: (id: string) => authed<KabinetVendorDetail>(`/kabinet/vendors/${id}`),
+  kabinetUpdateVendor: (id: string, body: Partial<KabinetVendorProfile>) =>
+    authed<KabinetVendorDetail>(`/kabinet/vendors/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+  kabinetStats: (id: string) => authed<KabinetStats>(`/kabinet/vendors/${id}/stats`),
+  kabinetBookings: (id: string) => authed<KabinetBooking[]>(`/kabinet/vendors/${id}/bookings`),
+  kabinetCreateService: (id: string, body: KabinetServiceInput) =>
+    authed<KabinetService>(`/kabinet/vendors/${id}/services`, { method: 'POST', body: JSON.stringify(body) }),
+  kabinetUpdateService: (id: string, body: Partial<KabinetServiceInput>) =>
+    authed<KabinetService>(`/kabinet/services/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+  kabinetDeleteService: (id: string) =>
+    authed<KabinetService>(`/kabinet/services/${id}`, { method: 'DELETE' }),
+  kabinetUpdateBooking: (id: string, status: string) =>
+    authed<{ id: string; status: string }>(`/kabinet/bookings/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) }),
+
   base: BASE,
 };
+
+export interface KabinetVendor {
+  id: string; slug: string; name: string; status: string; verified: boolean;
+  rating: number; reviewCount: number; photos: string[];
+  category?: { slug: string; name: string; icon?: string };
+  counts: { services: number; bookings: number; reviews: number };
+}
+export interface KabinetServiceInput { name: string; price: number; durationMin: number; active?: boolean }
+export interface KabinetService { id: string; name: string; price: string; durationMin: number; active: boolean }
+export interface KabinetVendorProfile {
+  name: string; description: string | null; phone: string | null; address: string | null;
+  district: string | null; hours: Record<string, string>; socials: Record<string, string>;
+}
+export interface KabinetVendorDetail extends KabinetVendorProfile {
+  id: string; slug: string; status: string; verified: boolean; rating: number; reviewCount: number;
+  photos: string[]; category?: { slug: string; name: string; icon?: string };
+  services: KabinetService[];
+}
+export interface KabinetStats {
+  totalBookings: number; bookingsByStatus: Record<string, number>; servicesCount: number;
+  rating: number; reviewCount: number; paidCount: number; revenue: string;
+}
+export interface KabinetBooking {
+  id: string; status: string; slotStart: string; slotEnd: string; note?: string;
+  service?: { name: string; price: string; durationMin: number };
+  user?: { name?: string; phone?: string; avatarUrl?: string | null };
+  staff?: { name: string } | null;
+  payment?: { status: string; amount: string } | null;
+}
 
 export interface Category { id: string; slug: string; name: string; icon?: string; _count?: { vendors: number } }
 export interface ChatTurn { role: 'user' | 'assistant'; content: string }
