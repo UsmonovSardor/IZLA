@@ -16,6 +16,7 @@ import { AssistantModule } from './modules/assistant/assistant.module';
 import { KabinetModule } from './modules/kabinet/kabinet.module';
 import { JobsModule } from './modules/jobs/jobs.module';
 import { ResumeModule } from './modules/resume/resume.module';
+import { EmployerModule } from './modules/employer/employer.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { ResumeModule } from './modules/resume/resume.module';
     KabinetModule,
     JobsModule,
     ResumeModule,
+    EmployerModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
