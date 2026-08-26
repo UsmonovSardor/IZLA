@@ -13,6 +13,7 @@ import { BookingsModule } from './modules/bookings/bookings.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { TelegramModule } from './modules/telegram/telegram.module';
 import { AssistantModule } from './modules/assistant/assistant.module';
+import { KabinetModule } from './modules/kabinet/kabinet.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { AssistantModule } from './modules/assistant/assistant.module';
     PaymentsModule,
     TelegramModule,
     AssistantModule,
+    KabinetModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
