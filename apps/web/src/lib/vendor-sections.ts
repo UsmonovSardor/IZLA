@@ -134,6 +134,128 @@ const RESTAURANT: CategorySectionConfig = {
   ],
 };
 
+const ALL: SectionId[] = ['counters', 'services', 'whyChoose', 'team', 'howItWork', 'gallery', 'reviews', 'map'];
+
+const FITNESS: CategorySectionConfig = {
+  accent: '#16A34A', accentSoft: '#E7F6EC', heroKind: 'place', sections: ALL,
+  i18nKey: 'fitnes', teamLabelKey: 'team.trainers', servicesLabelKey: 'services.default',
+  highlights: [
+    { icon: 'Award', key: 'certifiedTrainers' },
+    { icon: 'Dumbbell', key: 'modernEquipment' },
+    { icon: 'Users', key: 'groupClasses' },
+    { icon: 'Star', key: 'positiveReviews' },
+    { icon: 'Wallet', key: 'flexibleMembership' },
+    { icon: 'Waves', key: 'sauna' },
+  ],
+  steps: [
+    { icon: 'Search', key: 'choose' }, { icon: 'CalendarCheck', key: 'book' },
+    { icon: 'Dumbbell', key: 'train' }, { icon: 'TrendingUp', key: 'progress' },
+  ],
+};
+
+const BARBER: CategorySectionConfig = {
+  accent: '#B45309', accentSoft: '#FBF0E2', heroKind: 'person', sections: ALL,
+  i18nKey: 'barbershop', teamLabelKey: 'team.barbers', servicesLabelKey: 'services.default',
+  highlights: [
+    { icon: 'Scissors', key: 'masterBarbers' },
+    { icon: 'ShieldCheck', key: 'hygiene' },
+    { icon: 'Gem', key: 'premiumProducts' },
+    { icon: 'Star', key: 'positiveReviews' },
+    { icon: 'Sparkles', key: 'styleConsult' },
+    { icon: 'Coffee', key: 'atmosphere' },
+  ],
+  steps: [
+    { icon: 'CalendarCheck', key: 'book' }, { icon: 'HeartHandshake', key: 'consult' },
+    { icon: 'Scissors', key: 'cut' }, { icon: 'Smile', key: 'enjoy' },
+  ],
+};
+
+const AUTO: CategorySectionConfig = {
+  accent: '#DC2626', accentSoft: '#FCE9E9', heroKind: 'place', sections: ALL,
+  i18nKey: 'avto', teamLabelKey: 'team.mechanics', servicesLabelKey: 'services.default',
+  highlights: [
+    { icon: 'Award', key: 'certifiedMechanics' },
+    { icon: 'ShieldCheck', key: 'genuineParts' },
+    { icon: 'Gauge', key: 'diagnostics' },
+    { icon: 'Star', key: 'positiveReviews' },
+    { icon: 'CheckCircle2', key: 'warranty' },
+    { icon: 'Zap', key: 'fastService' },
+  ],
+  steps: [
+    { icon: 'CalendarCheck', key: 'book' }, { icon: 'Gauge', key: 'diagnose' },
+    { icon: 'Wrench', key: 'repair' }, { icon: 'Car', key: 'pickup' },
+  ],
+};
+
+const VET: CategorySectionConfig = {
+  accent: '#0D9488', accentSoft: '#E2F5F2', heroKind: 'person', sections: ALL,
+  i18nKey: 'veterinariya', teamLabelKey: 'team.vets', servicesLabelKey: 'services.default',
+  highlights: [
+    { icon: 'Stethoscope', key: 'experiencedVets' },
+    { icon: 'Ambulance', key: 'emergency' },
+    { icon: 'Microscope', key: 'modernLab' },
+    { icon: 'Star', key: 'positiveReviews' },
+    { icon: 'HeartHandshake', key: 'gentleCare' },
+    { icon: 'Pill', key: 'pharmacy' },
+  ],
+  steps: [
+    { icon: 'CalendarCheck', key: 'book' }, { icon: 'Stethoscope', key: 'consult' },
+    { icon: 'Sparkles', key: 'treat' }, { icon: 'Smile', key: 'aftercare' },
+  ],
+};
+
+const PHARMACY: CategorySectionConfig = {
+  accent: '#059669', accentSoft: '#E4F6EF', heroKind: 'place',
+  sections: ['counters', 'services', 'whyChoose', 'howItWork', 'gallery', 'reviews', 'map'],
+  i18nKey: 'dorixona', teamLabelKey: 'team.staff', servicesLabelKey: 'services.default',
+  highlights: [
+    { icon: 'ShieldCheck', key: 'licensed' },
+    { icon: 'Pill', key: 'genuineMeds' },
+    { icon: 'Stethoscope', key: 'consultation' },
+    { icon: 'Star', key: 'positiveReviews' },
+    { icon: 'Bike', key: 'delivery' },
+    { icon: 'Clock', key: 'available' },
+  ],
+  steps: [
+    { icon: 'Search', key: 'find' }, { icon: 'CalendarCheck', key: 'order' },
+    { icon: 'HeartHandshake', key: 'consult' }, { icon: 'CheckCircle2', key: 'receive' },
+  ],
+};
+
+const HOTEL: CategorySectionConfig = {
+  accent: '#7C3AED', accentSoft: '#F0EAFE', heroKind: 'place', sections: ALL,
+  i18nKey: 'mehmonxona', teamLabelKey: 'team.staff', servicesLabelKey: 'services.default',
+  highlights: [
+    { icon: 'BedDouble', key: 'comfortRooms' },
+    { icon: 'Coffee', key: 'breakfast' },
+    { icon: 'Wifi', key: 'wifi' },
+    { icon: 'Star', key: 'positiveReviews' },
+    { icon: 'Clock', key: 'reception' },
+    { icon: 'Car', key: 'parking' },
+  ],
+  steps: [
+    { icon: 'Search', key: 'choose' }, { icon: 'CalendarCheck', key: 'book' },
+    { icon: 'KeyRound', key: 'checkin' }, { icon: 'Smile', key: 'enjoy' },
+  ],
+};
+
+const GAMING: CategorySectionConfig = {
+  accent: '#DB2777', accentSoft: '#FCE7F1', heroKind: 'place', sections: ALL,
+  i18nKey: 'oyin', teamLabelKey: 'team.staff', servicesLabelKey: 'services.default',
+  highlights: [
+    { icon: 'Gamepad2', key: 'latestConsoles' },
+    { icon: 'Sofa', key: 'comfortZones' },
+    { icon: 'UtensilsCrossed', key: 'snacks' },
+    { icon: 'Star', key: 'positiveReviews' },
+    { icon: 'Trophy', key: 'tournaments' },
+    { icon: 'CalendarCheck', key: 'booking' },
+  ],
+  steps: [
+    { icon: 'Search', key: 'choose' }, { icon: 'CalendarCheck', key: 'book' },
+    { icon: 'Gamepad2', key: 'play' }, { icon: 'Star', key: 'share' },
+  ],
+};
+
 /** Umumiy fallback — hali maxsus sozlanmagan kategoriyalar uchun. */
 const DEFAULT: CategorySectionConfig = {
   accent: '#2563EB',
@@ -164,6 +286,13 @@ const MAP: Record<string, CategorySectionConfig> = {
   klinika: CLINIC,
   gozallik: BEAUTY,
   restoran: RESTAURANT,
+  fitnes: FITNESS,
+  barbershop: BARBER,
+  'avto-xizmat': AUTO,
+  veterinariya: VET,
+  dorixona: PHARMACY,
+  mehmonxona: HOTEL,
+  'oyin-klub': GAMING,
 };
 
 export function sectionConfig(categorySlug?: string): CategorySectionConfig {

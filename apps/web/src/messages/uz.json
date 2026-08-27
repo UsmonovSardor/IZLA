@@ -307,7 +307,11 @@
       "masters": "Bizning ustalar",
       "staff": "Bizning jamoa",
       "exp": "{years} yil tajriba",
-      "chefs": "Bizning oshpazlar"
+      "chefs": "Bizning oshpazlar",
+      "trainers": "Murabbiylarimiz",
+      "barbers": "Ustalarimiz",
+      "mechanics": "Mutaxassislarimiz",
+      "vets": "Shifokorlarimiz"
     },
     "reviews": {
       "rating": "Xizmat sifati uchun",
@@ -562,6 +566,342 @@
           "share": {
             "t": "Fikringizni qoldiring",
             "d": "Tajribangizni baholang va do'stlaringizga tavsiya qiling."
+          }
+        }
+      },
+      "fitnes": {
+        "whyTitle": "Sog‘lom va faol hayot uchun eng yaxshi tanlov",
+        "howTitle": "Ro‘yxatdan mashg‘ulotgacha",
+        "highlights": {
+          "certifiedTrainers": {
+            "t": "Sertifikatli murabbiylar",
+            "d": "Tajribali va sertifikatlangan mutaxassislar shaxsiy yondashuv bilan."
+          },
+          "modernEquipment": {
+            "t": "Zamonaviy jihozlar",
+            "d": "Eng so‘nggi trenajyorlar va professional inventar."
+          },
+          "groupClasses": {
+            "t": "Guruh mashg‘ulotlari",
+            "d": "Yoga, krossfit, aerobika va boshqa yo‘nalishlar."
+          },
+          "positiveReviews": {
+            "t": "Ijobiy sharhlar",
+            "d": "Mijozlarning ko‘pchiligi natijadan mamnun."
+          },
+          "flexibleMembership": {
+            "t": "Qulay abonement",
+            "d": "Kunlik, oylik va yillik moslashuvchan tariflar."
+          },
+          "sauna": {
+            "t": "Sauna va dush",
+            "d": "Mashg‘ulotdan so‘ng dam olish uchun barcha qulayliklar."
+          }
+        },
+        "steps": {
+          "choose": {
+            "t": "Yo‘nalish tanlang",
+            "d": "O‘zingizga mos mashg‘ulot turini tanlang."
+          },
+          "book": {
+            "t": "Vaqt bandlang",
+            "d": "Qulay kun va soatni onlayn belgilang."
+          },
+          "train": {
+            "t": "Shug‘ullaning",
+            "d": "Murabbiy nazoratida samarali mashq qiling."
+          },
+          "progress": {
+            "t": "Natijaga erishing",
+            "d": "Rivojlanishingizni kuzatib boring."
+          }
+        }
+      },
+      "barbershop": {
+        "whyTitle": "Zamonaviy uslub va parvarish bir joyda",
+        "howTitle": "Bandlashdan yangi uslubgacha",
+        "highlights": {
+          "masterBarbers": {
+            "t": "Usta sartaroshlar",
+            "d": "Zamonaviy va klassik uslublar ustalari."
+          },
+          "hygiene": {
+            "t": "To‘liq gigiyena",
+            "d": "Har mijozga steril va yakka asboblar."
+          },
+          "premiumProducts": {
+            "t": "Premium mahsulotlar",
+            "d": "Yetakchi brendlarning parvarish vositalari."
+          },
+          "positiveReviews": {
+            "t": "Ijobiy sharhlar",
+            "d": "Doimiy mijozlar bizni tavsiya qiladi."
+          },
+          "styleConsult": {
+            "t": "Uslub maslahati",
+            "d": "Yuz shakli va didga mos uslub tanlaymiz."
+          },
+          "atmosphere": {
+            "t": "Qulay muhit",
+            "d": "Choy-qahva va yoqimli atmosfera."
+          }
+        },
+        "steps": {
+          "book": {
+            "t": "Vaqt bandlang",
+            "d": "Usta va qulay vaqtni onlayn tanlang."
+          },
+          "consult": {
+            "t": "Maslahatlashing",
+            "d": "Kerakli uslub va parvarishni muhokama qiling."
+          },
+          "cut": {
+            "t": "Xizmatdan bahramand bo‘ling",
+            "d": "Usta mahorati bilan yangi ko‘rinish."
+          },
+          "enjoy": {
+            "t": "Natijadan zavqlaning",
+            "d": "Yangilangan va o‘ziga ishonchli holda ketasiz."
+          }
+        }
+      },
+      "avto": {
+        "whyTitle": "Avtomobilingiz uchun ishonchli xizmat",
+        "howTitle": "Bandlashdan tayyor avtomobilgacha",
+        "highlights": {
+          "certifiedMechanics": {
+            "t": "Malakali ustalar",
+            "d": "Sertifikatli va tajribali avtomutaxassislar."
+          },
+          "genuineParts": {
+            "t": "Original ehtiyot qismlar",
+            "d": "Faqat asl va kafolatli qismlar bilan ishlaymiz."
+          },
+          "diagnostics": {
+            "t": "Kompyuter diagnostikasi",
+            "d": "Zamonaviy uskunalar bilan aniq tashxis."
+          },
+          "positiveReviews": {
+            "t": "Ijobiy sharhlar",
+            "d": "Mijozlar sifat va halollikni qadrlaydi."
+          },
+          "warranty": {
+            "t": "Ishga kafolat",
+            "d": "Bajarilgan ishlarga rasmiy kafolat beramiz."
+          },
+          "fastService": {
+            "t": "Tezkor xizmat",
+            "d": "Vaqtingizni tejaydigan tez va aniq ish."
+          }
+        },
+        "steps": {
+          "book": {
+            "t": "Vaqt bandlang",
+            "d": "Xizmat va qulay vaqtni onlayn tanlang."
+          },
+          "diagnose": {
+            "t": "Diagnostika",
+            "d": "Avtomobil holati aniq tekshiriladi."
+          },
+          "repair": {
+            "t": "Ta’mirlash",
+            "d": "Malakali ustalar ishni sifatli bajaradi."
+          },
+          "pickup": {
+            "t": "Avtomobilni oling",
+            "d": "Tayyor bo‘lganda xabar beramiz."
+          }
+        }
+      },
+      "veterinariya": {
+        "whyTitle": "Uy hayvonlaringiz uchun g‘amxo‘r qo‘llar",
+        "howTitle": "Bandlashdan sog‘ayishgacha",
+        "highlights": {
+          "experiencedVets": {
+            "t": "Tajribali shifokorlar",
+            "d": "Hayvonlar salomatligi bo‘yicha mutaxassislar."
+          },
+          "emergency": {
+            "t": "Shoshilinch yordam",
+            "d": "Zaruriyat tug‘ilganda tezkor xizmat."
+          },
+          "modernLab": {
+            "t": "Zamonaviy laboratoriya",
+            "d": "Aniq tahlil va tashxis uskunalari."
+          },
+          "positiveReviews": {
+            "t": "Ijobiy sharhlar",
+            "d": "Egalar bizga hayvonlarini ishonch bilan topshiradi."
+          },
+          "gentleCare": {
+            "t": "Mehribon munosabat",
+            "d": "Har bir hayvonga bosiqlik va g‘amxo‘rlik."
+          },
+          "pharmacy": {
+            "t": "Vet-dorixona",
+            "d": "Kerakli dori va ozuqalar shu yerda."
+          }
+        },
+        "steps": {
+          "book": {
+            "t": "Vaqt bandlang",
+            "d": "Shifokor va qulay vaqtni onlayn tanlang."
+          },
+          "consult": {
+            "t": "Ko‘rikdan o‘tkazing",
+            "d": "Shifokor hayvonni sinchiklab tekshiradi."
+          },
+          "treat": {
+            "t": "Davolash",
+            "d": "Kerakli muolaja va tavsiyalar beriladi."
+          },
+          "aftercare": {
+            "t": "Kuzatuv",
+            "d": "Sog‘ayish jarayonini birga nazorat qilamiz."
+          }
+        }
+      },
+      "dorixona": {
+        "whyTitle": "Ishonchli dori va professional maslahat",
+        "howTitle": "Qidiruvdan qabulgacha",
+        "highlights": {
+          "licensed": {
+            "t": "Litsenziyalangan",
+            "d": "Rasmiy ruxsat va nazorat ostidagi dorixona."
+          },
+          "genuineMeds": {
+            "t": "Original dorilar",
+            "d": "Faqat sertifikatlangan va asl mahsulotlar."
+          },
+          "consultation": {
+            "t": "Farmatsevt maslahati",
+            "d": "Dori tanlashda malakali yordam."
+          },
+          "positiveReviews": {
+            "t": "Ijobiy sharhlar",
+            "d": "Mijozlar ishonch va sifatni qadrlaydi."
+          },
+          "delivery": {
+            "t": "Yetkazib berish",
+            "d": "Dorilar tez va xavfsiz uyingizgacha."
+          },
+          "available": {
+            "t": "Kengaytirilgan ish vaqti",
+            "d": "Kerakli dorilar deyarli har doim mavjud."
+          }
+        },
+        "steps": {
+          "find": {
+            "t": "Dorini toping",
+            "d": "Kerakli dori yoki mahsulotni izlang."
+          },
+          "order": {
+            "t": "Buyurtma bering",
+            "d": "Onlayn band qiling yoki so‘rov qoldiring."
+          },
+          "consult": {
+            "t": "Maslahatlashing",
+            "d": "Farmatsevt to‘g‘ri dozani tushuntiradi."
+          },
+          "receive": {
+            "t": "Qabul qiling",
+            "d": "Dorini olib keting yoki yetkazib beramiz."
+          }
+        }
+      },
+      "mehmonxona": {
+        "whyTitle": "Qulay va xotirjam dam olish uchun",
+        "howTitle": "Tanlovdan joylashuvgacha",
+        "highlights": {
+          "comfortRooms": {
+            "t": "Qulay xonalar",
+            "d": "Toza, zamonaviy va shinam xonalar."
+          },
+          "breakfast": {
+            "t": "Nonushta",
+            "d": "Har kuni yangi va to‘yimli nonushta."
+          },
+          "wifi": {
+            "t": "Bepul Wi-Fi",
+            "d": "Butun hudud bo‘ylab tez internet."
+          },
+          "positiveReviews": {
+            "t": "Ijobiy sharhlar",
+            "d": "Mehmonlar qulaylik va xizmatni maqtaydi."
+          },
+          "reception": {
+            "t": "Kunu-tun qabul",
+            "d": "Reception istalgan vaqtda yordam beradi."
+          },
+          "parking": {
+            "t": "Parkovka",
+            "d": "Xavfsiz va bepul avtoturargoh."
+          }
+        },
+        "steps": {
+          "choose": {
+            "t": "Xona tanlang",
+            "d": "O‘zingizga mos xona turini tanlang."
+          },
+          "book": {
+            "t": "Band qiling",
+            "d": "Sana va xonani onlayn bandlang."
+          },
+          "checkin": {
+            "t": "Joylashing",
+            "d": "Tez va qulay ro‘yxatdan o‘tish."
+          },
+          "enjoy": {
+            "t": "Dam oling",
+            "d": "Barcha qulayliklardan bahramand bo‘ling."
+          }
+        }
+      },
+      "oyin": {
+        "whyTitle": "Do‘stlar bilan zo‘r hordiq uchun",
+        "howTitle": "Tanlovdan o‘yingacha",
+        "highlights": {
+          "latestConsoles": {
+            "t": "So‘nggi konsollar",
+            "d": "PlayStation 5 va eng yangi o‘yinlar."
+          },
+          "comfortZones": {
+            "t": "Qulay zonalar",
+            "d": "Yumshoq divanlar va shinam o‘yin xonalari."
+          },
+          "snacks": {
+            "t": "Snek va ichimlik",
+            "d": "O‘yin chog‘ida yengil taomlar va ichimliklar."
+          },
+          "positiveReviews": {
+            "t": "Ijobiy sharhlar",
+            "d": "Mijozlar muhit va xizmatni yoqtiradi."
+          },
+          "tournaments": {
+            "t": "Turnirlar",
+            "d": "Muntazam musobaqalar va sovrinlar."
+          },
+          "booking": {
+            "t": "Onlayn bandlash",
+            "d": "Zona va vaqtni oldindan band qiling."
+          }
+        },
+        "steps": {
+          "choose": {
+            "t": "Zona tanlang",
+            "d": "Konsol yoki o‘yin turini tanlang."
+          },
+          "book": {
+            "t": "Band qiling",
+            "d": "Qulay vaqtni onlayn belgilang."
+          },
+          "play": {
+            "t": "O‘ynang",
+            "d": "Do‘stlaringiz bilan maza qiling."
+          },
+          "share": {
+            "t": "Baham ko‘ring",
+            "d": "Taassurotlaringizni sharhda qoldiring."
           }
         }
       }

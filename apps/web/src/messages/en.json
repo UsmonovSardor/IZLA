@@ -307,7 +307,11 @@
       "masters": "Our masters",
       "staff": "Our team",
       "exp": "{years} yrs exp",
-      "chefs": "Our chefs"
+      "chefs": "Our chefs",
+      "trainers": "Our trainers",
+      "barbers": "Our barbers",
+      "mechanics": "Our specialists",
+      "vets": "Our vets"
     },
     "reviews": {
       "rating": "For quality service",
@@ -562,6 +566,342 @@
           "share": {
             "t": "Leave a review",
             "d": "Rate your experience and recommend us to friends."
+          }
+        }
+      },
+      "fitnes": {
+        "whyTitle": "The best choice for a healthy, active life",
+        "howTitle": "From sign-up to workout",
+        "highlights": {
+          "certifiedTrainers": {
+            "t": "Certified trainers",
+            "d": "Experienced specialists with a personal approach."
+          },
+          "modernEquipment": {
+            "t": "Modern equipment",
+            "d": "Latest machines and professional gear."
+          },
+          "groupClasses": {
+            "t": "Group classes",
+            "d": "Yoga, crossfit, aerobics and more."
+          },
+          "positiveReviews": {
+            "t": "Great reviews",
+            "d": "Most clients are happy with the results."
+          },
+          "flexibleMembership": {
+            "t": "Flexible membership",
+            "d": "Daily, monthly and yearly plans."
+          },
+          "sauna": {
+            "t": "Sauna & showers",
+            "d": "Everything to relax after a workout."
+          }
+        },
+        "steps": {
+          "choose": {
+            "t": "Choose a program",
+            "d": "Pick the workout type that fits you."
+          },
+          "book": {
+            "t": "Book a time",
+            "d": "Choose a convenient day and hour online."
+          },
+          "train": {
+            "t": "Train",
+            "d": "Work out effectively with a trainer."
+          },
+          "progress": {
+            "t": "Reach your goals",
+            "d": "Track your progress over time."
+          }
+        }
+      },
+      "barbershop": {
+        "whyTitle": "Modern style and care in one place",
+        "howTitle": "From booking to a fresh look",
+        "highlights": {
+          "masterBarbers": {
+            "t": "Master barbers",
+            "d": "Pros in modern and classic cuts."
+          },
+          "hygiene": {
+            "t": "Full hygiene",
+            "d": "Sterile, individual tools for everyone."
+          },
+          "premiumProducts": {
+            "t": "Premium products",
+            "d": "Care products from leading brands."
+          },
+          "positiveReviews": {
+            "t": "Great reviews",
+            "d": "Regular clients recommend us."
+          },
+          "styleConsult": {
+            "t": "Style advice",
+            "d": "A look tailored to your face and taste."
+          },
+          "atmosphere": {
+            "t": "Cozy atmosphere",
+            "d": "Tea, coffee and a pleasant vibe."
+          }
+        },
+        "steps": {
+          "book": {
+            "t": "Book a time",
+            "d": "Pick a barber and time online."
+          },
+          "consult": {
+            "t": "Consult",
+            "d": "Discuss the cut and care you want."
+          },
+          "cut": {
+            "t": "Enjoy the service",
+            "d": "A new look by a skilled barber."
+          },
+          "enjoy": {
+            "t": "Love the result",
+            "d": "Leave refreshed and confident."
+          }
+        }
+      },
+      "avto": {
+        "whyTitle": "Reliable service for your car",
+        "howTitle": "From booking to a ready car",
+        "highlights": {
+          "certifiedMechanics": {
+            "t": "Skilled mechanics",
+            "d": "Certified, experienced auto specialists."
+          },
+          "genuineParts": {
+            "t": "Genuine parts",
+            "d": "We use only authentic, warranted parts."
+          },
+          "diagnostics": {
+            "t": "Computer diagnostics",
+            "d": "Accurate diagnosis with modern tools."
+          },
+          "positiveReviews": {
+            "t": "Great reviews",
+            "d": "Clients value quality and honesty."
+          },
+          "warranty": {
+            "t": "Work warranty",
+            "d": "Official warranty on completed work."
+          },
+          "fastService": {
+            "t": "Fast service",
+            "d": "Quick, precise work that saves time."
+          }
+        },
+        "steps": {
+          "book": {
+            "t": "Book a time",
+            "d": "Pick a service and time online."
+          },
+          "diagnose": {
+            "t": "Diagnostics",
+            "d": "Your car is thoroughly checked."
+          },
+          "repair": {
+            "t": "Repair",
+            "d": "Skilled mechanics do quality work."
+          },
+          "pickup": {
+            "t": "Pick up the car",
+            "d": "We notify you when it is ready."
+          }
+        }
+      },
+      "veterinariya": {
+        "whyTitle": "Caring hands for your pets",
+        "howTitle": "From booking to recovery",
+        "highlights": {
+          "experiencedVets": {
+            "t": "Experienced vets",
+            "d": "Specialists in animal health."
+          },
+          "emergency": {
+            "t": "Emergency care",
+            "d": "Prompt help when it matters."
+          },
+          "modernLab": {
+            "t": "Modern lab",
+            "d": "Equipment for accurate tests."
+          },
+          "positiveReviews": {
+            "t": "Great reviews",
+            "d": "Owners trust us with their pets."
+          },
+          "gentleCare": {
+            "t": "Gentle approach",
+            "d": "Calm, caring treatment for every animal."
+          },
+          "pharmacy": {
+            "t": "Vet pharmacy",
+            "d": "Needed meds and food right here."
+          }
+        },
+        "steps": {
+          "book": {
+            "t": "Book a time",
+            "d": "Pick a vet and time online."
+          },
+          "consult": {
+            "t": "Examination",
+            "d": "The vet examines your pet carefully."
+          },
+          "treat": {
+            "t": "Treatment",
+            "d": "Procedures and advice are provided."
+          },
+          "aftercare": {
+            "t": "Follow-up",
+            "d": "We track recovery together."
+          }
+        }
+      },
+      "dorixona": {
+        "whyTitle": "Reliable medicine and expert advice",
+        "howTitle": "From search to pickup",
+        "highlights": {
+          "licensed": {
+            "t": "Licensed",
+            "d": "A pharmacy under official oversight."
+          },
+          "genuineMeds": {
+            "t": "Genuine medicine",
+            "d": "Only certified, authentic products."
+          },
+          "consultation": {
+            "t": "Pharmacist advice",
+            "d": "Qualified help choosing your medicine."
+          },
+          "positiveReviews": {
+            "t": "Great reviews",
+            "d": "Clients value trust and quality."
+          },
+          "delivery": {
+            "t": "Delivery",
+            "d": "Medicine to your door, fast and safe."
+          },
+          "available": {
+            "t": "Extended hours",
+            "d": "Needed medicine is almost always in stock."
+          }
+        },
+        "steps": {
+          "find": {
+            "t": "Find medicine",
+            "d": "Search for the product you need."
+          },
+          "order": {
+            "t": "Place an order",
+            "d": "Book online or leave a request."
+          },
+          "consult": {
+            "t": "Consult",
+            "d": "The pharmacist explains the right dose."
+          },
+          "receive": {
+            "t": "Receive",
+            "d": "Pick up or get it delivered."
+          }
+        }
+      },
+      "mehmonxona": {
+        "whyTitle": "For a comfortable, restful stay",
+        "howTitle": "From choice to check-in",
+        "highlights": {
+          "comfortRooms": {
+            "t": "Comfortable rooms",
+            "d": "Clean, modern and cozy rooms."
+          },
+          "breakfast": {
+            "t": "Breakfast",
+            "d": "Fresh and hearty breakfast daily."
+          },
+          "wifi": {
+            "t": "Free Wi-Fi",
+            "d": "Fast internet across the property."
+          },
+          "positiveReviews": {
+            "t": "Great reviews",
+            "d": "Guests praise the comfort and service."
+          },
+          "reception": {
+            "t": "24/7 reception",
+            "d": "Help any time of day."
+          },
+          "parking": {
+            "t": "Parking",
+            "d": "Safe and free parking."
+          }
+        },
+        "steps": {
+          "choose": {
+            "t": "Choose a room",
+            "d": "Pick the room type that fits you."
+          },
+          "book": {
+            "t": "Book",
+            "d": "Choose a date and room online."
+          },
+          "checkin": {
+            "t": "Check in",
+            "d": "Fast and easy registration."
+          },
+          "enjoy": {
+            "t": "Relax",
+            "d": "Enjoy all the amenities."
+          }
+        }
+      },
+      "oyin": {
+        "whyTitle": "Great fun with friends",
+        "howTitle": "From choice to play",
+        "highlights": {
+          "latestConsoles": {
+            "t": "Latest consoles",
+            "d": "PlayStation 5 and the newest games."
+          },
+          "comfortZones": {
+            "t": "Comfort zones",
+            "d": "Soft couches and cozy game rooms."
+          },
+          "snacks": {
+            "t": "Snacks & drinks",
+            "d": "Light food and drinks while you play."
+          },
+          "positiveReviews": {
+            "t": "Great reviews",
+            "d": "Clients love the vibe and service."
+          },
+          "tournaments": {
+            "t": "Tournaments",
+            "d": "Regular contests and prizes."
+          },
+          "booking": {
+            "t": "Online booking",
+            "d": "Reserve a zone and time in advance."
+          }
+        },
+        "steps": {
+          "choose": {
+            "t": "Choose a zone",
+            "d": "Pick a console or game type."
+          },
+          "book": {
+            "t": "Book",
+            "d": "Choose a convenient time online."
+          },
+          "play": {
+            "t": "Play",
+            "d": "Have fun with your friends."
+          },
+          "share": {
+            "t": "Share",
+            "d": "Leave your impressions in a review."
           }
         }
       }
