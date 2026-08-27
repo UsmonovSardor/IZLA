@@ -25,6 +25,22 @@ export class CoinsService {
     this.award(userId, delta, reason).catch((e) => this.logger.error(`Coin award xato: ${(e as Error).message}`));
   }
 
+  /** Bir martalik mukofot — shu reason bilan avval berilmagan bo'lsagina qo'shadi (idempotent). */
+  async awardOnce(userId: string, delta: number, reason: string): Promise<{ awarded: boolean; balance: number }> {
+    const exists = await this.prisma.coinLedger.findFirst({ where: { userId, reason }, select: { id: true } });
+    if (exists) {
+      const u = await this.prisma.user.findUnique({ where: { id: userId }, select: { coins: true } });
+      return { awarded: false, balance: u?.coins ?? 0 };
+    }
+    const balance = await this.award(userId, delta, reason);
+    return { awarded: true, balance };
+  }
+
+  /** Xush kelibsiz bonusi (bir marta, har login'da chaqirsa ham xavfsiz). */
+  awardWelcomeSafe(userId: string): void {
+    this.awardOnce(userId, 100, 'welcome').catch((e) => this.logger.error(`Welcome bonus xato: ${(e as Error).message}`));
+  }
+
   /** Balans + so'nggi tarix. */
   async summary(userId: string) {
     const [user, ledger] = await Promise.all([

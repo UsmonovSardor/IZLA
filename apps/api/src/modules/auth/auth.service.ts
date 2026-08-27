@@ -12,6 +12,7 @@ import { createHash, createHmac, randomBytes, randomInt } from 'node:crypto';
 import type { User } from '@izla/db';
 import { PrismaService } from '../../prisma/prisma.service';
 import { SmsService } from '../notifications/sms.service';
+import { CoinsService } from '../coins/coins.service';
 import { env } from '../../config/env';
 
 // MVP dev rejimida OTP fikslangan.
@@ -46,6 +47,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
     private readonly sms: SmsService,
+    private readonly coins: CoinsService,
   ) {}
 
   private get isDev() {
@@ -355,6 +357,8 @@ export class AuthService {
         expiresAt: new Date(Date.now() + SESSION_TTL_MS),
       },
     });
+    // Xush kelibsiz bonusi — birinchi kirishda bir marta (best-effort, idempotent)
+    this.coins.awardWelcomeSafe(user.id);
     return {
       access: await this.signAccess(user),
       refreshToken: raw,

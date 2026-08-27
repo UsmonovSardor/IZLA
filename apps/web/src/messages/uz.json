@@ -275,7 +275,8 @@
   },
   "pay": {
     "prepay": "Oldindan to'lash",
-    "startError": "To'lovni boshlab bo'lmadi"
+    "startError": "To'lovni boshlab bo'lmadi",
+    "redirecting": "To‘lov sahifasiga o‘tilmoqda…"
   },
   "realEstate": {
     "title": "Ko'chmas mulk",

@@ -275,7 +275,8 @@
   },
   "pay": {
     "prepay": "Prepay",
-    "startError": "Couldn't start the payment"
+    "startError": "Couldn't start the payment",
+    "redirecting": "Redirecting to payment…"
   },
   "realEstate": {
     "title": "Real estate",

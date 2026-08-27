@@ -66,7 +66,7 @@ export const viewport: Viewport = {
   themeColor: '#2563EB',
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
+  // maximumScale/userScalable QO'YILMAYDI — a11y: foydalanuvchi pinch-zoom qila olsin
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

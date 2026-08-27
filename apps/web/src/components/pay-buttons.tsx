@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { Loader2 } from 'lucide-react';
 import { api, type PaymentProviderId } from '@/lib/api';
 import { useAuth } from './auth-provider';
+import { useToast } from '@/components/toast';
 
 const PROVIDERS: { id: PaymentProviderId; label: string; cls: string }[] = [
   { id: 'PAYME', label: 'Payme', cls: 'bg-[#00c4b4] hover:bg-[#00b0a2]' },
@@ -17,6 +18,7 @@ const PROVIDERS: { id: PaymentProviderId; label: string; cls: string }[] = [
 export function PayButtons({ bookingId, label }: { bookingId: string; label?: string }) {
   const { user, openLogin } = useAuth();
   const t = useTranslations('pay');
+  const { toast, dismiss } = useToast();
   const [paying, setPaying] = useState<PaymentProviderId | null>(null);
   const [error, setError] = useState('');
   const displayLabel = label ?? t('prepay');
@@ -28,11 +30,15 @@ export function PayButtons({ bookingId, label }: { bookingId: string; label?: st
     }
     setPaying(provider);
     setError('');
+    const loadingId = toast({ variant: 'loading', title: t('redirecting') });
     try {
       const inv = await api.createPayment({ bookingId, provider });
       window.location.href = inv.checkoutUrl;
     } catch (e) {
-      setError(e instanceof Error ? e.message : t('startError'));
+      dismiss(loadingId);
+      const msg = e instanceof Error ? e.message : t('startError');
+      setError(msg);
+      toast({ variant: 'error', title: msg });
       setPaying(null);
     }
   }
