@@ -1185,5 +1185,22 @@
       "HIRED": "Qabul qilindi",
       "REJECTED": "Rad etildi"
     }
+  },
+  "favorites": {
+    "title": "Sevimlilar",
+    "subtitle": "Saqlangan joylaringiz shu yerda.",
+    "added": "Sevimlilarga qo‘shildi",
+    "removed": "Sevimlilardan olib tashlandi",
+    "error": "Xatolik yuz berdi",
+    "save": "Saqlash",
+    "saved": "Saqlangan",
+    "addAria": "Sevimlilarga qo‘shish",
+    "removeAria": "Sevimlilardan olib tashlash",
+    "loginTitle": "Sevimlilaringiz",
+    "loginNeeded": "Joylarni saqlash uchun tizimga kiring.",
+    "login": "Kirish",
+    "emptyTitle": "Hali saqlangan joy yo‘q",
+    "emptyText": "Yoqqan joylarni yurak belgisi bilan saqlang — bu yerda ko‘rinadi.",
+    "rating": "reyting"
   }
 }

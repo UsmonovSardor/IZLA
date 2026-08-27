@@ -1185,5 +1185,22 @@
       "HIRED": "Hired",
       "REJECTED": "Rejected"
     }
+  },
+  "favorites": {
+    "title": "Favorites",
+    "subtitle": "Your saved places are here.",
+    "added": "Added to favorites",
+    "removed": "Removed from favorites",
+    "error": "Something went wrong",
+    "save": "Save",
+    "saved": "Saved",
+    "addAria": "Add to favorites",
+    "removeAria": "Remove from favorites",
+    "loginTitle": "Your favorites",
+    "loginNeeded": "Sign in to save places.",
+    "login": "Sign in",
+    "emptyTitle": "No saved places yet",
+    "emptyText": "Save places you like with the heart — they will show up here.",
+    "rating": "rating"
   }
 }

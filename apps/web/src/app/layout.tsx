@@ -5,10 +5,12 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import { Search, Home, Sparkles, User } from 'lucide-react';
 import { AuthProvider } from '@/components/auth-provider';
+import { FavoritesProvider } from '@/components/favorites-provider';
 import { ToastProvider } from '@/components/toast';
 import { HeaderAuth } from '@/components/header-auth';
 import { HeroMarquee } from '@/components/hero-marquee';
 import { LanguageSwitcher } from '@/components/language-switcher';
+import { FavoritesNavIcon } from '@/components/favorites-nav-icon';
 import { Logo } from '@/components/logo';
 import { SmoothScroll } from '@/components/smooth-scroll';
 import { AiAssistant } from '@/components/ai-assistant';
@@ -89,6 +91,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
           <ToastProvider>
           <AuthProvider>
+          <FavoritesProvider>
             {/* Qiymat-taklif lentasi — eng tepada (navbar'dan yuqorida), kafil uslubi */}
             <HeroMarquee />
 
@@ -109,6 +112,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   ))}
                 </nav>
                 <div className="flex items-center gap-2">
+                  <FavoritesNavIcon />
                   <LanguageSwitcher />
                   <HeaderAuth />
                 </div>
@@ -162,6 +166,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 </Link>
               ))}
             </nav>
+          </FavoritesProvider>
           </AuthProvider>
           </ToastProvider>
         </NextIntlClientProvider>

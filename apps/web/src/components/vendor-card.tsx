@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { BadgeCheck, MapPin, Star } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import type { Vendor } from '@/lib/api';
+import { FavoriteButton } from '@/components/favorite-button';
 
 export async function VendorCard({ v, priority = false }: { v: Vendor; priority?: boolean }) {
   const t = await getTranslations('common');
@@ -30,18 +31,21 @@ export async function VendorCard({ v, priority = false }: { v: Vendor; priority?
             </span>
           )}
 
-          {/* Reyting pill */}
-          <span className="chip absolute top-3 right-3 bg-navy/70 backdrop-blur text-white">
-            <Star className="h-3.5 w-3.5 fill-warning text-warning" />
-            <span className="font-semibold">{v.rating.toFixed(1)}</span>
-          </span>
+          {/* Sevimli (yurak) — o'ng yuqori */}
+          <div className="absolute top-2.5 right-2.5">
+            <FavoriteButton vendorId={v.id} />
+          </div>
 
-          {/* Nom (rasm ustida) */}
-          <div className="absolute bottom-0 inset-x-0 p-3.5">
+          {/* Nom + reyting (rasm ustida) */}
+          <div className="absolute bottom-0 inset-x-0 flex items-end justify-between gap-2 p-3.5">
             <h3 className="flex items-center gap-1 font-display font-semibold text-white text-[15px] leading-tight drop-shadow">
               <span className="truncate">{v.name}</span>
               {v.verified && <BadgeCheck className="h-4 w-4 shrink-0 text-teal-400" />}
             </h3>
+            <span className="chip shrink-0 bg-navy/70 backdrop-blur text-white">
+              <Star className="h-3.5 w-3.5 fill-warning text-warning" />
+              <span className="font-semibold">{v.rating.toFixed(1)}</span>
+            </span>
           </div>
         </div>
 

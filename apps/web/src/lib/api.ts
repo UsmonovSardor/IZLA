@@ -105,6 +105,12 @@ export const api = {
   employerUpdateApplication: (id: string, status: ApplicationStatusValue) =>
     authed<{ id: string; status: ApplicationStatusValue }>(`/employer/applications/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) }),
 
+  // --- Sevimlilar ---
+  favoriteIds: () => authed<string[]>('/favorites/ids'),
+  toggleFavorite: (vendorId: string) =>
+    authed<{ favorited: boolean }>('/favorites/toggle', { method: 'POST', body: JSON.stringify({ vendorId }) }),
+  favorites: (lang?: string) => authed<Vendor[]>(withLang('/favorites', lang)),
+
   // --- Kabinet (vendor egasi) ---
   kabinetVendors: () => authed<KabinetVendor[]>('/kabinet/vendors'),
   kabinetVendor: (id: string) => authed<KabinetVendorDetail>(`/kabinet/vendors/${id}`),

@@ -8,6 +8,7 @@ import { BookingWidget } from '@/components/booking-widget';
 import { JsonLd } from '@/components/json-ld';
 import { abs, breadcrumbJsonLd, vendorJsonLd } from '@/lib/seo';
 import { sectionConfig } from '@/lib/vendor-sections';
+import { FavoriteButton } from '@/components/favorite-button';
 import { VendorHero } from '@/components/vendor/vendor-hero';
 import { StatCounters } from '@/components/vendor/stat-counters';
 import { ServiceMenu } from '@/components/vendor/service-menu';
@@ -174,6 +175,7 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
 
         {/* Sticky bron + aloqa */}
         <aside id="booking" className="h-fit space-y-4 lg:sticky lg:top-20 scroll-mt-24">
+          <FavoriteButton vendorId={v.id} variant="inline" className="w-full justify-center" />
           {v.services.length > 0 ? (
             <BookingWidget services={v.services} vendorName={v.name} />
           ) : (
