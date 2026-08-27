@@ -1441,5 +1441,16 @@
     "hubDesc": "Toshkentning barcha tumanlaridagi xizmatlar: klinika, salon, restoran, fitnes va boshqalar.",
     "hubH1": "Tuman bo‘yicha xizmatlar",
     "hubIntro": "Kerakli xizmatni o‘z tumaningizda toping — kategoriya va joylashuv bo‘yicha."
+  },
+  "levels": {
+    "yourLevel": "Sizning darajangiz",
+    "toNext": "{next} gacha {count} 🪙",
+    "maxLevel": "Eng yuqori daraja! 👑",
+    "newcomer": "Yangi",
+    "bronze": "Bronza",
+    "silver": "Kumush",
+    "gold": "Oltin",
+    "platinum": "Platina",
+    "diamond": "Olmos"
   }
 }

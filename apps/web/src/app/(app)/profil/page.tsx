@@ -12,6 +12,7 @@ import {
 } from '@/lib/auth';
 import { api, type CoinsSummary } from '@/lib/api';
 import { Button } from '@/components/ui/button';
+import { LevelCard } from '@/components/level-card';
 
 const LOCALES = [
   { value: 'uz', label: "O'zbekcha" },
@@ -137,6 +138,9 @@ export default function ProfilPage() {
           </div>
         </div>
       </div>
+
+      {/* Sadoqat darajasi */}
+      <LevelCard coins={coins ? coins.balance : user.coins} />
 
       {/* Sadoqat tangalari */}
       <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-card">

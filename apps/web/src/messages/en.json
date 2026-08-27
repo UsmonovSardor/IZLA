@@ -1441,5 +1441,16 @@
     "hubDesc": "Services across all Tashkent districts: clinics, salons, restaurants, fitness and more.",
     "hubH1": "Services by district",
     "hubIntro": "Find the service you need in your district — by category and location."
+  },
+  "levels": {
+    "yourLevel": "Your level",
+    "toNext": "{count} 🪙 to {next}",
+    "maxLevel": "Top level! 👑",
+    "newcomer": "Newcomer",
+    "bronze": "Bronze",
+    "silver": "Silver",
+    "gold": "Gold",
+    "platinum": "Platinum",
+    "diamond": "Diamond"
   }
 }
