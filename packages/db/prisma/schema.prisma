@@ -125,8 +125,13 @@ model User {
   avatarUrl String?
   lastLat   Float?
   lastLng   Float?
+  referralCode String?  @unique // foydalanuvchining taklif kodi (talab bo'lganda yaratiladi)
+  referredById String? // kim taklif qilgan
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  referredBy      User?    @relation("Referrals", fields: [referredById], references: [id], onDelete: SetNull)
+  referred        User[]   @relation("Referrals")
 
   vendors         Vendor[]
   bookings        Booking[]

@@ -30,7 +30,8 @@
     "terms": "Foydalanish shartlari",
     "privacy": "Maxfiylik siyosati",
     "blurb": "Izla — O‘zbekiston uchun xizmatlar super-platformasi. Klinika, salon, restoran, fitnes, uy-joy va ish — hammasi bitta ilovada.",
-    "madeIn": "O‘zbekistonda yaratilgan"
+    "madeIn": "O‘zbekistonda yaratilgan",
+    "invite": "Do‘stni taklif qilish"
   },
   "common": {
     "all": "Barchasi",
@@ -264,13 +265,16 @@
     "coinsCard": {
       "title": "Sadoqat tangalari",
       "sub": "Bron va sharh uchun tanga to‘plang.",
-      "empty": "Hali tanga yo‘q. Bron qiling yoki sharh qoldiring!"
+      "empty": "Hali tanga yo‘q. Bron qiling yoki sharh qoldiring!",
+      "invite": "Do‘stlarni taklif qiling → 🪙"
     },
     "coinsReasons": {
       "booking": "Bron uchun",
       "review": "Sharh uchun",
       "welcome": "Xush kelibsiz bonusi",
-      "default": "Bonus"
+      "default": "Bonus",
+      "referral": "Do‘st taklifi",
+      "referral_join": "Taklif bonusi"
     }
   },
   "pay": {
@@ -1401,5 +1405,26 @@
       "profile": "Profil",
       "help": "Yordam"
     }
+  },
+  "referral": {
+    "title": "Do‘stlaringizni taklif qiling",
+    "subtitle": "Har bir do‘st uchun siz {referrer} 🪙, do‘stingiz esa {join} 🪙 oladi.",
+    "loginNeeded": "Taklif havolangizni olish uchun tizimga kiring",
+    "login": "Kirish",
+    "invited": "Taklif qilinganlar",
+    "earned": "Ishlab topilgan 🪙",
+    "yourLink": "Sizning taklif havolangiz",
+    "copy": "Nusxa",
+    "copiedShort": "Nusxalandi",
+    "copied": "Havola nusxalandi",
+    "copyError": "Nusxalab bo‘lmadi",
+    "code": "Kod",
+    "shareTelegram": "Telegram’da ulashish",
+    "shareText": "Izla.uz — barcha xizmatlar bir joyda. Havolam orqali qo‘shiling va {reward} 🪙 oling!",
+    "howTitle": "Qanday ishlaydi",
+    "step1": "Havolangizni do‘stlaringizga yuboring",
+    "step2": "Do‘stingiz havola orqali ro‘yxatdan o‘tadi va {join} 🪙 oladi",
+    "step3": "Siz esa har bir do‘st uchun {referrer} 🪙 olasiz",
+    "seeCoins": "Tangalaringizni ko‘rish →"
   }
 }

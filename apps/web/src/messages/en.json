@@ -30,7 +30,8 @@
     "terms": "Terms of use",
     "privacy": "Privacy policy",
     "blurb": "Izla is a services super-app for Uzbekistan. Clinics, salons, restaurants, fitness, real estate and jobs — all in one app.",
-    "madeIn": "Made in Uzbekistan"
+    "madeIn": "Made in Uzbekistan",
+    "invite": "Invite a friend"
   },
   "common": {
     "all": "See all",
@@ -264,13 +265,16 @@
     "coinsCard": {
       "title": "Loyalty coins",
       "sub": "Earn coins for bookings and reviews.",
-      "empty": "No coins yet. Book or leave a review!"
+      "empty": "No coins yet. Book or leave a review!",
+      "invite": "Invite friends → 🪙"
     },
     "coinsReasons": {
       "booking": "For booking",
       "review": "For review",
       "welcome": "Welcome bonus",
-      "default": "Bonus"
+      "default": "Bonus",
+      "referral": "Friend referral",
+      "referral_join": "Referral bonus"
     }
   },
   "pay": {
@@ -1401,5 +1405,26 @@
       "profile": "Profile",
       "help": "Help"
     }
+  },
+  "referral": {
+    "title": "Invite your friends",
+    "subtitle": "For every friend you get {referrer} 🪙, and your friend gets {join} 🪙.",
+    "loginNeeded": "Sign in to get your referral link",
+    "login": "Sign in",
+    "invited": "Invited",
+    "earned": "Earned 🪙",
+    "yourLink": "Your referral link",
+    "copy": "Copy",
+    "copiedShort": "Copied",
+    "copied": "Link copied",
+    "copyError": "Could not copy",
+    "code": "Code",
+    "shareTelegram": "Share on Telegram",
+    "shareText": "Izla.uz — all services in one place. Join with my link and get {reward} 🪙!",
+    "howTitle": "How it works",
+    "step1": "Send your link to friends",
+    "step2": "Your friend signs up via the link and gets {join} 🪙",
+    "step3": "And you get {referrer} 🪙 for each friend",
+    "seeCoins": "See your coins →"
   }
 }

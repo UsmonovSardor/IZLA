@@ -123,6 +123,10 @@ export const api = {
     authed<ReviewResult>('/reviews', { method: 'POST', body: JSON.stringify(body) }),
 
   // --- Sevimlilar ---
+  // --- Taklif tizimi ---
+  referralMe: () => authed<ReferralInfo>('/referrals/me'),
+  claimReferral: (code: string) => authed<ReferralClaim>('/referrals/claim', { method: 'POST', body: JSON.stringify({ code }) }),
+
   favoriteIds: () => authed<string[]>('/favorites/ids'),
   toggleFavorite: (vendorId: string) =>
     authed<{ favorited: boolean }>('/favorites/toggle', { method: 'POST', body: JSON.stringify({ vendorId }) }),
@@ -162,6 +166,8 @@ export interface Job {
 }
 export interface JobDetail extends Job { applicants: number; company: JobCompany }
 export interface SavedJob extends Job { savedAt: string }
+export interface ReferralInfo { code: string; invitedCount: number; coinsEarned: number; referrerReward: number; joinReward: number }
+export interface ReferralClaim { ok: boolean; reason?: 'already' | 'self' | 'invalid'; joinReward?: number }
 export interface JobsResult { total: number; page: number; limit: number; items: Job[] }
 export interface JobFacets {
   total: number; employment: Record<string, number>; experience: Record<string, number>;

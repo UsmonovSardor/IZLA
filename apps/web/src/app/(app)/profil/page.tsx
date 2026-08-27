@@ -153,7 +153,7 @@ export default function ProfilPage() {
             <ul className="mt-3 divide-y divide-line">
               {coins.ledger.slice(0, 6).map((l) => {
                 const Icon = l.reason === 'booking' ? CalendarCheck : l.reason === 'review' ? Star : Gift;
-                const label = ['booking', 'review', 'welcome'].includes(l.reason) ? t(`coinsReasons.${l.reason}`) : t('coinsReasons.default');
+                const label = ['booking', 'review', 'welcome', 'referral', 'referral_join'].includes(l.reason) ? t(`coinsReasons.${l.reason}`) : t('coinsReasons.default');
                 return (
                   <li key={l.id} className="flex items-center justify-between gap-3 py-2.5">
                     <span className="flex items-center gap-2 text-sm text-ink">
@@ -170,6 +170,9 @@ export default function ProfilPage() {
           ) : (
             <p className="mt-3 text-sm text-slate2">{t('coinsCard.empty')}</p>
           )}
+          <Link href="/taklif" className="mt-4 flex items-center justify-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-700 transition hover:bg-amber-100">
+            <Gift className="h-4 w-4" /> {t('coinsCard.invite')}
+          </Link>
         </div>
       </div>
 

@@ -24,6 +24,7 @@ export async function Footer() {
         { label: tn('search'), href: '/qidiruv' },
         { label: tn('jobs'), href: '/ish' },
         { label: tn('realEstate'), href: '/uylar' },
+        { label: t('invite'), href: '/taklif' },
       ],
     },
     {

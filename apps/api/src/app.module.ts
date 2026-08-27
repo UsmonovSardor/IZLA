@@ -20,6 +20,7 @@ import { EmployerModule } from './modules/employer/employer.module';
 import { FavoritesModule } from './modules/favorites/favorites.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { CoinsModule } from './modules/coins/coins.module';
+import { ReferralsModule } from './modules/referrals/referrals.module';
 
 @Module({
   imports: [
@@ -67,6 +68,7 @@ import { CoinsModule } from './modules/coins/coins.module';
     FavoritesModule,
     ReviewsModule,
     CoinsModule,
+    ReferralsModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

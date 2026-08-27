@@ -8,6 +8,9 @@ import {
   logout as apiLogout,
 } from '@/lib/auth';
 import { LoginModal } from './login-modal';
+import { api } from '@/lib/api';
+
+const REF_KEY = 'izla:ref';
 
 interface LoginOpts {
   next?: string;
@@ -44,9 +47,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [providers, setProviders] = useState<Providers>({ phone: true, telegram: false, google: false });
   const [login, setLogin] = useState<LoginState>({ open: false, opts: {} });
 
-  // Sahifa yuklanganda: provayderlar + jim sessiya tiklash
+  // Sahifa yuklanganda: taklif kodini ushlab qolish (login'gacha) + provayderlar + jim sessiya tiklash
   useEffect(() => {
     let alive = true;
+    try {
+      const ref = new URLSearchParams(window.location.search).get('ref');
+      if (ref) window.localStorage.setItem(REF_KEY, ref.trim().toUpperCase());
+    } catch { /* ignore */ }
     void getProviders().then((p) => alive && setProviders(p));
     void refreshSession().then((u) => {
       if (!alive) return;
@@ -57,6 +64,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       alive = false;
     };
   }, []);
+
+  // Login bo'lgach: saqlangan taklif kodini bir marta da'vo qilish
+  useEffect(() => {
+    if (!user) return;
+    let code: string | null = null;
+    try { code = window.localStorage.getItem(REF_KEY); } catch { /* ignore */ }
+    if (!code) return;
+    try { window.localStorage.removeItem(REF_KEY); } catch { /* ignore */ }
+    void api.claimReferral(code).catch(() => { /* jim — noto'g'ri/allaqachon */ });
+  }, [user]);
 
   const applyUser = useCallback((u: AuthUser) => setUser(u), []);
 
