@@ -316,7 +316,8 @@
     "reviews": {
       "rating": "For quality service",
       "anon": "Guest",
-      "word": "reviews"
+      "word": "reviews",
+      "beFirst": "Be the first to leave a review!"
     },
     "minutes": "{count} min",
     "hours": {
@@ -1202,5 +1203,24 @@
     "emptyTitle": "No saved places yet",
     "emptyText": "Save places you like with the heart — they will show up here.",
     "rating": "rating"
+  },
+  "reviewForm": {
+    "title": "Leave a review",
+    "subtitle": "Your experience helps others.",
+    "leave": "Leave a review",
+    "already": "You rated",
+    "submit": "Submit review",
+    "close": "Close",
+    "placeholder": "Write your thoughts about this place (optional)...",
+    "pickRating": "Please pick a rating",
+    "tapStar": "Rate it",
+    "thanks": "Thank you!",
+    "published": "Your review is published.",
+    "error": "Could not submit. Please try again.",
+    "r1": "Poor",
+    "r2": "Fair",
+    "r3": "Good",
+    "r4": "Very good",
+    "r5": "Excellent"
   }
 }

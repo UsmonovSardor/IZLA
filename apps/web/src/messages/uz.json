@@ -316,7 +316,8 @@
     "reviews": {
       "rating": "Xizmat sifati uchun",
       "anon": "Foydalanuvchi",
-      "word": "sharh"
+      "word": "sharh",
+      "beFirst": "Birinchi bo‘lib sharh qoldiring!"
     },
     "minutes": "{count} daqiqa",
     "hours": {
@@ -1202,5 +1203,24 @@
     "emptyTitle": "Hali saqlangan joy yo‘q",
     "emptyText": "Yoqqan joylarni yurak belgisi bilan saqlang — bu yerda ko‘rinadi.",
     "rating": "reyting"
+  },
+  "reviewForm": {
+    "title": "Sharh qoldiring",
+    "subtitle": "Tajribangiz boshqalarga yordam beradi.",
+    "leave": "Sharh qoldirish",
+    "already": "Siz baho berdingiz",
+    "submit": "Sharhni yuborish",
+    "close": "Yopish",
+    "placeholder": "Bu joy haqida fikringizni yozing (ixtiyoriy)...",
+    "pickRating": "Iltimos, baho tanlang",
+    "tapStar": "Baholang",
+    "thanks": "Rahmat!",
+    "published": "Sharhingiz e’lon qilindi.",
+    "error": "Sharh yuborilmadi. Qayta urinib ko‘ring.",
+    "r1": "Yomon",
+    "r2": "O‘rtacha",
+    "r3": "Yaxshi",
+    "r4": "Juda yaxshi",
+    "r5": "Ajoyib"
   }
 }

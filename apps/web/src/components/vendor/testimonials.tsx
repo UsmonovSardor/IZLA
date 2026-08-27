@@ -13,7 +13,7 @@ interface Review {
 export function Testimonials({
   heading, subheading, reviews, accent, anonLabel, ratingLabel,
 }: {
-  heading: string; subheading?: string; reviews: Review[]; accent: string; anonLabel: string; ratingLabel: string;
+  heading?: string; subheading?: string; reviews: Review[]; accent: string; anonLabel: string; ratingLabel: string;
 }) {
   const withText = reviews.filter((r) => r.text);
   const [i, setI] = useState(0);
@@ -26,10 +26,12 @@ export function Testimonials({
 
   return (
     <section>
-      <div className="mx-auto max-w-2xl text-center">
-        <span className="text-sm font-bold uppercase tracking-wide" style={{ color: accent }}>{subheading}</span>
-        <h2 className="mt-2 font-display text-2xl font-bold text-navy sm:text-3xl">{heading}</h2>
-      </div>
+      {heading && (
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="text-sm font-bold uppercase tracking-wide" style={{ color: accent }}>{subheading}</span>
+          <h2 className="mt-2 font-display text-2xl font-bold text-navy sm:text-3xl">{heading}</h2>
+        </div>
+      )}
 
       <div className="mt-10 grid items-center gap-8 lg:grid-cols-2">
         {/* Rasm + reyting kartasi */}

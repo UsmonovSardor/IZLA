@@ -9,6 +9,7 @@ import { JsonLd } from '@/components/json-ld';
 import { abs, breadcrumbJsonLd, vendorJsonLd } from '@/lib/seo';
 import { sectionConfig } from '@/lib/vendor-sections';
 import { FavoriteButton } from '@/components/favorite-button';
+import { ReviewComposer } from '@/components/vendor/review-composer';
 import { VendorHero } from '@/components/vendor/vendor-hero';
 import { StatCounters } from '@/components/vendor/stat-counters';
 import { ServiceMenu } from '@/components/vendor/service-menu';
@@ -266,15 +267,28 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
         <Gallery heading={t('sections.galleryTitle')} subheading={t('sections.gallerySub')} photos={gallery} accent={accent} />
       )}
 
-      {has('reviews') && v.reviews.length > 0 && (
-        <Testimonials
-          heading={t('sections.reviewsTitle')}
-          subheading={t('sections.reviewsSub')}
-          reviews={v.reviews}
-          accent={accent}
-          anonLabel={t('reviews.anon')}
-          ratingLabel={t('reviews.rating')}
-        />
+      {has('reviews') && (
+        <section>
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 className="font-display text-2xl font-bold text-navy md:text-3xl">{t('sections.reviewsTitle')}</h2>
+              <p className="mt-1 text-slate2">{t('sections.reviewsSub')}</p>
+            </div>
+            <ReviewComposer vendorId={v.id} accent={accent} />
+          </div>
+          {v.reviews.length > 0 ? (
+            <Testimonials
+              reviews={v.reviews}
+              accent={accent}
+              anonLabel={t('reviews.anon')}
+              ratingLabel={t('reviews.rating')}
+            />
+          ) : (
+            <div className="rounded-2xl border border-dashed border-line bg-surface py-14 text-center">
+              <p className="text-slate2">{t('reviews.beFirst')}</p>
+            </div>
+          )}
+        </section>
       )}
 
       {has('map') && (

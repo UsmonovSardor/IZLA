@@ -105,6 +105,11 @@ export const api = {
   employerUpdateApplication: (id: string, status: ApplicationStatusValue) =>
     authed<{ id: string; status: ApplicationStatusValue }>(`/employer/applications/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) }),
 
+  // --- Sharhlar ---
+  reviewMine: (vendorId: string) => authed<{ review: MyReview | null }>(`/reviews/mine/${vendorId}`),
+  createReview: (body: { vendorId: string; rating: number; text?: string }) =>
+    authed<ReviewResult>('/reviews', { method: 'POST', body: JSON.stringify(body) }),
+
   // --- Sevimlilar ---
   favoriteIds: () => authed<string[]>('/favorites/ids'),
   toggleFavorite: (vendorId: string) =>
@@ -240,6 +245,12 @@ export interface KabinetBooking {
   user?: { name?: string; phone?: string; avatarUrl?: string | null };
   staff?: { name: string } | null;
   payment?: { status: string; amount: string } | null;
+}
+
+export interface MyReview { id: string; rating: number; text: string | null; createdAt: string }
+export interface ReviewResult {
+  id: string; rating: number; text: string | null; createdAt: string;
+  user: { name: string | null; avatarUrl: string | null };
 }
 
 export interface Category { id: string; slug: string; name: string; icon?: string; _count?: { vendors: number } }
