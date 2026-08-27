@@ -19,7 +19,6 @@ import { Logo } from '@/components/logo';
 import { SmoothScroll } from '@/components/smooth-scroll';
 import { AiAssistant } from '@/components/ai-assistant';
 import { CommandPalette } from '@/components/command-palette';
-import { CommandTrigger } from '@/components/command-trigger';
 import { PwaRegister } from '@/components/pwa-register';
 import { Analytics } from '@/components/analytics';
 import { JsonLd } from '@/components/json-ld';
@@ -122,7 +121,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   ))}
                 </nav>
                 <div className="flex items-center gap-2">
-                  <CommandTrigger />
                   <NotificationsBell />
                   <FavoritesNavIcon />
                   <LanguageSwitcher />
