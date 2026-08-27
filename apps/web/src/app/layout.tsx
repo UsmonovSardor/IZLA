@@ -11,6 +11,7 @@ import { HeaderAuth } from '@/components/header-auth';
 import { HeroMarquee } from '@/components/hero-marquee';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { FavoritesNavIcon } from '@/components/favorites-nav-icon';
+import { Footer } from '@/components/footer';
 import { Logo } from '@/components/logo';
 import { SmoothScroll } from '@/components/smooth-scroll';
 import { AiAssistant } from '@/components/ai-assistant';
@@ -131,27 +132,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Analytics />
 
             {/* Footer */}
-            <footer className="mt-20 border-t border-line bg-white/60">
-              <div className="container-wide py-10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate2">
-                <div className="flex items-center gap-2">
-                  <Logo />
-                </div>
-                <p>
-                  © {new Date().getFullYear()} Izla.uz — {t('footer.tagline')}
-                </p>
-                <div className="flex items-center gap-4">
-                  <Link href="/qidiruv" className="hover:text-brand">
-                    {t('nav.search')}
-                  </Link>
-                  <Link href="/uylar" className="hover:text-brand">
-                    {t('nav.realEstate')}
-                  </Link>
-                  <Link href="/tg" className="hover:text-brand">
-                    {t('nav.telegram')}
-                  </Link>
-                </div>
-              </div>
-            </footer>
+            <Footer />
 
             {/* Mobil bottom-nav (TZ: mobil-birinchi) */}
             <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/50 bg-white/80 backdrop-blur-xl grid grid-cols-4 h-16">

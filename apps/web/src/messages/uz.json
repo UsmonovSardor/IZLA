@@ -19,7 +19,18 @@
     "profile": "Profil"
   },
   "footer": {
-    "tagline": "Barcha xizmatlar bitta ilovada."
+    "tagline": "Barcha xizmatlar bitta ilovada.",
+    "company": "Kompaniya",
+    "services": "Xizmatlar",
+    "help": "Yordam",
+    "about": "Biz haqimizda",
+    "careers": "Karyera",
+    "contact": "Aloqa",
+    "faq": "Ko‘p so‘raladigan savollar",
+    "terms": "Foydalanish shartlari",
+    "privacy": "Maxfiylik siyosati",
+    "blurb": "Izla — O‘zbekiston uchun xizmatlar super-platformasi. Klinika, salon, restoran, fitnes, uy-joy va ish — hammasi bitta ilovada.",
+    "madeIn": "O‘zbekistonda yaratilgan"
   },
   "common": {
     "all": "Barchasi",
@@ -60,7 +71,47 @@
     "ctaTitle": "Izla'ni cho'ntagingizda olib yuring",
     "ctaSub": "Telegram Mini App orqali istalgan joyni toping va bir tegishda bron qiling.",
     "ctaTelegram": "Telegram'da ochish",
-    "ctaStart": "Qidirishni boshlash"
+    "ctaStart": "Qidirishni boshlash",
+    "how": {
+      "title": "Qanday ishlaydi",
+      "sub": "Uch oddiy qadamda kerakli xizmatni toping va band qiling.",
+      "steps": {
+        "search": {
+          "t": "Qidiring",
+          "d": "Kategoriya yoki nom bo‘yicha xizmatni toping, xaritadan eng yaqinini tanlang."
+        },
+        "book": {
+          "t": "Bron qiling",
+          "d": "Qulay vaqtni tanlab, bir necha soniyada onlayn band qiling."
+        },
+        "enjoy": {
+          "t": "Bahramand bo‘ling",
+          "d": "Navbatsiz keling va xizmatdan zavqlaning. So‘ng baho qoldiring."
+        }
+      }
+    },
+    "why": {
+      "title": "Nega Izla",
+      "sub": "Minglab foydalanuvchi Izla’ni ishonch bilan tanlaydi.",
+      "items": {
+        "verified": {
+          "t": "Tekshirilgan joylar",
+          "d": "Har bir vendor tekshiruvdan o‘tadi — sifat va ishonchga kafolat."
+        },
+        "secure": {
+          "t": "Xavfsiz to‘lov",
+          "d": "Payme va Click orqali himoyalangan onlayn to‘lov."
+        },
+        "fast": {
+          "t": "Tezkor bron",
+          "d": "30 soniyada band qilish — navbat va qo‘ng‘iroqsiz."
+        },
+        "ai": {
+          "t": "AI yordamchi",
+          "d": "Sun’iy intellekt kerakli joyni bir so‘rovda topib beradi."
+        }
+      }
+    }
   },
   "search": {
     "title": "Qidiruv natijalari",
@@ -1222,5 +1273,70 @@
     "r3": "Yaxshi",
     "r4": "Juda yaxshi",
     "r5": "Ajoyib"
+  },
+  "about": {
+    "title": "Biz haqimizda",
+    "subtitle": "Izla — kundalik ehtiyojlaringizni soddalashtiruvchi xizmatlar platformasi.",
+    "missionTitle": "Bizning maqsad",
+    "mission": "Izla O‘zbekistondagi eng yaxshi xizmatlarni bir joyda jamlaydi va ularni har bir odam uchun qulay, tez va ishonchli qiladi. Biz odamlar va biznes o‘rtasidagi masofani qisqartiramiz — qidiruvdan bronlashgacha, to‘lovdan sharhgacha.",
+    "statPlaces": "Tekshirilgan joy",
+    "statCategories": "Yo‘nalish",
+    "statCities": "Shahar",
+    "statSupport": "Qo‘llab-quvvatlash",
+    "valuesTitle": "Qadriyatlarimiz",
+    "v1t": "Ishonch",
+    "v1d": "Har bir vendorni tekshiramiz va shaffoflikni ta’minlaymiz.",
+    "v2t": "Qulaylik",
+    "v2d": "Murakkab jarayonlarni bir necha bosqichga soddalashtiramiz.",
+    "v3t": "Tezlik",
+    "v3d": "Vaqtingizni qadrlaymiz — hamma narsa tez va silliq.",
+    "v4t": "Innovatsiya",
+    "v4d": "Eng so‘nggi texnologiyalar bilan doimo oldinda bo‘lamiz.",
+    "contactTitle": "Biz bilan bog‘laning",
+    "contactText": "Savol yoki taklifingiz bormi? Biz bilan bog‘laning.",
+    "email": "Email",
+    "telegram": "Telegram"
+  },
+  "faq": {
+    "title": "Ko‘p so‘raladigan savollar",
+    "subtitle": "Eng ko‘p beriladigan savollarga javoblar.",
+    "q1": "Izla nima?",
+    "a1": "Izla — xizmatlarni qidirish, onlayn bron qilish va to‘lash uchun super-platforma. Klinika, salon, restoran, fitnes, uy-joy va ish e’lonlari bir joyda.",
+    "q2": "Bron qilish pullikmi?",
+    "a2": "Yo‘q, joy qidirish va bron qilish mutlaqo bepul. Faqat tanlagan xizmatingiz uchun vendor narxini to‘laysiz.",
+    "q3": "To‘lov xavfsizmi?",
+    "a3": "Ha, barcha to‘lovlar Payme va Click orqali himoyalangan tarzda amalga oshiriladi. Karta ma’lumotlaringiz saqlanmaydi.",
+    "q4": "Bronni bekor qila olamanmi?",
+    "a4": "Albatta. “Bronlarim” bo‘limidan istalgan faol bronni bir bosishda bekor qilishingiz mumkin.",
+    "q5": "Ro‘yxatdan o‘tish shartmi?",
+    "a5": "Qidirish uchun shart emas. Bron qilish yoki sevimlilarga saqlash uchun telefon yoki Telegram orqali tez kirishingiz mumkin.",
+    "q6": "O‘z biznesimni qanday qo‘shaman?",
+    "a6": "Ish beruvchi yoki xizmat ko‘rsatuvchi sifatida kabinet orqali profil yaratib, xizmat va vakansiyalaringizni joylashingiz mumkin."
+  },
+  "legal": {
+    "termsTitle": "Foydalanish shartlari",
+    "updated": "Yangilangan",
+    "updatedDate": "2026-yil 1-avgust",
+    "t1h": "1. Umumiy qoidalar",
+    "t1b": "Izla.uz platformasidan foydalanish ushbu shartlarni qabul qilishni anglatadi. Platforma xizmatlarni qidirish, bron qilish va to‘lash imkonini beradi.",
+    "t2h": "2. Foydalanuvchi majburiyatlari",
+    "t2b": "Foydalanuvchi haqiqiy ma’lumot kiritishi, platformadan qonuniy maqsadlarda foydalanishi va boshqalarning huquqlarini hurmat qilishi shart.",
+    "t3h": "3. Bron va to‘lov",
+    "t3b": "Bronlar tanlangan vendor shartlariga muvofiq amalga oshiriladi. To‘lovlar Payme va Click orqali xavfsiz o‘tkaziladi. Bekor qilish siyosati vendorga bog‘liq.",
+    "t4h": "4. Javobgarlik",
+    "t4b": "Izla vositachi platforma sifatida faoliyat yuritadi. Xizmat sifati uchun bevosita vendor javobgardir, biroq biz sifat nazoratiga intilamiz.",
+    "t5h": "5. O‘zgartirishlar",
+    "t5b": "Biz ushbu shartlarni istalgan vaqtda yangilashimiz mumkin. Muhim o‘zgarishlar haqida foydalanuvchilar xabardor qilinadi.",
+    "privacyTitle": "Maxfiylik siyosati",
+    "p1h": "1. Ma’lumot to‘plash",
+    "p1b": "Biz faqat xizmat ko‘rsatish uchun zarur ma’lumotlarni (ism, telefon, bron tarixi) to‘playmiz. Karta ma’lumotlari bizda saqlanmaydi.",
+    "p2h": "2. Ma’lumotdan foydalanish",
+    "p2b": "Ma’lumotlaringiz bron, to‘lov va bildirishnomalar uchun ishlatiladi. Ularni uchinchi shaxslarga sotmaymiz.",
+    "p3h": "3. Xavfsizlik",
+    "p3b": "Ma’lumotlar shifrlangan ulanish (HTTPS) va zamonaviy xavfsizlik choralari bilan himoyalanadi.",
+    "p4h": "4. Cookie fayllar",
+    "p4b": "Biz platformani yaxshilash uchun zarur cookie fayllardan foydalanamiz. Ularni brauzer sozlamalaridan boshqarishingiz mumkin.",
+    "p5h": "5. Sizning huquqlaringiz",
+    "p5b": "Siz istalgan vaqtda ma’lumotlaringizni ko‘rish, o‘zgartirish yoki o‘chirishni so‘rashingiz mumkin."
   }
 }

@@ -19,7 +19,18 @@
     "profile": "Profile"
   },
   "footer": {
-    "tagline": "All services in one app."
+    "tagline": "All services in one app.",
+    "company": "Company",
+    "services": "Services",
+    "help": "Help",
+    "about": "About us",
+    "careers": "Careers",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "terms": "Terms of use",
+    "privacy": "Privacy policy",
+    "blurb": "Izla is a services super-app for Uzbekistan. Clinics, salons, restaurants, fitness, real estate and jobs — all in one app.",
+    "madeIn": "Made in Uzbekistan"
   },
   "common": {
     "all": "See all",
@@ -60,7 +71,47 @@
     "ctaTitle": "Carry Izla in your pocket",
     "ctaSub": "Find any place via the Telegram Mini App and book in one tap.",
     "ctaTelegram": "Open in Telegram",
-    "ctaStart": "Start searching"
+    "ctaStart": "Start searching",
+    "how": {
+      "title": "How it works",
+      "sub": "Find and book the service you need in three simple steps.",
+      "steps": {
+        "search": {
+          "t": "Search",
+          "d": "Find a service by category or name, pick the nearest on the map."
+        },
+        "book": {
+          "t": "Book",
+          "d": "Choose a convenient time and book online in seconds."
+        },
+        "enjoy": {
+          "t": "Enjoy",
+          "d": "Arrive without a queue and enjoy. Then leave a review."
+        }
+      }
+    },
+    "why": {
+      "title": "Why Izla",
+      "sub": "Thousands of users choose Izla with confidence.",
+      "items": {
+        "verified": {
+          "t": "Verified places",
+          "d": "Every vendor is checked — a guarantee of quality and trust."
+        },
+        "secure": {
+          "t": "Secure payment",
+          "d": "Protected online payment via Payme and Click."
+        },
+        "fast": {
+          "t": "Fast booking",
+          "d": "Book in 30 seconds — no queues or calls."
+        },
+        "ai": {
+          "t": "AI assistant",
+          "d": "AI finds the right place from a single request."
+        }
+      }
+    }
   },
   "search": {
     "title": "Search results",
@@ -1222,5 +1273,70 @@
     "r3": "Good",
     "r4": "Very good",
     "r5": "Excellent"
+  },
+  "about": {
+    "title": "About us",
+    "subtitle": "Izla is a services platform that simplifies your everyday needs.",
+    "missionTitle": "Our mission",
+    "mission": "Izla brings the best services in Uzbekistan into one place and makes them convenient, fast and reliable for everyone. We shorten the distance between people and businesses — from search to booking, from payment to review.",
+    "statPlaces": "Verified places",
+    "statCategories": "Categories",
+    "statCities": "Cities",
+    "statSupport": "Support",
+    "valuesTitle": "Our values",
+    "v1t": "Trust",
+    "v1d": "We verify every vendor and ensure transparency.",
+    "v2t": "Convenience",
+    "v2d": "We simplify complex processes into a few steps.",
+    "v3t": "Speed",
+    "v3d": "We value your time — everything is fast and smooth.",
+    "v4t": "Innovation",
+    "v4d": "Always ahead with the latest technology.",
+    "contactTitle": "Get in touch",
+    "contactText": "Have a question or suggestion? Reach out to us.",
+    "email": "Email",
+    "telegram": "Telegram"
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "subtitle": "Answers to the most common questions.",
+    "q1": "What is Izla?",
+    "a1": "Izla is a super-app for finding services, booking online and paying. Clinics, salons, restaurants, fitness, real estate and job listings in one place.",
+    "q2": "Is booking free?",
+    "a2": "Yes, searching and booking are completely free. You only pay the vendor’s price for the service you choose.",
+    "q3": "Is payment secure?",
+    "a3": "Yes, all payments go securely through Payme and Click. Your card details are not stored.",
+    "q4": "Can I cancel a booking?",
+    "a4": "Of course. In “My bookings” you can cancel any active booking with one tap.",
+    "q5": "Is registration required?",
+    "a5": "Not for searching. To book or save favorites, you can quickly sign in with phone or Telegram.",
+    "q6": "How do I add my business?",
+    "a6": "As an employer or service provider you can create a profile in the cabinet and post your services and jobs."
+  },
+  "legal": {
+    "termsTitle": "Terms of use",
+    "updated": "Updated",
+    "updatedDate": "August 1, 2026",
+    "t1h": "1. General",
+    "t1b": "Using the Izla.uz platform means accepting these terms. The platform lets you search, book and pay for services.",
+    "t2h": "2. User obligations",
+    "t2b": "Users must provide accurate information, use the platform for lawful purposes and respect others’ rights.",
+    "t3h": "3. Booking and payment",
+    "t3b": "Bookings are made according to the selected vendor’s terms. Payments go securely through Payme and Click. Cancellation policy depends on the vendor.",
+    "t4h": "4. Liability",
+    "t4b": "Izla acts as an intermediary platform. The vendor is directly responsible for service quality, though we strive for quality control.",
+    "t5h": "5. Changes",
+    "t5b": "We may update these terms at any time. Users will be notified of important changes.",
+    "privacyTitle": "Privacy policy",
+    "p1h": "1. Data collection",
+    "p1b": "We collect only the data necessary to provide the service (name, phone, booking history). Card details are not stored by us.",
+    "p2h": "2. Data use",
+    "p2b": "Your data is used for bookings, payments and notifications. We do not sell it to third parties.",
+    "p3h": "3. Security",
+    "p3b": "Data is protected with an encrypted connection (HTTPS) and modern security measures.",
+    "p4h": "4. Cookies",
+    "p4b": "We use necessary cookies to improve the platform. You can manage them in your browser settings.",
+    "p5h": "5. Your rights",
+    "p5b": "You can view, change or request deletion of your data at any time."
   }
 }

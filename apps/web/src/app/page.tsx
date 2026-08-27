@@ -7,6 +7,7 @@ import { Reveal } from '@/components/reveal';
 import { RotatingWord } from '@/components/rotating-word';
 import { StatsRow, type Stat } from '@/components/stats-row';
 import { SearchAutocomplete } from '@/components/search-autocomplete';
+import { HowItWorks, WhyIzla } from '@/components/home/value-sections';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -187,6 +188,12 @@ export default async function HomePage() {
       {/* ===== KATEGORIYA RAIL'LARI ===== */}
       <CategoryRail title={t('restoranTitle')} href="/qidiruv?category=restoran" vendors={restoran} allLabel={allLabel} />
       <CategoryRail title={t('gozallikTitle')} href="/qidiruv?category=gozallik" vendors={gozallik} allLabel={allLabel} />
+
+      {/* ===== QANDAY ISHLAYDI ===== */}
+      <HowItWorks />
+
+      {/* ===== NEGA IZLA ===== */}
+      <WhyIzla />
 
       {/* ===== CTA ===== */}
       <section className="container-wide py-16">
