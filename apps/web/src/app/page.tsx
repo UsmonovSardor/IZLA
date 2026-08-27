@@ -8,6 +8,7 @@ import { RotatingWord } from '@/components/rotating-word';
 import { StatsRow, type Stat } from '@/components/stats-row';
 import { SearchAutocomplete } from '@/components/search-autocomplete';
 import { HowItWorks, WhyIzla } from '@/components/home/value-sections';
+import { RecentlyViewed } from '@/components/home/recently-viewed';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -144,6 +145,9 @@ export default async function HomePage() {
           <StatsRow stats={stats} light />
         </div>
       </section>
+
+      {/* ===== YAQINDA KO'RILGAN (bo'sh bo'lsa render qilinmaydi) ===== */}
+      <RecentlyViewed />
 
       {/* ===== KATEGORIYALAR ===== */}
       <section className="container-wide py-16">

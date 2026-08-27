@@ -9,6 +9,7 @@ import { JsonLd } from '@/components/json-ld';
 import { abs, breadcrumbJsonLd, vendorJsonLd } from '@/lib/seo';
 import { sectionConfig } from '@/lib/vendor-sections';
 import { FavoriteButton } from '@/components/favorite-button';
+import { RecordRecentView } from '@/components/record-recent-view';
 import { ReviewComposer } from '@/components/vendor/review-composer';
 import { VendorHero } from '@/components/vendor/vendor-hero';
 import { StatCounters } from '@/components/vendor/stat-counters';
@@ -120,6 +121,16 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
   return (
     <div className="space-y-14">
       <JsonLd data={[vendorJsonLd(v), breadcrumbJsonLd(crumbs)]} />
+      <RecordRecentView
+        slug={v.slug}
+        name={v.name}
+        photo={v.photos?.[0]}
+        category={v.category?.name}
+        icon={v.category?.icon}
+        rating={v.rating}
+        district={v.district ?? undefined}
+      />
+
 
       <VendorHero
         name={v.name}

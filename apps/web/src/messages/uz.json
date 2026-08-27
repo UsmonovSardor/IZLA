@@ -1373,5 +1373,9 @@
     "emptyTitle": "Hali saqlangan vakansiya yo‘q",
     "emptyText": "Yoqtirgan vakansiyangizni bookmark qilib, shu yerda yig‘ib boring",
     "browse": "Vakansiyalarni ko‘rish"
+  },
+  "recent": {
+    "title": "Yaqinda koʻrilgan",
+    "clear": "Tozalash"
   }
 }
