@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { Send, Check, Loader2, X, FileText, FilePlus2, AlertCircle } from 'lucide-react';
 import { useAuth } from '@/components/auth-provider';
+import { useToast } from '@/components/toast';
 import { api, type ApplicationStatusValue, type Resume } from '@/lib/api';
 
 /** Vakansiyaga real ariza topshirish oqimi: login-gate → qisqa xat + rezyume → yuborish.
@@ -65,6 +66,7 @@ function ApplyModal({ jobId, open, onClose, onDone }: {
   jobId: string; open: boolean; onClose: () => void; onDone: (s: ApplicationStatusValue) => void;
 }) {
   const t = useTranslations('ish');
+  const { toast } = useToast();
   const reduce = useReducedMotion();
   const [note, setNote] = useState('');
   const [resume, setResume] = useState<Resume | null | undefined>(undefined); // undefined=yuklanmoqda
@@ -86,6 +88,7 @@ function ApplyModal({ jobId, open, onClose, onDone }: {
     setBusy(true); setError(null);
     try {
       const r = await api.applyJob(jobId, note.trim() || undefined);
+      toast({ variant: 'success', title: t('applied'), description: t('applySub') });
       onDone(r.status);
     } catch (e) {
       const err = e as Error & { status?: number };

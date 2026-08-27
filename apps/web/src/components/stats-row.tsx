@@ -23,7 +23,9 @@ export type Stat = {
  *  `light` — ochiq fon uchun (oq kartalar, to'q matn); default to'q (shisha). */
 export function StatsRow({ stats, light = false }: { stats: Stat[]; light?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.3 });
+  // `some` — qatorning istalgan qismi ko'ringanda ishga tushadi (yuqori-ekranda ham
+  // ishonchli; avvalgi 0.3 threshold ba'zi ekranlarda umuman ishlamas edi → raqam 0'da qotardi).
+  const inView = useInView(ref, { once: true, amount: 'some' });
   const reduce = useReducedMotion();
 
   const cardCls = light
@@ -68,11 +70,9 @@ const NUM_RE = /^(\d+)([+%]?)$/;
 /** Raqamning boshidagi sonni 0 dan target'gacha sanaydi (suffix +/% saqlanadi). */
 function CountUp({ value, active }: { value: string; active: boolean }) {
   const reduce = useReducedMotion();
-  // Initial holat DETERMINISTIK (server=klient) — hidratsiya mos kelishi uchun.
-  const [display, setDisplay] = useState(() => {
-    const m = value.match(NUM_RE);
-    return m ? `0${m[2]}` : value;
-  });
+  // Initial holat = REAL qiymat (server=klient, hidratsiya mos + JS/animatsiya ishlamasa
+  // ham to'g'ri raqam ko'rinadi — avval `0` bilan boshlanardi va trigger ishlamasa 0'da qotardi).
+  const [display, setDisplay] = useState(value);
 
   // DIQQAT: `match`ni deps'ga QO'YMASLIK kerak — u har render'da yangi obyekt,
   // effektni qayta ishga tushirib animatsiyani 0'da qotiradi. value yetarli.

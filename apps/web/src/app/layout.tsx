@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import { Search, Home, Sparkles, User } from 'lucide-react';
 import { AuthProvider } from '@/components/auth-provider';
+import { ToastProvider } from '@/components/toast';
 import { HeaderAuth } from '@/components/header-auth';
 import { HeroMarquee } from '@/components/hero-marquee';
 import { LanguageSwitcher } from '@/components/language-switcher';
@@ -86,6 +87,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <NextIntlClientProvider locale={locale} messages={messages}>
           <SmoothScroll />
           <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
+          <ToastProvider>
           <AuthProvider>
             {/* Qiymat-taklif lentasi — eng tepada (navbar'dan yuqorida), kafil uslubi */}
             <HeroMarquee />
@@ -161,6 +163,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               ))}
             </nav>
           </AuthProvider>
+          </ToastProvider>
         </NextIntlClientProvider>
       </body>
     </html>

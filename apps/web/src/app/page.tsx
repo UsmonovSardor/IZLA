@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Sparkles, ArrowRight, Send, BadgeCheck, ShieldCheck, Clock, MapPin } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
-import { api, type Category, type Vendor } from '@/lib/api';
+import { api, type Category, type Vendor, type Facets } from '@/lib/api';
 import { VendorCard } from '@/components/vendor-card';
 import { Reveal } from '@/components/reveal';
 import { RotatingWord } from '@/components/rotating-word';
@@ -39,17 +39,20 @@ export default async function HomePage() {
   const th = await getTranslations('hero');
   const allLabel = tc('all');
 
-  const [categories, topVendors, restoran, gozallik] = await Promise.all([
+  const [categories, topVendors, restoran, gozallik, facets] = await Promise.all([
     safe<Category[]>(api.categories(locale), []),
     safe<Vendor[]>(api.vendors('?sort=rating', locale), []),
     safe<Vendor[]>(api.vendors('?category=restoran&sort=rating', locale), []),
     safe<Vendor[]>(api.vendors('?category=gozallik&sort=rating', locale), []),
+    safe<Facets>(api.facets('', locale), { total: 0, categories: [] }),
   ]);
 
   const rotatingWords = categories.slice(0, 6).map((c) => c.name);
+  // Real jami (facets.total — vendors massivi 50 bilan cheklangan, shu bois alohida).
+  const placesTotal = facets.total || topVendors.length || 50;
 
   const stats: Stat[] = [
-    { iconKey: 'pin', value: `${topVendors.length || 50}+`, label: t('statPlaces'), from: '#2563EB', to: '#14B8A6', numGrad: 'linear-gradient(120deg,#5eead4,#ffffff)' },
+    { iconKey: 'pin', value: `${placesTotal}+`, label: t('statPlaces'), from: '#2563EB', to: '#14B8A6', numGrad: 'linear-gradient(120deg,#5eead4,#ffffff)' },
     { iconKey: 'sparkles', value: `${categories.length || 12}`, label: t('statDirections'), from: '#3b82f6', to: '#6366f1', numGrad: 'linear-gradient(120deg,#93c5fd,#ffffff)' },
     { iconKey: 'shield', value: '100%', label: t('statSecure'), from: '#7c3aed', to: '#a855f7', numGrad: 'linear-gradient(120deg,#c4b5fd,#ffffff)' },
     { iconKey: 'clock', value: '24/7', label: t('statBooking'), from: '#f59e0b', to: '#f97316', numGrad: 'linear-gradient(120deg,#fcd34d,#ffffff)' },
