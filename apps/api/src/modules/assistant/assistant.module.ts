@@ -7,5 +7,6 @@ import { VendorsModule } from '../vendors/vendors.module';
   imports: [VendorsModule],
   controllers: [AssistantController],
   providers: [AssistantService],
+  exports: [AssistantService],
 })
 export class AssistantModule {}

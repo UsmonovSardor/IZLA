@@ -206,6 +206,53 @@ export class AssistantService {
     };
   }
 
+  /**
+   * Nomzod rezyumesining vakansiyaga mosligini 0-100 baholaydi (Groq).
+   * Kalitsiz yoki xato bo'lsa null (best-effort — ariza oqimini bloklamaydi).
+   */
+  async scoreApplication(input: {
+    job: { title: string; description: string; skills: string[]; experience: string };
+    resume: { headline: string; summary?: string | null; skills: string[]; experienceYears: number };
+  }): Promise<number | null> {
+    if (!this.client) return null;
+    const { job, resume } = input;
+    const system =
+      "Sen HR-mutaxassis sun'iy intellektisan. Nomzod rezyumesining vakansiyaga MOSLIGINI 0 dan 100 gacha baholaysan " +
+      '(0=umuman mos emas, 100=ideal mos). Ko\'nikmalar mosligi, tajriba darajasi va rol mazmuniga qara. ' +
+      'FAQAT bitta butun son (0-100) qaytar, boshqa hech narsa yozma.';
+    const user = [
+      `VAKANSIYA: ${job.title}`,
+      `Talab qilinadigan ko'nikmalar: ${job.skills.join(', ') || '—'}`,
+      `Tajriba darajasi: ${job.experience}`,
+      `Tavsif: ${job.description.slice(0, 600)}`,
+      '',
+      `NOMZOD: ${resume.headline}`,
+      `Ko'nikmalar: ${resume.skills.join(', ') || '—'}`,
+      `Tajriba (yil): ${resume.experienceYears}`,
+      resume.summary ? `Haqida: ${resume.summary.slice(0, 400)}` : '',
+      '',
+      'Moslik bahosi (0-100, faqat son):',
+    ].join('\n');
+
+    try {
+      const resp = await this.client.chat.completions.create({
+        model: env.ASSISTANT_MODEL,
+        max_tokens: 8,
+        temperature: 0,
+        messages: [
+          { role: 'system', content: system },
+          { role: 'user', content: user },
+        ],
+      });
+      const text = resp.choices[0]?.message?.content ?? '';
+      const m = text.match(/\d{1,3}/);
+      if (!m) return null;
+      return Math.max(0, Math.min(100, parseInt(m[0], 10)));
+    } catch {
+      return null;
+    }
+  }
+
   private fallbackText(lang: Lang): string {
     if (lang === 'ru') return 'Не удалось обработать запрос. Попробуйте переформулировать.';
     if (lang === 'en') return "I couldn't process that. Try rephrasing your request.";

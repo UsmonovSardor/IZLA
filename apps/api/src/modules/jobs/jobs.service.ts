@@ -4,13 +4,30 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { JobsQueryDto } from './dto';
 import { ApplyDto } from './apply.dto';
 import { NotificationsService } from '../notifications/notifications.service';
+import { AssistantService } from '../assistant/assistant.service';
 
 @Injectable()
 export class JobsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly notifications: NotificationsService,
+    private readonly assistant: AssistantService,
   ) {}
+
+  /** AI moslik bahosini fon rejimida hisoblab, arizaga yozadi (best-effort). */
+  private async scoreInBackground(applicationId: string, jobId: string, resumeId: string) {
+    try {
+      const [job, resume] = await Promise.all([
+        this.prisma.job.findUnique({ where: { id: jobId }, select: { title: true, description: true, skills: true, experience: true } }),
+        this.prisma.resume.findUnique({ where: { id: resumeId }, select: { headline: true, summary: true, skills: true, experienceYears: true } }),
+      ]);
+      if (!job || !resume) return;
+      const score = await this.assistant.scoreApplication({ job, resume });
+      if (score != null) {
+        await this.prisma.jobApplication.update({ where: { id: applicationId }, data: { aiScore: score } });
+      }
+    } catch { /* best-effort — ariza oqimini bloklamaydi */ }
+  }
 
   /** Ochiq vakansiya ro'yxati — filtr + qidiruv + sahifalash. */
   async list(query: JobsQueryDto) {
@@ -105,6 +122,8 @@ export class JobsService {
       void this.notifications.pushInApp(userId, 'job_application', {
         title: 'Ariza topshirildi', body: job.title, href: '/ish/arizalarim',
       });
+      // Rezyume bo'lsa AI moslik bahosini fon rejimida hisoblaymiz
+      if (resume) void this.scoreInBackground(app.id, jobId, resume.id);
       return { ...app, hasResume: !!resume };
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
