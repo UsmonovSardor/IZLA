@@ -173,6 +173,31 @@ export class AuthService {
     return env.GOOGLE_REDIRECT_URI || `${env.PUBLIC_API_URL.replace(/\/$/, '')}/auth/google/callback`;
   }
 
+  /**
+   * OAuth `state` — imzolangan (stateless). Cross-site cookie'ga tayanmaydi
+   * (Chrome uchinchi-tomon cookie'ni bloklaydi → state cookie yo'qoladi).
+   * Format: `nonce.exp.hmac`. CSRF himoyasi: imzo taxmin qilib bo'lmaydi.
+   */
+  makeOAuthState(): string {
+    const nonce = randomBytes(12).toString('hex');
+    const exp = Date.now() + 10 * 60 * 1000;
+    const payload = `${nonce}.${exp}`;
+    const sig = createHmac('sha256', env.JWT_ACCESS_SECRET).update(payload).digest('hex').slice(0, 32);
+    return `${payload}.${sig}`;
+  }
+
+  verifyOAuthState(state?: string): boolean {
+    if (!state) return false;
+    const parts = state.split('.');
+    if (parts.length !== 3) return false;
+    const [nonce, exp, sig] = parts;
+    const payload = `${nonce}.${exp}`;
+    const expected = createHmac('sha256', env.JWT_ACCESS_SECRET).update(payload).digest('hex').slice(0, 32);
+    if (sig !== expected) return false;
+    if (!Number(exp) || Number(exp) < Date.now()) return false;
+    return true;
+  }
+
   googleAuthUrl(state: string): string {
     const qs = new URLSearchParams({
       client_id: env.GOOGLE_CLIENT_ID,

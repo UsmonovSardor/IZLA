@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Patch,
   Post,
@@ -12,17 +13,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
-import { randomBytes } from 'node:crypto';
 import { AuthService, type AuthCtx, type AuthResult } from './auth.service';
 import { RequestOtpDto, VerifyOtpDto, TelegramLoginDto, UpdateProfileDto } from './dto';
 import {
   REFRESH_COOKIE,
-  OAUTH_STATE_COOKIE,
   parseCookies,
   setRefreshCookie,
   clearRefreshCookie,
-  setStateCookie,
-  clearStateCookie,
 } from '../../common/cookies';
 import { JwtAuthGuard, type AuthUser } from '../../common/jwt.guard';
 import { CurrentUser } from '../../common/current-user.decorator';
@@ -43,6 +40,7 @@ interface ResLike {
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
+  private readonly logger = new Logger('AuthController');
   constructor(private readonly auth: AuthService) {}
 
   // ---------- OTP ----------
@@ -138,8 +136,8 @@ export class AuthController {
     if (!this.auth.googleEnabled) {
       return res.redirect(`${this.webUrl()}/kirish?error=google_off`);
     }
-    const state = randomBytes(16).toString('hex');
-    setStateCookie(res, state);
+    // Imzolangan state (cross-site cookie'ga tayanmaymiz — Chrome bloklaydi)
+    const state = this.auth.makeOAuthState();
     return res.redirect(this.auth.googleAuthUrl(state));
   }
 
@@ -151,16 +149,15 @@ export class AuthController {
     @Req() req: ReqLike,
     @Res() res: ResLike,
   ) {
-    const cookieState = parseCookies(req.headers.cookie)[OAUTH_STATE_COOKIE];
-    clearStateCookie(res);
-    if (!code || !state || !cookieState || state !== cookieState) {
+    if (!code || !this.auth.verifyOAuthState(state)) {
       return res.redirect(`${this.webUrl()}/kirish?error=google_state`);
     }
     try {
       const result = await this.auth.handleGoogleCallback(code, this.ctx(req));
       setRefreshCookie(res, result.refreshToken, result.refreshMaxAge);
       return res.redirect(`${this.webUrl()}/kirish?ok=1`);
-    } catch {
+    } catch (e) {
+      this.logger.error(`Google callback xato: ${(e as Error).message}`);
       return res.redirect(`${this.webUrl()}/kirish?error=google_failed`);
     }
   }
