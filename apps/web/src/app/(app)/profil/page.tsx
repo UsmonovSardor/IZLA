@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { Check, Loader2, LogOut, Monitor, Shield, UserCircle2 } from 'lucide-react';
+import { Check, Loader2, LogOut, Monitor, Shield, UserCircle2, Coins, CalendarCheck, Star, Gift } from 'lucide-react';
 import { useAuth } from '@/components/auth-provider';
 import {
   type Session,
@@ -10,6 +10,7 @@ import {
   revokeSession,
   updateProfile,
 } from '@/lib/auth';
+import { api, type CoinsSummary } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 
 const LOCALES = [
@@ -36,6 +37,7 @@ export default function ProfilPage() {
   const [saved, setSaved] = useState(false);
   const [sessions, setSessions] = useState<Session[] | null>(null);
   const [revoking, setRevoking] = useState<string | null>(null);
+  const [coins, setCoins] = useState<CoinsSummary | null>(null);
 
   function timeAgo(iso: string): string {
     const d = new Date(iso).getTime();
@@ -65,6 +67,10 @@ export default function ProfilPage() {
   useEffect(() => {
     if (user) void loadSessions();
   }, [user, loadSessions]);
+
+  useEffect(() => {
+    if (user) api.coins().then(setCoins).catch(() => {});
+  }, [user]);
 
   async function save() {
     setSaving(true);
@@ -129,6 +135,41 @@ export default function ProfilPage() {
             </span>
             <span className="text-[11px] text-slate2">🪙 {t('coins', { count: user.coins })}</span>
           </div>
+        </div>
+      </div>
+
+      {/* Sadoqat tangalari */}
+      <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-card">
+        <div className="flex items-center justify-between gap-4 bg-gradient-to-r from-amber-400 to-orange-500 p-5 text-white">
+          <div>
+            <div className="flex items-center gap-1.5 text-sm font-medium opacity-90"><Coins className="h-4 w-4" /> {t('coinsCard.title')}</div>
+            <div className="mt-1 font-display text-3xl font-extrabold tabular-nums">{coins ? coins.balance : user.coins}</div>
+          </div>
+          <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white/20"><Gift className="h-7 w-7" /></div>
+        </div>
+        <div className="p-5">
+          <p className="text-xs text-slate2">{t('coinsCard.sub')}</p>
+          {coins && coins.ledger.length > 0 ? (
+            <ul className="mt-3 divide-y divide-line">
+              {coins.ledger.slice(0, 6).map((l) => {
+                const Icon = l.reason === 'booking' ? CalendarCheck : l.reason === 'review' ? Star : Gift;
+                const label = ['booking', 'review', 'welcome'].includes(l.reason) ? t(`coinsReasons.${l.reason}`) : t('coinsReasons.default');
+                return (
+                  <li key={l.id} className="flex items-center justify-between gap-3 py-2.5">
+                    <span className="flex items-center gap-2 text-sm text-ink">
+                      <span className="grid h-8 w-8 place-items-center rounded-lg bg-amber-50 text-amber-500"><Icon className="h-4 w-4" /></span>
+                      {label}
+                    </span>
+                    <span className={`text-sm font-semibold tabular-nums ${l.delta >= 0 ? 'text-success' : 'text-danger'}`}>
+                      {l.delta >= 0 ? '+' : ''}{l.delta}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="mt-3 text-sm text-slate2">{t('coinsCard.empty')}</p>
+          )}
         </div>
       </div>
 

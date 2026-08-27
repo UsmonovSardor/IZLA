@@ -259,7 +259,18 @@
     "now": "just now",
     "minAgo": "{count} min ago",
     "hourAgo": "{count} h ago",
-    "dayAgo": "{count} d ago"
+    "dayAgo": "{count} d ago",
+    "coinsCard": {
+      "title": "Loyalty coins",
+      "sub": "Earn coins for bookings and reviews.",
+      "empty": "No coins yet. Book or leave a review!"
+    },
+    "coinsReasons": {
+      "booking": "For booking",
+      "review": "For review",
+      "welcome": "Welcome bonus",
+      "default": "Bonus"
+    }
   },
   "pay": {
     "prepay": "Prepay",

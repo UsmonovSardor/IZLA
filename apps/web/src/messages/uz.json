@@ -259,7 +259,18 @@
     "now": "hozir",
     "minAgo": "{count} daqiqa oldin",
     "hourAgo": "{count} soat oldin",
-    "dayAgo": "{count} kun oldin"
+    "dayAgo": "{count} kun oldin",
+    "coinsCard": {
+      "title": "Sadoqat tangalari",
+      "sub": "Bron va sharh uchun tanga to‘plang.",
+      "empty": "Hali tanga yo‘q. Bron qiling yoki sharh qoldiring!"
+    },
+    "coinsReasons": {
+      "booking": "Bron uchun",
+      "review": "Sharh uchun",
+      "welcome": "Xush kelibsiz bonusi",
+      "default": "Bonus"
+    }
   },
   "pay": {
     "prepay": "Oldindan to'lash",

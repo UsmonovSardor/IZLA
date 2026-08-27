@@ -14,14 +14,17 @@ import {
   type Hours,
 } from './slots';
 import { NotificationsService } from '../notifications/notifications.service';
+import { CoinsService } from '../coins/coins.service';
 
 const ACTIVE_STATUSES = ['PENDING', 'CONFIRMED'] as const;
+const COINS_PER_BOOKING = 50;
 
 @Injectable()
 export class BookingsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly notifications: NotificationsService,
+    private readonly coins: CoinsService,
   ) {}
 
   /** Berilgan xizmat + sana uchun mavjud slotlar (ochiq/band). Ochiq (public). */
@@ -134,6 +137,7 @@ export class BookingsService {
         body: `${booking.service.name} — ${booking.vendor.name}`,
         href: '/bron',
       });
+      this.coins.awardSafe(userId, COINS_PER_BOOKING, 'booking'); // sadoqat mukofoti
       return booking;
     } catch (e) {
       // @@unique([staffId, slotStart]) — bir vaqtli poyga backstop

@@ -105,6 +105,9 @@ export const api = {
   employerUpdateApplication: (id: string, status: ApplicationStatusValue) =>
     authed<{ id: string; status: ApplicationStatusValue }>(`/employer/applications/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) }),
 
+  // --- Sadoqat tangalari ---
+  coins: () => authed<CoinsSummary>('/coins'),
+
   // --- Bildirishnomalar ---
   notifications: () => authed<AppNotification[]>('/notifications'),
   notificationsUnread: () => authed<{ count: number }>('/notifications/unread-count'),
@@ -253,6 +256,8 @@ export interface KabinetBooking {
   payment?: { status: string; amount: string } | null;
 }
 
+export interface CoinLedgerEntry { id: string; delta: number; reason: string; balance: number; createdAt: string }
+export interface CoinsSummary { balance: number; ledger: CoinLedgerEntry[] }
 export interface AppNotification {
   id: string; type: string; title: string; body: string; href: string; read: boolean; createdAt: string;
 }

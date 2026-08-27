@@ -1,10 +1,16 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateReviewDto } from './dto';
+import { CoinsService } from '../coins/coins.service';
+
+const COINS_PER_REVIEW = 30;
 
 @Injectable()
 export class ReviewsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly coins: CoinsService,
+  ) {}
 
   /** Foydalanuvchining shu vendor uchun sharhi (bor bo'lsa). */
   async mine(userId: string, vendorId: string) {
@@ -52,6 +58,8 @@ export class ReviewsService {
       });
       return created;
     });
+
+    this.coins.awardSafe(userId, COINS_PER_REVIEW, 'review'); // sadoqat mukofoti
 
     return {
       id: review.id,
