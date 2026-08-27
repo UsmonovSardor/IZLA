@@ -1,6 +1,15 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+/* v3 JS konfiguratsiyani saqlaymiz (brend ranglar, shadow, animatsiya) */
+@config '../../tailwind.config.ts';
+
+/* v4 compat: preflight tugmalarni cursor:default qiladi — pointer'ni tiklaymiz */
+@layer base {
+  button:not(:disabled),
+  [role='button']:not(:disabled),
+  label[for] {
+    cursor: pointer;
+  }
+}
 
 :root {
   --font-sora: 'Sora';

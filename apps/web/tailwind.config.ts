@@ -40,11 +40,18 @@ export default {
         'glass-sheen': 'linear-gradient(180deg, rgba(255,255,255,.7) 0%, rgba(255,255,255,.35) 100%)',
       },
       boxShadow: {
+        // v4 compat: shadow shkalasi siljidi — v3 sm/md qiymatlarini muzlatamiz
+        sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+        md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
         card: '0 1px 3px rgba(15,31,51,.06), 0 10px 30px rgba(15,31,51,.07)',
         pop: '0 16px 50px rgba(15,31,51,.16)',
         glow: '0 10px 40px rgba(37,99,235,.35)',
         'glow-teal': '0 10px 40px rgba(20,184,166,.35)',
         glass: '0 8px 32px rgba(15,31,51,.12), inset 0 1px 0 rgba(255,255,255,.5)',
+      },
+      blur: {
+        // v4 compat: blur shkalasi siljidi — v3 sm qiymatini muzlatamiz
+        sm: '4px',
       },
       keyframes: {
         float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-14px)' } },
