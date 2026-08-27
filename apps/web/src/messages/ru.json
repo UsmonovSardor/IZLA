@@ -228,7 +228,8 @@
     "close": "Закрыть",
     "googleOff": "Вход через Google пока отключён.",
     "googleState": "Сессия Google устарела. Попробуйте снова.",
-    "googleFailed": "Вход через Google не удался."
+    "googleFailed": "Вход через Google не удался.",
+    "smsHint": "SMS может немного задержаться — быстрее войти через Google или Telegram."
   },
   "headerAuth": {
     "profile": "Профиль",

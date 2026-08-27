@@ -228,7 +228,8 @@
     "close": "Yopish",
     "googleOff": "Google kirish hozircha yoqilmagan.",
     "googleState": "Google sessiyasi eskirgan. Qayta urinib ko'ring.",
-    "googleFailed": "Google orqali kirish muvaffaqiyatsiz tugadi."
+    "googleFailed": "Google orqali kirish muvaffaqiyatsiz tugadi.",
+    "smsHint": "SMS biroz kechikishi mumkin — Google yoki Telegram bilan bir bosishda tez kiring."
   },
   "headerAuth": {
     "profile": "Profil",

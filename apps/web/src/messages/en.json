@@ -228,7 +228,8 @@
     "close": "Close",
     "googleOff": "Google sign-in is currently disabled.",
     "googleState": "Google session expired. Please try again.",
-    "googleFailed": "Google sign-in failed."
+    "googleFailed": "Google sign-in failed.",
+    "smsHint": "SMS may be delayed — sign in faster with Google or Telegram."
   },
   "headerAuth": {
     "profile": "Profile",

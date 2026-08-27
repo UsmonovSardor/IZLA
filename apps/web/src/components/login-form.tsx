@@ -157,6 +157,12 @@ export function LoginForm({
       </Button>
 
       {(providers.google || providers.telegram) && (
+        <p className="rounded-lg bg-brand-50 px-3 py-2 text-center text-[11px] leading-snug text-slate2">
+          {t('smsHint')}
+        </p>
+      )}
+
+      {(providers.google || providers.telegram) && (
         <div className="flex items-center gap-3 py-1">
           <div className="h-px flex-1 bg-line" />
           <span className="text-xs text-slate2">{t('or')}</span>
