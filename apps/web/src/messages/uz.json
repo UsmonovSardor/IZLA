@@ -1338,5 +1338,11 @@
     "p4b": "Biz platformani yaxshilash uchun zarur cookie fayllardan foydalanamiz. Ularni brauzer sozlamalaridan boshqarishingiz mumkin.",
     "p5h": "5. Sizning huquqlaringiz",
     "p5b": "Siz istalgan vaqtda ma’lumotlaringizni ko‘rish, o‘zgartirish yoki o‘chirishni so‘rashingiz mumkin."
+  },
+  "notifications": {
+    "title": "Bildirishnomalar",
+    "markAll": "Barchasini o‘qildi",
+    "empty": "Hozircha bildirishnoma yo‘q",
+    "now": "hozir"
   }
 }

@@ -13,12 +13,16 @@ import {
   tashkentToUtc,
   type Hours,
 } from './slots';
+import { NotificationsService } from '../notifications/notifications.service';
 
 const ACTIVE_STATUSES = ['PENDING', 'CONFIRMED'] as const;
 
 @Injectable()
 export class BookingsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notifications: NotificationsService,
+  ) {}
 
   /** Berilgan xizmat + sana uchun mavjud slotlar (ochiq/band). Ochiq (public). */
   async availability(serviceId: string, dateStr: string) {
@@ -89,7 +93,7 @@ export class BookingsService {
     if (!slot.available) throw new ConflictException('Bu vaqt band');
 
     try {
-      return await this.prisma.$transaction(async (tx) => {
+      const booking = await this.prisma.$transaction(async (tx) => {
         // Poyga holatidan himoya: staff bo'yicha kesishuvchi faol bronni qidiramiz.
         // (staff bo'lmasa qat'iy lock yo'q — masalan restoran stoli; MVP uchun.)
         if (service.staffId) {
@@ -123,6 +127,14 @@ export class BookingsService {
           },
         });
       });
+
+      // Ilova ichida bildirishnoma (best-effort)
+      void this.notifications.pushInApp(userId, 'booking_created', {
+        title: 'Bron yaratildi',
+        body: `${booking.service.name} — ${booking.vendor.name}`,
+        href: '/bron',
+      });
+      return booking;
     } catch (e) {
       // @@unique([staffId, slotStart]) — bir vaqtli poyga backstop
       if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {

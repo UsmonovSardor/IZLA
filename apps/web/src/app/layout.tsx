@@ -11,6 +11,7 @@ import { HeaderAuth } from '@/components/header-auth';
 import { HeroMarquee } from '@/components/hero-marquee';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { FavoritesNavIcon } from '@/components/favorites-nav-icon';
+import { NotificationsBell } from '@/components/notifications-bell';
 import { Footer } from '@/components/footer';
 import { Logo } from '@/components/logo';
 import { SmoothScroll } from '@/components/smooth-scroll';
@@ -113,6 +114,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   ))}
                 </nav>
                 <div className="flex items-center gap-2">
+                  <NotificationsBell />
                   <FavoritesNavIcon />
                   <LanguageSwitcher />
                   <HeaderAuth />

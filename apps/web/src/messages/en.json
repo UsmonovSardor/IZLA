@@ -1338,5 +1338,11 @@
     "p4b": "We use necessary cookies to improve the platform. You can manage them in your browser settings.",
     "p5h": "5. Your rights",
     "p5b": "You can view, change or request deletion of your data at any time."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAll": "Mark all read",
+    "empty": "No notifications yet",
+    "now": "now"
   }
 }

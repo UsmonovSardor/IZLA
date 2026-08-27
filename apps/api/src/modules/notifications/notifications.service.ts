@@ -61,6 +61,65 @@ export class NotificationsService {
     await this.dispatch(user, 'payment_refunded', tgText, smsText, { paymentId, amount });
   }
 
+  // --- Ilova ichidagi bildirishnomalar (bell markazi) ---
+
+  /** Ilova ichida bildirishnoma yaratadi (PUSH kanal, darhol "sent"). Best-effort. */
+  async pushInApp(userId: string, type: string, data: { title: string; body?: string; href?: string }): Promise<void> {
+    try {
+      await this.prisma.notification.create({
+        data: {
+          userId, channel: 'PUSH', type,
+          payload: { title: data.title, body: data.body ?? '', href: data.href ?? '' } as Prisma.InputJsonObject,
+          sentAt: new Date(),
+        },
+      });
+    } catch (e) {
+      this.logger.error(`In-app notif xato: ${(e as Error).message}`);
+    }
+  }
+
+  /** Foydalanuvchining so'nggi bildirishnomalari (bell markazi uchun). */
+  async list(userId: string) {
+    const rows = await this.prisma.notification.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      take: 30,
+    });
+    return rows.map((n) => {
+      const p = (n.payload ?? {}) as { title?: string; body?: string; href?: string; amount?: string };
+      return {
+        id: n.id,
+        type: n.type,
+        title: p.title ?? this.fallbackTitle(n.type),
+        body: p.body ?? '',
+        href: p.href ?? '',
+        read: n.readAt != null,
+        createdAt: n.createdAt,
+      };
+    });
+  }
+
+  async unreadCount(userId: string): Promise<{ count: number }> {
+    const count = await this.prisma.notification.count({ where: { userId, readAt: null } });
+    return { count };
+  }
+
+  async markAllRead(userId: string): Promise<{ ok: true }> {
+    await this.prisma.notification.updateMany({ where: { userId, readAt: null }, data: { readAt: new Date() } });
+    return { ok: true };
+  }
+
+  async markRead(id: string, userId: string): Promise<{ ok: true }> {
+    await this.prisma.notification.updateMany({ where: { id, userId, readAt: null }, data: { readAt: new Date() } });
+    return { ok: true };
+  }
+
+  private fallbackTitle(type: string): string {
+    if (type === 'payment_paid') return "To'lov qabul qilindi";
+    if (type === 'payment_refunded') return "To'lov qaytarildi";
+    return 'Bildirishnoma';
+  }
+
   // --- ichki ---
 
   private async load(paymentId: string) {

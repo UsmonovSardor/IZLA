@@ -105,6 +105,12 @@ export const api = {
   employerUpdateApplication: (id: string, status: ApplicationStatusValue) =>
     authed<{ id: string; status: ApplicationStatusValue }>(`/employer/applications/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) }),
 
+  // --- Bildirishnomalar ---
+  notifications: () => authed<AppNotification[]>('/notifications'),
+  notificationsUnread: () => authed<{ count: number }>('/notifications/unread-count'),
+  notificationsReadAll: () => authed<{ ok: true }>('/notifications/read-all', { method: 'POST' }),
+  notificationRead: (id: string) => authed<{ ok: true }>(`/notifications/${id}/read`, { method: 'POST' }),
+
   // --- Sharhlar ---
   reviewMine: (vendorId: string) => authed<{ review: MyReview | null }>(`/reviews/mine/${vendorId}`),
   createReview: (body: { vendorId: string; rating: number; text?: string }) =>
@@ -247,6 +253,9 @@ export interface KabinetBooking {
   payment?: { status: string; amount: string } | null;
 }
 
+export interface AppNotification {
+  id: string; type: string; title: string; body: string; href: string; read: boolean; createdAt: string;
+}
 export interface MyReview { id: string; rating: number; text: string | null; createdAt: string }
 export interface ReviewResult {
   id: string; rating: number; text: string | null; createdAt: string;

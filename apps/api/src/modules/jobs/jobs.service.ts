@@ -3,10 +3,14 @@ import { Prisma } from '@izla/db';
 import { PrismaService } from '../../prisma/prisma.service';
 import { JobsQueryDto } from './dto';
 import { ApplyDto } from './apply.dto';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class JobsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notifications: NotificationsService,
+  ) {}
 
   /** Ochiq vakansiya ro'yxati — filtr + qidiruv + sahifalash. */
   async list(query: JobsQueryDto) {
@@ -88,7 +92,7 @@ export class JobsService {
 
   /** Foydalanuvchi vakansiyaga ariza topshiradi. Rezyume bo'lsa avto-bog'lanadi. */
   async apply(jobId: string, userId: string, dto: ApplyDto) {
-    const job = await this.prisma.job.findUnique({ where: { id: jobId }, select: { id: true, status: true } });
+    const job = await this.prisma.job.findUnique({ where: { id: jobId }, select: { id: true, status: true, title: true } });
     if (!job || job.status !== 'ACTIVE') throw new NotFoundException('Vakansiya topilmadi');
 
     const resume = await this.prisma.resume.findUnique({ where: { userId }, select: { id: true } });
@@ -97,6 +101,9 @@ export class JobsService {
       const app = await this.prisma.jobApplication.create({
         data: { jobId, userId, resumeId: resume?.id ?? null, coverNote },
         select: { id: true, status: true, createdAt: true },
+      });
+      void this.notifications.pushInApp(userId, 'job_application', {
+        title: 'Ariza topshirildi', body: job.title, href: '/ish/arizalarim',
       });
       return { ...app, hasResume: !!resume };
     } catch (e) {
