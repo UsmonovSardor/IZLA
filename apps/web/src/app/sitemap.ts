@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { api } from '@/lib/api';
 import { SITE_URL } from '@/lib/seo';
+import { districtSlug } from '@/lib/geo';
 
 // Sitemap har soatda yangilanadi (vendorlar/uylar qo'shilganda)
 export const revalidate = 3600;
@@ -20,12 +21,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/`, lastModified: now, changeFrequency: 'daily', priority: 1 },
     { url: `${SITE_URL}/qidiruv`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
     { url: `${SITE_URL}/uylar`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
+    { url: `${SITE_URL}/ish`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
+    { url: `${SITE_URL}/xizmatlar`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
   ];
 
-  const [vendors, properties, categories] = await Promise.all([
+  const [vendors, properties, categories, districts] = await Promise.all([
     safe(api.vendors(''), []),
     safe(api.properties(''), []),
     safe(api.categories(), []),
+    safe(api.districts(), [] as { district: string; count: number }[]),
   ]);
 
   const vendorRoutes: MetadataRoute.Sitemap = vendors.map((v) => ({
@@ -49,5 +53,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...vendorRoutes, ...propertyRoutes, ...categoryRoutes];
+  // Programmatik SEO landinglar: kategoriya × tuman
+  const landingRoutes: MetadataRoute.Sitemap = categories.flatMap((c) =>
+    districts.map((d) => ({
+      url: `${SITE_URL}/xizmatlar/${c.slug}/${districtSlug(d.district)}`,
+      lastModified: now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.5,
+    })),
+  );
+
+  return [...staticRoutes, ...vendorRoutes, ...propertyRoutes, ...categoryRoutes, ...landingRoutes];
 }

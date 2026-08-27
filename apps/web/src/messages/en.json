@@ -31,7 +31,8 @@
     "privacy": "Privacy policy",
     "blurb": "Izla is a services super-app for Uzbekistan. Clinics, salons, restaurants, fitness, real estate and jobs — all in one app.",
     "madeIn": "Made in Uzbekistan",
-    "invite": "Invite a friend"
+    "invite": "Invite a friend",
+    "byDistrict": "By district"
   },
   "common": {
     "all": "See all",
@@ -1426,5 +1427,19 @@
     "step2": "Your friend signs up via the link and gets {join} 🪙",
     "step3": "And you get {referrer} 🪙 for each friend",
     "seeCoins": "See your coins →"
+  },
+  "landing": {
+    "metaTitle": "{category} — {district} district | Izla.uz",
+    "metaDesc": "Best {category} services in {district} district. Ratings, prices and online booking — on Izla.uz.",
+    "h1": "{category} in {district}",
+    "intro": "{count}+ verified {category} services in {district} district. Sorted by rating — fair prices and fast online booking.",
+    "empty": "No {category} found in {district} district yet.",
+    "allCategory": "All {category}",
+    "otherDistricts": "{category} in other districts",
+    "otherCategories": "Other services in {district}",
+    "hubTitle": "Services by district | Izla.uz",
+    "hubDesc": "Services across all Tashkent districts: clinics, salons, restaurants, fitness and more.",
+    "hubH1": "Services by district",
+    "hubIntro": "Find the service you need in your district — by category and location."
   }
 }

@@ -108,6 +108,12 @@ export class VendorsController {
     });
   }
 
+  // MUHIM: 'districts' :slug'dan OLDIN (dinamik SEO landinglar uchun)
+  @Get('districts')
+  districts() {
+    return this.vendors.districts();
+  }
+
   @Get(':slug')
   @ApiQuery({ name: 'lang', required: false, enum: ['uz', 'ru', 'en'] })
   detail(

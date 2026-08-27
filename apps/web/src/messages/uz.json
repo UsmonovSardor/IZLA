@@ -31,7 +31,8 @@
     "privacy": "Maxfiylik siyosati",
     "blurb": "Izla — O‘zbekiston uchun xizmatlar super-platformasi. Klinika, salon, restoran, fitnes, uy-joy va ish — hammasi bitta ilovada.",
     "madeIn": "O‘zbekistonda yaratilgan",
-    "invite": "Do‘stni taklif qilish"
+    "invite": "Do‘stni taklif qilish",
+    "byDistrict": "Tuman bo‘yicha"
   },
   "common": {
     "all": "Barchasi",
@@ -1426,5 +1427,19 @@
     "step2": "Do‘stingiz havola orqali ro‘yxatdan o‘tadi va {join} 🪙 oladi",
     "step3": "Siz esa har bir do‘st uchun {referrer} 🪙 olasiz",
     "seeCoins": "Tangalaringizni ko‘rish →"
+  },
+  "landing": {
+    "metaTitle": "{category} — {district} tumani | Izla.uz",
+    "metaDesc": "{district} tumanidagi eng yaxshi {category} xizmatlari. Reyting, narx va onlayn bron — Izla.uz’da.",
+    "h1": "{district} tumanida {category}",
+    "intro": "{district} tumanidagi {count}+ tekshirilgan {category} xizmatlari. Reyting bo‘yicha saralangan — qulay narx va tez onlayn bron.",
+    "empty": "{district} tumanida hozircha {category} topilmadi.",
+    "allCategory": "Barcha {category}",
+    "otherDistricts": "Boshqa tumanlarda {category}",
+    "otherCategories": "{district} tumanidagi boshqa xizmatlar",
+    "hubTitle": "Xizmatlar — tuman bo‘yicha | Izla.uz",
+    "hubDesc": "Toshkentning barcha tumanlaridagi xizmatlar: klinika, salon, restoran, fitnes va boshqalar.",
+    "hubH1": "Tuman bo‘yicha xizmatlar",
+    "hubIntro": "Kerakli xizmatni o‘z tumaningizda toping — kategoriya va joylashuv bo‘yicha."
   }
 }

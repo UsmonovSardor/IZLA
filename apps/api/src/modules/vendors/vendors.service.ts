@@ -83,6 +83,19 @@ function haversineKm(aLat: number, aLng: number, bLat: number, bLng: number): nu
 export class VendorsService {
   constructor(private readonly prisma: PrismaService) {}
 
+  /** Faol vendorlar bo'yicha noyob tumanlar + sanoq (programmatik SEO landinglar uchun). */
+  async districts(): Promise<{ district: string; count: number }[]> {
+    const rows = await this.prisma.vendor.groupBy({
+      by: ['district'],
+      where: { status: 'ACTIVE', district: { not: null } },
+      _count: { _all: true },
+    });
+    return rows
+      .map((r) => ({ district: (r.district ?? '') as string, count: r._count._all }))
+      .filter((r) => r.district)
+      .sort((a, b) => b.count - a.count);
+  }
+
   async list(query: VendorQuery) {
     const lang: Lang = query.lang ?? 'uz';
     const take = query.take ?? 50;

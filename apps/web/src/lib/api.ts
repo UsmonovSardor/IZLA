@@ -58,6 +58,7 @@ export const api = {
   vendors: (qs = '', lang?: string) => get<Vendor[]>(withLang(`/vendors${qs}`, lang), 60),
   vendor: (slug: string, lang?: string) => get<VendorDetail>(withLang(`/vendors/${slug}`, lang), 120),
   facets: (qs = '', lang?: string) => get<Facets>(withLang(`/vendors/facets${qs}`, lang), 120),
+  districts: () => get<{ district: string; count: number }[]>('/vendors/districts', 600),
   assistantStatus: () => get<{ enabled: boolean }>('/assistant/status', 300),
   assistantChat: (messages: ChatTurn[], lang?: string) =>
     post<AssistantReply>('/assistant/chat', { messages, lang }),
