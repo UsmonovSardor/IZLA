@@ -18,7 +18,8 @@
 }
 
 html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
-body { background: #F6F8FC; color: #1E293B; }
+/* background-color (shorthand EMAS) — aks holda v4'da unlayered qoida bg-aurora-soft utility'sini bosadi */
+body { background-color: #F6F8FC; color: #1E293B; }
 
 /* ===== Lenis silliq scroll (Phase 4) ===== */
 html.lenis, html.lenis body { height: auto; }
