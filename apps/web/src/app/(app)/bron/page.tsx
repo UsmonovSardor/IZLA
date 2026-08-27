@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { CalendarClock, CheckCircle2, Loader2, MapPin } from 'lucide-react';
 import { api, type Booking } from '@/lib/api';
 import { useAuth } from '@/components/auth-provider';
+import { useToast } from '@/components/toast';
 import { Button } from '@/components/ui/button';
 import { PayButtons } from '@/components/pay-buttons';
 import { formatUZS } from '@/lib/utils';
@@ -35,6 +36,7 @@ export default function BronPage() {
   const { user, loading, openLogin } = useAuth();
   const t = useTranslations('bookings');
   const tc = useTranslations('common');
+  const { toast } = useToast();
   const locale = useLocale();
   const [bookings, setBookings] = useState<Booking[] | null>(null);
   const [error, setError] = useState('');
@@ -56,8 +58,10 @@ export default function BronPage() {
     try {
       await api.cancelBooking(id);
       await load();
+      toast({ variant: 'info', title: t('statusCancelled') });
     } catch {
       setError(t('cancelError'));
+      toast({ variant: 'error', title: t('cancelError') });
     } finally {
       setCancelling(null);
     }
