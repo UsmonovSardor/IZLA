@@ -225,7 +225,11 @@ export class AuthService {
         grant_type: 'authorization_code',
       }),
     });
-    if (!tokenRes.ok) throw new UnauthorizedException('Google token almashuvi muvaffaqiyatsiz');
+    if (!tokenRes.ok) {
+      const body = await tokenRes.text();
+      this.logger.error(`Google token HTTP ${tokenRes.status} redirect_uri=${this.googleRedirectUri()} → ${body}`);
+      throw new UnauthorizedException('Google token almashuvi muvaffaqiyatsiz');
+    }
     const tokens = (await tokenRes.json()) as { access_token?: string };
     if (!tokens.access_token) throw new UnauthorizedException('Google tokeni yo‘q');
 
