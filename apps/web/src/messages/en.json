@@ -1377,5 +1377,28 @@
   "recent": {
     "title": "Recently viewed",
     "clear": "Clear"
+  },
+  "cmd": {
+    "title": "Command palette",
+    "open": "Search",
+    "placeholder": "Search a service, place or page…",
+    "empty": "Nothing found",
+    "searchFor": "Search for “{q}”",
+    "resultsTitle": "Results",
+    "recentTitle": "Recently viewed",
+    "navTitle": "Go to",
+    "hintNav": "navigate",
+    "hintOpen": "open",
+    "nav": {
+      "home": "Home",
+      "search": "Search",
+      "jobs": "Jobs",
+      "realEstate": "Real estate",
+      "bookings": "My bookings",
+      "favorites": "Favorites",
+      "saved": "Saved jobs",
+      "profile": "Profile",
+      "help": "Help"
+    }
   }
 }

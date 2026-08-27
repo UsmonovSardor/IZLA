@@ -1377,5 +1377,28 @@
   "recent": {
     "title": "Yaqinda koʻrilgan",
     "clear": "Tozalash"
+  },
+  "cmd": {
+    "title": "Buyruqlar paneli",
+    "open": "Qidirish",
+    "placeholder": "Xizmat, joy yoki sahifani qidiring…",
+    "empty": "Hech narsa topilmadi",
+    "searchFor": "\"{q}\" bo‘yicha qidirish",
+    "resultsTitle": "Natijalar",
+    "recentTitle": "Yaqinda ko‘rilgan",
+    "navTitle": "O‘tish",
+    "hintNav": "harakat",
+    "hintOpen": "ochish",
+    "nav": {
+      "home": "Bosh sahifa",
+      "search": "Qidiruv",
+      "jobs": "Ish",
+      "realEstate": "Uy-joy",
+      "bookings": "Bronlarim",
+      "favorites": "Sevimlilar",
+      "saved": "Saqlangan ishlar",
+      "profile": "Profil",
+      "help": "Yordam"
+    }
   }
 }
