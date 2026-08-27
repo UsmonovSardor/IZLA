@@ -370,7 +370,9 @@ export class AuthService {
   private signAccess(user: Pick<User, 'id' | 'role'>) {
     return this.jwt.signAsync(
       { sub: user.id, role: user.role },
-      { secret: env.JWT_ACCESS_SECRET, expiresIn: env.JWT_ACCESS_TTL },
+      // JWT v11 (jsonwebtoken 9) `expiresIn` tipi qat'iy StringValue|number kutadi;
+      // runtime'da "15m" kabi qator ishlaydi — TS uchun cast.
+      { secret: env.JWT_ACCESS_SECRET, expiresIn: env.JWT_ACCESS_TTL as unknown as number },
     );
   }
 
