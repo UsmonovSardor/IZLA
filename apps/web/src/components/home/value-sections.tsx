@@ -22,8 +22,8 @@ export async function HowItWorks() {
         {/* Ulovchi chiziq (desktop) */}
         <div className="pointer-events-none absolute inset-x-[16%] top-9 hidden h-px bg-gradient-to-r from-line via-brand/30 to-line md:block" />
         {steps.map((s, i) => (
-          <Reveal key={s.k} delay={i * 90}>
-            <div className="relative flex flex-col items-center rounded-2xl border border-line bg-white p-7 text-center shadow-card transition hover:-translate-y-1 hover:shadow-pop">
+          <Reveal key={s.k} delay={i * 90} className="h-full">
+            <div className="relative flex h-full flex-col items-center rounded-2xl border border-line bg-white p-7 text-center shadow-card transition hover:-translate-y-1 hover:shadow-pop">
               <div className={`grid h-[72px] w-[72px] place-items-center rounded-2xl bg-gradient-to-br ${s.grad} text-white shadow-md`}>
                 <s.icon size={30} />
               </div>
