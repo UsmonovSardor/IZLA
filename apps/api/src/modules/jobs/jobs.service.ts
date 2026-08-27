@@ -166,6 +166,55 @@ export class JobsService {
       job: a.job,
     }));
   }
+
+  // ---- Saqlangan vakansiyalar (bookmark) ----
+
+  /** Vakansiyani saqlash/olib tashlash (toggle). Poyga-xavfsiz. */
+  async toggleSaved(jobId: string, userId: string): Promise<{ saved: boolean }> {
+    const existing = await this.prisma.savedJob.findUnique({
+      where: { userId_jobId: { userId, jobId } },
+    });
+    if (existing) {
+      await this.prisma.savedJob.delete({ where: { id: existing.id } });
+      return { saved: false };
+    }
+    // Vakansiya mavjud va ochiqligini tekshiramiz
+    const job = await this.prisma.job.findUnique({ where: { id: jobId }, select: { id: true, status: true } });
+    if (!job || job.status !== 'ACTIVE') throw new NotFoundException('Vakansiya topilmadi');
+    try {
+      await this.prisma.savedJob.create({ data: { userId, jobId } });
+    } catch (e) {
+      // Bir vaqtda ikki marta bosilsa — allaqachon saqlangan deb hisoblaymiz
+      if (!(e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002')) throw e;
+    }
+    return { saved: true };
+  }
+
+  /** Saqlangan vakansiya id'lari (kartochkalarda bookmark holati uchun). */
+  async savedIds(userId: string): Promise<string[]> {
+    const rows = await this.prisma.savedJob.findMany({
+      where: { userId },
+      select: { jobId: true },
+    });
+    return rows.map((r) => r.jobId);
+  }
+
+  /** To'liq saqlangan vakansiyalar ro'yxati (job + kompaniya, eng yangi birinchi). */
+  async listSaved(userId: string) {
+    const rows = await this.prisma.savedJob.findMany({
+      where: { userId, job: { status: 'ACTIVE' } },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        createdAt: true,
+        job: {
+          include: {
+            company: { select: { name: true, slug: true, logo: true, verified: true, district: true } },
+          },
+        },
+      },
+    });
+    return rows.map((r) => ({ savedAt: r.createdAt, ...shape(r.job) }));
+  }
 }
 
 /** Job → yengil DTO (ro'yxat uchun). */

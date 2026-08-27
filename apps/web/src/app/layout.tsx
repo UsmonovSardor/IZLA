@@ -6,6 +6,7 @@ import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import { Search, Home, Sparkles, User } from 'lucide-react';
 import { AuthProvider } from '@/components/auth-provider';
 import { FavoritesProvider } from '@/components/favorites-provider';
+import { SavedJobsProvider } from '@/components/saved-jobs-provider';
 import { ToastProvider } from '@/components/toast';
 import { HeaderAuth } from '@/components/header-auth';
 import { HeroMarquee } from '@/components/hero-marquee';
@@ -94,6 +95,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <ToastProvider>
           <AuthProvider>
           <FavoritesProvider>
+          <SavedJobsProvider>
             {/* Qiymat-taklif lentasi — eng tepada (navbar'dan yuqorida), kafil uslubi */}
             <HeroMarquee />
 
@@ -149,6 +151,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 </Link>
               ))}
             </nav>
+          </SavedJobsProvider>
           </FavoritesProvider>
           </AuthProvider>
           </ToastProvider>

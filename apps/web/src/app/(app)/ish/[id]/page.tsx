@@ -6,6 +6,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { ArrowLeft, Wifi, MapPin, Briefcase, TrendingUp, Eye, Users, Globe, BadgeCheck, Building2 } from 'lucide-react';
 import { api, type JobDetail } from '@/lib/api';
 import { ApplyButton } from '@/components/jobs/apply-button';
+import { SaveJobButton } from '@/components/jobs/save-job-button';
 import { JobCard } from '@/components/jobs/job-card';
 
 function initials(name: string) {
@@ -146,7 +147,10 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
               {fact(<Users size={16} />, t('applicants'), `${job.applicants}`)}
               {fact(<Eye size={16} />, t('views'), `${job.views}`)}
             </div>
-            <div className="mt-5"><ApplyButton jobId={job.id} block /></div>
+            <div className="mt-5 space-y-2.5">
+              <ApplyButton jobId={job.id} block />
+              <SaveJobButton jobId={job.id} variant="inline" className="w-full justify-center" />
+            </div>
           </div>
 
           <div className="rounded-2xl border border-line bg-white p-5">

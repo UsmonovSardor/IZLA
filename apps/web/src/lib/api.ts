@@ -84,6 +84,9 @@ export const api = {
     authed<ApplyResult>(`/jobs/${id}/apply`, { method: 'POST', body: JSON.stringify({ coverNote }) }),
   jobApplicationStatus: (id: string) => authed<ApplicationStatus>(`/jobs/${id}/application`),
   myApplications: () => authed<MyApplication[]>('/jobs/me/applications'),
+  savedJobIds: () => authed<string[]>('/jobs/me/saved/ids'),
+  savedJobs: () => authed<SavedJob[]>('/jobs/me/saved'),
+  toggleSavedJob: (id: string) => authed<{ saved: boolean }>(`/jobs/${id}/save/toggle`, { method: 'POST' }),
   resumeMe: () => authed<Resume | null>('/resume/me'),
   saveResume: (body: ResumeInput) => authed<Resume>('/resume', { method: 'PUT', body: JSON.stringify(body) }),
 
@@ -158,6 +161,7 @@ export interface Job {
   createdAt: string; company?: JobCompany;
 }
 export interface JobDetail extends Job { applicants: number; company: JobCompany }
+export interface SavedJob extends Job { savedAt: string }
 export interface JobsResult { total: number; page: number; limit: number; items: Job[] }
 export interface JobFacets {
   total: number; employment: Record<string, number>; experience: Record<string, number>;

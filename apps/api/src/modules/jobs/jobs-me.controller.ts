@@ -18,6 +18,21 @@ export class JobsMeController {
     return this.jobs.myApplications(user.sub);
   }
 
+  @Get('me/saved/ids')
+  savedIds(@CurrentUser() user: AuthUser) {
+    return this.jobs.savedIds(user.sub);
+  }
+
+  @Get('me/saved')
+  savedList(@CurrentUser() user: AuthUser) {
+    return this.jobs.listSaved(user.sub);
+  }
+
+  @Post(':id/save/toggle')
+  toggleSaved(@CurrentUser() user: AuthUser, @Param('id') id: string) {
+    return this.jobs.toggleSaved(id, user.sub);
+  }
+
   @Get(':id/application')
   applicationStatus(@CurrentUser() user: AuthUser, @Param('id') id: string) {
     return this.jobs.applicationStatus(id, user.sub);

@@ -1356,5 +1356,22 @@
     "markAll": "Mark all read",
     "empty": "No notifications yet",
     "now": "now"
+  },
+  "savedJobs": {
+    "title": "Saved jobs",
+    "subtitle": "Jobs you bookmarked to review later",
+    "save": "Save",
+    "saved": "Saved",
+    "added": "Job saved",
+    "removed": "Removed from saved",
+    "error": "Something went wrong",
+    "addAria": "Save job",
+    "removeAria": "Remove from saved",
+    "loginTitle": "Save jobs you like",
+    "loginNeeded": "Sign in to bookmark jobs you like",
+    "login": "Sign in",
+    "emptyTitle": "No saved jobs yet",
+    "emptyText": "Bookmark jobs you like and collect them here",
+    "browse": "Browse jobs"
   }
 }

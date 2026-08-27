@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-import { FileText, ClipboardList, Building2 } from 'lucide-react';
+import { FileText, ClipboardList, Building2, Bookmark } from 'lucide-react';
 import { api } from '@/lib/api';
 import { JobBoard } from '@/components/jobs/job-board';
 
@@ -16,6 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function IshPage() {
   const t = await getTranslations('ish');
+  const ts = await getTranslations('savedJobs');
   const [initial, facets] = await Promise.all([
     api.jobs('?limit=20').catch(() => ({ total: 0, page: 0, limit: 20, items: [] })),
     api.jobFacets().catch(() => ({ total: 0, employment: {}, experience: {}, categories: [] })),
@@ -43,6 +44,9 @@ export default async function IshPage() {
             </Link>
             <Link href="/ish/arizalarim" className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-sm font-semibold text-navy transition hover:bg-bg">
               <ClipboardList size={16} /> {t('myApplications')}
+            </Link>
+            <Link href="/ish/saqlanganlar" className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-sm font-semibold text-navy transition hover:bg-bg">
+              <Bookmark size={16} /> {ts('title')}
             </Link>
           </div>
           <Link href="/ish/kabinet" className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-violet-700 transition hover:gap-2.5">

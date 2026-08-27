@@ -1356,5 +1356,22 @@
     "markAll": "Barchasini o‘qildi",
     "empty": "Hozircha bildirishnoma yo‘q",
     "now": "hozir"
+  },
+  "savedJobs": {
+    "title": "Saqlangan vakansiyalar",
+    "subtitle": "Keyinroq ko'rish uchun saqlab qo'ygan ishlaringiz",
+    "save": "Saqlash",
+    "saved": "Saqlangan",
+    "added": "Vakansiya saqlandi",
+    "removed": "Saqlanganlardan olib tashlandi",
+    "error": "Xatolik yuz berdi",
+    "addAria": "Vakansiyani saqlash",
+    "removeAria": "Saqlanganlardan olib tashlash",
+    "loginTitle": "Vakansiyalarni saqlang",
+    "loginNeeded": "Yoqtirgan ishlaringizni saqlab qo‘yish uchun tizimga kiring",
+    "login": "Kirish",
+    "emptyTitle": "Hali saqlangan vakansiya yo‘q",
+    "emptyText": "Yoqtirgan vakansiyangizni bookmark qilib, shu yerda yig‘ib boring",
+    "browse": "Vakansiyalarni ko‘rish"
   }
 }

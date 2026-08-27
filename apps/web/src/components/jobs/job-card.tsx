@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { Wifi, Star, Eye } from 'lucide-react';
 import type { Job } from '@/lib/api';
+import { SaveJobButton } from '@/components/jobs/save-job-button';
 
 function initials(name: string) {
   return name.split(/\s+/).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
@@ -24,11 +25,9 @@ export function JobCard({ job, index = 0 }: { job: Job; index?: number }) {
       style={{ animationDelay: `${Math.min(index * 55, 400)}ms` }}
       className="job-card group relative flex flex-col gap-3 rounded-2xl border border-line bg-white p-5 transition-all duration-200 hover:-translate-y-1 hover:border-violet-300 hover:shadow-[0_18px_44px_-20px_rgba(124,58,237,0.35)]"
     >
-      {job.featured && (
-        <span className="absolute right-4 top-4 inline-flex items-center gap-1 rounded-full bg-violet-50 px-2.5 py-1 text-[11px] font-semibold text-violet-700">
-          <Star size={11} className="fill-violet-500 text-violet-500" /> {t('featured')}
-        </span>
-      )}
+      <div className="absolute right-3 top-3 z-10">
+        <SaveJobButton jobId={job.id} />
+      </div>
       <div className="flex items-start gap-3.5">
         {job.company?.logo ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -38,7 +37,7 @@ export function JobCard({ job, index = 0 }: { job: Job; index?: number }) {
             {initials(job.company?.name ?? 'Izla')}
           </span>
         )}
-        <div className="min-w-0 flex-1 pr-16">
+        <div className="min-w-0 flex-1 pr-12">
           <h3 className="font-display text-[1.05rem] font-semibold leading-snug text-navy transition-colors group-hover:text-violet-700">
             {job.title}
           </h3>
@@ -50,6 +49,11 @@ export function JobCard({ job, index = 0 }: { job: Job; index?: number }) {
       </div>
 
       <div className="flex flex-wrap gap-1.5">
+        {job.featured && (
+          <span className="inline-flex items-center gap-1 rounded-lg bg-violet-50 px-2.5 py-1 text-xs font-semibold text-violet-700">
+            <Star size={11} className="fill-violet-500 text-violet-500" /> {t('featured')}
+          </span>
+        )}
         <span className="rounded-lg bg-bg px-2.5 py-1 text-xs text-slate2">{t(`emp.${job.employment}`)}</span>
         <span className="rounded-lg bg-bg px-2.5 py-1 text-xs text-slate2">{t(`exp.${job.experience}`)}</span>
         {job.remote && (
