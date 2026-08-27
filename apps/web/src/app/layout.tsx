@@ -9,6 +9,7 @@ import { FavoritesProvider } from '@/components/favorites-provider';
 import { SavedJobsProvider } from '@/components/saved-jobs-provider';
 import { ToastProvider } from '@/components/toast';
 import { HeaderAuth } from '@/components/header-auth';
+import { HeaderBack } from '@/components/header-back';
 import { HeroMarquee } from '@/components/hero-marquee';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { FavoritesNavIcon } from '@/components/favorites-nav-icon';
@@ -103,9 +104,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
             <header className="sticky top-0 z-40 border-b border-white/50 bg-white/70 backdrop-blur-xl">
               <div className="container-wide h-16 flex items-center justify-between gap-4">
-                <Link href="/" aria-label="Izla.uz" className="shrink-0">
-                  <Logo />
-                </Link>
+                <div className="flex items-center gap-2 shrink-0">
+                  <HeaderBack />
+                  <Link href="/" aria-label="Izla.uz" className="shrink-0">
+                    <Logo />
+                  </Link>
+                </div>
                 <nav className="hidden md:flex items-center gap-1 text-sm font-medium text-ink">
                   {navLinks.map((l) => (
                     <Link

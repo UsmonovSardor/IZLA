@@ -39,7 +39,8 @@
     "viewDetails": "Подробнее",
     "reviews": "{count} отзывов",
     "loading": "Загрузка данных…",
-    "login": "Войти"
+    "login": "Войти",
+    "back": "Назад"
   },
   "lang": {
     "switchLabel": "Выбрать язык"

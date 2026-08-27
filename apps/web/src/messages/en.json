@@ -39,7 +39,8 @@
     "viewDetails": "Details",
     "reviews": "{count} reviews",
     "loading": "Loading…",
-    "login": "Sign in"
+    "login": "Sign in",
+    "back": "Back"
   },
   "lang": {
     "switchLabel": "Select language"

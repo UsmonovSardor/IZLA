@@ -39,7 +39,8 @@
     "viewDetails": "Batafsil",
     "reviews": "{count} sharh",
     "loading": "Ma'lumot yuklanmoqda…",
-    "login": "Kirish"
+    "login": "Kirish",
+    "back": "Orqaga"
   },
   "lang": {
     "switchLabel": "Tilni tanlash"
