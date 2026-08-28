@@ -148,6 +148,8 @@ export const api = {
     authed<KabinetService>(`/kabinet/services/${id}`, { method: 'DELETE' }),
   kabinetUpdateBooking: (id: string, status: string) =>
     authed<{ id: string; status: string }>(`/kabinet/bookings/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) }),
+  registerVendor: (body: RegisterVendorInput) =>
+    authed<{ id: string; slug: string; status: string }>('/kabinet/register', { method: 'POST', body: JSON.stringify(body) }),
 
   base: BASE,
 };
@@ -243,6 +245,9 @@ export interface KabinetVendor {
   rating: number; reviewCount: number; photos: string[];
   category?: { slug: string; name: string; icon?: string };
   counts: { services: number; bookings: number; reviews: number };
+}
+export interface RegisterVendorInput {
+  name: string; categoryId: string; phone?: string; district?: string; address?: string; description?: string;
 }
 export interface KabinetServiceInput { name: string; price: number; durationMin: number; active?: boolean }
 export interface KabinetService { id: string; name: string; price: string; durationMin: number; active: boolean }

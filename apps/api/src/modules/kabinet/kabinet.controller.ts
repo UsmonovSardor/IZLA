@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { KabinetService } from './kabinet.service';
-import { CreateServiceDto, UpdateBookingStatusDto, UpdateServiceDto, UpdateVendorDto } from './dto';
+import { CreateServiceDto, RegisterVendorDto, UpdateBookingStatusDto, UpdateServiceDto, UpdateVendorDto } from './dto';
 import { JwtAuthGuard, type AuthUser } from '../../common/jwt.guard';
 import { CurrentUser } from '../../common/current-user.decorator';
 
@@ -21,6 +21,12 @@ import { CurrentUser } from '../../common/current-user.decorator';
 @Controller('kabinet')
 export class KabinetController {
   constructor(private readonly kabinet: KabinetService) {}
+
+  /** Yangi biznes ro'yxatdan o'tkazish (onboarding) — vendor PENDING yaratiladi. */
+  @Post('register')
+  register(@CurrentUser() user: AuthUser, @Body() dto: RegisterVendorDto) {
+    return this.kabinet.register(user.sub, dto);
+  }
 
   @Get('vendors')
   myVendors(@CurrentUser() user: AuthUser) {

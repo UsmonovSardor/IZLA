@@ -10,6 +10,16 @@ import {
   Min,
 } from 'class-validator';
 
+/** Yangi biznes ro'yxatdan o'tkazish (onboarding). Vendor PENDING holatda yaratiladi. */
+export class RegisterVendorDto {
+  @IsString() @MaxLength(160) name!: string;
+  @IsString() categoryId!: string;
+  @IsOptional() @IsString() @MaxLength(40) phone?: string;
+  @IsOptional() @IsString() @MaxLength(120) district?: string;
+  @IsOptional() @IsString() @MaxLength(300) address?: string;
+  @IsOptional() @IsString() @MaxLength(2000) description?: string;
+}
+
 /** Vendor profilini yangilash (egaga ruxsat etilgan maydonlar). */
 export class UpdateVendorDto {
   @IsOptional() @IsString() @MaxLength(160) name?: string;

@@ -1,11 +1,70 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@izla/db';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CreateServiceDto, UpdateBookingStatusDto, UpdateServiceDto, UpdateVendorDto } from './dto';
+import { CreateServiceDto, RegisterVendorDto, UpdateBookingStatusDto, UpdateServiceDto, UpdateVendorDto } from './dto';
+
+// Toshkent markazi — onboarding'da default (keyin kabinetda xaritadan aniqlashtiriladi)
+const TASHKENT = { lat: 41.311081, lng: 69.240562 };
+
+function slugify(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/['’ʻʼ`]/g, '')
+    .normalize('NFKD')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .slice(0, 60) || 'biznes';
+}
 
 @Injectable()
 export class KabinetService {
   constructor(private readonly prisma: PrismaService) {}
+
+  /**
+   * Yangi biznes ro'yxatdan o'tkazish (onboarding). Vendor PENDING holatda —
+   * moderatsiyadan keyin ACTIVE bo'ladi. Egasi (userId) ownerId, roli VENDOR'ga
+   * ko'tariladi (agar USER bo'lsa). lat/lng Toshkent markazi default.
+   */
+  async register(userId: string, dto: RegisterVendorDto) {
+    const category = await this.prisma.category.findUnique({ where: { id: dto.categoryId } });
+    if (!category) throw new NotFoundException('Kategoriya topilmadi');
+
+    // Noyob slug: nom + qisqa tasodifiy qo'shimcha (P2002 bo'lsa qayta urinish)
+    const base = slugify(dto.name);
+    let slug = `${base}-${Math.random().toString(36).slice(2, 6)}`;
+    for (let i = 0; i < 4; i++) {
+      const exists = await this.prisma.vendor.findUnique({ where: { slug }, select: { id: true } });
+      if (!exists) break;
+      slug = `${base}-${Math.random().toString(36).slice(2, 7)}`;
+    }
+
+    const vendor = await this.prisma.vendor.create({
+      data: {
+        ownerId: userId,
+        categoryId: dto.categoryId,
+        name: dto.name.trim(),
+        slug,
+        description: dto.description?.trim() || null,
+        phone: dto.phone?.trim() || null,
+        district: dto.district?.trim() || null,
+        address: dto.address?.trim() || null,
+        lat: TASHKENT.lat,
+        lng: TASHKENT.lng,
+        status: 'PENDING',
+        hours: { mon_fri: '09:00-18:00' },
+      },
+    });
+
+    // Foydalanuvchi rolini VENDOR'ga ko'tarish (faqat oddiy USER bo'lsa)
+    await this.prisma.user.updateMany({
+      where: { id: userId, role: 'USER' },
+      data: { role: 'VENDOR' },
+    });
+
+    return { id: vendor.id, slug: vendor.slug, status: vendor.status };
+  }
 
   /** Egalik tekshiruvi — vendor shu foydalanuvchiniki bo'lmasa 404/403. */
   private async ownedVendor(vendorId: string, userId: string) {

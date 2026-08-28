@@ -10,7 +10,8 @@
     "telegram": "Telegram",
     "jobs": "Ish",
     "resume": "Rezyume",
-    "myApplications": "Arizalarim"
+    "myApplications": "Arizalarim",
+    "partner": "Hamkor"
   },
   "mobileNav": {
     "home": "Asosiy",
@@ -1453,5 +1454,41 @@
     "gold": "Oltin",
     "platinum": "Platina",
     "diamond": "Olmos"
+  },
+  "partner": {
+    "badge": "Hamkorlik",
+    "title": "Biznesingizni Izla'ga qo'shing",
+    "subtitle": "Minglab mijozlar sizni qidirmoqda. Onlayn bron, kabinet va o'sish vositalari — bepul boshlang.",
+    "cta": "Hoziroq qo'shilish",
+    "b1t": "Yangi mijozlar",
+    "b1d": "Toshkent bo'ylab qidiruvda joyingiz ko'rinadi — yangi mijozlar oqimi.",
+    "b2t": "Onlayn bron",
+    "b2d": "Mijozlar 30 soniyada joy band qiladi, siz kalendarda ko'rasiz.",
+    "b3t": "O'sish tahlili",
+    "b3d": "Kabinetда bronlar, daromad va statistikani real vaqtda kuzating.",
+    "b4t": "Ishonch va tekshiruv",
+    "b4d": "Tasdiqlangan biznes belgisi bilan mijoz ishonchini oshiring.",
+    "formTitle": "Ariza qoldiring",
+    "formSub": "Asosiy ma'lumotlar — qolganini keyin kabinetда to'ldirasiz.",
+    "loginNote": "Davom etish uchun tizimga kiring.",
+    "loginCta": "Kirish",
+    "loginReason": "Biznes qo'shish",
+    "fName": "Biznes nomi",
+    "phName": "Masalan: Smile Dental",
+    "fCategory": "Kategoriya",
+    "phCategory": "Tanlang",
+    "fDistrict": "Tuman",
+    "phDistrict": "Tanlang (ixtiyoriy)",
+    "fPhone": "Telefon",
+    "fAddress": "Manzil",
+    "phAddress": "Ko'cha, uy",
+    "fDescription": "Qisqacha tavsif",
+    "phDescription": "Bizneseingiz haqida bir-ikki gap",
+    "submit": "Arizani yuborish",
+    "submitting": "Yuborilmoqda…",
+    "moderationNote": "Ariza moderatsiyadan o'tgach biznesingiz saytda faollashadi.",
+    "successTitle": "Ariza qabul qilindi!",
+    "successBody": "Kabinetга yo'naltiryapmiz — u yerda profilingizni to'ldiring.",
+    "errorTitle": "Xatolik yuz berdi"
   }
 }

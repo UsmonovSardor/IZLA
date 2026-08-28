@@ -10,7 +10,8 @@
     "telegram": "Telegram",
     "jobs": "Jobs",
     "resume": "Resume",
-    "myApplications": "My applications"
+    "myApplications": "My applications",
+    "partner": "Partners"
   },
   "mobileNav": {
     "home": "Home",
@@ -1453,5 +1454,41 @@
     "gold": "Gold",
     "platinum": "Platinum",
     "diamond": "Diamond"
+  },
+  "partner": {
+    "badge": "Partnership",
+    "title": "Add your business to Izla",
+    "subtitle": "Thousands of customers are searching for you. Online booking, a dashboard and growth tools — start free.",
+    "cta": "Join now",
+    "b1t": "New customers",
+    "b1d": "Your listing appears in search across Tashkent — a stream of new customers.",
+    "b2t": "Online booking",
+    "b2d": "Customers book in 30 seconds, you see it in your calendar.",
+    "b3t": "Growth analytics",
+    "b3d": "Track bookings, revenue and stats in real time in your dashboard.",
+    "b4t": "Trust & verification",
+    "b4d": "Boost customer trust with a verified-business badge.",
+    "formTitle": "Leave a request",
+    "formSub": "Just the basics — fill in the rest later in your dashboard.",
+    "loginNote": "Sign in to continue.",
+    "loginCta": "Sign in",
+    "loginReason": "Add a business",
+    "fName": "Business name",
+    "phName": "e.g. Smile Dental",
+    "fCategory": "Category",
+    "phCategory": "Select",
+    "fDistrict": "District",
+    "phDistrict": "Select (optional)",
+    "fPhone": "Phone",
+    "fAddress": "Address",
+    "phAddress": "Street, building",
+    "fDescription": "Short description",
+    "phDescription": "A line or two about your business",
+    "submit": "Submit request",
+    "submitting": "Submitting…",
+    "moderationNote": "Your business goes live after moderation.",
+    "successTitle": "Request received!",
+    "successBody": "Taking you to your dashboard — complete your profile there.",
+    "errorTitle": "Something went wrong"
   }
 }

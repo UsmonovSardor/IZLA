@@ -77,7 +77,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     { href: '/ish', label: t('nav.jobs') },
     { href: '/uylar', label: t('nav.realEstate') },
     { href: '/bron', label: t('nav.bookings') },
-    { href: '/tg', label: t('nav.telegram') },
+    { href: '/hamkor', label: t('nav.partner') },
   ];
   const mobileTabs = [
     { href: '/', icon: Home, label: t('mobileNav.home') },
