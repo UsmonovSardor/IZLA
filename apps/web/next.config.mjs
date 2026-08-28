@@ -14,7 +14,8 @@ const API_ORIGIN = (() => {
   }
 })();
 
-// Content-Security-Policy — hozircha Report-Only (jonli tasdiqdan so'ng enforcing'ga o'tkaziladi).
+// Content-Security-Policy — ENFORCING (bosh + /qidiruv xarita sahifalarida
+// Report-Only rejimida 0 buzilish tasdiqlangach yoqildi, 2026-08-28).
 const csp = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -39,7 +40,7 @@ const securityHeaders = [
   { key: 'X-DNS-Prefetch-Control', value: 'on' },
   { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
   { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(self), payment=()' },
-  { key: 'Content-Security-Policy-Report-Only', value: csp },
+  { key: 'Content-Security-Policy', value: csp },
 ];
 
 /** @type {import('next').NextConfig} */

@@ -19,6 +19,7 @@ import { Logo } from '@/components/logo';
 import { DeferredWidgets } from '@/components/deferred-widgets';
 import { PwaRegister } from '@/components/pwa-register';
 import { Analytics } from '@/components/analytics';
+import { WebVitals } from '@/components/web-vitals';
 import { JsonLd } from '@/components/json-ld';
 import { SITE_URL, organizationJsonLd, websiteJsonLd } from '@/lib/seo';
 import './globals.css';
@@ -133,8 +134,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             {/* PWA: service worker registratsiyasi + o'rnatish banneri */}
             <PwaRegister />
 
-            {/* Analitika (PostHog — kalitsiz o'chiq) */}
+            {/* Analitika (PostHog — kalitsiz o'chiq) + Web Vitals RUM */}
             <Analytics />
+            <WebVitals />
 
             {/* Footer */}
             <Footer />
