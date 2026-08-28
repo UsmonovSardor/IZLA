@@ -110,6 +110,24 @@ enum RealEstateTarget {
   COMPLEX
 }
 
+// --- Sug'urta (monetizatsiya: embedded insurance) ---
+enum InsuranceType {
+  OSAGO // majburiy avto javobgarlik sug'urtasi
+  KASKO // avto to'liq (KASKO)
+  TRAVEL // sayohat sug'urtasi
+  PROPERTY // uy / mol-mulk sug'urtasi
+  ACCIDENT // baxtsiz hodisadan sug'urta
+  HEALTH // ixtiyoriy tibbiy sug'urta (VMD)
+}
+
+enum PolicyStatus {
+  DRAFT // hisoblandi, hali sotib olinmagan (kotirovka)
+  PENDING // to'lov kutilmoqda
+  ACTIVE // amal qilmoqda
+  EXPIRED // muddati tugagan
+  CANCELLED // bekor qilingan
+}
+
 // ============================================================
 // CORE
 // ============================================================
@@ -147,6 +165,7 @@ model User {
   resume          Resume?
   jobApplications JobApplication[]
   savedJobs       SavedJob[]
+  policies        InsurancePolicy[]
 
   @@index([role])
   @@map("users")
@@ -305,6 +324,7 @@ model Booking {
 model Payment {
   id          String          @id @default(cuid())
   bookingId   String?         @unique
+  policyId    String?         @unique // sug'urta polisi uchun to'lov (embedded insurance)
   userId      String
   amount      Decimal         @db.Decimal(12, 2) // so'm (UZS)
   currency    String          @default("UZS")
@@ -317,6 +337,7 @@ model Payment {
   updatedAt   DateTime        @updatedAt
 
   booking      Booking?             @relation(fields: [bookingId], references: [id])
+  policy       InsurancePolicy?     @relation(fields: [policyId], references: [id])
   transactions PaymentTransaction[]
 
   @@index([userId])
@@ -713,4 +734,88 @@ model SavedJob {
   @@unique([userId, jobId])
   @@index([userId])
   @@map("saved_jobs")
+}
+
+// ============================================================
+// SUG'URTA (embedded insurance — monetizatsiya vertikali)
+// ============================================================
+
+// Sug'urta kompaniyasi (Kafil, Apex, Gross, ...). Izla = agent/distribyutor.
+model Insurer {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  logoUrl     String?
+  description String?
+  license     String? // litsenziya raqami
+  rating      Float    @default(0)
+  verified    Boolean  @default(false)
+  phone       String?
+  color       String? // brend rangi (UI aksenti)
+  createdAt   DateTime @default(now())
+
+  products InsuranceProduct[]
+
+  @@map("insurers")
+}
+
+// Sug'urta mahsuloti (masalan: "Kafil OSAGO"). Tarif konfiguratsiyasi JSON'da —
+// premiya shaffof formula bilan hisoblanadi (mijoz aniq summani ko'radi).
+model InsuranceProduct {
+  id             String        @id @default(cuid())
+  insurerId      String
+  type           InsuranceType
+  name           String
+  slug           String        @unique
+  summary        String?
+  // Bazaviy stavka + koeffitsentlar. Type'ga qarab shakl (osago/kasko/travel/...).
+  tariff         Json          @default("{}")
+  // Izla komissiyasi — premiyaning ulushi (0..1). 0.2000 = 20%.
+  commissionRate Decimal       @default(0) @db.Decimal(5, 4)
+  priceFrom      Decimal?      @db.Decimal(14, 2) // "dan boshlab" narx (marketing/filtr)
+  coverageFrom   Decimal?      @db.Decimal(16, 2) // sug'urta qoplamasi "dan"
+  features       Json          @default("[]") // afzalliklar ro'yxati
+  termsMonths    Int[]         @default([]) // mavjud muddatlar (oy)
+  rating         Float         @default(0)
+  popular        Boolean       @default(false)
+  active         Boolean       @default(true)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  insurer  Insurer           @relation(fields: [insurerId], references: [id], onDelete: Cascade)
+  policies InsurancePolicy[]
+
+  @@index([type])
+  @@index([insurerId])
+  @@index([active])
+  @@map("insurance_products")
+}
+
+// Sotib olingan / hisoblangan polis. breakdown = shaffof hisob-kitob (har koeffitsent).
+model InsurancePolicy {
+  id               String        @id @default(cuid())
+  productId        String
+  userId           String
+  type             InsuranceType
+  status           PolicyStatus  @default(PENDING)
+  params           Json          @default("{}") // kiritilgan parametrlar (region, avto, kunlar...)
+  premium          Decimal       @db.Decimal(14, 2) // mijoz to'laydigan summa (so'm)
+  insuredSum       Decimal       @db.Decimal(16, 2) // sug'urta qoplamasi (so'm)
+  commissionAmount Decimal       @default(0) @db.Decimal(14, 2) // Izla ulushi (so'm)
+  breakdown        Json          @default("[]") // [{label, value, note}] — shaffoflik
+  termMonths       Int           @default(12)
+  policyNumber     String?       @unique
+  startsAt         DateTime?
+  endsAt           DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  product InsuranceProduct @relation(fields: [productId], references: [id])
+  user    User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payment Payment?
+
+  @@index([userId])
+  @@index([status])
+  @@index([type])
+  @@map("insurance_policies")
 }

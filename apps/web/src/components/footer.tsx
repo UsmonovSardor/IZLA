@@ -23,6 +23,7 @@ export async function Footer() {
       title: t('services'),
       links: [
         { label: tn('search'), href: '/qidiruv' },
+        { label: tn('insurance'), href: '/sugurta' },
         { label: tn('jobs'), href: '/ish' },
         { label: tn('realEstate'), href: '/uylar' },
         { label: t('byDistrict'), href: '/xizmatlar' },

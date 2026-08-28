@@ -23,6 +23,7 @@ import { ReviewsModule } from './modules/reviews/reviews.module';
 import { CoinsModule } from './modules/coins/coins.module';
 import { ReferralsModule } from './modules/referrals/referrals.module';
 import { SchedulerModule } from './modules/scheduler/scheduler.module';
+import { InsuranceModule } from './modules/insurance/insurance.module';
 
 @Module({
   imports: [
@@ -73,6 +74,7 @@ import { SchedulerModule } from './modules/scheduler/scheduler.module';
     CoinsModule,
     ReferralsModule,
     SchedulerModule,
+    InsuranceModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

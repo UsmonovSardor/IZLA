@@ -11,7 +11,8 @@
     "jobs": "Jobs",
     "resume": "Resume",
     "myApplications": "My applications",
-    "partner": "Partners"
+    "partner": "Partners",
+    "insurance": "Insurance"
   },
   "mobileNav": {
     "home": "Home",
@@ -1504,5 +1505,200 @@
     "f3d": "Mark favorites, collect bonus coins.",
     "cta": "Get started",
     "skip": "Skip"
+  },
+  "sugurta": {
+    "title": "Insurance — one place, exact price",
+    "subtitle": "Calculate OSAGO, KASKO, travel, property and health insurance online and get covered in 2 minutes.",
+    "badge": "Izla Insurance",
+    "point1": "Exact price — no hidden fees",
+    "point2": "Electronic policy (e-policy)",
+    "point3": "Licensed companies",
+    "myPoliciesLink": "My policies",
+    "backToList": "All products",
+    "types": {
+      "OSAGO": {
+        "name": "OSAGO"
+      },
+      "KASKO": {
+        "name": "KASKO"
+      },
+      "TRAVEL": {
+        "name": "Travel"
+      },
+      "PROPERTY": {
+        "name": "Property"
+      },
+      "ACCIDENT": {
+        "name": "Accident"
+      },
+      "HEALTH": {
+        "name": "Health"
+      }
+    },
+    "filter": {
+      "title": "Filter",
+      "type": "Insurance type",
+      "allTypes": "All types",
+      "insurer": "Company",
+      "maxPrice": "Price (up to)",
+      "term": "Term",
+      "sort": "Sort",
+      "sortPopular": "Popular",
+      "sortPriceAsc": "Cheapest first",
+      "sortPriceDesc": "Most expensive",
+      "sortRating": "Rating",
+      "clear": "Clear",
+      "results": "{count} products",
+      "popular": "Popular",
+      "empty": "No matching products"
+    },
+    "card": {
+      "from": "from",
+      "coverage": "Coverage",
+      "calculate": "Calculate"
+    },
+    "calc": {
+      "heading": "Calculate the price",
+      "configure": "Choose parameters",
+      "premium": "Insurance price",
+      "coverage": "Coverage amount",
+      "breakdown": "Calculation details",
+      "months": "mo",
+      "buy": "Get covered",
+      "loginBuy": "Sign in & buy",
+      "buying": "Processing…",
+      "done": "Policy issued",
+      "doneTitle": "Done!",
+      "doneMsg": "Your policy was saved in “My policies”.",
+      "policyNo": "Policy number",
+      "viewPolicies": "My policies",
+      "again": "Calculate again",
+      "disclaimer": "Prices are indicative — the final amount is confirmed at checkout."
+    },
+    "fields": {
+      "vehicle": "Vehicle type",
+      "region": "Region",
+      "drivers": "Drivers",
+      "experience": "Driver experience",
+      "period": "Term",
+      "carValue": "Car value",
+      "carAge": "Car age",
+      "franchise": "Deductible",
+      "days": "Number of days",
+      "coverage": "Coverage (USD)",
+      "travelAge": "Traveler age",
+      "travelers": "Travelers",
+      "propertyValue": "Property value",
+      "kind": "Object type",
+      "insuredSum": "Coverage amount",
+      "occupation": "Occupation",
+      "persons": "Number of people",
+      "plan": "Plan",
+      "healthAge": "Age",
+      "dental": "Dental",
+      "term": "Term"
+    },
+    "opt": {
+      "vehicle": {
+        "car": "Car",
+        "suv": "SUV",
+        "truck": "Truck",
+        "bus": "Bus",
+        "moto": "Motorcycle"
+      },
+      "region": {
+        "toshkent_shahar": "Tashkent city",
+        "toshkent_viloyat": "Tashkent region",
+        "boshqa": "Other region"
+      },
+      "drivers": {
+        "limited": "Limited",
+        "unlimited": "Unlimited"
+      },
+      "experience": {
+        "lt2": "under 2 years",
+        "mid": "2–5 years",
+        "exp": "over 5 years"
+      },
+      "period": {
+        "6": "6 mo",
+        "12": "12 mo"
+      },
+      "carage": {
+        "new": "0–3 years",
+        "mid": "3–7 years",
+        "old": "over 7 years"
+      },
+      "franchise": {
+        "none": "No deductible",
+        "low": "1%",
+        "high": "3%"
+      },
+      "travelregion": {
+        "cis": "CIS",
+        "schengen": "Schengen",
+        "world": "Worldwide"
+      },
+      "travelage": {
+        "child": "0–17 years",
+        "adult": "18–64 years",
+        "senior": "65+ years"
+      },
+      "travelcov": {
+        "30000": "$30,000",
+        "50000": "$50,000",
+        "100000": "$100,000"
+      },
+      "kind": {
+        "apartment": "Apartment",
+        "house": "House",
+        "dacha": "Country house"
+      },
+      "occupation": {
+        "office": "Office",
+        "worker": "Manufacturing",
+        "extreme": "Hazardous"
+      },
+      "plan": {
+        "standart": "Standard",
+        "kengaytirilgan": "Extended",
+        "premium": "Premium"
+      },
+      "healthage": {
+        "young": "18–35 years",
+        "mid": "36–55 years",
+        "senior": "56+ years"
+      }
+    },
+    "trust": {
+      "licensed": "Licensed insurance company",
+      "coverageFrom": "Coverage from {sum}"
+    },
+    "attach": {
+      "eyebrow": "Extra protection",
+      "autoTitle": "Insure your car",
+      "autoText": "Get OSAGO or KASKO online right here.",
+      "travelTitle": "Going on a trip?",
+      "travelText": "Get travel insurance in 2 minutes.",
+      "healthTitle": "Protect your health",
+      "healthText": "Health insurance — a network of the best clinics.",
+      "cta": "Calculate"
+    },
+    "policies": {
+      "title": "My policies",
+      "subtitle": "Your issued insurance policies",
+      "loginNeeded": "Sign in to see your policies",
+      "login": "Sign in",
+      "empty": "No policies yet",
+      "emptyCta": "Choose insurance",
+      "until": "Valid until",
+      "status": {
+        "DRAFT": "Draft",
+        "PENDING": "Awaiting payment",
+        "ACTIVE": "Active",
+        "EXPIRED": "Expired",
+        "CANCELLED": "Cancelled"
+      }
+    }
   }
 }

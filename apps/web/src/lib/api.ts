@@ -151,8 +151,58 @@ export const api = {
   registerVendor: (body: RegisterVendorInput) =>
     authed<{ id: string; slug: string; status: string }>('/kabinet/register', { method: 'POST', body: JSON.stringify(body) }),
 
+  // --- Sug'urta (embedded insurance) ---
+  insuranceProducts: (qs = '') => get<InsuranceProduct[]>(`/insurance/products${qs}`, 120),
+  insuranceFacets: (qs = '') => get<InsuranceFacets>(`/insurance/facets${qs}`, 120),
+  insuranceProduct: (slug: string) => get<InsuranceProductDetail>(`/insurance/product/${slug}`, 120),
+  insuranceQuote: (productId: string, params: Record<string, unknown>) =>
+    post<InsuranceQuote>('/insurance/quote', { productId, params }),
+  insuranceBuy: (body: { productId: string; params: Record<string, unknown>; termMonths?: number }) =>
+    authed<InsurancePolicy>('/insurance/buy', { method: 'POST', body: JSON.stringify(body) }),
+  myPolicies: () => authed<MyPolicy[]>('/insurance/mine'),
+
   base: BASE,
 };
+
+// --- Sug'urta tiplari ---
+export type InsuranceTypeId = 'OSAGO' | 'KASKO' | 'TRAVEL' | 'PROPERTY' | 'ACCIDENT' | 'HEALTH';
+export interface InsurerBrief {
+  name: string; slug: string; logoUrl?: string | null; rating: number; verified: boolean; color?: string | null;
+}
+export interface InsuranceProduct {
+  id: string; type: InsuranceTypeId; name: string; slug: string; summary?: string | null;
+  priceFrom: number; coverageFrom: number; features: string[]; termsMonths: number[];
+  rating: number; popular: boolean; insurer: InsurerBrief;
+}
+export interface BreakdownRow { label: string; factor?: number; value?: number; note?: string }
+export interface InsuranceQuote {
+  productId: string; type: InsuranceTypeId; name: string; premium: number; insuredSum: number;
+  commission: number; breakdown: BreakdownRow[]; insurer?: { name: string; slug: string };
+}
+export interface FormField {
+  name: string; kind: 'select' | 'number' | 'bool'; options?: string[];
+  min?: number; max?: number; step?: number; default: unknown;
+}
+export interface InsuranceProductDetail extends InsuranceProduct {
+  form: FormField[]; defaults: Record<string, unknown>;
+  preview: { premium: number; insuredSum: number; breakdown: BreakdownRow[]; commission: number };
+}
+export interface InsuranceFacetType { type: InsuranceTypeId; count: number }
+export interface InsuranceFacetInsurer { slug: string; name: string; logoUrl?: string | null; count: number }
+export interface InsuranceFacets {
+  total: number; types: InsuranceFacetType[]; insurers: InsuranceFacetInsurer[];
+  priceRange: { min: number; max: number } | null;
+}
+export interface InsurancePolicy {
+  id: string; policyNumber?: string | null; premium: number; insuredSum: number;
+  status: string; termMonths: number; endsAt?: string | null;
+}
+export interface MyPolicy {
+  id: string; type: InsuranceTypeId; status: string; premium: number; insuredSum: number;
+  breakdown: BreakdownRow[]; params: Record<string, unknown>; termMonths: number;
+  policyNumber?: string | null; startsAt?: string | null; endsAt?: string | null; createdAt: string;
+  product: { name: string; slug: string; insurer: { name: string; slug: string; logoUrl?: string | null; color?: string | null } };
+}
 
 export type JobEmployment = 'FULL_TIME' | 'PART_TIME' | 'CONTRACT' | 'INTERNSHIP';
 export type JobExperience = 'NONE' | 'JUNIOR' | 'MIDDLE' | 'SENIOR';

@@ -11,7 +11,8 @@
     "jobs": "Ish",
     "resume": "Rezyume",
     "myApplications": "Arizalarim",
-    "partner": "Hamkor"
+    "partner": "Hamkor",
+    "insurance": "Sug‘urta"
   },
   "mobileNav": {
     "home": "Asosiy",
@@ -1504,5 +1505,200 @@
     "f3d": "Sevimlilarni belgilang, bonus tangalar yig'ing.",
     "cta": "Boshlash",
     "skip": "O'tkazib yuborish"
+  },
+  "sugurta": {
+    "title": "Sug‘urta — bir joyda, aniq narxda",
+    "subtitle": "OSAGO, KASKO, sayohat, uy va sog‘liq sug‘urtasini onlayn hisoblang va 2 daqiqada rasmiylashtiring.",
+    "badge": "Izla Sug‘urta",
+    "point1": "Aniq narx — yashirin to‘lovsiz",
+    "point2": "Elektron polis (e-polis)",
+    "point3": "Litsenziyalangan kompaniyalar",
+    "myPoliciesLink": "Mening polislarim",
+    "backToList": "Barcha mahsulotlar",
+    "types": {
+      "OSAGO": {
+        "name": "OSAGO"
+      },
+      "KASKO": {
+        "name": "KASKO"
+      },
+      "TRAVEL": {
+        "name": "Sayohat"
+      },
+      "PROPERTY": {
+        "name": "Uy-joy"
+      },
+      "ACCIDENT": {
+        "name": "Baxtsiz hodisa"
+      },
+      "HEALTH": {
+        "name": "Tibbiy (VMD)"
+      }
+    },
+    "filter": {
+      "title": "Filtr",
+      "type": "Sug‘urta turi",
+      "allTypes": "Barcha turlar",
+      "insurer": "Kompaniya",
+      "maxPrice": "Narx (gacha)",
+      "term": "Muddat",
+      "sort": "Saralash",
+      "sortPopular": "Ommabop",
+      "sortPriceAsc": "Avval arzon",
+      "sortPriceDesc": "Avval qimmat",
+      "sortRating": "Reyting",
+      "clear": "Tozalash",
+      "results": "{count} ta mahsulot",
+      "popular": "Ommabop",
+      "empty": "Mos mahsulot topilmadi"
+    },
+    "card": {
+      "from": "dan boshlab",
+      "coverage": "Qoplama",
+      "calculate": "Hisoblash"
+    },
+    "calc": {
+      "heading": "Narxni hisoblang",
+      "configure": "Parametrlarni tanlang",
+      "premium": "Sug‘urta narxi",
+      "coverage": "Qoplama summasi",
+      "breakdown": "Hisob-kitob tafsiloti",
+      "months": "oy",
+      "buy": "Rasmiylashtirish",
+      "loginBuy": "Kirish va rasmiylashtirish",
+      "buying": "Rasmiylashtirilmoqda…",
+      "done": "Polis rasmiylashtirildi",
+      "doneTitle": "Tayyor!",
+      "doneMsg": "Polisingiz «Mening polislarim» bo‘limida saqlandi.",
+      "policyNo": "Polis raqami",
+      "viewPolicies": "Polislarim",
+      "again": "Yana hisoblash",
+      "disclaimer": "Narxlar taxminiy — yakuniy summa rasmiylashtirishda tasdiqlanadi."
+    },
+    "fields": {
+      "vehicle": "Transport turi",
+      "region": "Hudud",
+      "drivers": "Haydovchilar",
+      "experience": "Haydovchi staji",
+      "period": "Muddat",
+      "carValue": "Avtomobil qiymati",
+      "carAge": "Avtomobil yoshi",
+      "franchise": "Franshiza",
+      "days": "Kunlar soni",
+      "coverage": "Qoplama (USD)",
+      "travelAge": "Sayohatchi yoshi",
+      "travelers": "Sayohatchilar",
+      "propertyValue": "Mol-mulk qiymati",
+      "kind": "Obyekt turi",
+      "insuredSum": "Qoplama summasi",
+      "occupation": "Kasb",
+      "persons": "Insonlar soni",
+      "plan": "Paket",
+      "healthAge": "Yosh",
+      "dental": "Stomatologiya",
+      "term": "Muddat"
+    },
+    "opt": {
+      "vehicle": {
+        "car": "Yengil avto",
+        "suv": "Krossover",
+        "truck": "Yuk mashina",
+        "bus": "Avtobus",
+        "moto": "Mototsikl"
+      },
+      "region": {
+        "toshkent_shahar": "Toshkent sh.",
+        "toshkent_viloyat": "Toshkent vil.",
+        "boshqa": "Boshqa viloyat"
+      },
+      "drivers": {
+        "limited": "Cheklangan",
+        "unlimited": "Cheklanmagan"
+      },
+      "experience": {
+        "lt2": "2 yildan kam",
+        "mid": "2–5 yil",
+        "exp": "5 yildan ortiq"
+      },
+      "period": {
+        "6": "6 oy",
+        "12": "12 oy"
+      },
+      "carage": {
+        "new": "0–3 yil",
+        "mid": "3–7 yil",
+        "old": "7 yildan katta"
+      },
+      "franchise": {
+        "none": "Franshizasiz",
+        "low": "1%",
+        "high": "3%"
+      },
+      "travelregion": {
+        "cis": "MDH",
+        "schengen": "Shengen",
+        "world": "Butun dunyo"
+      },
+      "travelage": {
+        "child": "0–17 yosh",
+        "adult": "18–64 yosh",
+        "senior": "65+ yosh"
+      },
+      "travelcov": {
+        "30000": "$30 000",
+        "50000": "$50 000",
+        "100000": "$100 000"
+      },
+      "kind": {
+        "apartment": "Kvartira",
+        "house": "Uy",
+        "dacha": "Dala hovli"
+      },
+      "occupation": {
+        "office": "Ofis",
+        "worker": "Ishlab chiqarish",
+        "extreme": "Xavfli"
+      },
+      "plan": {
+        "standart": "Standart",
+        "kengaytirilgan": "Kengaytirilgan",
+        "premium": "Premium"
+      },
+      "healthage": {
+        "young": "18–35 yosh",
+        "mid": "36–55 yosh",
+        "senior": "56+ yosh"
+      }
+    },
+    "trust": {
+      "licensed": "Litsenziyalangan sug‘urta kompaniyasi",
+      "coverageFrom": "Qoplama {sum} dan"
+    },
+    "attach": {
+      "eyebrow": "Qo‘shimcha himoya",
+      "autoTitle": "Avtomobilingizni sug‘urtalang",
+      "autoText": "OSAGO yoki KASKO’ni shu yerdan onlayn rasmiylashtiring.",
+      "travelTitle": "Sayohatga chiqyapsizmi?",
+      "travelText": "Sayohat sug‘urtasini 2 daqiqada oling.",
+      "healthTitle": "Sog‘lig‘ingizni himoyalang",
+      "healthText": "Tibbiy sug‘urta (VMD) — eng yaxshi klinikalar tarmog‘i.",
+      "cta": "Hisoblash"
+    },
+    "policies": {
+      "title": "Mening polislarim",
+      "subtitle": "Rasmiylashtirilgan sug‘urta polislaringiz",
+      "loginNeeded": "Polislaringizni ko‘rish uchun tizimga kiring",
+      "login": "Kirish",
+      "empty": "Hozircha polis yo‘q",
+      "emptyCta": "Sug‘urta tanlash",
+      "until": "Amal qiladi",
+      "status": {
+        "DRAFT": "Qoralama",
+        "PENDING": "To‘lov kutilmoqda",
+        "ACTIVE": "Faol",
+        "EXPIRED": "Muddati tugagan",
+        "CANCELLED": "Bekor qilingan"
+      }
+    }
   }
 }

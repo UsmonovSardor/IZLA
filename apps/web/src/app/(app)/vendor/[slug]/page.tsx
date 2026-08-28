@@ -8,6 +8,7 @@ import { BookingWidget } from '@/components/booking-widget';
 import { JsonLd } from '@/components/json-ld';
 import { abs, breadcrumbJsonLd, vendorJsonLd } from '@/lib/seo';
 import { sectionConfig } from '@/lib/vendor-sections';
+import { InsuranceAttach } from '@/components/insurance/attach-banner';
 import { FavoriteButton } from '@/components/favorite-button';
 import { RecordRecentView } from '@/components/record-recent-view';
 import { ReviewComposer } from '@/components/vendor/review-composer';
@@ -195,6 +196,9 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
               <Button className="w-full" disabled>{t('noBooking')}</Button>
             </div>
           )}
+
+          {/* Kontekstli sug'urta (avto→OSAGO, mehmonxona→sayohat, klinika→VMD) */}
+          <InsuranceAttach categorySlug={v.category?.slug} />
 
           <div className="space-y-4 rounded-2xl border border-line bg-surface p-5 shadow-card">
             <div>
