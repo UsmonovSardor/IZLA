@@ -72,7 +72,7 @@ export default function BronPage() {
       <div className="max-w-md mx-auto text-center py-16">
         <CalendarClock className="h-10 w-10 text-brand mx-auto" />
         <h1 className="mt-3 font-display text-xl font-bold text-navy">{t('guestTitle')}</h1>
-        <p className="mt-2 text-slate2">{t('needLogin')}</p>
+        <p className="mt-2 text-muted">{t('needLogin')}</p>
         <Button className="mt-4" onClick={() => openLogin({ next: '/bron' })}>{tc('login')}</Button>
       </div>
     );
@@ -80,7 +80,7 @@ export default function BronPage() {
 
   if (loading || !bookings) {
     return (
-      <div className="flex items-center justify-center gap-2 text-slate2 py-16">
+      <div className="flex items-center justify-center gap-2 text-muted py-16">
         <Loader2 className="h-5 w-5 animate-spin" /> {tc('loading')}
       </div>
     );
@@ -91,7 +91,7 @@ export default function BronPage() {
       <h1 className="font-display text-2xl font-bold text-navy mb-4">{t('title')}</h1>
       {error && <p className="text-sm text-danger mb-3">{error}</p>}
       {bookings.length === 0 ? (
-        <div className="text-center py-16 text-slate2">
+        <div className="text-center py-16 text-muted">
           <p>{t('empty')}</p>
           <Link href="/qidiruv" className="mt-4 inline-block"><Button>{t('searchService')}</Button></Link>
         </div>
@@ -109,7 +109,7 @@ export default function BronPage() {
                   <div>
                     <div className="font-display font-bold text-navy">{b.service?.name ?? t('service')}</div>
                     {b.vendor && (
-                      <Link href={`/vendor/${b.vendor.slug}`} className="mt-0.5 flex items-center gap-1 text-sm text-slate2 hover:text-brand">
+                      <Link href={`/vendor/${b.vendor.slug}`} className="mt-0.5 flex items-center gap-1 text-sm text-muted hover:text-brand">
                         <MapPin className="h-3.5 w-3.5" />{b.vendor.name}
                       </Link>
                     )}
@@ -124,7 +124,7 @@ export default function BronPage() {
                     <span className="font-mono font-semibold text-navy">{formatUZS(b.service.price)}</span>
                   )}
                 </div>
-                {b.staff?.name && <p className="mt-1 text-xs text-slate2">{t('specialist', { name: b.staff.name })}</p>}
+                {b.staff?.name && <p className="mt-1 text-xs text-muted">{t('specialist', { name: b.staff.name })}</p>}
                 {b.payment?.status === 'PAID' && (
                   <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-1 text-xs font-medium text-success">
                     <CheckCircle2 className="h-3.5 w-3.5" /> {t('paid')}

@@ -27,7 +27,7 @@ export function SearchExplorer({ vendors }: Props) {
 
   if (vendors.length === 0) {
     return (
-      <div className="rounded-lg border border-line bg-surface p-8 text-center text-slate2">
+      <div className="rounded-lg border border-line bg-surface p-8 text-center text-muted">
         {t('empty')}
       </div>
     );
@@ -40,7 +40,7 @@ export function SearchExplorer({ vendors }: Props) {
         <button
           onClick={() => setMobileView('list')}
           className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition ${
-            mobileView === 'list' ? 'bg-brand text-white shadow-sm' : 'text-slate2'
+            mobileView === 'list' ? 'bg-brand text-white shadow-sm' : 'text-muted'
           }`}
         >
           <List className="h-4 w-4" /> {t('list')}
@@ -48,7 +48,7 @@ export function SearchExplorer({ vendors }: Props) {
         <button
           onClick={() => setMobileView('map')}
           className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition ${
-            mobileView === 'map' ? 'bg-brand text-white shadow-sm' : 'text-slate2'
+            mobileView === 'map' ? 'bg-brand text-white shadow-sm' : 'text-muted'
           }`}
         >
           <MapIcon className="h-4 w-4" /> {t('map')}
@@ -145,11 +145,11 @@ function ResultRow({
           {v.verified && <BadgeCheck className="h-4 w-4 shrink-0 text-teal-600" />}
         </h3>
         {v.category && (
-          <p className="mt-0.5 text-xs text-slate2">
+          <p className="mt-0.5 text-xs text-muted">
             {v.category.icon} {v.category.name}
           </p>
         )}
-        <div className="mt-1.5 flex items-center gap-3 text-xs text-slate2">
+        <div className="mt-1.5 flex items-center gap-3 text-xs text-muted">
           <span className="inline-flex items-center gap-1">
             <MapPin className="h-3.5 w-3.5 text-brand" />
             {v.district ?? 'Toshkent'}

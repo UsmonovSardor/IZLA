@@ -17,12 +17,12 @@
   /* Nativ tizim monospace — Google shrift yuklanmaydi (faqat kichik raqam/kod uchun) */
   --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 
-  /* ===== Semantik rang tokenlari (LIGHT) — Tailwind bg/surface/ink/slate2/line/navy shularga ishora qiladi ===== */
+  /* ===== Semantik rang tokenlari (LIGHT) — Tailwind bg/surface/ink/muted/line/navy shularga ishora qiladi ===== */
   --c-bg: #F6F8FC;
   --c-surface: #FFFFFF;
   --c-line: #E6EBF2;
   --c-ink: #1E293B;
-  --c-slate2: #64748B;
+  --c-muted: #64748B;
   --c-heading: #0B1F33; /* navy token = sarlavha matni */
 }
 
@@ -32,24 +32,24 @@
   --c-surface: #0f1d31;
   --c-line: #24344f;
   --c-ink: #e6eef9;
-  --c-slate2: #93a5bf;
+  --c-muted: #93a5bf;
   --c-heading: #f1f6fd;
   color-scheme: dark;
 }
 /* Semantik rang tokenlarini @property bilan ro'yxatga olamiz — <color> sintaksis +
    inherits:true → var() hech qachon fallback'ga tushmaydi va to'g'ri meros oladi
-   (Tailwind v4'da text-slate2 fallback nuance'ini hal qiladi). */
+   (Tailwind v4'da text-muted fallback nuance'ini hal qiladi). */
 @property --c-bg { syntax: '<color>'; inherits: true; initial-value: #F6F8FC; }
 @property --c-surface { syntax: '<color>'; inherits: true; initial-value: #FFFFFF; }
 @property --c-line { syntax: '<color>'; inherits: true; initial-value: #E6EBF2; }
 @property --c-ink { syntax: '<color>'; inherits: true; initial-value: #1E293B; }
-@property --c-slate2 { syntax: '<color>'; inherits: true; initial-value: #64748B; }
+@property --c-muted { syntax: '<color>'; inherits: true; initial-value: #64748B; }
 @property --c-heading { syntax: '<color>'; inherits: true; initial-value: #0B1F33; }
 
-/* Bulletproof: muted matn (slate2) dark'da to'g'ri kontrast — @layer utilities
+/* Bulletproof: muted matn (muted) dark'da to'g'ri kontrast — @layer utilities
    ichida (Tailwind saqlaydi), guruhlanmagan toza selektor. */
 @layer utilities {
-  :root[data-theme="dark"] .text-slate2 { color: #93a5bf; }
+  :root[data-theme="dark"] .text-muted { color: #93a5bf; }
 }
 
 html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
@@ -67,7 +67,7 @@ html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
   transition: border-color .15s, box-shadow .15s;
 }
 .fld:focus { border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
-.fld::placeholder { color: var(--c-slate2); opacity: .7; }
+.fld::placeholder { color: var(--c-muted); opacity: .7; }
 
 /* ===== Sahifa o'tishi — native View Transitions (next-view-transitions) ===== */
 @keyframes vt-fade-in {

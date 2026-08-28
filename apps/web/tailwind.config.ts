@@ -12,7 +12,7 @@ export default {
         // Semantik tokenlar — CSS var orqali (dark mode opt-in flip, globals.css)
         navy: 'var(--c-heading, #0B1F33)',
         ink: 'var(--c-ink, #1E293B)',
-        slate2: 'var(--c-slate2, #64748B)',
+        muted: 'var(--c-muted, #64748B)',
         surface: 'var(--c-surface, #FFFFFF)',
         bg: 'var(--c-bg, #F6F8FC)',
         line: 'var(--c-line, #E6EBF2)',

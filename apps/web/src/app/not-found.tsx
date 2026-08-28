@@ -14,7 +14,7 @@ export default function NotFound() {
         <Compass className="text-brand" size={24} />
       </div>
       <h1 className="mt-6 font-display text-2xl font-bold text-navy">Sahifa topilmadi</h1>
-      <p className="mt-2 max-w-md text-slate2">
+      <p className="mt-2 max-w-md text-muted">
         Siz izlagan sahifa mavjud emas yoki ko‘chirilgan bo‘lishi mumkin. Quyidagi havolalar orqali davom eting.
       </p>
       <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
@@ -26,7 +26,7 @@ export default function NotFound() {
         </Link>
         <Link
           href="/qidiruv"
-          className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-5 py-3 text-sm font-semibold text-slate2 transition hover:text-navy"
+          className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-5 py-3 text-sm font-semibold text-muted transition hover:text-navy"
         >
           <Search size={16} /> Xizmat qidirish
         </Link>

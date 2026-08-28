@@ -124,7 +124,7 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
             <Check className="h-6 w-6 text-success" />
           </div>
           <p className="mt-3 font-display font-bold text-navy">{t('done')}</p>
-          <p className="text-sm text-slate2 mt-0.5">{t('statusPending')}</p>
+          <p className="text-sm text-muted mt-0.5">{t('statusPending')}</p>
         </div>
         <dl className="mt-3 space-y-2 text-sm border-t border-line pt-3">
           <Row k={t('service')} v={booking.service?.name ?? service?.name ?? '—'} />
@@ -137,7 +137,7 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
         {service && Number(service.price) > 0 && (
           <div className="mt-4 border-t border-line pt-3">
             <PayButtons bookingId={booking.id} label={t('prepay')} />
-            <p className="mt-1.5 text-[11px] text-slate2 text-center">{t('prepayNote')}</p>
+            <p className="mt-1.5 text-[11px] text-muted text-center">{t('prepayNote')}</p>
           </div>
         )}
         <Link href="/bron" className="mt-3 block">
@@ -159,7 +159,7 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
         <>
           {services.length > 1 && (
             <label className="block">
-              <span className="text-xs font-medium text-slate2">{t('service')}</span>
+              <span className="text-xs font-medium text-muted">{t('service')}</span>
               <select
                 value={serviceId}
                 onChange={(e) => setServiceId(e.target.value)}
@@ -175,7 +175,7 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
           )}
 
           <div>
-            <span className="text-xs font-medium text-slate2">{t('date')}</span>
+            <span className="text-xs font-medium text-muted">{t('date')}</span>
             <div className="mt-1 flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
               {days.map((d) => (
                 <button
@@ -193,19 +193,19 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
           </div>
 
           <div>
-            <span className="text-xs font-medium text-slate2 flex items-center gap-1">
+            <span className="text-xs font-medium text-muted flex items-center gap-1">
               <Clock className="h-3 w-3" /> {t('freeSlots')}
             </span>
             {loadingSlots ? (
-              <div className="mt-2 flex items-center gap-2 text-sm text-slate2 py-4 justify-center">
+              <div className="mt-2 flex items-center gap-2 text-sm text-muted py-4 justify-center">
                 <Loader2 className="h-4 w-4 animate-spin" /> {t('loading')}
               </div>
             ) : slotErr ? (
               <p className="mt-2 text-sm text-danger">{slotErr}</p>
             ) : slots && slots.length === 0 ? (
-              <p className="mt-2 text-sm text-slate2 py-3 text-center">{t('noHours')}</p>
+              <p className="mt-2 text-sm text-muted py-3 text-center">{t('noHours')}</p>
             ) : slots && slots.every((s) => !s.available) ? (
-              <p className="mt-2 text-sm text-slate2 py-3 text-center">{t('allBusy')}</p>
+              <p className="mt-2 text-sm text-muted py-3 text-center">{t('allBusy')}</p>
             ) : (
               <div className="mt-2 grid grid-cols-3 gap-2">
                 {slots?.map((s) => {
@@ -220,7 +220,7 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
                           ? 'border-brand bg-brand text-white'
                           : s.available
                             ? 'border-line text-ink hover:border-brand'
-                            : 'border-line/60 text-slate2/40 line-through cursor-not-allowed'
+                            : 'border-line/60 text-muted/40 line-through cursor-not-allowed'
                       }`}
                     >
                       {fmtTime(s.start)}
@@ -261,7 +261,7 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
           <Button className="w-full" disabled={submitting} onClick={submitBooking}>
             {submitting ? t('confirming') : t('confirm')}
           </Button>
-          <p className="text-[11px] text-slate2 text-center">{t('freeNote')}</p>
+          <p className="text-[11px] text-muted text-center">{t('freeNote')}</p>
         </div>
       )}
     </div>
@@ -271,7 +271,7 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
 function Row({ k, v }: { k: string; v: string }) {
   return (
     <div className="flex justify-between gap-3">
-      <dt className="text-slate2">{k}</dt>
+      <dt className="text-muted">{k}</dt>
       <dd className="font-medium text-ink text-right">{v}</dd>
     </div>
   );
@@ -279,7 +279,7 @@ function Row({ k, v }: { k: string; v: string }) {
 
 function BackButton({ onClick, label }: { onClick: () => void; label: string }) {
   return (
-    <button onClick={onClick} className="flex items-center gap-1 text-sm text-slate2 hover:text-ink">
+    <button onClick={onClick} className="flex items-center gap-1 text-sm text-muted hover:text-ink">
       <ChevronLeft className="h-4 w-4" /> {label}
     </button>
   );

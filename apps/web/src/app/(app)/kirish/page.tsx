@@ -39,7 +39,7 @@ function KirishInner() {
 
   if (finishing || (loading && !error)) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center gap-2 text-slate2">
+      <div className="flex min-h-[60vh] items-center justify-center gap-2 text-muted">
         <Loader2 className="h-5 w-5 animate-spin" /> {t('signingIn')}
       </div>
     );
@@ -51,7 +51,7 @@ function KirishInner() {
         <div className="mb-5 text-center">
           <LogoMark size={52} variant="tile" animate="drop" className="mx-auto" />
           <h1 className="mt-3 font-display text-xl font-bold text-navy">{t('welcome')}</h1>
-          <p className="text-sm text-slate2">{t('welcomeSub')}</p>
+          <p className="text-sm text-muted">{t('welcomeSub')}</p>
         </div>
         {errorMsg && (
           <p className="mb-4 rounded-lg bg-danger/5 px-3 py-2 text-sm text-danger">{errorMsg}</p>
@@ -71,7 +71,7 @@ function KirishInner() {
 export default function KirishPage() {
   const tc = useTranslations('common');
   return (
-    <Suspense fallback={<div className="py-16 text-center text-slate2">{tc('loading')}</div>}>
+    <Suspense fallback={<div className="py-16 text-center text-muted">{tc('loading')}</div>}>
       <KirishInner />
     </Suspense>
   );

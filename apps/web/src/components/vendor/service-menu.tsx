@@ -27,7 +27,7 @@ export function ServiceMenu({
                 style={{ ['--a' as string]: accent }}>
                 <div className="min-w-0">
                   <div className="truncate font-medium text-ink">{s.name}</div>
-                  <div className="mt-0.5 flex items-center gap-1 text-xs text-slate2">
+                  <div className="mt-0.5 flex items-center gap-1 text-xs text-muted">
                     <Clock className="h-3.5 w-3.5" />
                     {minutesLabel.replace('{count}', String(s.durationMin))}
                   </div>
@@ -35,7 +35,7 @@ export function ServiceMenu({
                 <div className="shrink-0 text-right">
                   {price > 0 ? (
                     <>
-                      <span className="text-[11px] text-slate2">{fromLabel}</span>
+                      <span className="text-[11px] text-muted">{fromLabel}</span>
                       <div className="font-mono text-base font-bold" style={{ color: accent }}>{formatUZS(price)}</div>
                     </>
                   ) : (

@@ -88,7 +88,7 @@ export default function ResumePage() {
       <div className="py-24 text-center">
         <FileText className="mx-auto text-slate-300" size={44} />
         <h1 className="mt-4 font-display text-2xl font-bold text-navy">{t('title')}</h1>
-        <p className="mt-2 text-slate2">{t('loginNeeded')}</p>
+        <p className="mt-2 text-muted">{t('loginNeeded')}</p>
         <button onClick={() => openLogin()} className="mt-5 rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700">{t('login')}</button>
       </div>
     );
@@ -103,7 +103,7 @@ export default function ResumePage() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <h1 className="font-display text-2xl font-bold text-navy md:text-3xl">{t('title')}</h1>
-            <p className="mt-1 text-slate2">{existed ? t('subtitleEdit') : t('subtitle')}</p>
+            <p className="mt-1 text-muted">{existed ? t('subtitleEdit') : t('subtitle')}</p>
           </div>
           <button onClick={save} disabled={saving} className="hidden shrink-0 items-center gap-2 rounded-xl border border-violet-200 bg-surface px-4 py-2.5 text-sm font-semibold text-violet-700 transition hover:bg-violet-50 disabled:opacity-60 sm:inline-flex">
             {saving ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />} {t('save')}
@@ -152,7 +152,7 @@ export default function ResumePage() {
 
         {/* Nav */}
         <div className="mt-8 flex items-center justify-between gap-3 border-t border-line pt-5">
-          <button onClick={() => go(step - 1)} disabled={step === 0} className="inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-medium text-slate2 transition hover:text-navy disabled:opacity-40">
+          <button onClick={() => go(step - 1)} disabled={step === 0} className="inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-medium text-muted transition hover:text-navy disabled:opacity-40">
             <ArrowLeft size={16} /> {t('back')}
           </button>
           {step < STEPS.length - 1 ? (
@@ -215,7 +215,7 @@ function SkillsStep({ t, form, patch }: { t: TFn; form: Form; patch: (p: Partial
   return (
     <div>
       <label className={lbl}>{t('skills')}</label>
-      <p className="mt-1 text-sm text-slate2">{t('skillsHint')}</p>
+      <p className="mt-1 text-sm text-muted">{t('skillsHint')}</p>
       <div className="mt-3 flex gap-2">
         <input
           className={field}
@@ -316,7 +316,7 @@ function DoneScreen({ t, existed, onEdit }: { t: TFn; existed: boolean; onEdit: 
           <PartyPopper size={28} />
         </div>
         <h1 className="mt-5 font-display text-2xl font-bold text-navy">{existed ? t('savedTitle') : t('createdTitle')}</h1>
-        <p className="mt-2 text-slate2">{t('doneHint')}</p>
+        <p className="mt-2 text-muted">{t('doneHint')}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <Link href="/ish" className="inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700">
             {t('browseJobs')} <ArrowRight size={16} />

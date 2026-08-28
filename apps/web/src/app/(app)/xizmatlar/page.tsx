@@ -29,7 +29,7 @@ export default async function XizmatlarHub() {
     <div className="container-wide py-8 md:py-12">
       <header className="max-w-2xl">
         <h1 className="font-display text-3xl font-bold text-navy md:text-4xl">{t('hubH1')}</h1>
-        <p className="mt-2 text-slate2">{t('hubIntro')}</p>
+        <p className="mt-2 text-muted">{t('hubIntro')}</p>
       </header>
 
       <div className="mt-8 space-y-6">

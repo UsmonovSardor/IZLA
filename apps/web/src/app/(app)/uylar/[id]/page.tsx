@@ -77,13 +77,13 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
 
         <div>
           <div className="font-display text-3xl font-bold text-navy">{formatUZS(p.price)}</div>
-          <div className="text-slate2">{formatUZS(p.pricePerM2 ?? 0)}/m²</div>
+          <div className="text-muted">{formatUZS(p.pricePerM2 ?? 0)}/m²</div>
           <h1 className="mt-2 text-xl font-semibold text-ink">{p.title}</h1>
           <div className="mt-3 grid grid-cols-3 gap-3 text-center">
             {[[t('roomsLabel'), p.rooms], [t('areaLabel'), `${p.areaM2} m²`], [t('floorLabel'), p.floor ? `${p.floor}/${p.totalFloors}` : '—']].map(([k, val]) => (
               <div key={String(k)} className="rounded-lg border border-line bg-surface p-3">
                 <div className="text-lg font-semibold text-navy">{val}</div>
-                <div className="text-xs text-slate2">{k}</div>
+                <div className="text-xs text-muted">{k}</div>
               </div>
             ))}
           </div>
@@ -96,7 +96,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
             <h2 className="font-display font-bold text-navy flex items-center gap-2"><TrendingUp className="h-5 w-5 text-warning" />{t('constructionProgress')}</h2>
             <div className="mt-3">
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-slate2">{t('readiness')}</span>
+                <span className="text-muted">{t('readiness')}</span>
                 <span className="font-semibold text-ink">{p.complex.readinessPercent}%</span>
               </div>
               <div className="h-2 rounded-full bg-line overflow-hidden">
@@ -104,7 +104,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
               </div>
             </div>
             {p.complex.constructionUpdates?.map((u) => (
-              <p key={u.id} className="mt-2 text-sm text-slate2">• {u.note} ({u.readinessPercent}%)</p>
+              <p key={u.id} className="mt-2 text-sm text-muted">• {u.note} ({u.readinessPercent}%)</p>
             ))}
           </section>
         )}
@@ -118,7 +118,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
                 {p.complex.developer.name}
                 {p.complex.developer.verified && <BadgeCheck className="h-4 w-4 text-brand" />}
               </div>
-              <div className="text-sm text-slate2">{t('developer', { rating: p.complex.developer.rating })}</div>
+              <div className="text-sm text-muted">{t('developer', { rating: p.complex.developer.rating })}</div>
             </div>
           </section>
         )}

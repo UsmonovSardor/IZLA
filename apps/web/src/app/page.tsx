@@ -251,7 +251,7 @@ async function CategoriesGrid() {
   const locale = await getLocale();
   const tc = await getTranslations('common');
   const categories = await safe<Category[]>(api.categories(locale), []);
-  if (categories.length === 0) return <p className="text-slate2 text-sm">{tc('loading')}</p>;
+  if (categories.length === 0) return <p className="text-muted text-sm">{tc('loading')}</p>;
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
       {categories.map((c, i) => (
@@ -317,7 +317,7 @@ function SectionHead({ title, subtitle, href, allLabel }: { title: string; subti
     <div className="mb-6 flex items-end justify-between gap-4">
       <div>
         <h2 className="font-display text-2xl md:text-3xl font-bold text-navy">{title}</h2>
-        {subtitle && <p className="mt-1 text-slate2">{subtitle}</p>}
+        {subtitle && <p className="mt-1 text-muted">{subtitle}</p>}
       </div>
       {href && (
         <Link href={href} className="group inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-brand">

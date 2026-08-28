@@ -65,7 +65,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
 
   return (
     <div className="container-wide py-8 md:py-12">
-      <Link href="/ish" className="inline-flex items-center gap-1.5 text-sm text-slate2 transition hover:text-violet-700">
+      <Link href="/ish" className="inline-flex items-center gap-1.5 text-sm text-muted transition hover:text-violet-700">
         <ArrowLeft size={16} /> {t('backToJobs')}
       </Link>
 
@@ -84,7 +84,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
               )}
               <div className="min-w-0 flex-1">
                 <h1 className="font-display text-2xl font-bold leading-tight text-navy md:text-[1.75rem]">{job.title}</h1>
-                <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-slate2">
+                <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
                   <Link href={`/ish?q=${encodeURIComponent(co.name)}`} className="inline-flex items-center gap-1 font-medium text-navy hover:text-violet-700">
                     {co.name}
                     {co.verified && <BadgeCheck size={14} className="text-violet-500" />}
@@ -96,16 +96,16 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
             </div>
 
             <div className="mt-5 flex flex-wrap gap-2">
-              <span className="rounded-lg bg-bg px-3 py-1.5 text-sm text-slate2">{t(`emp.${job.employment}`)}</span>
-              <span className="rounded-lg bg-bg px-3 py-1.5 text-sm text-slate2">{t(`exp.${job.experience}`)}</span>
+              <span className="rounded-lg bg-bg px-3 py-1.5 text-sm text-muted">{t(`emp.${job.employment}`)}</span>
+              <span className="rounded-lg bg-bg px-3 py-1.5 text-sm text-muted">{t(`exp.${job.experience}`)}</span>
               {job.remote && <span className="inline-flex items-center gap-1.5 rounded-lg bg-teal-600/10 px-3 py-1.5 text-sm font-medium text-teal-600"><Wifi size={14} />{t('remote')}</span>}
               {job.category && <span className="rounded-lg bg-violet-50 px-3 py-1.5 text-sm font-medium text-violet-700">{job.category}</span>}
             </div>
 
             <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-gradient-to-br from-violet-50 to-brand-50 p-5">
               <div>
-                <div className="text-xs text-slate2">{t('salary').replace(/\s*\(.*\)/, '')}</div>
-                <div className="font-display text-xl font-bold text-navy">{salaryText(job, t('mln'), t('sum'), t('negotiable'), t('from'))}<span className="text-sm font-normal text-slate2"> / {t('perMonth')}</span></div>
+                <div className="text-xs text-muted">{t('salary').replace(/\s*\(.*\)/, '')}</div>
+                <div className="font-display text-xl font-bold text-navy">{salaryText(job, t('mln'), t('sum'), t('negotiable'), t('from'))}<span className="text-sm font-normal text-muted"> / {t('perMonth')}</span></div>
               </div>
               <ApplyButton jobId={job.id} />
             </div>
@@ -163,13 +163,13 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
               )}
               <div className="min-w-0">
                 <div className="flex items-center gap-1 font-display font-semibold text-navy">{co.name}{co.verified && <BadgeCheck size={15} className="text-violet-500" />}</div>
-                {co.industry && <div className="truncate text-xs text-slate2">{co.industry}</div>}
+                {co.industry && <div className="truncate text-xs text-muted">{co.industry}</div>}
               </div>
             </div>
             {co.about && <p className="mt-3 text-sm leading-relaxed text-slate-600">{co.about}</p>}
             <div className="mt-4 space-y-2 border-t border-line pt-4 text-sm">
-              {co.size && <div className="flex items-center gap-2 text-slate2"><Building2 size={14} className="text-slate-400" /> {co.size}</div>}
-              {co.district && <div className="flex items-center gap-2 text-slate2"><MapPin size={14} className="text-slate-400" /> {co.district}</div>}
+              {co.size && <div className="flex items-center gap-2 text-muted"><Building2 size={14} className="text-slate-400" /> {co.size}</div>}
+              {co.district && <div className="flex items-center gap-2 text-muted"><MapPin size={14} className="text-slate-400" /> {co.district}</div>}
               {co.website && <a href={co.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-violet-600 hover:underline"><Globe size={14} /> {co.website.replace(/^https?:\/\//, '')}</a>}
             </div>
           </div>

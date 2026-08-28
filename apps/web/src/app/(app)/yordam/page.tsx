@@ -16,7 +16,7 @@ export default async function FaqPage() {
         <div className="grid h-11 w-11 place-items-center rounded-2xl bg-brand-50 text-brand"><LifeBuoy size={22} /></div>
         <div>
           <h1 className="font-display text-2xl font-bold text-navy md:text-3xl">{t('title')}</h1>
-          <p className="mt-0.5 text-slate2">{t('subtitle')}</p>
+          <p className="mt-0.5 text-muted">{t('subtitle')}</p>
         </div>
       </div>
 
@@ -25,9 +25,9 @@ export default async function FaqPage() {
           <details key={i} className="group rounded-2xl border border-line bg-surface px-5 py-4 [&_svg]:open:rotate-180">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display font-semibold text-navy">
               {it.q}
-              <ChevronDown className="h-5 w-5 shrink-0 text-slate2 transition-transform" />
+              <ChevronDown className="h-5 w-5 shrink-0 text-muted transition-transform" />
             </summary>
-            <p className="mt-3 text-sm leading-relaxed text-slate2">{it.a}</p>
+            <p className="mt-3 text-sm leading-relaxed text-muted">{it.a}</p>
           </details>
         ))}
       </div>

@@ -14,7 +14,7 @@ const TYPE_KEY: Record<string, string> = {
 };
 const TYPE_STYLE: Record<string, string> = {
   NEW: 'bg-teal/10 text-teal', CONSTRUCTION: 'bg-warning/10 text-warning',
-  SECONDARY: 'bg-slate2/10 text-slate2', RENT: 'bg-brand/10 text-brand',
+  SECONDARY: 'bg-muted/10 text-muted', RENT: 'bg-brand/10 text-brand',
 };
 
 export async function PropertyCard({ p }: { p: Property }) {
@@ -31,9 +31,9 @@ export async function PropertyCard({ p }: { p: Property }) {
         </div>
         <div className="p-3">
           <div className="font-display font-bold text-navy">{formatUZS(p.price)}</div>
-          <div className="text-xs text-slate2">{formatUZS(p.pricePerM2 ?? 0)}/m²</div>
+          <div className="text-xs text-muted">{formatUZS(p.pricePerM2 ?? 0)}/m²</div>
           <h3 className="mt-1 text-sm font-medium text-ink line-clamp-2">{p.title}</h3>
-          <p className="mt-1 text-xs text-slate2">{t('rooms', { count: p.rooms })} · {p.areaM2} m² · {p.district}</p>
+          <p className="mt-1 text-xs text-muted">{t('rooms', { count: p.rooms })} · {p.areaM2} m² · {p.district}</p>
         </div>
       </Card>
     </Link>

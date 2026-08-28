@@ -51,11 +51,11 @@ export async function VendorCard({ v, priority = false }: { v: Vendor; priority?
 
         {/* Pastki qator */}
         <div className="flex items-center justify-between gap-2 px-3.5 py-3 text-sm">
-          <span className="flex items-center gap-1 text-slate2 truncate">
+          <span className="flex items-center gap-1 text-muted truncate">
             <MapPin className="h-3.5 w-3.5 shrink-0 text-brand" />
             <span className="truncate">{v.district ?? 'Toshkent'}</span>
           </span>
-          <span className="text-slate2">{t('reviews', { count: v.reviewCount })}</span>
+          <span className="text-muted">{t('reviews', { count: v.reviewCount })}</span>
           {v.distanceKm != null && (
             <span className="chip bg-brand-50 text-brand">{v.distanceKm} km</span>
           )}

@@ -22,7 +22,7 @@ export function CommandTrigger() {
       <button
         onClick={openPalette}
         aria-label={t('open')}
-        className="hidden items-center gap-2 rounded-full border border-line bg-surface/70 px-3 py-1.5 text-sm text-slate2 transition hover:border-brand-200 hover:text-brand lg:inline-flex"
+        className="hidden items-center gap-2 rounded-full border border-line bg-surface/70 px-3 py-1.5 text-sm text-muted transition hover:border-brand-200 hover:text-brand lg:inline-flex"
       >
         <Search size={15} />
         <span>{t('open')}</span>
@@ -32,7 +32,7 @@ export function CommandTrigger() {
       <button
         onClick={openPalette}
         aria-label={t('open')}
-        className="grid h-9 w-9 place-items-center rounded-full text-slate2 transition hover:bg-brand-50 hover:text-brand lg:hidden"
+        className="grid h-9 w-9 place-items-center rounded-full text-muted transition hover:bg-brand-50 hover:text-brand lg:hidden"
       >
         <Search size={18} />
       </button>

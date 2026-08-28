@@ -83,7 +83,7 @@ export default function TgMiniApp() {
         </div>
 
         {!authed && ready && (
-          <p className="text-xs text-slate2 text-center">{t('authNote')}</p>
+          <p className="text-xs text-muted text-center">{t('authNote')}</p>
         )}
       </div>
     </>

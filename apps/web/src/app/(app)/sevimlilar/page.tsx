@@ -38,7 +38,7 @@ export default function FavoritesPage() {
         </div>
         <div>
           <h1 className="font-display text-2xl font-bold text-navy md:text-3xl">{t('title')}</h1>
-          <p className="mt-0.5 text-slate2">{t('subtitle')}</p>
+          <p className="mt-0.5 text-muted">{t('subtitle')}</p>
         </div>
       </div>
 
@@ -88,8 +88,8 @@ function FavVendorCard({ v, reviews }: { v: Vendor; rating: string; reviews: str
           </div>
         </div>
         <div className="flex items-center justify-between gap-2 px-3.5 py-3 text-sm">
-          <span className="flex items-center gap-1 truncate text-slate2"><MapPin className="h-3.5 w-3.5 shrink-0 text-brand" /><span className="truncate">{v.district ?? 'Toshkent'}</span></span>
-          <span className="text-slate2">{reviews}</span>
+          <span className="flex items-center gap-1 truncate text-muted"><MapPin className="h-3.5 w-3.5 shrink-0 text-brand" /><span className="truncate">{v.district ?? 'Toshkent'}</span></span>
+          <span className="text-muted">{reviews}</span>
         </div>
       </article>
     </Link>
@@ -101,7 +101,7 @@ function EmptyState({ icon, title, text, action }: { icon: React.ReactNode; titl
     <div className="rounded-2xl border border-dashed border-line bg-surface py-20 text-center">
       <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-bg text-slate-300">{icon}</div>
       <h2 className="mt-5 font-display text-xl font-bold text-navy">{title}</h2>
-      <p className="mx-auto mt-2 max-w-sm text-slate2">{text}</p>
+      <p className="mx-auto mt-2 max-w-sm text-muted">{text}</p>
       <div className="mt-6">{action}</div>
     </div>
   );

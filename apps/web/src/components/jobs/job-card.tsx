@@ -41,7 +41,7 @@ export function JobCard({ job, index = 0 }: { job: Job; index?: number }) {
           <h3 className="font-display text-[1.05rem] font-semibold leading-snug text-navy transition-colors group-hover:text-violet-700">
             {job.title}
           </h3>
-          <p className="mt-0.5 truncate text-sm text-slate2">
+          <p className="mt-0.5 truncate text-sm text-muted">
             {job.company?.name}
             {job.region && <span className="text-slate-400"> · {job.region}</span>}
           </p>
@@ -54,8 +54,8 @@ export function JobCard({ job, index = 0 }: { job: Job; index?: number }) {
             <Star size={11} className="fill-violet-500 text-violet-500" /> {t('featured')}
           </span>
         )}
-        <span className="rounded-lg bg-bg px-2.5 py-1 text-xs text-slate2">{t(`emp.${job.employment}`)}</span>
-        <span className="rounded-lg bg-bg px-2.5 py-1 text-xs text-slate2">{t(`exp.${job.experience}`)}</span>
+        <span className="rounded-lg bg-bg px-2.5 py-1 text-xs text-muted">{t(`emp.${job.employment}`)}</span>
+        <span className="rounded-lg bg-bg px-2.5 py-1 text-xs text-muted">{t(`exp.${job.experience}`)}</span>
         {job.remote && (
           <span className="inline-flex items-center gap-1 rounded-lg bg-teal-600/10 px-2.5 py-1 text-xs font-medium text-teal-600">
             <Wifi size={12} /> {t('remote')}

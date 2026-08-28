@@ -15,7 +15,7 @@ export async function HowItWorks() {
       <Reveal>
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="font-display text-2xl font-bold text-navy md:text-3xl">{t('title')}</h2>
-          <p className="mt-2 text-slate2">{t('sub')}</p>
+          <p className="mt-2 text-muted">{t('sub')}</p>
         </div>
       </Reveal>
       <div className="relative mt-12 grid gap-6 md:grid-cols-3">
@@ -27,9 +27,9 @@ export async function HowItWorks() {
               <div className={`grid h-[72px] w-[72px] place-items-center rounded-2xl bg-gradient-to-br ${s.grad} text-white shadow-md`}>
                 <s.icon size={30} />
               </div>
-              <span className="mt-4 inline-flex h-6 w-6 items-center justify-center rounded-full bg-bg text-xs font-bold text-slate2">{i + 1}</span>
+              <span className="mt-4 inline-flex h-6 w-6 items-center justify-center rounded-full bg-bg text-xs font-bold text-muted">{i + 1}</span>
               <h3 className="mt-3 font-display text-lg font-bold text-navy">{t(`steps.${s.k}.t`)}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-slate2">{t(`steps.${s.k}.d`)}</p>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted">{t(`steps.${s.k}.d`)}</p>
             </div>
           </Reveal>
         ))}
@@ -52,7 +52,7 @@ export async function WhyIzla() {
       <Reveal>
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="font-display text-2xl font-bold text-navy md:text-3xl">{t('title')}</h2>
-          <p className="mt-2 text-slate2">{t('sub')}</p>
+          <p className="mt-2 text-muted">{t('sub')}</p>
         </div>
       </Reveal>
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -63,7 +63,7 @@ export async function WhyIzla() {
                 <it.icon size={24} />
               </div>
               <h3 className="mt-4 font-display font-bold text-navy">{t(`items.${it.k}.t`)}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-slate2">{t(`items.${it.k}.d`)}</p>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted">{t(`items.${it.k}.d`)}</p>
             </div>
           </Reveal>
         ))}

@@ -62,7 +62,7 @@ export function HeroVisual() {
           </span>
           <div className="min-w-0 flex-1">
             <div className="h-2.5 w-3/4 rounded-full bg-[#0B1F33]/80" />
-            <div className="mt-1.5 h-2 w-1/2 rounded-full bg-slate2/30" />
+            <div className="mt-1.5 h-2 w-1/2 rounded-full bg-muted/30" />
           </div>
           <span className="flex shrink-0 items-center gap-0.5 rounded-full bg-brand-50 px-2 py-1 text-[11px] font-bold text-brand">
             <Star className="h-3 w-3 fill-warning text-warning" />4.9
@@ -81,7 +81,7 @@ export function HeroVisual() {
           </span>
           <div className="min-w-0 flex-1">
             <div className="h-2.5 w-2/3 rounded-full bg-[#0B1F33]/80" />
-            <div className="mt-1.5 h-2 w-2/5 rounded-full bg-slate2/30" />
+            <div className="mt-1.5 h-2 w-2/5 rounded-full bg-muted/30" />
           </div>
           <span className="flex shrink-0 items-center gap-1 rounded-full bg-success/10 px-2 py-1 text-[11px] font-bold text-success">
             <MapPin className="h-3 w-3" />1.2 km

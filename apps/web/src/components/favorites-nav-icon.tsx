@@ -13,7 +13,7 @@ export function FavoritesNavIcon() {
     <Link
       href="/sevimlilar"
       aria-label={t('title')}
-      className="relative grid h-9 w-9 place-items-center rounded-full text-slate2 transition hover:bg-rose-50 hover:text-rose-500"
+      className="relative grid h-9 w-9 place-items-center rounded-full text-muted transition hover:bg-rose-50 hover:text-rose-500"
     >
       <Heart size={18} className={count > 0 ? 'fill-rose-500 text-rose-500' : ''} />
       {count > 0 && (

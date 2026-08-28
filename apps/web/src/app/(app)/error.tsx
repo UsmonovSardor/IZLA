@@ -17,7 +17,7 @@ export default function AppError({ error, reset }: { error: Error & { digest?: s
         <AlertTriangle size={30} />
       </div>
       <h1 className="mt-6 font-display text-2xl font-bold text-navy">Nimadir xato ketdi</h1>
-      <p className="mt-2 max-w-md text-slate2">
+      <p className="mt-2 max-w-md text-muted">
         Sahifani yuklashda kutilmagan xatolik yuz berdi. Iltimos, qayta urinib ko‘ring —
         muammo davom etsa, birozdan so‘ng qaytib keling.
       </p>
@@ -30,7 +30,7 @@ export default function AppError({ error, reset }: { error: Error & { digest?: s
         </button>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-5 py-3 text-sm font-semibold text-slate2 transition hover:text-navy"
+          className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-5 py-3 text-sm font-semibold text-muted transition hover:text-navy"
         >
           <Home size={16} /> Bosh sahifa
         </Link>

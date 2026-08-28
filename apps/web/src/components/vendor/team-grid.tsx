@@ -41,7 +41,7 @@ export function TeamGrid({
               </div>
               <div className="p-3 text-center">
                 <div className="font-display font-semibold text-navy">{m.name}</div>
-                {m.role && <div className="mt-0.5 text-xs text-slate2">{m.role}</div>}
+                {m.role && <div className="mt-0.5 text-xs text-muted">{m.role}</div>}
               </div>
             </div>
           </Reveal>

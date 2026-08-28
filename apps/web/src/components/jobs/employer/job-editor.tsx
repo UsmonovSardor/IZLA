@@ -79,7 +79,7 @@ export function JobEditor({ companyId, job, open, onClose, onSaved }: {
           >
             <div className="flex items-center justify-between border-b border-line px-6 py-4">
               <h2 className="font-display text-lg font-bold text-navy">{job ? t('editJob') : t('newJob')}</h2>
-              <button onClick={onClose} aria-label={ti('close')} className="grid h-8 w-8 place-items-center rounded-full text-slate2 hover:bg-bg hover:text-ink"><X size={16} /></button>
+              <button onClick={onClose} aria-label={ti('close')} className="grid h-8 w-8 place-items-center rounded-full text-muted hover:bg-bg hover:text-ink"><X size={16} /></button>
             </div>
 
             <div className="flex-1 space-y-4 overflow-y-auto px-6 py-5">
@@ -142,7 +142,7 @@ export function JobEditor({ companyId, job, open, onClose, onSaved }: {
             </div>
 
             <div className="flex items-center justify-end gap-3 border-t border-line px-6 py-4">
-              <button onClick={onClose} className="rounded-xl px-4 py-2.5 text-sm font-medium text-slate2 transition hover:text-navy">{t('cancel')}</button>
+              <button onClick={onClose} className="rounded-xl px-4 py-2.5 text-sm font-medium text-muted transition hover:text-navy">{t('cancel')}</button>
               <button onClick={save} disabled={busy} className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:opacity-60">
                 {busy ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />} {t('save')}
               </button>

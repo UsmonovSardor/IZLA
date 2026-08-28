@@ -43,7 +43,7 @@ export default function KabinetPage() {
       <div className="py-24 text-center">
         <Briefcase className="mx-auto text-slate-300" size={44} />
         <h1 className="font-display text-2xl font-bold text-navy mt-4">{t('title')}</h1>
-        <p className="text-slate2 mt-2">{t('loginNeeded')}</p>
+        <p className="text-muted mt-2">{t('loginNeeded')}</p>
         <Button onClick={() => openLogin()} className="mt-5">{t('login')}</Button>
       </div>
     );
@@ -56,7 +56,7 @@ export default function KabinetPage() {
       <div className="py-24 text-center">
         <Briefcase className="mx-auto text-slate-300" size={44} />
         <h1 className="font-display text-2xl font-bold text-navy mt-4">{t('noVendor')}</h1>
-        <p className="text-slate2 mt-2 max-w-sm mx-auto">{t('noVendorHint')}</p>
+        <p className="text-muted mt-2 max-w-sm mx-auto">{t('noVendorHint')}</p>
       </div>
     );
   }
@@ -66,7 +66,7 @@ export default function KabinetPage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-2xl md:text-3xl font-bold text-navy">{t('title')}</h1>
-          <p className="text-slate2 mt-1">{t('subtitle')}</p>
+          <p className="text-muted mt-1">{t('subtitle')}</p>
         </div>
         {vendors.length > 1 && (
           <select
@@ -114,7 +114,7 @@ function VendorDashboard({ vendorId, tab, setTab, locale }: { vendorId: string; 
           <button
             key={tb}
             onClick={() => setTab(tb)}
-            className={`relative px-4 py-2.5 text-sm font-medium transition ${tab === tb ? 'text-brand' : 'text-slate2 hover:text-navy'}`}
+            className={`relative px-4 py-2.5 text-sm font-medium transition ${tab === tb ? 'text-brand' : 'text-muted hover:text-navy'}`}
           >
             {t(`tabs.${tb}`)}
             {tab === tb && <span className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-brand" />}
@@ -134,7 +134,7 @@ function VendorDashboard({ vendorId, tab, setTab, locale }: { vendorId: string; 
 function StatCard({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
   return (
     <div className="rounded-2xl border border-slate-200 bg-surface p-4">
-      <div className="flex items-center gap-2 text-slate-400">{icon}<span className="text-xs text-slate2">{label}</span></div>
+      <div className="flex items-center gap-2 text-slate-400">{icon}<span className="text-xs text-muted">{label}</span></div>
       <div className="font-display text-xl font-bold text-navy mt-1 tabular-nums">{value}</div>
     </div>
   );
@@ -167,20 +167,20 @@ function ProfileForm({ detail, onSaved }: { detail: KabinetVendorDetail; onSaved
 
   return (
     <div className="max-w-2xl space-y-4">
-      <div><label className="text-sm text-slate2">{t('profile.name')}</label>
+      <div><label className="text-sm text-muted">{t('profile.name')}</label>
         <input className={field} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} /></div>
-      <div><label className="text-sm text-slate2">{t('profile.description')}</label>
+      <div><label className="text-sm text-muted">{t('profile.description')}</label>
         <textarea rows={3} className={field} value={f.description} onChange={(e) => setF({ ...f, description: e.target.value })} /></div>
       <div className="grid sm:grid-cols-2 gap-4">
-        <div><label className="text-sm text-slate2">{t('profile.phone')}</label>
+        <div><label className="text-sm text-muted">{t('profile.phone')}</label>
           <input className={field} value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} /></div>
-        <div><label className="text-sm text-slate2">{t('profile.district')}</label>
+        <div><label className="text-sm text-muted">{t('profile.district')}</label>
           <input className={field} value={f.district} onChange={(e) => setF({ ...f, district: e.target.value })} /></div>
       </div>
-      <div><label className="text-sm text-slate2">{t('profile.address')}</label>
+      <div><label className="text-sm text-muted">{t('profile.address')}</label>
         <input className={field} value={f.address} onChange={(e) => setF({ ...f, address: e.target.value })} /></div>
       <div>
-        <label className="text-sm text-slate2">{t('profile.hours')}</label>
+        <label className="text-sm text-muted">{t('profile.hours')}</label>
         <div className="grid sm:grid-cols-3 gap-3 mt-1">
           {days.map(([k, lbl]) => (
             <div key={k}>
@@ -237,12 +237,12 @@ function ServicesTab({ detail, onChange }: { detail: KabinetVendorDetail; onChan
 
       {/* Ro'yxat */}
       <div className="mt-4 space-y-2">
-        {services.length === 0 && <p className="text-slate2 text-sm py-6 text-center">{t('services.empty')}</p>}
+        {services.length === 0 && <p className="text-muted text-sm py-6 text-center">{t('services.empty')}</p>}
         {services.map((s) => (
           <div key={s.id} className={`flex items-center gap-3 rounded-xl border p-3 ${s.active ? 'border-slate-200 bg-surface' : 'border-slate-100 bg-slate-50 opacity-70'}`}>
             <div className="flex-1 min-w-0">
               <div className="font-medium text-navy text-sm truncate">{s.name}</div>
-              <div className="text-xs text-slate2">{Number(s.price).toLocaleString('ru-RU')} {t('sum')} · {s.durationMin} {t('services.duration').replace(/\s*\(.*\)/, '')}</div>
+              <div className="text-xs text-muted">{Number(s.price).toLocaleString('ru-RU')} {t('sum')} · {s.durationMin} {t('services.duration').replace(/\s*\(.*\)/, '')}</div>
             </div>
             <button onClick={() => toggle(s.id, s.active)} className={`text-xs rounded-lg px-2.5 py-1.5 border ${s.active ? 'border-emerald-200 text-emerald-700 bg-emerald-50' : 'border-slate-200 text-slate-500'}`}>
               {s.active ? t('services.active') : t('services.inactive')}
@@ -266,7 +266,7 @@ function BookingsTab({ vendorId, locale }: { vendorId: string; locale: string })
   const dtf = new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'ru-RU', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Tashkent', hour12: false });
 
   if (items === null) return <Loader2 className="mx-auto my-8 animate-spin text-brand" />;
-  if (items.length === 0) return <p className="text-slate2 text-sm py-10 text-center">{t('bookings.empty')}</p>;
+  if (items.length === 0) return <p className="text-muted text-sm py-10 text-center">{t('bookings.empty')}</p>;
 
   return (
     <div className="space-y-2 max-w-3xl">
@@ -274,7 +274,7 @@ function BookingsTab({ vendorId, locale }: { vendorId: string; locale: string })
         <div key={b.id} className="rounded-xl border border-slate-200 bg-surface p-3.5 flex flex-wrap items-center gap-3">
           <div className="flex-1 min-w-[160px]">
             <div className="font-medium text-navy text-sm">{b.service?.name ?? t('bookings.noService')}</div>
-            <div className="text-xs text-slate2 mt-0.5">
+            <div className="text-xs text-muted mt-0.5">
               {dtf.format(new Date(b.slotStart))} · {b.user?.name || b.user?.phone || t('bookings.customer')}
             </div>
           </div>
@@ -284,7 +284,7 @@ function BookingsTab({ vendorId, locale }: { vendorId: string; locale: string })
               <button onClick={() => setStatus(b.id, 'CONFIRMED')} className="text-xs rounded-lg bg-brand text-white px-2.5 py-1.5">{t('bookings.confirm')}</button>
             )}
             {(b.status === 'PENDING' || b.status === 'CONFIRMED') && (
-              <button onClick={() => setStatus(b.id, 'CANCELLED')} className="text-xs rounded-lg border border-slate-200 text-slate2 px-2.5 py-1.5">{t('bookings.cancel')}</button>
+              <button onClick={() => setStatus(b.id, 'CANCELLED')} className="text-xs rounded-lg border border-slate-200 text-muted px-2.5 py-1.5">{t('bookings.cancel')}</button>
             )}
             {b.status === 'CONFIRMED' && (
               <button onClick={() => setStatus(b.id, 'COMPLETED')} className="text-xs rounded-lg border border-emerald-200 text-emerald-700 px-2.5 py-1.5">{t('bookings.complete')}</button>

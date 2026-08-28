@@ -52,7 +52,7 @@ export default async function AboutPage() {
           {stats.map((s) => (
             <div key={s.label} className="text-center">
               <div className="font-display text-3xl font-bold text-navy">{s.value}</div>
-              <div className="mt-1 text-sm text-slate2">{s.label}</div>
+              <div className="mt-1 text-sm text-muted">{s.label}</div>
             </div>
           ))}
         </div>
@@ -77,7 +77,7 @@ export default async function AboutPage() {
               <div className="h-full rounded-2xl border border-line bg-surface p-6">
                 <div className={`grid h-12 w-12 place-items-center rounded-xl ${v.c}`}><v.icon size={24} /></div>
                 <h3 className="mt-4 font-display font-bold text-navy">{v.t}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-slate2">{v.d}</p>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted">{v.d}</p>
               </div>
             </Reveal>
           ))}
@@ -88,7 +88,7 @@ export default async function AboutPage() {
       <section id="kontakt" className="container-wide py-16 scroll-mt-24">
         <div className="mx-auto max-w-2xl rounded-3xl border border-line bg-aurora-soft p-8 text-center md:p-12">
           <h2 className="font-display text-2xl font-bold text-navy">{t('contactTitle')}</h2>
-          <p className="mt-2 text-slate2">{t('contactText')}</p>
+          <p className="mt-2 text-muted">{t('contactText')}</p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <a href="mailto:info@izla.uz" className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-700">
               <Mail size={16} /> info@izla.uz

@@ -41,7 +41,7 @@ export function HowItWork({
                     <VendorIcon name={s.icon} className="h-5 w-5" />
                   </span>
                   <span className="flex-1 font-display font-semibold text-navy">{s.title}</span>
-                  <ChevronDown className={`h-5 w-5 shrink-0 text-slate2 transition ${isOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`h-5 w-5 shrink-0 text-muted transition ${isOpen ? 'rotate-180' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {isOpen && (
@@ -51,7 +51,7 @@ export function HowItWork({
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3, ease: 'easeInOut' }}
                     >
-                      <p className="px-4 pb-4 pl-[68px] text-sm text-slate2">{s.text}</p>
+                      <p className="px-4 pb-4 pl-[68px] text-sm text-muted">{s.text}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

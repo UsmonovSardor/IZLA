@@ -40,7 +40,7 @@ export default function MyApplicationsPage() {
       <div className="py-24 text-center">
         <FileText className="mx-auto text-slate-300" size={44} />
         <h1 className="mt-4 font-display text-2xl font-bold text-navy">{t('myApplications')}</h1>
-        <p className="mt-2 text-slate2">{t('appsLoginNeeded')}</p>
+        <p className="mt-2 text-muted">{t('appsLoginNeeded')}</p>
         <button onClick={() => openLogin()} className="mt-5 rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700">{t('login')}</button>
       </div>
     );
@@ -49,7 +49,7 @@ export default function MyApplicationsPage() {
   return (
     <div className="container-wide py-8 md:py-12">
       <div className="mx-auto max-w-3xl">
-        <Link href="/ish" className="inline-flex items-center gap-1.5 text-sm text-slate2 transition hover:text-violet-700">
+        <Link href="/ish" className="inline-flex items-center gap-1.5 text-sm text-muted transition hover:text-violet-700">
           <ArrowRight size={16} className="rotate-180" /> {t('backToJobs')}
         </Link>
         <h1 className="mt-4 font-display text-2xl font-bold text-navy md:text-3xl">{t('myApplications')}</h1>
@@ -59,13 +59,13 @@ export default function MyApplicationsPage() {
         ) : items.length === 0 ? (
           <div className="mt-8 rounded-2xl border border-dashed border-line py-16 text-center">
             <Briefcase className="mx-auto text-slate-300" size={40} />
-            <p className="mt-3 text-slate2">{t('appsEmpty')}</p>
+            <p className="mt-3 text-muted">{t('appsEmpty')}</p>
             <Link href="/ish" className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-violet-700">
               {t('browseJobs')} <ArrowRight size={16} />
             </Link>
           </div>
         ) : (
-          <p className="mt-1 text-slate2">{t('appsCount', { count: items.length })}</p>
+          <p className="mt-1 text-muted">{t('appsCount', { count: items.length })}</p>
         )}
 
         <div className="mt-6 space-y-3">
@@ -89,7 +89,7 @@ export default function MyApplicationsPage() {
                       <Link href={`/ish/${a.job.id}`} className="font-display font-semibold text-navy hover:text-violet-700">{a.job.title}</Link>
                       <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${STATUS_STYLE[a.status]}`}>{t(`appStatus.${a.status}`)}</span>
                     </div>
-                    <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-slate2">
+                    <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
                       <span className="inline-flex items-center gap-1 font-medium text-navy">{co.name}{co.verified && <BadgeCheck size={13} className="text-violet-500" />}</span>
                       <span className="text-slate-300">·</span>
                       <span>{t(`emp.${a.job.employment}`)}</span>

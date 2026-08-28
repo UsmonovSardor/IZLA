@@ -43,7 +43,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   return (
     <div>
       <h1 className="font-display text-2xl font-bold text-navy mb-1">{t('title')}</h1>
-      <p className="text-slate2 text-sm mb-5">{t('found', { count: vendors.length })}</p>
+      <p className="text-muted text-sm mb-5">{t('found', { count: vendors.length })}</p>
 
       <SearchFilters categories={facets.categories} priceRange={facets.priceRange} />
       <SearchExplorer vendors={vendors} />

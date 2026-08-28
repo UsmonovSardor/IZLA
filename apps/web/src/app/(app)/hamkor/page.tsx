@@ -96,7 +96,7 @@ export default function PartnerPage() {
                 <b.icon className="h-6 w-6" />
               </span>
               <h3 className="mt-4 font-display text-lg font-bold text-navy">{b.t}</h3>
-              <p className="mt-1.5 text-sm text-slate2">{b.d}</p>
+              <p className="mt-1.5 text-sm text-muted">{b.d}</p>
             </div>
           ))}
         </div>
@@ -111,12 +111,12 @@ export default function PartnerPage() {
                 <Check className="h-7 w-7" />
               </span>
               <h2 className="mt-4 font-display text-2xl font-bold text-navy">{t('successTitle')}</h2>
-              <p className="mt-2 text-slate2">{t('successBody')}</p>
+              <p className="mt-2 text-muted">{t('successBody')}</p>
             </div>
           ) : (
             <>
               <h2 className="font-display text-2xl font-bold text-navy">{t('formTitle')}</h2>
-              <p className="mt-1.5 text-sm text-slate2">{t('formSub')}</p>
+              <p className="mt-1.5 text-sm text-muted">{t('formSub')}</p>
 
               {!loading && !user && (
                 <div className="mt-5 rounded-xl border border-brand/20 bg-brand-50 p-4 text-sm text-ink">
@@ -168,7 +168,7 @@ export default function PartnerPage() {
                   {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Store className="h-4 w-4" />}
                   {t('submit')}
                 </button>
-                <p className="text-center text-xs text-slate2">{t('moderationNote')}</p>
+                <p className="text-center text-xs text-muted">{t('moderationNote')}</p>
               </form>
             </>
           )}

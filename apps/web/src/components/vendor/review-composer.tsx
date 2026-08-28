@@ -25,7 +25,7 @@ export function ReviewComposer({ vendorId, accent }: { vendorId: string; accent:
 
   if (user && mine) {
     return (
-      <span className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-sm font-medium text-slate2">
+      <span className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-sm font-medium text-muted">
         <CheckCircle2 size={16} className="text-emerald-500" /> {t('already')}
         <span className="inline-flex items-center gap-0.5 font-semibold text-navy">{mine.rating}<Star size={13} className="fill-warning text-warning" /></span>
       </span>
@@ -94,9 +94,9 @@ function ReviewModal({ vendorId, accent, open, onClose, onDone }: {
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }}
             transition={{ type: 'spring', stiffness: 320, damping: 30 }}
           >
-            <button onClick={onClose} aria-label={t('close')} className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full text-slate2 hover:bg-bg hover:text-ink"><X size={16} /></button>
+            <button onClick={onClose} aria-label={t('close')} className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full text-muted hover:bg-bg hover:text-ink"><X size={16} /></button>
             <h2 className="font-display text-lg font-bold text-navy">{t('title')}</h2>
-            <p className="mt-1 text-sm text-slate2">{t('subtitle')}</p>
+            <p className="mt-1 text-sm text-muted">{t('subtitle')}</p>
 
             {/* Yulduzlar */}
             <div className="mt-5 flex flex-col items-center gap-2">
@@ -107,7 +107,7 @@ function ReviewModal({ vendorId, accent, open, onClose, onDone }: {
                   </button>
                 ))}
               </div>
-              <span className="h-5 text-sm font-medium text-slate2">{active ? labels[active - 1] : t('tapStar')}</span>
+              <span className="h-5 text-sm font-medium text-muted">{active ? labels[active - 1] : t('tapStar')}</span>
             </div>
 
             <textarea

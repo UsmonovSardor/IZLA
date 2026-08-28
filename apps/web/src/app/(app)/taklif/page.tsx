@@ -63,7 +63,7 @@ export default function ReferralPage() {
         ) : !user ? (
           <div className="mt-6 rounded-2xl border border-dashed border-line bg-surface py-14 text-center">
             <Gift className="mx-auto text-slate-300" size={40} />
-            <p className="mt-3 text-slate2">{t('loginNeeded')}</p>
+            <p className="mt-3 text-muted">{t('loginNeeded')}</p>
             <button onClick={() => openLogin()} className="mt-4 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-700">{t('login')}</button>
           </div>
         ) : (
@@ -87,7 +87,7 @@ export default function ReferralPage() {
                 </button>
               </div>
               <div className="mt-3 flex flex-wrap items-center gap-2">
-                <span className="text-sm text-slate2">{t('code')}: <span className="font-mono font-bold text-navy">{info?.code ?? '…'}</span></span>
+                <span className="text-sm text-muted">{t('code')}: <span className="font-mono font-bold text-navy">{info?.code ?? '…'}</span></span>
                 <a href={tgShare} target="_blank" rel="noopener noreferrer"
                   className="ml-auto inline-flex items-center gap-1.5 rounded-xl bg-[#229ED9] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90">
                   <Send size={15} /> {t('shareTelegram')}
@@ -100,7 +100,7 @@ export default function ReferralPage() {
               <h2 className="flex items-center gap-2 font-display font-bold text-navy"><Share2 size={17} className="text-brand" /> {t('howTitle')}</h2>
               <ol className="mt-3 space-y-2.5">
                 {[t('step1'), t('step2', { join: info?.joinReward ?? 50 }), t('step3', { referrer: info?.referrerReward ?? 150 })].map((s, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-slate2">
+                  <li key={i} className="flex items-start gap-3 text-sm text-muted">
                     <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand-50 text-xs font-bold text-brand">{i + 1}</span>
                     <span className="pt-0.5">{s}</span>
                   </li>
@@ -108,7 +108,7 @@ export default function ReferralPage() {
               </ol>
             </div>
 
-            <p className="mt-4 text-center text-sm text-slate2">
+            <p className="mt-4 text-center text-sm text-muted">
               <Link href="/profil" className="font-medium text-brand hover:underline">{t('seeCoins')}</Link>
             </p>
           </>
@@ -123,7 +123,7 @@ function Stat({ icon, value, label, accent }: { icon: React.ReactNode; value: nu
     <div className={`rounded-2xl border p-4 ${accent ? 'border-amber-200 bg-amber-50' : 'border-line bg-surface'}`}>
       <div className={`inline-flex h-9 w-9 items-center justify-center rounded-xl ${accent ? 'bg-amber-100 text-amber-600' : 'bg-brand-50 text-brand'}`}>{icon}</div>
       <div className="mt-2 font-display text-2xl font-bold text-navy">{value}</div>
-      <div className="text-sm text-slate2">{label}</div>
+      <div className="text-sm text-muted">{label}</div>
     </div>
   );
 }

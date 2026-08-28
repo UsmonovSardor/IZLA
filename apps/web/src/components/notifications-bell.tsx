@@ -74,7 +74,7 @@ export function NotificationsBell() {
       <button
         onClick={openPanel}
         aria-label={t('title')}
-        className="relative grid h-9 w-9 place-items-center rounded-full text-slate2 transition hover:bg-brand-50 hover:text-brand"
+        className="relative grid h-9 w-9 place-items-center rounded-full text-muted transition hover:bg-brand-50 hover:text-brand"
       >
         <Bell size={18} />
         {unread > 0 && (
@@ -106,7 +106,7 @@ export function NotificationsBell() {
               ) : items.length === 0 ? (
                 <div className="px-4 py-12 text-center">
                   <Bell className="mx-auto text-slate-300" size={28} />
-                  <p className="mt-3 text-sm text-slate2">{t('empty')}</p>
+                  <p className="mt-3 text-sm text-muted">{t('empty')}</p>
                 </div>
               ) : (
                 items.map((n) => {
@@ -119,7 +119,7 @@ export function NotificationsBell() {
                           <span className="truncate text-sm font-semibold text-navy">{n.title}</span>
                           {!n.read && <span className="h-1.5 w-1.5 flex-none rounded-full bg-brand" />}
                         </div>
-                        {n.body && <p className="truncate text-[13px] text-slate2">{n.body}</p>}
+                        {n.body && <p className="truncate text-[13px] text-muted">{n.body}</p>}
                         <span className="text-xs text-slate-400">{ago(n.createdAt)}</span>
                       </div>
                     </div>

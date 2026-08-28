@@ -21,19 +21,19 @@ export function LevelCard({ coins }: { coins: number }) {
             {info.tier.emoji}
           </span>
           <div>
-            <div className="text-xs font-medium text-slate2">{t('yourLevel')}</div>
+            <div className="text-xs font-medium text-muted">{t('yourLevel')}</div>
             <div className="font-display text-lg font-bold text-navy">{t(info.tier.key)}</div>
           </div>
         </div>
         <div className="text-right">
           <div className="font-display text-xl font-extrabold tabular-nums text-navy">{coins}</div>
-          <div className="text-xs text-slate2">🪙</div>
+          <div className="text-xs text-muted">🪙</div>
         </div>
       </div>
 
       {info.next ? (
         <div className="mt-4">
-          <div className="flex items-center justify-between text-xs text-slate2">
+          <div className="flex items-center justify-between text-xs text-muted">
             <span>{t(info.tier.key)}</span>
             <span>{t('toNext', { count: info.toNext, next: t(info.next.key) })}</span>
           </div>

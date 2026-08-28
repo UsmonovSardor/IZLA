@@ -142,12 +142,12 @@ export function CommandPalette() {
       onClick={() => go(it)}
       className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition ${idx === active ? 'bg-brand-50' : 'hover:bg-bg'}`}
     >
-      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-bg text-base text-slate2">
+      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-bg text-base text-muted">
         {it.emoji ?? it.icon}
       </span>
       <span className="min-w-0 flex-1">
         <span className="block truncate text-sm font-medium text-ink">{it.label}</span>
-        {it.sub && <span className="block truncate text-xs text-slate2">{it.sub}</span>}
+        {it.sub && <span className="block truncate text-xs text-muted">{it.sub}</span>}
       </span>
       {idx === active && <CornerDownLeft size={14} className="shrink-0 text-slate-300" />}
     </button>
@@ -176,7 +176,7 @@ export function CommandPalette() {
             className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-white/60 bg-surface/95 shadow-pop backdrop-blur-xl"
           >
             <div className="flex items-center gap-3 border-b border-line px-4">
-              <Search size={18} className="shrink-0 text-slate2" />
+              <Search size={18} className="shrink-0 text-muted" />
               <input
                 ref={inputRef}
                 value={q}
@@ -185,14 +185,14 @@ export function CommandPalette() {
                 placeholder={t('placeholder')}
                 aria-label={t('placeholder')}
                 autoComplete="off"
-                className="min-w-0 flex-1 bg-transparent py-4 text-ink outline-none placeholder:text-slate2"
+                className="min-w-0 flex-1 bg-transparent py-4 text-ink outline-none placeholder:text-muted"
               />
-              <kbd className="hidden shrink-0 rounded-md border border-line bg-bg px-1.5 py-0.5 text-[11px] font-medium text-slate2 sm:block">Esc</kbd>
+              <kbd className="hidden shrink-0 rounded-md border border-line bg-bg px-1.5 py-0.5 text-[11px] font-medium text-muted sm:block">Esc</kbd>
             </div>
 
             <div className="max-h-[52vh] overflow-y-auto p-2" data-lenis-prevent>
               {flat.length === 0 ? (
-                <div className="px-4 py-10 text-center text-sm text-slate2">{t('empty')}</div>
+                <div className="px-4 py-10 text-center text-sm text-muted">{t('empty')}</div>
               ) : (
                 <>
                   {searchAction && <div className="px-1">{renderRow(searchAction, next())}</div>}
@@ -209,7 +209,7 @@ export function CommandPalette() {
               )}
             </div>
 
-            <div className="flex items-center gap-4 border-t border-line px-4 py-2.5 text-[11px] text-slate2">
+            <div className="flex items-center gap-4 border-t border-line px-4 py-2.5 text-[11px] text-muted">
               <span className="inline-flex items-center gap-1"><ArrowUp size={12} /><ArrowDown size={12} /> {t('hintNav')}</span>
               <span className="inline-flex items-center gap-1"><CornerDownLeft size={12} /> {t('hintOpen')}</span>
               <span className="ml-auto inline-flex items-center gap-1"><Star size={11} className="fill-warning text-warning" /> Izla</span>

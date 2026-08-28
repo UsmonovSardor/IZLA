@@ -30,7 +30,7 @@ export default function SavedJobsPage() {
   return (
     <div className="container-wide py-8 md:py-12">
       <div className="mx-auto max-w-5xl">
-        <Link href="/ish" className="inline-flex items-center gap-1.5 text-sm text-slate2 transition hover:text-violet-700">
+        <Link href="/ish" className="inline-flex items-center gap-1.5 text-sm text-muted transition hover:text-violet-700">
           <ArrowRight size={16} className="rotate-180" /> {ti('backToJobs')}
         </Link>
         <div className="mt-4 flex items-center gap-3">
@@ -39,7 +39,7 @@ export default function SavedJobsPage() {
           </div>
           <div>
             <h1 className="font-display text-2xl font-bold text-navy md:text-3xl">{t('title')}</h1>
-            <p className="mt-0.5 text-slate2">{t('subtitle')}</p>
+            <p className="mt-0.5 text-muted">{t('subtitle')}</p>
           </div>
         </div>
 
@@ -72,7 +72,7 @@ function EmptyState({ icon, title, text, action }: { icon: React.ReactNode; titl
     <div className="rounded-2xl border border-dashed border-line bg-surface py-20 text-center">
       <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-bg text-slate-300">{icon}</div>
       <h2 className="mt-5 font-display text-xl font-bold text-navy">{title}</h2>
-      <p className="mx-auto mt-2 max-w-sm text-slate2">{text}</p>
+      <p className="mx-auto mt-2 max-w-sm text-muted">{text}</p>
       <div className="mt-6">{action}</div>
     </div>
   );

@@ -68,7 +68,7 @@ export function PwaRegister() {
       </div>
       <div className="min-w-0 flex-1">
         <p className="font-display text-sm font-semibold text-navy leading-tight">{t('installTitle')}</p>
-        <p className="text-slate2 text-xs mt-0.5 leading-snug">{t('installBody')}</p>
+        <p className="text-muted text-xs mt-0.5 leading-snug">{t('installBody')}</p>
       </div>
       <button
         onClick={install}

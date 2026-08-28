@@ -37,7 +37,7 @@ export default async function IshPage() {
           <h1 className="mt-5 max-w-3xl font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-navy md:text-5xl">
             {t('heroTitle')}
           </h1>
-          <p className="mt-4 max-w-xl text-lg text-slate2">{t('heroSub')}</p>
+          <p className="mt-4 max-w-xl text-lg text-muted">{t('heroSub')}</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link href="/rezyume" className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-violet-700">
               <FileText size={16} /> {t('createResume')}

@@ -93,7 +93,7 @@ export function SearchAutocomplete({ placeholder, buttonLabel }: { placeholder: 
         className="flex items-center gap-2 rounded-2xl bg-surface p-2 shadow-pop"
         role="search"
       >
-        <Search className="ml-3 h-5 w-5 shrink-0 text-slate2" />
+        <Search className="ml-3 h-5 w-5 shrink-0 text-muted" />
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
@@ -102,7 +102,7 @@ export function SearchAutocomplete({ placeholder, buttonLabel }: { placeholder: 
           placeholder={placeholder}
           aria-label={placeholder}
           autoComplete="off"
-          className="min-w-0 flex-1 bg-transparent px-1 py-2.5 text-ink outline-none placeholder:text-slate2"
+          className="min-w-0 flex-1 bg-transparent px-1 py-2.5 text-ink outline-none placeholder:text-muted"
         />
         <button
           type="submit"
@@ -129,7 +129,7 @@ export function SearchAutocomplete({ placeholder, buttonLabel }: { placeholder: 
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-medium text-ink">{s.name}</span>
-                  <span className="block truncate text-xs text-slate2">{s.category}</span>
+                  <span className="block truncate text-xs text-muted">{s.category}</span>
                 </span>
               </button>
             </li>

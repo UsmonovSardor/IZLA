@@ -16,14 +16,14 @@ export default async function TermsPage() {
         <div className="grid h-11 w-11 place-items-center rounded-2xl bg-brand-50 text-brand"><FileText size={22} /></div>
         <div>
           <h1 className="font-display text-2xl font-bold text-navy md:text-3xl">{t('termsTitle')}</h1>
-          <p className="mt-0.5 text-sm text-slate2">{t('updated')}: {t('updatedDate')}</p>
+          <p className="mt-0.5 text-sm text-muted">{t('updated')}: {t('updatedDate')}</p>
         </div>
       </div>
       <div className="mt-8 space-y-7">
         {sections.map((s, i) => (
           <section key={i}>
             <h2 className="font-display text-lg font-bold text-navy">{s.h}</h2>
-            <p className="mt-2 leading-relaxed text-slate2">{s.b}</p>
+            <p className="mt-2 leading-relaxed text-muted">{s.b}</p>
           </section>
         ))}
       </div>

@@ -31,7 +31,7 @@ export default async function UylarPage({ searchParams }: { searchParams: Promis
   return (
     <div>
       <h1 className="font-display text-2xl font-bold text-navy mb-1">{t('title')}</h1>
-      <p className="text-slate2 text-sm mb-4">{t('subtitle')}</p>
+      <p className="text-muted text-sm mb-4">{t('subtitle')}</p>
 
       <div className="flex gap-2 overflow-x-auto pb-2 mb-6">
         {TABS.map((tab) => (
@@ -43,7 +43,7 @@ export default async function UylarPage({ searchParams }: { searchParams: Promis
       </div>
 
       {items.length === 0 ? (
-        <div className="rounded-lg border border-line bg-surface p-8 text-center text-slate2">{t('empty')}</div>
+        <div className="rounded-lg border border-line bg-surface p-8 text-center text-muted">{t('empty')}</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {items.map((p) => <PropertyCard key={p.id} p={p} />)}

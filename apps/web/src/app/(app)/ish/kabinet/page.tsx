@@ -38,7 +38,7 @@ export default function EmployerCabinetPage() {
       <Center>
         <Building2 className="text-slate-300" size={44} />
         <h1 className="mt-4 font-display text-2xl font-bold text-navy">{t('title')}</h1>
-        <p className="mt-2 text-slate2">{t('loginNeeded')}</p>
+        <p className="mt-2 text-muted">{t('loginNeeded')}</p>
         <button onClick={() => openLogin()} className="mt-5 rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700">{t('login')}</button>
       </Center>
     );
@@ -52,7 +52,7 @@ export default function EmployerCabinetPage() {
           <div className="text-center">
             <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-violet-600 to-brand text-white"><Building2 size={28} /></div>
             <h1 className="mt-5 font-display text-2xl font-bold text-navy">{t('createCompanyTitle')}</h1>
-            <p className="mt-2 text-slate2">{t('createCompanyHint')}</p>
+            <p className="mt-2 text-muted">{t('createCompanyHint')}</p>
           </div>
           <CompanyForm submitLabel={t('createCompany')} onSaved={(c) => { setCompanies([c]); setActiveId(c.id); }} />
         </div>
@@ -65,7 +65,7 @@ export default function EmployerCabinetPage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-2xl font-bold text-navy md:text-3xl">{t('title')}</h1>
-          <p className="mt-1 text-slate2">{t('subtitle')}</p>
+          <p className="mt-1 text-muted">{t('subtitle')}</p>
         </div>
         {companies.length > 1 && (
           <select value={activeId ?? ''} onChange={(e) => setActiveId(e.target.value)} className="rounded-xl border border-line bg-surface px-3 py-2 text-sm">
@@ -107,7 +107,7 @@ function CompanyDashboard({ companyId, onCompanyChange }: { companyId: string; o
 
       <div className="mt-8 flex gap-1 border-b border-line">
         {(['jobs', 'profile'] as Tab[]).map((tb) => (
-          <button key={tb} onClick={() => setTab(tb)} className={`relative px-4 py-2.5 text-sm font-medium transition ${tab === tb ? 'text-violet-700' : 'text-slate2 hover:text-navy'}`}>
+          <button key={tb} onClick={() => setTab(tb)} className={`relative px-4 py-2.5 text-sm font-medium transition ${tab === tb ? 'text-violet-700' : 'text-muted hover:text-navy'}`}>
             {t(`tabs.${tb}`)}
             {tab === tb && <span className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-violet-600" />}
           </button>
@@ -159,7 +159,7 @@ function JobsTab({ jobs, onNew, onEdit, onArchive, onAts }: {
       ) : jobs.length === 0 ? (
         <div className="mt-6 rounded-2xl border border-dashed border-line py-16 text-center">
           <Briefcase className="mx-auto text-slate-300" size={40} />
-          <p className="mt-3 text-slate2">{t('noJobs')}</p>
+          <p className="mt-3 text-muted">{t('noJobs')}</p>
         </div>
       ) : (
         <div className="mt-5 space-y-3">
@@ -171,7 +171,7 @@ function JobsTab({ jobs, onNew, onEdit, onArchive, onAts }: {
                     <h3 className="font-display font-semibold text-navy">{j.title}</h3>
                     <span className={`rounded-full border px-2 py-0.5 text-xs font-medium ${statusStyle[j.status]}`}>{t(`jobStatus.${j.status}`)}</span>
                   </div>
-                  <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-slate2">
+                  <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
                     <span>{ti(`emp.${j.employment}`)}</span>
                     <span className="text-slate-300">·</span>
                     <span>{salary(j)}</span>
@@ -183,9 +183,9 @@ function JobsTab({ jobs, onNew, onEdit, onArchive, onAts }: {
                   <button onClick={() => onAts(j)} className="inline-flex items-center gap-1.5 rounded-xl bg-violet-50 px-3 py-2 text-sm font-medium text-violet-700 transition hover:bg-violet-100">
                     <ClipboardList size={15} /> {t('applicantsN', { count: j.applicants })}
                   </button>
-                  <button onClick={() => onEdit(j)} className="grid h-9 w-9 place-items-center rounded-xl border border-line text-slate2 transition hover:text-navy" aria-label={t('edit')}><Pencil size={15} /></button>
+                  <button onClick={() => onEdit(j)} className="grid h-9 w-9 place-items-center rounded-xl border border-line text-muted transition hover:text-navy" aria-label={t('edit')}><Pencil size={15} /></button>
                   {j.status !== 'ARCHIVED' && (
-                    <button onClick={() => archive(j.id)} className="grid h-9 w-9 place-items-center rounded-xl border border-line text-slate2 transition hover:text-rose-500" aria-label={t('archive')}><Archive size={15} /></button>
+                    <button onClick={() => archive(j.id)} className="grid h-9 w-9 place-items-center rounded-xl border border-line text-muted transition hover:text-rose-500" aria-label={t('archive')}><Archive size={15} /></button>
                   )}
                 </div>
               </div>
@@ -266,7 +266,7 @@ function CompanyForm({ submitLabel, initial, companyId, onSaved }: {
 function StatCard({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
   return (
     <div className="rounded-2xl border border-line bg-surface p-4">
-      <div className="flex items-center gap-2 text-violet-500">{icon}<span className="text-xs text-slate2">{label}</span></div>
+      <div className="flex items-center gap-2 text-violet-500">{icon}<span className="text-xs text-muted">{label}</span></div>
       <div className="mt-1 font-display text-xl font-bold tabular-nums text-navy">{value}</div>
     </div>
   );

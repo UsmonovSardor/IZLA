@@ -34,7 +34,7 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label={dark ? 'Yorug‘ rejim' : 'Tungi rejim'}
       title={dark ? 'Yorug‘ rejim' : 'Tungi rejim'}
-      className="grid h-9 w-9 place-items-center rounded-full border border-line text-slate2 transition hover:text-brand hover:border-brand"
+      className="grid h-9 w-9 place-items-center rounded-full border border-line text-muted transition hover:text-brand hover:border-brand"
     >
       {dark ? <Sun className="h-[18px] w-[18px]" /> : <Moon className="h-[18px] w-[18px]" />}
     </button>

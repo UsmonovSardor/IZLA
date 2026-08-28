@@ -49,7 +49,7 @@ export function AtsBoard({ job, onBack }: { job: EmployerJob; onBack: () => void
 
   return (
     <div>
-      <button onClick={onBack} className="inline-flex items-center gap-1.5 text-sm text-slate2 transition hover:text-violet-700">
+      <button onClick={onBack} className="inline-flex items-center gap-1.5 text-sm text-muted transition hover:text-violet-700">
         <ArrowLeft size={16} /> {t('backToJobs')}
       </button>
       <div className="mt-3 flex flex-wrap items-center gap-3">
@@ -70,7 +70,7 @@ export function AtsBoard({ job, onBack }: { job: EmployerJob; onBack: () => void
       ) : visible.length === 0 ? (
         <div className="mt-6 rounded-2xl border border-dashed border-line py-16 text-center">
           <Users2 className="mx-auto text-slate-300" size={40} />
-          <p className="mt-3 text-slate2">{t('noApplicants')}</p>
+          <p className="mt-3 text-muted">{t('noApplicants')}</p>
         </div>
       ) : (
         <div className="mt-5 space-y-3">
@@ -87,7 +87,7 @@ export function AtsBoard({ job, onBack }: { job: EmployerJob; onBack: () => void
 
 function FilterChip({ label, active, count, onClick }: { label: string; active: boolean; count: number; onClick: () => void }) {
   return (
-    <button onClick={onClick} className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition ${active ? 'border-violet-600 bg-violet-600 text-white' : 'border-line bg-surface text-slate2 hover:border-violet-200'}`}>
+    <button onClick={onClick} className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition ${active ? 'border-violet-600 bg-violet-600 text-white' : 'border-line bg-surface text-muted hover:border-violet-200'}`}>
       {label}<span className={`rounded-full px-1.5 text-xs ${active ? 'bg-surface/25' : 'bg-bg text-slate-400'}`}>{count}</span>
     </button>
   );
@@ -114,13 +114,13 @@ function ApplicantCard({ app, t, date, onStatus, statusStyle }: {
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="min-w-0">
               <div className="font-display font-semibold text-navy">{name}</div>
-              {r?.headline && <div className="truncate text-sm text-slate2">{r.headline}</div>}
+              {r?.headline && <div className="truncate text-sm text-muted">{r.headline}</div>}
             </div>
             {app.aiScore != null && (
               <span className="inline-flex items-center gap-1 rounded-lg bg-gradient-to-br from-violet-50 to-brand-50 px-2 py-1 text-xs font-semibold text-violet-700"><Sparkles size={12} /> {app.aiScore}%</span>
             )}
           </div>
-          <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate2">
+          <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
             {app.applicant.phone && <span className="inline-flex items-center gap-1"><Phone size={12} /> {app.applicant.phone}</span>}
             {app.applicant.email && <span className="inline-flex items-center gap-1"><Mail size={12} /> {app.applicant.email}</span>}
             <span className="text-slate-400">{date}</span>
@@ -184,7 +184,7 @@ function ApplicantCard({ app, t, date, onStatus, statusStyle }: {
           <button
             key={s}
             onClick={() => onStatus(s)}
-            className={`rounded-lg border px-2.5 py-1 text-xs font-medium transition ${app.status === s ? statusStyle[s] : 'border-line bg-surface text-slate-400 hover:border-slate-300 hover:text-slate2'}`}
+            className={`rounded-lg border px-2.5 py-1 text-xs font-medium transition ${app.status === s ? statusStyle[s] : 'border-line bg-surface text-slate-400 hover:border-slate-300 hover:text-muted'}`}
           >
             {t(`appStatus.${s}`)}
           </button>

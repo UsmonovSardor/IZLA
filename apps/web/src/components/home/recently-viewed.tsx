@@ -33,7 +33,7 @@ export function RecentlyViewed() {
         </div>
         <button
           onClick={() => clearRecent()}
-          className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-sm text-slate-400 transition hover:bg-bg hover:text-slate2"
+          className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-sm text-slate-400 transition hover:bg-bg hover:text-muted"
         >
           <X size={14} /> {t('clear')}
         </button>
@@ -64,7 +64,7 @@ export function RecentlyViewed() {
                 </div>
                 <div className="px-3 py-2.5">
                   <h3 className="truncate font-display text-sm font-semibold text-navy group-hover:text-brand">{v.name}</h3>
-                  {v.district && <p className="mt-0.5 truncate text-xs text-slate2">{v.district}</p>}
+                  {v.district && <p className="mt-0.5 truncate text-xs text-muted">{v.district}</p>}
                 </div>
               </article>
             </Link>

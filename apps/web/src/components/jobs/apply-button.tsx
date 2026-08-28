@@ -112,19 +112,19 @@ function ApplyModal({ jobId, open, onClose, onDone }: {
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }}
             transition={{ type: 'spring', stiffness: 320, damping: 30 }}
           >
-            <button onClick={onClose} aria-label={t('close')} className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full text-slate2 hover:bg-bg hover:text-ink">
+            <button onClick={onClose} aria-label={t('close')} className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full text-muted hover:bg-bg hover:text-ink">
               <X size={16} />
             </button>
             <div className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-violet-600 to-brand text-white">
               <Send size={18} />
             </div>
             <h2 className="mt-3 font-display text-lg font-bold text-navy">{t('applyTitle')}</h2>
-            <p className="mt-1 text-sm text-slate2">{t('applySub')}</p>
+            <p className="mt-1 text-sm text-muted">{t('applySub')}</p>
 
             {/* Rezyume holati */}
             <div className="mt-4">
               {resume === undefined ? (
-                <div className="flex items-center gap-2 rounded-xl border border-line bg-bg px-3.5 py-3 text-sm text-slate2">
+                <div className="flex items-center gap-2 rounded-xl border border-line bg-bg px-3.5 py-3 text-sm text-muted">
                   <Loader2 size={15} className="animate-spin" /> {t('resumeChecking')}
                 </div>
               ) : resume ? (
@@ -132,7 +132,7 @@ function ApplyModal({ jobId, open, onClose, onDone }: {
                   <FileText size={18} className="flex-none text-violet-600" />
                   <div className="min-w-0 flex-1">
                     <div className="text-sm font-medium text-navy">{t('resumeAttached')}</div>
-                    <div className="truncate text-xs text-slate2">{resume.headline}</div>
+                    <div className="truncate text-xs text-muted">{resume.headline}</div>
                   </div>
                   <Link href="/rezyume" className="flex-none text-xs font-medium text-violet-700 hover:underline">{t('edit')}</Link>
                 </div>
@@ -141,7 +141,7 @@ function ApplyModal({ jobId, open, onClose, onDone }: {
                   <FilePlus2 size={18} className="flex-none text-violet-600" />
                   <div className="min-w-0 flex-1">
                     <div className="text-sm font-medium text-navy">{t('resumeCreate')}</div>
-                    <div className="text-xs text-slate2">{t('resumeCreateHint')}</div>
+                    <div className="text-xs text-muted">{t('resumeCreateHint')}</div>
                   </div>
                 </Link>
               )}
@@ -149,7 +149,7 @@ function ApplyModal({ jobId, open, onClose, onDone }: {
 
             {/* Qisqa xat */}
             <div className="mt-4">
-              <label className="text-sm text-slate2">{t('coverNote')}</label>
+              <label className="text-sm text-muted">{t('coverNote')}</label>
               <textarea
                 rows={4}
                 value={note}

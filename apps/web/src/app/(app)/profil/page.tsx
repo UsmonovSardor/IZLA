@@ -98,7 +98,7 @@ export default function ProfilPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center gap-2 py-20 text-slate2">
+      <div className="flex items-center justify-center gap-2 py-20 text-muted">
         <Loader2 className="h-5 w-5 animate-spin" /> {tc('loading')}
       </div>
     );
@@ -109,7 +109,7 @@ export default function ProfilPage() {
       <div className="mx-auto max-w-md py-16 text-center">
         <UserCircle2 className="mx-auto h-12 w-12 text-brand" />
         <h1 className="mt-3 font-display text-xl font-bold text-navy">{t('title')}</h1>
-        <p className="mt-2 text-slate2">{t('needLogin')}</p>
+        <p className="mt-2 text-muted">{t('needLogin')}</p>
         <Button className="mt-4" onClick={() => openLogin({ next: '/profil' })}>{tc('login')}</Button>
       </div>
     );
@@ -129,12 +129,12 @@ export default function ProfilPage() {
         )}
         <div className="min-w-0">
           <h1 className="truncate font-display text-xl font-bold text-navy">{user.name ?? t('anonUser')}</h1>
-          <p className="truncate text-sm text-slate2">{user.email ?? user.phone ?? '—'}</p>
+          <p className="truncate text-sm text-muted">{user.email ?? user.phone ?? '—'}</p>
           <div className="mt-1.5 flex items-center gap-2">
             <span className="rounded-full bg-brand/10 px-2 py-0.5 text-[11px] font-medium text-brand">
               {tr.has(user.role) ? tr(user.role) : user.role}
             </span>
-            <span className="text-[11px] text-slate2">🪙 {t('coins', { count: user.coins })}</span>
+            <span className="text-[11px] text-muted">🪙 {t('coins', { count: user.coins })}</span>
           </div>
         </div>
       </div>
@@ -152,7 +152,7 @@ export default function ProfilPage() {
           <div className="grid h-14 w-14 place-items-center rounded-2xl bg-surface/20"><Gift className="h-7 w-7" /></div>
         </div>
         <div className="p-5">
-          <p className="text-xs text-slate2">{t('coinsCard.sub')}</p>
+          <p className="text-xs text-muted">{t('coinsCard.sub')}</p>
           {coins && coins.ledger.length > 0 ? (
             <ul className="mt-3 divide-y divide-line">
               {coins.ledger.slice(0, 6).map((l) => {
@@ -172,7 +172,7 @@ export default function ProfilPage() {
               })}
             </ul>
           ) : (
-            <p className="mt-3 text-sm text-slate2">{t('coinsCard.empty')}</p>
+            <p className="mt-3 text-sm text-muted">{t('coinsCard.empty')}</p>
           )}
           <Link href="/taklif" className="mt-4 flex items-center justify-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-700 transition hover:bg-amber-100">
             <Gift className="h-4 w-4" /> {t('coinsCard.invite')}
@@ -185,7 +185,7 @@ export default function ProfilPage() {
         <h2 className="mb-3 font-display font-bold text-navy">{t('info')}</h2>
         <div className="space-y-3">
           <label className="block">
-            <span className="text-xs font-medium text-slate2">{t('name')}</span>
+            <span className="text-xs font-medium text-muted">{t('name')}</span>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -194,7 +194,7 @@ export default function ProfilPage() {
             />
           </label>
           <label className="block">
-            <span className="text-xs font-medium text-slate2">{t('language')}</span>
+            <span className="text-xs font-medium text-muted">{t('language')}</span>
             <select
               value={locale}
               onChange={(e) => setLocale(e.target.value)}
@@ -214,21 +214,21 @@ export default function ProfilPage() {
         <h2 className="mb-1 flex items-center gap-2 font-display font-bold text-navy">
           <Shield className="h-4 w-4 text-brand" /> {t('sessions')}
         </h2>
-        <p className="mb-3 text-xs text-slate2">{t('sessionsSub')}</p>
+        <p className="mb-3 text-xs text-muted">{t('sessionsSub')}</p>
         {!sessions ? (
-          <div className="flex items-center gap-2 py-4 text-sm text-slate2"><Loader2 className="h-4 w-4 animate-spin" /> {tc('loading')}</div>
+          <div className="flex items-center gap-2 py-4 text-sm text-muted"><Loader2 className="h-4 w-4 animate-spin" /> {tc('loading')}</div>
         ) : (
           <ul className="divide-y divide-line">
             {sessions.map((s) => (
               <li key={s.id} className="flex items-center justify-between gap-3 py-3">
                 <div className="flex items-center gap-3 min-w-0">
-                  <Monitor className="h-5 w-5 shrink-0 text-slate2" />
+                  <Monitor className="h-5 w-5 shrink-0 text-muted" />
                   <div className="min-w-0">
                     <p className="truncate text-sm font-medium text-ink">
                       {device(s.userAgent, t('unknownDevice'))}
                       {s.current && <span className="ml-2 rounded-full bg-success/10 px-2 py-0.5 text-[10px] font-medium text-success">{t('current')}</span>}
                     </p>
-                    <p className="text-xs text-slate2">{s.ip ?? '—'} · {timeAgo(s.lastUsedAt)}</p>
+                    <p className="text-xs text-muted">{s.ip ?? '—'} · {timeAgo(s.lastUsedAt)}</p>
                   </div>
                 </div>
                 {!s.current && (

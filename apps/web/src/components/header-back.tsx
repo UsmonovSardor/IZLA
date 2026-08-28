@@ -24,7 +24,7 @@ export function HeaderBack() {
       onClick={onClick}
       aria-label={t('back')}
       title={t('back')}
-      className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line bg-surface text-slate2 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand active:scale-95"
+      className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line bg-surface text-muted transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand active:scale-95"
     >
       <ArrowLeft size={18} />
     </button>

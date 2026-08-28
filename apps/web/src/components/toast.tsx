@@ -91,7 +91,7 @@ function ToastViewport({ items, onDismiss }: { items: ToastItem[]; onDismiss: (i
               <Icon className={`mt-0.5 h-5 w-5 flex-none ${s.iconCls}`} />
               <div className="min-w-0 flex-1">
                 <div className="text-sm font-semibold text-navy">{t.title}</div>
-                {t.description && <div className="mt-0.5 text-[13px] text-slate2">{t.description}</div>}
+                {t.description && <div className="mt-0.5 text-[13px] text-muted">{t.description}</div>}
               </div>
               <button
                 onClick={() => onDismiss(t.id)}

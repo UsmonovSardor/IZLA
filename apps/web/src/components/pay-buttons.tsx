@@ -45,7 +45,7 @@ export function PayButtons({ bookingId, label }: { bookingId: string; label?: st
 
   return (
     <div>
-      {displayLabel && <p className="text-xs font-medium text-slate2 mb-1.5">{displayLabel}</p>}
+      {displayLabel && <p className="text-xs font-medium text-muted mb-1.5">{displayLabel}</p>}
       <div className="grid grid-cols-2 gap-2">
         {PROVIDERS.map((p) => (
           <button

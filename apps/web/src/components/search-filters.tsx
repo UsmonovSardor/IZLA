@@ -95,7 +95,7 @@ export function SearchFilters({ categories, priceRange }: { categories: FacetCat
             >
               {c.icon && <span>{c.icon}</span>}
               {c.name}
-              <span className={`text-xs ${activeCat === c.slug ? 'text-white/75' : 'text-slate2'}`}>{c.count}</span>
+              <span className={`text-xs ${activeCat === c.slug ? 'text-white/75' : 'text-muted'}`}>{c.count}</span>
             </button>
           ))}
         </div>
@@ -145,7 +145,7 @@ export function SearchFilters({ categories, priceRange }: { categories: FacetCat
         ))}
 
         {hasFilters && (
-          <button onClick={clearAll} className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-medium text-slate2 transition hover:text-danger">
+          <button onClick={clearAll} className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-medium text-muted transition hover:text-danger">
             <X className="h-3.5 w-3.5" /> {t('clear')}
           </button>
         )}

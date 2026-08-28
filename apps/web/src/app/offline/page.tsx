@@ -11,7 +11,7 @@ export default async function OfflinePage() {
         📡
       </div>
       <h1 className="font-display text-3xl font-bold text-navy mt-6">{t('offlineTitle')}</h1>
-      <p className="text-slate2 mt-3 max-w-sm mx-auto">{t('offlineBody')}</p>
+      <p className="text-muted mt-3 max-w-sm mx-auto">{t('offlineBody')}</p>
       <Link href="/" className="mt-6 inline-block rounded-xl bg-brand px-5 py-2.5 font-medium text-white">
         {t('home')}
       </Link>

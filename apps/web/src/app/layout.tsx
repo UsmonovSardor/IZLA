@@ -119,7 +119,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     <Link
                       key={l.href}
                       href={l.href}
-                      className="rounded-full px-4 py-2 text-slate2 transition hover:bg-brand-50 hover:text-brand"
+                      className="rounded-full px-4 py-2 text-muted transition hover:bg-brand-50 hover:text-brand"
                     >
                       {l.label}
                     </Link>
@@ -156,7 +156,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <Link
                   key={tab.href}
                   href={tab.href}
-                  className="flex flex-col items-center justify-center gap-0.5 text-[11px] text-slate2 hover:text-brand"
+                  className="flex flex-col items-center justify-center gap-0.5 text-[11px] text-muted hover:text-brand"
                 >
                   <tab.icon className="h-5 w-5" />
                   {tab.label}

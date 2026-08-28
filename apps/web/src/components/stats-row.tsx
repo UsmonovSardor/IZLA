@@ -32,7 +32,7 @@ export function StatsRow({ stats, light = false }: { stats: Stat[]; light?: bool
     ? 'border border-line bg-surface shadow-card hover:border-brand/30 hover:shadow-pop'
     : 'border border-white/20 bg-surface/[0.13] backdrop-blur-md hover:border-white/30 hover:bg-surface/[0.18]';
   const numCls = light ? 'text-ink' : 'text-white';
-  const labelCls = light ? 'text-slate2' : 'text-white/70';
+  const labelCls = light ? 'text-muted' : 'text-white/70';
 
   return (
     <div ref={ref} className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl">

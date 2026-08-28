@@ -127,7 +127,7 @@ export function AiAssistant() {
                           <span className="text-lg">{v.category?.icon ?? '📍'}</span>
                           <span className="min-w-0 flex-1">
                             <span className="block truncate text-sm font-semibold text-navy">{v.name}</span>
-                            <span className="block truncate text-xs text-slate2">
+                            <span className="block truncate text-xs text-muted">
                               {v.category?.name} · {v.district ?? 'Toshkent'}
                             </span>
                           </span>
@@ -152,7 +152,7 @@ export function AiAssistant() {
 
               {busy && (
                 <Bubble role="assistant">
-                  <span className="inline-flex items-center gap-2 text-slate2">
+                  <span className="inline-flex items-center gap-2 text-muted">
                     <Loader2 className="h-4 w-4 animate-spin" /> {t('thinking')}
                   </span>
                 </Bubble>

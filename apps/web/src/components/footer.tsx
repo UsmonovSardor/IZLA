@@ -52,7 +52,7 @@ export async function Footer() {
           {/* Brend */}
           <div>
             <Logo />
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate2">{t('blurb')}</p>
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">{t('blurb')}</p>
             <div className="mt-5 flex gap-2">
               {socials.map(({ Icon, href, label }) => (
                 <a
@@ -61,7 +61,7 @@ export async function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="grid h-9 w-9 place-items-center rounded-full border border-line text-slate2 transition hover:border-transparent hover:bg-brand hover:text-white"
+                  className="grid h-9 w-9 place-items-center rounded-full border border-line text-muted transition hover:border-transparent hover:bg-brand hover:text-white"
                 >
                   <Icon className="h-4 w-4" />
                 </a>
@@ -72,7 +72,7 @@ export async function Footer() {
           {/* Ustunlar */}
           {cols.map((col) => (
             <div key={col.title}>
-              <h3 className="text-xs font-bold uppercase tracking-wide text-slate2">{col.title}</h3>
+              <h3 className="text-xs font-bold uppercase tracking-wide text-muted">{col.title}</h3>
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.href + l.label}>
@@ -84,7 +84,7 @@ export async function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-line pt-6 text-sm text-slate2 sm:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-line pt-6 text-sm text-muted sm:flex-row">
           <p>© {year} Izla.uz — {t('tagline')}</p>
           <p className="flex items-center gap-1.5">{t('madeIn')} <span aria-hidden>🇺🇿</span></p>
         </div>

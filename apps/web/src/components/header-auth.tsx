@@ -59,14 +59,14 @@ export function HeaderAuth() {
         <span className="hidden sm:block max-w-[100px] truncate text-sm font-medium text-ink">
           {user.name ?? user.phone ?? t('fallbackName')}
         </span>
-        <ChevronDown className="h-4 w-4 text-slate2" />
+        <ChevronDown className="h-4 w-4 text-muted" />
       </button>
 
       {open && (
         <div className="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border border-line bg-surface shadow-xl">
           <div className="border-b border-line px-4 py-3">
             <p className="truncate text-sm font-semibold text-navy">{user.name ?? t('anonUser')}</p>
-            <p className="truncate text-xs text-slate2">{user.email ?? user.phone ?? roleLabel}</p>
+            <p className="truncate text-xs text-muted">{user.email ?? user.phone ?? roleLabel}</p>
             {isStaff && (
               <span className="mt-1.5 inline-block rounded-full bg-brand/10 px-2 py-0.5 text-[11px] font-medium text-brand">
                 {roleLabel}
@@ -75,14 +75,14 @@ export function HeaderAuth() {
           </div>
           <nav className="p-1 text-sm">
             <Link href="/profil" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2 text-ink hover:bg-bg">
-              <UserIcon className="h-4 w-4 text-slate2" /> {t('profile')}
+              <UserIcon className="h-4 w-4 text-muted" /> {t('profile')}
             </Link>
             <Link href="/bron" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2 text-ink hover:bg-bg">
-              <CalendarClock className="h-4 w-4 text-slate2" /> {t('myBookings')}
+              <CalendarClock className="h-4 w-4 text-muted" /> {t('myBookings')}
             </Link>
             {isStaff && (
               <Link href="/kabinet" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2 text-ink hover:bg-bg">
-                <LayoutDashboard className="h-4 w-4 text-slate2" /> {t('cabinet')}
+                <LayoutDashboard className="h-4 w-4 text-muted" /> {t('cabinet')}
               </Link>
             )}
             <button

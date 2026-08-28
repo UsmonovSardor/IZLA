@@ -198,14 +198,14 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
 
           <div className="space-y-4 rounded-2xl border border-line bg-surface p-5 shadow-card">
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-wide text-slate2">{t('sections.contactTitle')}</h3>
+              <h3 className="text-xs font-bold uppercase tracking-wide text-muted">{t('sections.contactTitle')}</h3>
               {v.phone && (
                 <a href={`tel:${v.phone}`} className="mt-2 flex items-center gap-2 text-sm font-medium text-ink hover:text-[color:var(--a)]" style={{ ['--a' as string]: accent }}>
                   <Phone className="h-4 w-4" style={{ color: accent }} />{v.phone}
                 </a>
               )}
               {(v.address || v.district) && (
-                <div className="mt-2 flex items-start gap-2 text-sm text-slate2">
+                <div className="mt-2 flex items-start gap-2 text-sm text-muted">
                   <MapPin className="mt-0.5 h-4 w-4 shrink-0" style={{ color: accent }} />{v.address || v.district}
                 </div>
               )}
@@ -213,7 +213,7 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
 
             {(hours.mon_fri || hours.sat || hours.sun) && (
               <div className="border-t border-line pt-4">
-                <h3 className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-slate2">
+                <h3 className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
                   <Clock className="h-3.5 w-3.5" />{t('sections.hoursTitle')}
                 </h3>
                 <dl className="mt-2 space-y-1 text-sm">
@@ -232,7 +232,7 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-slate2 transition hover:border-transparent hover:bg-[color:var(--a)] hover:text-white"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-muted transition hover:border-transparent hover:bg-[color:var(--a)] hover:text-white"
                     style={{ ['--a' as string]: accent }}
                   >
                     <Icon className="h-4 w-4" />
@@ -283,7 +283,7 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
               <h2 className="font-display text-2xl font-bold text-navy md:text-3xl">{t('sections.reviewsTitle')}</h2>
-              <p className="mt-1 text-slate2">{t('sections.reviewsSub')}</p>
+              <p className="mt-1 text-muted">{t('sections.reviewsSub')}</p>
             </div>
             <ReviewComposer vendorId={v.id} accent={accent} />
           </div>
@@ -297,7 +297,7 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
             />
           ) : (
             <div className="rounded-2xl border border-dashed border-line bg-surface py-14 text-center">
-              <p className="text-slate2">{t('reviews.beFirst')}</p>
+              <p className="text-muted">{t('reviews.beFirst')}</p>
             </div>
           )}
         </section>
@@ -321,7 +321,7 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
 function Row({ k, v }: { k: string; v: string }) {
   return (
     <div className="flex justify-between">
-      <dt className="text-slate2">{k}</dt>
+      <dt className="text-muted">{k}</dt>
       <dd className="font-medium text-ink">{v}</dd>
     </div>
   );

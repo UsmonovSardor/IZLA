@@ -73,7 +73,7 @@ export default async function LandingPage({ params }: { params: Promise<Params> 
       <JsonLd data={[breadcrumbJsonLd(crumbs)]} />
 
       {/* Breadcrumb */}
-      <nav className="flex flex-wrap items-center gap-1 text-sm text-slate2">
+      <nav className="flex flex-wrap items-center gap-1 text-sm text-muted">
         <Link href="/" className="hover:text-brand">Izla</Link>
         <ChevronRight size={14} className="text-slate-300" />
         <Link href={`/qidiruv?category=${category.slug}`} className="hover:text-brand">{category.icon} {category.name}</Link>
@@ -86,7 +86,7 @@ export default async function LandingPage({ params }: { params: Promise<Params> 
         <h1 className="font-display text-3xl font-bold text-navy md:text-4xl">
           {t('h1', { category: category.name, district })}
         </h1>
-        <p className="mt-2 max-w-2xl text-slate2">
+        <p className="mt-2 max-w-2xl text-muted">
           {t('intro', { category: category.name.toLowerCase(), district, count: vendors.length })}
         </p>
       </header>
@@ -103,7 +103,7 @@ export default async function LandingPage({ params }: { params: Promise<Params> 
       ) : (
         <div className="mt-8 rounded-2xl border border-dashed border-line bg-surface py-16 text-center">
           <MapPin className="mx-auto text-slate-300" size={40} />
-          <p className="mt-3 text-slate2">{t('empty', { category: category.name.toLowerCase(), district })}</p>
+          <p className="mt-3 text-muted">{t('empty', { category: category.name.toLowerCase(), district })}</p>
           <Link href={`/qidiruv?category=${category.slug}`} className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700">
             {t('allCategory', { category: category.name })} <ArrowRight size={16} />
           </Link>

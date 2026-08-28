@@ -68,11 +68,11 @@ export function JobBoard({ initial, facets }: { initial: JobsResult; facets: Job
       </div>
 
       <div className="mt-4 flex items-center justify-between">
-        <p className="flex items-center gap-2 text-sm text-slate2">
+        <p className="flex items-center gap-2 text-sm text-muted">
           {loading && <Loader2 className="animate-spin text-violet-500" size={15} />}
           <span><b className="text-navy tabular-nums">{total}</b> {t('results', { count: total }).replace(/^\s*[\d\s]+/, '')}</span>
         </p>
-        <button onClick={() => setShowFilters((s) => !s)} className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-slate2 md:hidden">
+        <button onClick={() => setShowFilters((s) => !s)} className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-muted md:hidden">
           <SlidersHorizontal size={15} /> {t('filters')}
         </button>
       </div>
@@ -127,7 +127,7 @@ export function JobBoard({ initial, facets }: { initial: JobsResult; facets: Job
             <div className="rounded-2xl border border-dashed border-line bg-surface py-20 text-center">
               <Briefcase className="mx-auto text-slate-300" size={40} />
               <p className="mt-4 font-display font-semibold text-navy">{t('empty')}</p>
-              <p className="mt-1 text-sm text-slate2">{t('emptyHint')}</p>
+              <p className="mt-1 text-sm text-muted">{t('emptyHint')}</p>
             </div>
           ) : (
             <div key={qs} className="grid gap-4 sm:grid-cols-2 xl:grid-cols-2">
@@ -152,7 +152,7 @@ function Chip({ on, onClick, children }: { on: boolean; onClick: () => void; chi
   return (
     <button
       onClick={onClick}
-      className={`rounded-full px-3 py-1.5 text-xs font-medium transition ${on ? 'bg-violet-600 text-white shadow-sm' : 'bg-bg text-slate2 hover:bg-violet-50 hover:text-violet-700'}`}
+      className={`rounded-full px-3 py-1.5 text-xs font-medium transition ${on ? 'bg-violet-600 text-white shadow-sm' : 'bg-bg text-muted hover:bg-violet-50 hover:text-violet-700'}`}
     >
       {children}
     </button>

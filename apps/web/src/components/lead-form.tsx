@@ -36,7 +36,7 @@ export function LeadForm({ propertyId }: { propertyId: string }) {
     return (
       <div className="rounded-lg border border-success/30 bg-success/5 p-4 text-center">
         <p className="font-semibold text-success">{t('leadDone')}</p>
-        <p className="text-sm text-slate2 mt-1">{t('leadDoneSub')}</p>
+        <p className="text-sm text-muted mt-1">{t('leadDoneSub')}</p>
       </div>
     );
   }

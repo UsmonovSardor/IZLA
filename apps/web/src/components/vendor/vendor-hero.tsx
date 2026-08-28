@@ -55,7 +55,7 @@ export function VendorHero(p: Props) {
           <h1 className="mt-3 font-display text-3xl font-extrabold leading-tight text-navy sm:text-4xl lg:text-5xl">
             {p.name}
           </h1>
-          {p.tagline && <p className="mt-3 max-w-md text-base text-slate2">{p.tagline}</p>}
+          {p.tagline && <p className="mt-3 max-w-md text-base text-muted">{p.tagline}</p>}
 
           {/* Reyting qatori */}
           <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
@@ -66,10 +66,10 @@ export function VendorHero(p: Props) {
                 ))}
               </span>
               <span className="font-bold text-navy">{p.rating.toFixed(1)}</span>
-              <span className="text-slate2">{p.labels.basedOn.replace('{count}', String(p.reviewCount))}</span>
+              <span className="text-muted">{p.labels.basedOn.replace('{count}', String(p.reviewCount))}</span>
             </span>
             {p.district && (
-              <span className="flex items-center gap-1 text-slate2">
+              <span className="flex items-center gap-1 text-muted">
                 <MapPin className="h-4 w-4" style={{ color: p.accent }} />
                 {p.district}
               </span>
@@ -116,7 +116,7 @@ export function VendorHero(p: Props) {
               {[0, 1, 2, 3, 4].map((i) => <Star key={i} className="h-3 w-3 fill-current" />)}
             </div>
             <div className="mt-1 text-lg font-extrabold leading-none text-navy">{p.rating.toFixed(1)}</div>
-            <div className="text-[11px] text-slate2">{p.labels.basedOn.replace('{count}', String(p.reviewCount))}</div>
+            <div className="text-[11px] text-muted">{p.labels.basedOn.replace('{count}', String(p.reviewCount))}</div>
           </motion.div>
 
           {/* Tasdiqlangan / tashkil etilgan (pastki chap) */}
@@ -128,7 +128,7 @@ export function VendorHero(p: Props) {
               <BadgeCheck className="h-6 w-6" style={{ color: p.accent }} />
               <div className="text-xs">
                 {p.verified && <div className="font-semibold text-navy">{p.labels.verified}</div>}
-                {p.established && <div className="text-slate2">{p.labels.established.replace('{year}', String(p.established))}</div>}
+                {p.established && <div className="text-muted">{p.labels.established.replace('{year}', String(p.established))}</div>}
               </div>
             </motion.div>
           )}

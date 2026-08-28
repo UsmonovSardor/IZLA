@@ -36,7 +36,7 @@ function Item({ c, accent }: { c: Counter; accent: string }) {
   return (
     <div ref={ref} className="text-center">
       <div className="font-display text-3xl font-extrabold sm:text-4xl" style={{ color: accent }}>{display}</div>
-      <div className="mt-1 text-sm text-slate2">{c.label}</div>
+      <div className="mt-1 text-sm text-muted">{c.label}</div>
     </div>
   );
 }

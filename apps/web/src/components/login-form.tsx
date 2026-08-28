@@ -94,14 +94,14 @@ export function LoginForm({
   if (step === 'otp') {
     return (
       <div className="space-y-4">
-        <button onClick={() => setStep('phone')} className="flex items-center gap-1 text-sm text-slate2 hover:text-ink">
+        <button onClick={() => setStep('phone')} className="flex items-center gap-1 text-sm text-muted hover:text-ink">
           <ChevronLeft className="h-4 w-4" /> {t('back')}
         </button>
         <div className="text-center">
           <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-brand/10">
             <ShieldCheck className="h-6 w-6 text-brand" />
           </div>
-          <p className="mt-2 text-sm text-slate2">{t('otpSent', { phone })}</p>
+          <p className="mt-2 text-sm text-muted">{t('otpSent', { phone })}</p>
         </div>
         <input
           ref={otpRef}
@@ -113,7 +113,7 @@ export function LoginForm({
           className="w-full rounded-lg border border-line px-3 py-3 text-center text-lg font-mono tracking-[0.4em] outline-none focus:border-brand"
         />
         {devHint && (
-          <p className="text-center text-xs text-slate2">
+          <p className="text-center text-xs text-muted">
             {t('devMode')} <span className="font-mono font-semibold text-ink">{devHint}</span>
           </p>
         )}
@@ -121,7 +121,7 @@ export function LoginForm({
         <Button className="w-full" disabled={submitting || code.length !== 6} onClick={confirm}>
           {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : t('confirm')}
         </Button>
-        <div className="text-center text-xs text-slate2">
+        <div className="text-center text-xs text-muted">
           {resendIn > 0 ? (
             <span>{t('resendIn', { sec: resendIn })}</span>
           ) : (
@@ -137,9 +137,9 @@ export function LoginForm({
   return (
     <div className="space-y-4">
       <label className="block">
-        <span className="text-xs font-medium text-slate2">{t('phoneLabel')}</span>
+        <span className="text-xs font-medium text-muted">{t('phoneLabel')}</span>
         <div className="mt-1 flex items-center rounded-lg border border-line focus-within:border-brand">
-          <Phone className="ml-3 h-4 w-4 text-slate2" />
+          <Phone className="ml-3 h-4 w-4 text-muted" />
           <input
             autoFocus={autoFocus}
             value={phone}
@@ -157,7 +157,7 @@ export function LoginForm({
       </Button>
 
       {(providers.google || providers.telegram) && (
-        <p className="rounded-lg bg-brand-50 px-3 py-2 text-center text-[11px] leading-snug text-slate2">
+        <p className="rounded-lg bg-brand-50 px-3 py-2 text-center text-[11px] leading-snug text-muted">
           {t('smsHint')}
         </p>
       )}
@@ -165,7 +165,7 @@ export function LoginForm({
       {(providers.google || providers.telegram) && (
         <div className="flex items-center gap-3 py-1">
           <div className="h-px flex-1 bg-line" />
-          <span className="text-xs text-slate2">{t('or')}</span>
+          <span className="text-xs text-muted">{t('or')}</span>
           <div className="h-px flex-1 bg-line" />
         </div>
       )}
@@ -189,7 +189,7 @@ export function LoginForm({
           </a>
         )}
       </div>
-      <p className="text-center text-[11px] text-slate2">{t('terms')}</p>
+      <p className="text-center text-[11px] text-muted">{t('terms')}</p>
     </div>
   );
 }

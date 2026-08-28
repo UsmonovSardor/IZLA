@@ -55,7 +55,7 @@ export function LanguageSwitcher() {
             >
               <span
                 className={`grid h-6 w-8 shrink-0 place-items-center rounded-md text-[11px] font-bold ${
-                  l === active ? 'bg-brand text-white' : 'bg-bg text-slate2'
+                  l === active ? 'bg-brand text-white' : 'bg-bg text-muted'
                 }`}
               >
                 {localeShort[l]}

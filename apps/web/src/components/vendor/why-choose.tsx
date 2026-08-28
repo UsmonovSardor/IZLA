@@ -51,7 +51,7 @@ function Item({ h, accent, align, delay }: { h: Highlight; accent: string; align
         </div>
         <div>
           <h3 className="font-display font-semibold text-navy">{h.title}</h3>
-          <p className="mt-1 text-sm text-slate2">{h.text}</p>
+          <p className="mt-1 text-sm text-muted">{h.text}</p>
         </div>
       </div>
     </Reveal>

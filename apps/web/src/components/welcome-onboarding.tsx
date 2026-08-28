@@ -90,7 +90,7 @@ export function WelcomeOnboarding() {
                   </span>
                   <div>
                     <div className="font-semibold text-navy">{it.t}</div>
-                    <div className="text-sm text-slate2">{it.d}</div>
+                    <div className="text-sm text-muted">{it.d}</div>
                   </div>
                 </div>
               ))}
@@ -98,7 +98,7 @@ export function WelcomeOnboarding() {
 
             {/* Harakat */}
             <div className="flex items-center gap-3 border-t border-line px-6 py-4">
-              <button onClick={close} className="text-sm font-medium text-slate2 transition hover:text-ink">
+              <button onClick={close} className="text-sm font-medium text-muted transition hover:text-ink">
                 {t('skip')}
               </button>
               <Link

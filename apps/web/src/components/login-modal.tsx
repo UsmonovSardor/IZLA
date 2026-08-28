@@ -38,14 +38,14 @@ export function LoginModal({
         <button
           onClick={onClose}
           aria-label={t('close')}
-          className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full text-slate2 hover:bg-bg hover:text-ink"
+          className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full text-muted hover:bg-bg hover:text-ink"
         >
           <X className="h-4 w-4" />
         </button>
         <div className="mb-4 text-center">
           <LogoMark size={48} variant="tile" animate="drop" className="mx-auto" />
           <h2 className="mt-2 font-display text-lg font-bold text-navy">{t('modalTitle')}</h2>
-          <p className="text-sm text-slate2">{t('modalSub')}</p>
+          <p className="text-sm text-muted">{t('modalSub')}</p>
         </div>
         <LoginForm providers={providers} onSuccess={onSuccess} />
       </div>
