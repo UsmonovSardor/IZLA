@@ -29,14 +29,28 @@ html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
   .page-enter { animation: none; }
 }
+
+/* ===== Scroll-reveal (sof CSS, reveal.tsx) — progressive enhancement ===== */
+/* Default: kontent KO'RINADI (qo'llab-quvvatlanmasa yashirin qolmaydi). */
+.reveal { }
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry calc(4% + var(--reveal-shift, 0%)) cover 22%;
+    }
+  }
+}
 /* background-color (shorthand EMAS) — aks holda v4'da unlayered qoida bg-aurora-soft utility'sini bosadi */
 body { background-color: #F6F8FC; color: #1E293B; }
 
-/* ===== Lenis silliq scroll (Phase 4) ===== */
-html.lenis, html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
-.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-.lenis.lenis-stopped { overflow: hidden; }
+/* Ichki scroll konteynerlar (avval Lenis uchun edi — nativ scroll'da ham foydali) */
+[data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-smooth iframe { pointer-events: none; }
 
 /* ===== Reusable premium primitives ===== */

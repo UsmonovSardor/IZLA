@@ -1,17 +1,15 @@
-'use client';
-import { motion, useReducedMotion, type Variants } from 'framer-motion';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 /**
- * Scroll-reveal (Phase 4 — framer-motion). Element ko'rinishga kirganda yumshoq
- * ko'tarilib paydo bo'ladi. `prefers-reduced-motion` bo'lsa animatsiya o'chadi.
- * API Phase 1 bilan bir xil (children, delay ms, className).
+ * Scroll-reveal — SOF CSS (JS'siz, framer-motion YO'Q). Element ko'rinishga
+ * kirganda yumshoq ko'tarilib paydo bo'ladi (`animation-timeline: view()`,
+ * latest tech). Qo'llab-quvvatlanmasa (Safari <26/Firefox) kontent shunchaki
+ * ko'rinadi — progressive enhancement, HECH QACHON yashirin qolmaydi.
+ * `prefers-reduced-motion` globals.css'da hurmat qilinadi.
+ *
+ * Shared komponent (server ham, client ham import qila oladi). `delay` prop
+ * API-mosligi uchun saqlanadi — kichik bosqichli (stagger) siljish beradi.
  */
-const variants: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0 },
-};
-
 export function Reveal({
   children,
   delay = 0,
@@ -21,18 +19,13 @@ export function Reveal({
   delay?: number;
   className?: string;
 }) {
-  const reduce = useReducedMotion();
-  if (reduce) return <div className={className}>{children}</div>;
+  const shift = Math.min(12, Math.round(delay / 40));
   return (
-    <motion.div
-      className={className}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.15, margin: '0px 0px -8% 0px' }}
-      variants={variants}
-      transition={{ duration: 0.6, delay: delay / 1000, ease: [0.22, 1, 0.36, 1] }}
+    <div
+      className={`reveal ${className}`}
+      style={shift ? ({ '--reveal-shift': `${shift}%` } as CSSProperties) : undefined}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

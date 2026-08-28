@@ -16,7 +16,6 @@ import { FavoritesNavIcon } from '@/components/favorites-nav-icon';
 import { NotificationsBell } from '@/components/notifications-bell';
 import { Footer } from '@/components/footer';
 import { Logo } from '@/components/logo';
-import { SmoothScroll } from '@/components/smooth-scroll';
 import { DeferredWidgets } from '@/components/deferred-widgets';
 import { PwaRegister } from '@/components/pwa-register';
 import { Analytics } from '@/components/analytics';
@@ -90,7 +89,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang={locale} className={`${sora.variable} ${inter.variable}`}>
       <body className="font-sans min-h-screen bg-bg bg-aurora-soft pb-20 md:pb-0">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <SmoothScroll />
           <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
           <ToastProvider>
           <AuthProvider>
