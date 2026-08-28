@@ -19,7 +19,7 @@ export function HeroVisual() {
   return (
     <div className="relative mx-auto aspect-[4/4.3] w-full max-w-md">
       {/* Shisha xarita paneli */}
-      <div className="absolute inset-0 overflow-hidden rounded-[28px] border border-white/15 bg-white/[0.06] shadow-[0_40px_90px_-25px_rgba(0,0,0,.65)] backdrop-blur-xl">
+      <div className="absolute inset-0 overflow-hidden rounded-[28px] border border-white/15 bg-surface/[0.06] shadow-[0_40px_90px_-25px_rgba(0,0,0,.65)] backdrop-blur-xl">
         {/* Xarita to'ri */}
         <svg className="absolute inset-0 h-full w-full opacity-[0.14]" aria-hidden>
           <defs>
@@ -54,14 +54,14 @@ export function HeroVisual() {
       {/* Suzuvchi natija kartasi 1 */}
       <motion.div
         {...float(5.5)}
-        className="absolute -left-4 top-[16%] w-[64%] rounded-2xl border border-white/60 bg-white/95 p-3 shadow-2xl sm:-left-6"
+        className="absolute -left-4 top-[16%] w-[64%] rounded-2xl border border-white/60 bg-surface/95 p-3 shadow-2xl sm:-left-6"
       >
         <div className="flex items-center gap-2.5">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-brand to-teal text-white">
             <Stethoscope className="h-5 w-5" />
           </span>
           <div className="min-w-0 flex-1">
-            <div className="h-2.5 w-3/4 rounded-full bg-navy/80" />
+            <div className="h-2.5 w-3/4 rounded-full bg-[#0B1F33]/80" />
             <div className="mt-1.5 h-2 w-1/2 rounded-full bg-slate2/30" />
           </div>
           <span className="flex shrink-0 items-center gap-0.5 rounded-full bg-brand-50 px-2 py-1 text-[11px] font-bold text-brand">
@@ -73,14 +73,14 @@ export function HeroVisual() {
       {/* Suzuvchi natija kartasi 2 */}
       <motion.div
         {...float(6.5, 12)}
-        className="absolute -right-3 bottom-[12%] w-[58%] rounded-2xl border border-white/60 bg-white/95 p-3 shadow-2xl sm:-right-5"
+        className="absolute -right-3 bottom-[12%] w-[58%] rounded-2xl border border-white/60 bg-surface/95 p-3 shadow-2xl sm:-right-5"
       >
         <div className="flex items-center gap-2.5">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-violet to-brand text-white">
             <UtensilsCrossed className="h-5 w-5" />
           </span>
           <div className="min-w-0 flex-1">
-            <div className="h-2.5 w-2/3 rounded-full bg-navy/80" />
+            <div className="h-2.5 w-2/3 rounded-full bg-[#0B1F33]/80" />
             <div className="mt-1.5 h-2 w-2/5 rounded-full bg-slate2/30" />
           </div>
           <span className="flex shrink-0 items-center gap-1 rounded-full bg-success/10 px-2 py-1 text-[11px] font-bold text-success">

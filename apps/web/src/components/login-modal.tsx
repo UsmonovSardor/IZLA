@@ -33,7 +33,7 @@ export function LoginModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" role="dialog" aria-modal="true">
-      <div className="absolute inset-0 bg-navy/40 backdrop-blur-sm animate-[fadeIn_.15s_ease]" onClick={onClose} />
+      <div className="absolute inset-0 bg-[#0B1F33]/40 backdrop-blur-sm animate-[fadeIn_.15s_ease]" onClick={onClose} />
       <div className="relative z-10 w-full max-w-sm rounded-t-2xl sm:rounded-2xl border border-line bg-surface p-6 shadow-xl animate-[slideUp_.2s_ease]">
         <button
           onClick={onClose}

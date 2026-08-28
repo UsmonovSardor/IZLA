@@ -47,7 +47,7 @@ export function VendorHero(p: Props) {
         {/* Chap: matn */}
         <div>
           {p.categoryName && (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs font-semibold text-[var(--accent)] shadow-sm ring-1 ring-line">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1 text-xs font-semibold text-[var(--accent)] shadow-sm ring-1 ring-line">
               {p.categoryIcon && <span>{p.categoryIcon}</span>}
               {p.categoryName}
             </span>
@@ -89,7 +89,7 @@ export function VendorHero(p: Props) {
             {p.phone && (
               <a
                 href={`tel:${p.phone}`}
-                className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-6 py-3 text-sm font-semibold text-navy transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-6 py-3 text-sm font-semibold text-navy transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
               >
                 <Phone className="h-4 w-4" />
                 {p.labels.call}
@@ -111,7 +111,7 @@ export function VendorHero(p: Props) {
           </motion.div>
 
           {/* Reyting kartasi (yuqori o'ng) */}
-          <motion.div {...float} className="absolute -right-3 top-8 rounded-2xl bg-white/95 px-4 py-3 shadow-lg ring-1 ring-line backdrop-blur">
+          <motion.div {...float} className="absolute -right-3 top-8 rounded-2xl bg-surface/95 px-4 py-3 shadow-lg ring-1 ring-line backdrop-blur">
             <div className="flex items-center gap-1 text-amber-400">
               {[0, 1, 2, 3, 4].map((i) => <Star key={i} className="h-3 w-3 fill-current" />)}
             </div>
@@ -123,7 +123,7 @@ export function VendorHero(p: Props) {
           {(p.verified || p.established) && (
             <motion.div
               {...(reduce ? {} : { animate: { y: [0, 8, 0] }, transition: { duration: 4.5, repeat: Infinity, ease: 'easeInOut' as const } })}
-              className="absolute -left-3 bottom-10 flex items-center gap-2 rounded-2xl bg-white/95 px-4 py-3 shadow-lg ring-1 ring-line backdrop-blur"
+              className="absolute -left-3 bottom-10 flex items-center gap-2 rounded-2xl bg-surface/95 px-4 py-3 shadow-lg ring-1 ring-line backdrop-blur"
             >
               <BadgeCheck className="h-6 w-6" style={{ color: p.accent }} />
               <div className="text-xs">

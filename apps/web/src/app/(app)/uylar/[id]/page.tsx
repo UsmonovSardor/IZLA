@@ -72,7 +72,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
       <div className="md:col-span-2 space-y-5">
         <div className="relative aspect-[16/9] rounded-lg overflow-hidden bg-bg">
           <Image src={p.photos[0] ?? 'https://picsum.photos/seed/uy/1200/700'} alt={p.title} fill className="object-cover" sizes="66vw" />
-          <Badge className="absolute top-3 left-3 bg-white/90 text-ink">{t(TYPE_KEY[p.type] ?? 'typeNewLong')}</Badge>
+          <Badge className="absolute top-3 left-3 bg-surface/90 text-ink">{t(TYPE_KEY[p.type] ?? 'typeNewLong')}</Badge>
         </div>
 
         <div>

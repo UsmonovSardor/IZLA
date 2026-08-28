@@ -35,14 +35,14 @@ export default async function XizmatlarHub() {
       <div className="mt-8 space-y-6">
         {categories.map((c, i) => (
           <Reveal key={c.slug} delay={i * 30}>
-            <section className="rounded-2xl border border-line bg-white p-5">
+            <section className="rounded-2xl border border-line bg-surface p-5">
               <Link href={`/qidiruv?category=${c.slug}`} className="inline-flex items-center gap-2 font-display text-lg font-bold text-navy hover:text-brand">
                 <span className="text-xl">{c.icon}</span> {c.name}
               </Link>
               <div className="mt-3 flex flex-wrap gap-2">
                 {districts.map((d) => (
                   <Link key={d.district} href={`/xizmatlar/${c.slug}/${districtSlug(d.district)}`}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-line bg-bg px-3 py-1.5 text-sm text-navy transition hover:border-brand-200 hover:bg-white hover:text-brand">
+                    className="inline-flex items-center gap-1.5 rounded-full border border-line bg-bg px-3 py-1.5 text-sm text-navy transition hover:border-brand-200 hover:bg-surface hover:text-brand">
                     <MapPin size={13} className="text-brand" /> {d.district}
                   </Link>
                 ))}

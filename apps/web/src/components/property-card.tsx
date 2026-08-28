@@ -26,7 +26,7 @@ export async function PropertyCard({ p }: { p: Property }) {
           <Image src={p.photos[0] ?? 'https://picsum.photos/seed/uy/800/600'} alt={p.title} fill className="object-cover group-hover:scale-105 transition" sizes="(max-width:768px) 100vw, 33vw" />
           <Badge className={`absolute top-2 left-2 ${TYPE_STYLE[p.type]}`}>{t(TYPE_KEY[p.type] ?? 'typeNew')}</Badge>
           {p.type === 'CONSTRUCTION' && p.complex && (
-            <Badge className="absolute top-2 right-2 bg-white/90 text-ink">{t('ready', { percent: p.complex.readinessPercent })}</Badge>
+            <Badge className="absolute top-2 right-2 bg-surface/90 text-ink">{t('ready', { percent: p.complex.readinessPercent })}</Badge>
           )}
         </div>
         <div className="p-3">

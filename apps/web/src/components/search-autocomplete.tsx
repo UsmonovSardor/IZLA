@@ -90,7 +90,7 @@ export function SearchAutocomplete({ placeholder, buttonLabel }: { placeholder: 
           e.preventDefault();
           submit(q);
         }}
-        className="flex items-center gap-2 rounded-2xl bg-white p-2 shadow-pop"
+        className="flex items-center gap-2 rounded-2xl bg-surface p-2 shadow-pop"
         role="search"
       >
         <Search className="ml-3 h-5 w-5 shrink-0 text-slate2" />
@@ -113,7 +113,7 @@ export function SearchAutocomplete({ placeholder, buttonLabel }: { placeholder: 
       </form>
 
       {open && items.length > 0 && (
-        <ul className="absolute z-30 mt-2 w-full overflow-hidden rounded-2xl border border-line bg-white py-1 shadow-pop">
+        <ul className="absolute z-30 mt-2 w-full overflow-hidden rounded-2xl border border-line bg-surface py-1 shadow-pop">
           {items.map((s, i) => (
             <li key={s.id}>
               <button

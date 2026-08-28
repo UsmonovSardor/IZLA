@@ -105,7 +105,7 @@ export default function ResumePage() {
             <h1 className="font-display text-2xl font-bold text-navy md:text-3xl">{t('title')}</h1>
             <p className="mt-1 text-slate2">{existed ? t('subtitleEdit') : t('subtitle')}</p>
           </div>
-          <button onClick={save} disabled={saving} className="hidden shrink-0 items-center gap-2 rounded-xl border border-violet-200 bg-white px-4 py-2.5 text-sm font-semibold text-violet-700 transition hover:bg-violet-50 disabled:opacity-60 sm:inline-flex">
+          <button onClick={save} disabled={saving} className="hidden shrink-0 items-center gap-2 rounded-xl border border-violet-200 bg-surface px-4 py-2.5 text-sm font-semibold text-violet-700 transition hover:bg-violet-50 disabled:opacity-60 sm:inline-flex">
             {saving ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />} {t('save')}
           </button>
         </div>
@@ -118,7 +118,7 @@ export default function ResumePage() {
               const active = i === step; const passed = i < step;
               return (
                 <button key={s.key} onClick={() => go(i)} className="group flex flex-1 flex-col items-center gap-1.5">
-                  <span className={`grid h-10 w-10 place-items-center rounded-full border-2 transition ${active ? 'border-violet-600 bg-violet-600 text-white' : passed ? 'border-violet-600 bg-violet-50 text-violet-600' : 'border-slate-200 bg-white text-slate-400'}`}>
+                  <span className={`grid h-10 w-10 place-items-center rounded-full border-2 transition ${active ? 'border-violet-600 bg-violet-600 text-white' : passed ? 'border-violet-600 bg-violet-50 text-violet-600' : 'border-slate-200 bg-surface text-slate-400'}`}>
                     {passed ? <Check size={17} /> : <Icon size={17} />}
                   </span>
                   <span className={`hidden text-xs font-medium sm:block ${active ? 'text-navy' : 'text-slate-400'}`}>{t(`steps.${s.key}`)}</span>
@@ -171,7 +171,7 @@ export default function ResumePage() {
 }
 
 type TFn = (k: string, v?: Record<string, string | number>) => string;
-const field = 'w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm focus:border-violet-500 focus:outline-none';
+const field = 'w-full rounded-xl border border-line bg-surface px-3.5 py-2.5 text-sm focus:border-violet-500 focus:outline-none';
 const lbl = 'text-sm font-medium text-navy';
 
 function BasicsStep({ t, form, patch }: { t: TFn; form: Form; patch: (p: Partial<Form>) => void }) {
@@ -255,7 +255,7 @@ function ExperienceStep({ t, form, patch }: { t: TFn; form: Form; patch: (p: Par
     <div className="space-y-4">
       <AnimatePresence initial={false}>
         {items.map((it, i) => (
-          <motion.div key={i} layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, height: 0 }} className="rounded-2xl border border-line bg-white p-4">
+          <motion.div key={i} layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, height: 0 }} className="rounded-2xl border border-line bg-surface p-4">
             <div className="flex items-start justify-between gap-3">
               <span className="text-xs font-semibold text-violet-600">{t('expEntry', { n: i + 1 })}</span>
               <button onClick={() => remove(i)} className="text-slate-400 hover:text-rose-500" aria-label={t('remove')}><Trash2 size={16} /></button>
@@ -287,7 +287,7 @@ function EducationStep({ t, form, patch }: { t: TFn; form: Form; patch: (p: Part
     <div className="space-y-4">
       <AnimatePresence initial={false}>
         {items.map((it, i) => (
-          <motion.div key={i} layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, height: 0 }} className="rounded-2xl border border-line bg-white p-4">
+          <motion.div key={i} layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, height: 0 }} className="rounded-2xl border border-line bg-surface p-4">
             <div className="flex items-start justify-between gap-3">
               <span className="text-xs font-semibold text-violet-600">{t('eduEntry', { n: i + 1 })}</span>
               <button onClick={() => remove(i)} className="text-slate-400 hover:text-rose-500" aria-label={t('remove')}><Trash2 size={16} /></button>
@@ -321,7 +321,7 @@ function DoneScreen({ t, existed, onEdit }: { t: TFn; existed: boolean; onEdit: 
           <Link href="/ish" className="inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700">
             {t('browseJobs')} <ArrowRight size={16} />
           </Link>
-          <button onClick={onEdit} className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-white px-5 py-3 text-sm font-semibold text-navy transition hover:bg-bg">
+          <button onClick={onEdit} className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-surface px-5 py-3 text-sm font-semibold text-navy transition hover:bg-bg">
             {t('editResume')}
           </button>
         </div>

@@ -49,16 +49,16 @@ export function RecentlyViewed() {
             className="w-[190px] flex-none snap-start"
           >
             <Link href={`/vendor/${v.slug}`} className="group block">
-              <article className="overflow-hidden rounded-xl border border-line bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-pop">
+              <article className="overflow-hidden rounded-xl border border-line bg-surface shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-pop">
                 <div className="relative aspect-[4/3] overflow-hidden bg-bg">
                   <Image src={v.photo || FALLBACK} alt={v.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" sizes="190px" />
                   <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent" />
                   {v.category && (
-                    <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-white/85 px-2 py-0.5 text-[11px] font-medium text-navy backdrop-blur">
+                    <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-surface/85 px-2 py-0.5 text-[11px] font-medium text-navy backdrop-blur">
                       {v.icon && <span>{v.icon}</span>}{v.category}
                     </span>
                   )}
-                  <span className="absolute bottom-2 right-2 inline-flex items-center gap-0.5 rounded-full bg-navy/70 px-1.5 py-0.5 text-[11px] font-semibold text-white backdrop-blur">
+                  <span className="absolute bottom-2 right-2 inline-flex items-center gap-0.5 rounded-full bg-[#0B1F33]/70 px-1.5 py-0.5 text-[11px] font-semibold text-white backdrop-blur">
                     <Star className="h-3 w-3 fill-warning text-warning" />{v.rating.toFixed(1)}
                   </span>
                 </div>

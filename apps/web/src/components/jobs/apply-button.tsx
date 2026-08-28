@@ -37,7 +37,7 @@ export function ApplyButton({ jobId, block = false }: { jobId: string; block?: b
     return (
       <span className={`inline-flex items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-700 ${block ? 'w-full' : ''}`}>
         <Check size={16} /> {t('applied')}
-        <span className="rounded-md bg-white/70 px-1.5 py-0.5 text-xs font-medium">{t(`appStatus.${applied}`)}</span>
+        <span className="rounded-md bg-surface/70 px-1.5 py-0.5 text-xs font-medium">{t(`appStatus.${applied}`)}</span>
       </span>
     );
   }
@@ -101,7 +101,7 @@ function ApplyModal({ jobId, open, onClose, onDone }: {
       {open && (
         <div className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center" role="dialog" aria-modal="true">
           <motion.div
-            className="absolute inset-0 bg-navy/40 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#0B1F33]/40 backdrop-blur-sm"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={onClose}
           />
@@ -156,7 +156,7 @@ function ApplyModal({ jobId, open, onClose, onDone }: {
                 onChange={(e) => setNote(e.target.value)}
                 maxLength={1500}
                 placeholder={t('coverNotePlaceholder')}
-                className="mt-1 w-full resize-none rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm focus:border-violet-500 focus:outline-none"
+                className="mt-1 w-full resize-none rounded-xl border border-line bg-surface px-3.5 py-2.5 text-sm focus:border-violet-500 focus:outline-none"
               />
             </div>
 

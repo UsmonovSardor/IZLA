@@ -10,7 +10,7 @@ export default function NotFound() {
         </span>
         <div className="pointer-events-none absolute -inset-8 -z-10 rounded-full bg-brand/10 blur-3xl" />
       </div>
-      <div className="-mt-2 grid h-12 w-12 place-items-center rounded-2xl bg-white shadow-card">
+      <div className="-mt-2 grid h-12 w-12 place-items-center rounded-2xl bg-surface shadow-card">
         <Compass className="text-brand" size={24} />
       </div>
       <h1 className="mt-6 font-display text-2xl font-bold text-navy">Sahifa topilmadi</h1>
@@ -26,7 +26,7 @@ export default function NotFound() {
         </Link>
         <Link
           href="/qidiruv"
-          className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-5 py-3 text-sm font-semibold text-slate2 transition hover:text-navy"
+          className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-5 py-3 text-sm font-semibold text-slate2 transition hover:text-navy"
         >
           <Search size={16} /> Xizmat qidirish
         </Link>

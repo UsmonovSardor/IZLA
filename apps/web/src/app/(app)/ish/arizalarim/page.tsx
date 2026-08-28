@@ -75,7 +75,7 @@ export default function MyApplicationsPage() {
               <motion.div
                 key={a.id}
                 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(i * 0.04, 0.3) }}
-                className="rounded-2xl border border-line bg-white p-4 transition hover:border-violet-200 hover:shadow-sm"
+                className="rounded-2xl border border-line bg-surface p-4 transition hover:border-violet-200 hover:shadow-sm"
               >
                 <div className="flex items-start gap-3.5">
                   {co.logo ? (

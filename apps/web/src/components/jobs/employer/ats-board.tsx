@@ -87,8 +87,8 @@ export function AtsBoard({ job, onBack }: { job: EmployerJob; onBack: () => void
 
 function FilterChip({ label, active, count, onClick }: { label: string; active: boolean; count: number; onClick: () => void }) {
   return (
-    <button onClick={onClick} className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition ${active ? 'border-violet-600 bg-violet-600 text-white' : 'border-line bg-white text-slate2 hover:border-violet-200'}`}>
-      {label}<span className={`rounded-full px-1.5 text-xs ${active ? 'bg-white/25' : 'bg-bg text-slate-400'}`}>{count}</span>
+    <button onClick={onClick} className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition ${active ? 'border-violet-600 bg-violet-600 text-white' : 'border-line bg-surface text-slate2 hover:border-violet-200'}`}>
+      {label}<span className={`rounded-full px-1.5 text-xs ${active ? 'bg-surface/25' : 'bg-bg text-slate-400'}`}>{count}</span>
     </button>
   );
 }
@@ -102,7 +102,7 @@ function ApplicantCard({ app, t, date, onStatus, statusStyle }: {
   const name = app.applicant.name || t('unnamed');
 
   return (
-    <motion.div layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="rounded-2xl border border-line bg-white p-4">
+    <motion.div layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="rounded-2xl border border-line bg-surface p-4">
       <div className="flex items-start gap-3.5">
         {app.applicant.avatarUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -143,7 +143,7 @@ function ApplicantCard({ app, t, date, onStatus, statusStyle }: {
                   {r.summary && <p className="text-slate-600">{r.summary}</p>}
                   {r.skills.length > 0 && (
                     <div className="flex flex-wrap gap-1.5">
-                      {r.skills.map((s) => <span key={s} className="rounded-md border border-line bg-white px-2 py-0.5 text-xs text-navy">{s}</span>)}
+                      {r.skills.map((s) => <span key={s} className="rounded-md border border-line bg-surface px-2 py-0.5 text-xs text-navy">{s}</span>)}
                     </div>
                   )}
                   {r.experience.length > 0 && (
@@ -184,7 +184,7 @@ function ApplicantCard({ app, t, date, onStatus, statusStyle }: {
           <button
             key={s}
             onClick={() => onStatus(s)}
-            className={`rounded-lg border px-2.5 py-1 text-xs font-medium transition ${app.status === s ? statusStyle[s] : 'border-line bg-white text-slate-400 hover:border-slate-300 hover:text-slate2'}`}
+            className={`rounded-lg border px-2.5 py-1 text-xs font-medium transition ${app.status === s ? statusStyle[s] : 'border-line bg-surface text-slate-400 hover:border-slate-300 hover:text-slate2'}`}
           >
             {t(`appStatus.${s}`)}
           </button>

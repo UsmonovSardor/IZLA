@@ -8,7 +8,7 @@ export function Sk({ className = '' }: { className?: string }) {
 /** Vendor kartasi skeleton — VendorCard bilan bir o'lchamda. */
 export function VendorCardSkeleton() {
   return (
-    <div className="overflow-hidden rounded-2xl border border-line bg-white">
+    <div className="overflow-hidden rounded-2xl border border-line bg-surface">
       <Sk className="aspect-[4/3] w-full rounded-none" />
       <div className="space-y-2 p-4">
         <Sk className="h-4 w-3/4" />
@@ -33,7 +33,7 @@ export function VendorGridSkeleton({ count = 8 }: { count?: number }) {
 /** Vakansiya kartasi skeleton. */
 export function JobCardSkeleton() {
   return (
-    <div className="rounded-2xl border border-line bg-white p-5">
+    <div className="rounded-2xl border border-line bg-surface p-5">
       <div className="flex items-center gap-3">
         <Sk className="h-11 w-11 rounded-xl" />
         <div className="flex-1 space-y-2">

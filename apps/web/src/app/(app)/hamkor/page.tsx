@@ -74,14 +74,14 @@ export default function PartnerPage() {
         <div className="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full bg-teal/25 blur-3xl" aria-hidden />
         <div className="pointer-events-none absolute -bottom-16 left-1/4 h-72 w-72 rounded-full bg-brand/25 blur-3xl" aria-hidden />
         <div className="container-wide relative z-10 py-16 md:py-24 text-center">
-          <span className="chip mx-auto bg-white/10 text-white/90 border border-white/20">
+          <span className="chip mx-auto bg-surface/10 text-white/90 border border-white/20">
             <Store className="h-3.5 w-3.5 text-teal-400" /> {t('badge')}
           </span>
           <h1 className="mx-auto mt-5 max-w-3xl font-display text-4xl md:text-5xl font-bold leading-[1.08] text-white">
             {t('title')}
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-white/80">{t('subtitle')}</p>
-          <a href="#ariza" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3.5 text-sm font-semibold text-navy shadow-pop transition hover:scale-105">
+          <a href="#ariza" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-surface px-7 py-3.5 text-sm font-semibold text-navy shadow-pop transition hover:scale-105">
             {t('cta')} <ArrowRight className="h-4 w-4 text-brand" />
           </a>
         </div>
@@ -91,7 +91,7 @@ export default function PartnerPage() {
       <section className="container-wide py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {benefits.map((b) => (
-            <div key={b.t} className="reveal rounded-2xl border border-line bg-white p-6 shadow-card">
+            <div key={b.t} className="reveal rounded-2xl border border-line bg-surface p-6 shadow-card">
               <span className="grid h-12 w-12 place-items-center rounded-xl bg-brand-50 text-brand">
                 <b.icon className="h-6 w-6" />
               </span>
@@ -104,7 +104,7 @@ export default function PartnerPage() {
 
       {/* ARIZA FORMASI */}
       <section id="ariza" className="container-wide pb-24">
-        <div className="mx-auto max-w-xl rounded-3xl border border-line bg-white p-7 md:p-9 shadow-card">
+        <div className="mx-auto max-w-xl rounded-3xl border border-line bg-surface p-7 md:p-9 shadow-card">
           {done ? (
             <div className="py-8 text-center">
               <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-success/15 text-success">

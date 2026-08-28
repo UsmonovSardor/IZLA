@@ -115,7 +115,7 @@ function ResultRow({
       onMouseEnter={() => onHover(v.id)}
       onMouseLeave={() => onHover(null)}
       onClick={() => onSelect(v.id)}
-      className={`group flex cursor-pointer gap-3 rounded-xl border bg-white p-2.5 transition-all duration-200 hover:shadow-card ${
+      className={`group flex cursor-pointer gap-3 rounded-xl border bg-surface p-2.5 transition-all duration-200 hover:shadow-card ${
         active ? 'border-brand ring-2 ring-brand/30 shadow-card' : 'border-line'
       }`}
     >
@@ -132,7 +132,7 @@ function ResultRow({
         ) : (
           <div className="flex h-full items-center justify-center text-2xl">{v.category?.icon ?? '📍'}</div>
         )}
-        <span className="chip absolute bottom-1 left-1 bg-navy/70 backdrop-blur text-white !px-2 !py-0.5">
+        <span className="chip absolute bottom-1 left-1 bg-[#0B1F33]/70 backdrop-blur text-white !px-2 !py-0.5">
           <Star className="h-3 w-3 fill-warning text-warning" />
           <span className="font-semibold">{v.rating.toFixed(1)}</span>
         </span>

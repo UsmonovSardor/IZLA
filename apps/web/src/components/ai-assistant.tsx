@@ -75,21 +75,21 @@ export function AiAssistant() {
           <motion.div
             {...panelMotion}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-36 right-4 z-[60] flex h-[70dvh] max-h-[560px] w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/90 shadow-2xl backdrop-blur-xl md:bottom-24 md:right-6"
+            className="fixed bottom-36 right-4 z-[60] flex h-[70dvh] max-h-[560px] w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-3xl border border-white/60 bg-surface/90 shadow-2xl backdrop-blur-xl md:bottom-24 md:right-6"
           >
             {/* Sarlavha */}
             <div
               className="flex items-center gap-3 px-4 py-3 text-white"
               style={{ background: 'linear-gradient(135deg, #2563EB 0%, #14B8A6 70%, #7C3AED 100%)' }}
             >
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/20">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-surface/20">
                 <Sparkles className="h-5 w-5" />
               </span>
               <div className="min-w-0 flex-1">
                 <p className="font-display text-sm font-semibold leading-tight">{t('title')}</p>
                 <p className="text-xs text-white/80">{t('subtitle')}</p>
               </div>
-              <button onClick={() => setOpen(false)} aria-label={t('close')} className="rounded-full p-1.5 transition hover:bg-white/15">
+              <button onClick={() => setOpen(false)} aria-label={t('close')} className="rounded-full p-1.5 transition hover:bg-surface/15">
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -122,7 +122,7 @@ export function AiAssistant() {
                         <Link
                           key={v.id}
                           href={`/vendor/${v.slug}`}
-                          className="flex items-center gap-2 rounded-xl border border-line bg-white p-2 transition hover:border-brand/40 hover:shadow-card"
+                          className="flex items-center gap-2 rounded-xl border border-line bg-surface p-2 transition hover:border-brand/40 hover:shadow-card"
                         >
                           <span className="text-lg">{v.category?.icon ?? '📍'}</span>
                           <span className="min-w-0 flex-1">
@@ -165,7 +165,7 @@ export function AiAssistant() {
                 e.preventDefault();
                 send(input);
               }}
-              className="flex items-center gap-2 border-t border-line bg-white/70 p-2.5"
+              className="flex items-center gap-2 border-t border-line bg-surface/70 p-2.5"
             >
               <input
                 value={input}

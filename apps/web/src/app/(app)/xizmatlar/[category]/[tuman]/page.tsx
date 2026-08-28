@@ -101,7 +101,7 @@ export default async function LandingPage({ params }: { params: Promise<Params> 
           ))}
         </div>
       ) : (
-        <div className="mt-8 rounded-2xl border border-dashed border-line bg-white py-16 text-center">
+        <div className="mt-8 rounded-2xl border border-dashed border-line bg-surface py-16 text-center">
           <MapPin className="mx-auto text-slate-300" size={40} />
           <p className="mt-3 text-slate2">{t('empty', { category: category.name.toLowerCase(), district })}</p>
           <Link href={`/qidiruv?category=${category.slug}`} className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700">
@@ -116,7 +116,7 @@ export default async function LandingPage({ params }: { params: Promise<Params> 
         <div className="mt-3 flex flex-wrap gap-2">
           {otherDistricts.map((d) => (
             <Link key={d.district} href={`/xizmatlar/${p.category}/${districtSlug(d.district)}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3.5 py-1.5 text-sm text-navy transition hover:border-brand-200 hover:text-brand">
+              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm text-navy transition hover:border-brand-200 hover:text-brand">
               <MapPin size={13} className="text-brand" /> {d.district}
             </Link>
           ))}
@@ -129,7 +129,7 @@ export default async function LandingPage({ params }: { params: Promise<Params> 
         <div className="mt-3 flex flex-wrap gap-2">
           {otherCategories.map((c) => (
             <Link key={c.slug} href={`/xizmatlar/${c.slug}/${p.tuman}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3.5 py-1.5 text-sm text-navy transition hover:border-brand-200 hover:text-brand">
+              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm text-navy transition hover:border-brand-200 hover:text-brand">
               <span>{c.icon}</span> {c.name}
             </Link>
           ))}

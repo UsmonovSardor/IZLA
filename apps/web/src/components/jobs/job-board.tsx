@@ -63,7 +63,7 @@ export function JobBoard({ initial, facets }: { initial: JobsResult; facets: Job
           value={filters.q}
           onChange={(e) => set({ q: e.target.value })}
           placeholder={t('searchPlaceholder')}
-          className="w-full rounded-2xl border border-line bg-white py-4 pl-12 pr-4 text-[15px] shadow-sm transition focus:border-violet-400 focus:outline-none focus:ring-4 focus:ring-violet-500/10"
+          className="w-full rounded-2xl border border-line bg-surface py-4 pl-12 pr-4 text-[15px] shadow-sm transition focus:border-violet-400 focus:outline-none focus:ring-4 focus:ring-violet-500/10"
         />
       </div>
 
@@ -72,7 +72,7 @@ export function JobBoard({ initial, facets }: { initial: JobsResult; facets: Job
           {loading && <Loader2 className="animate-spin text-violet-500" size={15} />}
           <span><b className="text-navy tabular-nums">{total}</b> {t('results', { count: total }).replace(/^\s*[\d\s]+/, '')}</span>
         </p>
-        <button onClick={() => setShowFilters((s) => !s)} className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-3 py-2 text-sm text-slate2 md:hidden">
+        <button onClick={() => setShowFilters((s) => !s)} className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-slate2 md:hidden">
           <SlidersHorizontal size={15} /> {t('filters')}
         </button>
       </div>
@@ -80,7 +80,7 @@ export function JobBoard({ initial, facets }: { initial: JobsResult; facets: Job
       <div className="mt-5 grid gap-6 md:grid-cols-[248px_1fr]">
         {/* Filtrlar */}
         <aside className={`${showFilters ? 'block' : 'hidden'} md:block`}>
-          <div className="sticky top-24 space-y-6 rounded-2xl border border-line bg-white p-5">
+          <div className="sticky top-24 space-y-6 rounded-2xl border border-line bg-surface p-5">
             <div className="flex items-center justify-between">
               <span className="font-display text-sm font-semibold text-navy">{t('filters')}</span>
               {active ? (
@@ -124,7 +124,7 @@ export function JobBoard({ initial, facets }: { initial: JobsResult; facets: Job
         {/* Natijalar */}
         <div>
           {jobs.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-line bg-white py-20 text-center">
+            <div className="rounded-2xl border border-dashed border-line bg-surface py-20 text-center">
               <Briefcase className="mx-auto text-slate-300" size={40} />
               <p className="mt-4 font-display font-semibold text-navy">{t('empty')}</p>
               <p className="mt-1 text-sm text-slate2">{t('emptyHint')}</p>

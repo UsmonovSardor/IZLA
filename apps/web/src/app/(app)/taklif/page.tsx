@@ -47,9 +47,9 @@ export default function ReferralPage() {
       <div className="mx-auto max-w-2xl">
         {/* Hero */}
         <div className="relative overflow-hidden rounded-3xl border border-white/60 bg-aurora p-8 text-white shadow-pop md:p-10">
-          <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/10 blur-2xl" />
+          <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-surface/10 blur-2xl" />
           <motion.div initial={{ scale: 0.8, rotate: -8, opacity: 0 }} animate={{ scale: 1, rotate: 0, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 18 }}
-            className="grid h-14 w-14 place-items-center rounded-2xl bg-white/15 backdrop-blur">
+            className="grid h-14 w-14 place-items-center rounded-2xl bg-surface/15 backdrop-blur">
             <Gift size={28} />
           </motion.div>
           <h1 className="mt-5 font-display text-3xl font-bold md:text-4xl">{t('title')}</h1>
@@ -61,7 +61,7 @@ export default function ReferralPage() {
         {loading ? (
           <div className="py-16 text-center"><Loader2 className="mx-auto animate-spin text-brand" /></div>
         ) : !user ? (
-          <div className="mt-6 rounded-2xl border border-dashed border-line bg-white py-14 text-center">
+          <div className="mt-6 rounded-2xl border border-dashed border-line bg-surface py-14 text-center">
             <Gift className="mx-auto text-slate-300" size={40} />
             <p className="mt-3 text-slate2">{t('loginNeeded')}</p>
             <button onClick={() => openLogin()} className="mt-4 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-700">{t('login')}</button>
@@ -75,7 +75,7 @@ export default function ReferralPage() {
             </div>
 
             {/* Taklif linki */}
-            <div className="mt-4 rounded-2xl border border-line bg-white p-5">
+            <div className="mt-4 rounded-2xl border border-line bg-surface p-5">
               <label className="text-sm font-semibold text-navy">{t('yourLink')}</label>
               <div className="mt-2 flex items-center gap-2">
                 <div className="min-w-0 flex-1 truncate rounded-xl border border-line bg-bg px-3.5 py-3 font-mono text-sm text-ink">
@@ -96,7 +96,7 @@ export default function ReferralPage() {
             </div>
 
             {/* Qanday ishlaydi */}
-            <div className="mt-4 rounded-2xl border border-line bg-white p-5">
+            <div className="mt-4 rounded-2xl border border-line bg-surface p-5">
               <h2 className="flex items-center gap-2 font-display font-bold text-navy"><Share2 size={17} className="text-brand" /> {t('howTitle')}</h2>
               <ol className="mt-3 space-y-2.5">
                 {[t('step1'), t('step2', { join: info?.joinReward ?? 50 }), t('step3', { referrer: info?.referrerReward ?? 150 })].map((s, i) => (
@@ -120,7 +120,7 @@ export default function ReferralPage() {
 
 function Stat({ icon, value, label, accent }: { icon: React.ReactNode; value: number; label: string; accent?: boolean }) {
   return (
-    <div className={`rounded-2xl border p-4 ${accent ? 'border-amber-200 bg-amber-50' : 'border-line bg-white'}`}>
+    <div className={`rounded-2xl border p-4 ${accent ? 'border-amber-200 bg-amber-50' : 'border-line bg-surface'}`}>
       <div className={`inline-flex h-9 w-9 items-center justify-center rounded-xl ${accent ? 'bg-amber-100 text-amber-600' : 'bg-brand-50 text-brand'}`}>{icon}</div>
       <div className="mt-2 font-display text-2xl font-bold text-navy">{value}</div>
       <div className="text-sm text-slate2">{label}</div>

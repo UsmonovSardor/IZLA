@@ -61,7 +61,7 @@ export function PwaRegister() {
     <div
       role="dialog"
       aria-label={t('installTitle')}
-      className="fixed inset-x-3 bottom-3 z-[60] mx-auto flex max-w-md items-center gap-3 rounded-2xl border border-slate-200 bg-white/95 p-3.5 shadow-lg backdrop-blur pwa-banner sm:inset-x-auto sm:right-4"
+      className="fixed inset-x-3 bottom-3 z-[60] mx-auto flex max-w-md items-center gap-3 rounded-2xl border border-slate-200 bg-surface/95 p-3.5 shadow-lg backdrop-blur pwa-banner sm:inset-x-auto sm:right-4"
     >
       <div className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-gradient-to-br from-brand to-teal-400 text-white">
         <Download size={20} />

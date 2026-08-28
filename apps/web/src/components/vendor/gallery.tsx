@@ -38,7 +38,7 @@ export function Gallery({ heading, subheading, photos, accent }: { heading: stri
               className={`group relative block w-full overflow-hidden rounded-2xl ${i % 5 === 0 ? 'aspect-[4/5]' : 'aspect-square'}`}
             >
               <Image src={src} alt="" fill className="object-cover transition duration-500 group-hover:scale-105" sizes="(max-width:640px) 45vw, 22vw" />
-              <span className="absolute inset-0 bg-navy/0 transition group-hover:bg-navy/15" />
+              <span className="absolute inset-0 bg-[#0B1F33]/0 transition group-hover:bg-[#0B1F33]/15" />
             </button>
           </Reveal>
         ))}
@@ -47,14 +47,14 @@ export function Gallery({ heading, subheading, photos, accent }: { heading: stri
       <AnimatePresence>
         {open != null && (
           <motion.div
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-navy/90 p-4"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0B1F33]/90 p-4"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={close}
           >
-            <button onClick={close} aria-label="close" className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20">
+            <button onClick={close} aria-label="close" className="absolute right-4 top-4 rounded-full bg-surface/10 p-2 text-white hover:bg-surface/20">
               <X className="h-6 w-6" />
             </button>
-            <button onClick={(e) => { e.stopPropagation(); move(-1); }} aria-label="prev" className="absolute left-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20">
+            <button onClick={(e) => { e.stopPropagation(); move(-1); }} aria-label="prev" className="absolute left-4 rounded-full bg-surface/10 p-2 text-white hover:bg-surface/20">
               <ChevronLeft className="h-7 w-7" />
             </button>
             <motion.div
@@ -65,7 +65,7 @@ export function Gallery({ heading, subheading, photos, accent }: { heading: stri
             >
               <Image src={photos[open]!} alt="" fill className="object-contain" sizes="90vw" />
             </motion.div>
-            <button onClick={(e) => { e.stopPropagation(); move(1); }} aria-label="next" className="absolute right-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20">
+            <button onClick={(e) => { e.stopPropagation(); move(1); }} aria-label="next" className="absolute right-4 rounded-full bg-surface/10 p-2 text-white hover:bg-surface/20">
               <ChevronRight className="h-7 w-7" />
             </button>
           </motion.div>

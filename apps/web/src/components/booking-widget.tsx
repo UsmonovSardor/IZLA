@@ -163,7 +163,7 @@ export function BookingWidget({ services, vendorName }: { services: ServiceLite[
               <select
                 value={serviceId}
                 onChange={(e) => setServiceId(e.target.value)}
-                className="mt-1 w-full rounded-md border border-line px-3 py-2.5 text-sm outline-none focus:border-brand bg-white"
+                className="mt-1 w-full rounded-md border border-line px-3 py-2.5 text-sm outline-none focus:border-brand bg-surface"
               >
                 {services.map((s) => (
                   <option key={s.id} value={s.id}>

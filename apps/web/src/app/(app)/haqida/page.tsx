@@ -48,7 +48,7 @@ export default async function AboutPage() {
 
       {/* Stats */}
       <section className="container-wide -mt-10 relative z-10">
-        <div className="grid grid-cols-2 gap-4 rounded-2xl border border-line bg-white p-6 shadow-card md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 rounded-2xl border border-line bg-surface p-6 shadow-card md:grid-cols-4">
           {stats.map((s) => (
             <div key={s.label} className="text-center">
               <div className="font-display text-3xl font-bold text-navy">{s.value}</div>
@@ -74,7 +74,7 @@ export default async function AboutPage() {
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((v, i) => (
             <Reveal key={v.t} delay={i * 70}>
-              <div className="h-full rounded-2xl border border-line bg-white p-6">
+              <div className="h-full rounded-2xl border border-line bg-surface p-6">
                 <div className={`grid h-12 w-12 place-items-center rounded-xl ${v.c}`}><v.icon size={24} /></div>
                 <h3 className="mt-4 font-display font-bold text-navy">{v.t}</h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-slate2">{v.d}</p>
@@ -93,7 +93,7 @@ export default async function AboutPage() {
             <a href="mailto:info@izla.uz" className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-700">
               <Mail size={16} /> info@izla.uz
             </a>
-            <a href="https://t.me/IzlaXizmat_bot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-5 py-3 text-sm font-semibold text-navy transition hover:border-brand/40">
+            <a href="https://t.me/IzlaXizmat_bot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-5 py-3 text-sm font-semibold text-navy transition hover:border-brand/40">
               <Send size={16} className="text-brand" /> {t('telegram')}
             </a>
           </div>

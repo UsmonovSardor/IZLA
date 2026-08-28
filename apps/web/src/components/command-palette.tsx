@@ -166,14 +166,14 @@ export function CommandPalette() {
           onClick={() => setOpen(false)}
           role="dialog" aria-modal="true" aria-label={t('title')}
         >
-          <div className="absolute inset-0 bg-navy/40 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-[#0B1F33]/40 backdrop-blur-sm" />
           <motion.div
             onClick={(e) => e.stopPropagation()}
             initial={reduce ? false : { opacity: 0, y: -12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={reduce ? undefined : { opacity: 0, y: -8, scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-            className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-white/60 bg-white/95 shadow-pop backdrop-blur-xl"
+            className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-white/60 bg-surface/95 shadow-pop backdrop-blur-xl"
           >
             <div className="flex items-center gap-3 border-b border-line px-4">
               <Search size={18} className="shrink-0 text-slate2" />

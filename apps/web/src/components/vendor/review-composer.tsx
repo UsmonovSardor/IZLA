@@ -25,7 +25,7 @@ export function ReviewComposer({ vendorId, accent }: { vendorId: string; accent:
 
   if (user && mine) {
     return (
-      <span className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-sm font-medium text-slate2">
+      <span className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-sm font-medium text-slate2">
         <CheckCircle2 size={16} className="text-emerald-500" /> {t('already')}
         <span className="inline-flex items-center gap-0.5 font-semibold text-navy">{mine.rating}<Star size={13} className="fill-warning text-warning" /></span>
       </span>
@@ -88,7 +88,7 @@ function ReviewModal({ vendorId, accent, open, onClose, onDone }: {
     <AnimatePresence>
       {open && (
         <div className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center" role="dialog" aria-modal="true">
-          <motion.div className="absolute inset-0 bg-navy/40 backdrop-blur-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
+          <motion.div className="absolute inset-0 bg-[#0B1F33]/40 backdrop-blur-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
           <motion.div
             className="relative z-10 w-full max-w-md rounded-t-2xl border border-line bg-surface p-6 shadow-xl sm:rounded-2xl"
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }}
@@ -113,7 +113,7 @@ function ReviewModal({ vendorId, accent, open, onClose, onDone }: {
             <textarea
               rows={4} value={text} onChange={(e) => setText(e.target.value)} maxLength={1000}
               placeholder={t('placeholder')}
-              className="mt-4 w-full resize-none rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm focus:outline-none"
+              className="mt-4 w-full resize-none rounded-xl border border-line bg-surface px-3.5 py-2.5 text-sm focus:outline-none"
               style={{ borderColor: text ? accent : undefined }}
             />
 

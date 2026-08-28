@@ -173,7 +173,7 @@ export function LoginForm({
         {providers.google && (
           <a
             href={googleLoginUrl()}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border border-line bg-white px-3 py-2.5 text-sm font-medium text-ink transition hover:bg-bg"
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-line bg-surface px-3 py-2.5 text-sm font-medium text-ink transition hover:bg-bg"
           >
             <GoogleIcon /> {t('google')}
           </a>

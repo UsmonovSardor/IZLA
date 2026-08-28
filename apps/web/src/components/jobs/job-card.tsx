@@ -23,7 +23,7 @@ export function JobCard({ job, index = 0 }: { job: Job; index?: number }) {
     <Link
       href={`/ish/${job.id}`}
       style={{ animationDelay: `${Math.min(index * 55, 400)}ms` }}
-      className="job-card group relative flex flex-col gap-3 rounded-2xl border border-line bg-white p-5 transition-all duration-200 hover:-translate-y-1 hover:border-violet-300 hover:shadow-[0_18px_44px_-20px_rgba(124,58,237,0.35)]"
+      className="job-card group relative flex flex-col gap-3 rounded-2xl border border-line bg-surface p-5 transition-all duration-200 hover:-translate-y-1 hover:border-violet-300 hover:shadow-[0_18px_44px_-20px_rgba(124,58,237,0.35)]"
     >
       <div className="absolute right-3 top-3 z-10">
         <SaveJobButton jobId={job.id} />

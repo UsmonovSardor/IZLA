@@ -42,8 +42,8 @@ export function FavoriteButton({
 
   const base =
     variant === 'floating'
-      ? 'grid h-9 w-9 place-items-center rounded-full bg-white/90 backdrop-blur shadow-md transition hover:bg-white'
-      : 'inline-flex items-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-sm font-semibold transition hover:border-rose-200';
+      ? 'grid h-9 w-9 place-items-center rounded-full bg-surface/90 backdrop-blur shadow-md transition hover:bg-surface'
+      : 'inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-sm font-semibold transition hover:border-rose-200';
 
   return (
     <button

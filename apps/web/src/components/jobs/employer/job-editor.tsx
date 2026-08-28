@@ -10,7 +10,7 @@ const EMPLOYMENTS: JobEmployment[] = ['FULL_TIME', 'PART_TIME', 'CONTRACT', 'INT
 const EXPERIENCES: JobExperience[] = ['NONE', 'JUNIOR', 'MIDDLE', 'SENIOR'];
 const STATUSES: JobStatusValue[] = ['ACTIVE', 'DRAFT', 'CLOSED'];
 
-const field = 'w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm focus:border-violet-500 focus:outline-none';
+const field = 'w-full rounded-xl border border-line bg-surface px-3.5 py-2.5 text-sm focus:border-violet-500 focus:outline-none';
 const lbl = 'text-sm font-medium text-navy';
 
 export function JobEditor({ companyId, job, open, onClose, onSaved }: {
@@ -70,7 +70,7 @@ export function JobEditor({ companyId, job, open, onClose, onSaved }: {
     <AnimatePresence>
       {open && (
         <div className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center" role="dialog" aria-modal="true">
-          <motion.div className="absolute inset-0 bg-navy/40 backdrop-blur-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
+          <motion.div className="absolute inset-0 bg-[#0B1F33]/40 backdrop-blur-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
           <motion.div
             className="relative z-10 flex max-h-[92vh] w-full max-w-lg flex-col rounded-t-2xl border border-line bg-surface sm:rounded-2xl"
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 30 }}

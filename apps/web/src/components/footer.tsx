@@ -46,7 +46,7 @@ export async function Footer() {
   ];
 
   return (
-    <footer className="mt-20 border-t border-line bg-white/70">
+    <footer className="mt-20 border-t border-line bg-surface/70">
       <div className="container-wide py-14">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           {/* Brend */}

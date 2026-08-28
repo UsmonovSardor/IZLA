@@ -10,7 +10,7 @@ export async function VendorCard({ v, priority = false }: { v: Vendor; priority?
   const cover = v.photos?.[0] ?? 'https://picsum.photos/seed/izla/800/600';
   return (
     <Link href={`/vendor/${v.slug}`} className="group block">
-      <article className="relative overflow-hidden rounded-xl bg-white border border-line shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-pop">
+      <article className="relative overflow-hidden rounded-xl bg-surface border border-line shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-pop">
         {/* Rasm */}
         <div className="relative aspect-[4/3] overflow-hidden bg-bg">
           <Image
@@ -25,7 +25,7 @@ export async function VendorCard({ v, priority = false }: { v: Vendor; priority?
 
           {/* Kategoriya chip (glass) */}
           {v.category && (
-            <span className="chip absolute top-3 left-3 bg-white/85 backdrop-blur text-navy shadow-sm">
+            <span className="chip absolute top-3 left-3 bg-surface/85 backdrop-blur text-navy shadow-sm">
               <span>{v.category.icon}</span>
               {v.category.name}
             </span>
@@ -42,7 +42,7 @@ export async function VendorCard({ v, priority = false }: { v: Vendor; priority?
               <span className="truncate">{v.name}</span>
               {v.verified && <BadgeCheck className="h-4 w-4 shrink-0 text-teal-400" />}
             </h3>
-            <span className="chip shrink-0 bg-navy/70 backdrop-blur text-white">
+            <span className="chip shrink-0 bg-[#0B1F33]/70 backdrop-blur text-white">
               <Star className="h-3.5 w-3.5 fill-warning text-warning" />
               <span className="font-semibold">{v.rating.toFixed(1)}</span>
             </span>

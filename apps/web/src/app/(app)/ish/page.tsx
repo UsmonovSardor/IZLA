@@ -42,10 +42,10 @@ export default async function IshPage() {
             <Link href="/rezyume" className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-violet-700">
               <FileText size={16} /> {t('createResume')}
             </Link>
-            <Link href="/ish/arizalarim" className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-sm font-semibold text-navy transition hover:bg-bg">
+            <Link href="/ish/arizalarim" className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-sm font-semibold text-navy transition hover:bg-bg">
               <ClipboardList size={16} /> {t('myApplications')}
             </Link>
-            <Link href="/ish/saqlanganlar" className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-sm font-semibold text-navy transition hover:bg-bg">
+            <Link href="/ish/saqlanganlar" className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-sm font-semibold text-navy transition hover:bg-bg">
               <Bookmark size={16} /> {ts('title')}
             </Link>
           </div>

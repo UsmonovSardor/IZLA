@@ -69,12 +69,12 @@ function FavVendorCard({ v, reviews }: { v: Vendor; rating: string; reviews: str
   const cover = v.photos?.[0] ?? 'https://picsum.photos/seed/izla/800/600';
   return (
     <Link href={`/vendor/${v.slug}`} className="group block">
-      <article className="relative overflow-hidden rounded-xl border border-line bg-white shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-pop">
+      <article className="relative overflow-hidden rounded-xl border border-line bg-surface shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-pop">
         <div className="relative aspect-[4/3] overflow-hidden bg-bg">
           <Image src={cover} alt={v.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" sizes="(max-width:640px) 100vw, 25vw" />
           <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-navy/10 to-transparent" />
           {v.category && (
-            <span className="chip absolute top-3 left-3 bg-white/85 text-navy shadow-sm backdrop-blur"><span>{v.category.icon}</span>{v.category.name}</span>
+            <span className="chip absolute top-3 left-3 bg-surface/85 text-navy shadow-sm backdrop-blur"><span>{v.category.icon}</span>{v.category.name}</span>
           )}
           <div className="absolute top-2.5 right-2.5"><FavoriteButton vendorId={v.id} /></div>
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-3.5">
@@ -82,7 +82,7 @@ function FavVendorCard({ v, reviews }: { v: Vendor; rating: string; reviews: str
               <span className="truncate">{v.name}</span>
               {v.verified && <BadgeCheck className="h-4 w-4 shrink-0 text-teal-400" />}
             </h3>
-            <span className="chip shrink-0 bg-navy/70 text-white backdrop-blur">
+            <span className="chip shrink-0 bg-[#0B1F33]/70 text-white backdrop-blur">
               <Star className="h-3.5 w-3.5 fill-warning text-warning" /><span className="font-semibold">{v.rating.toFixed(1)}</span>
             </span>
           </div>
@@ -98,7 +98,7 @@ function FavVendorCard({ v, reviews }: { v: Vendor; rating: string; reviews: str
 
 function EmptyState({ icon, title, text, action }: { icon: React.ReactNode; title: string; text: string; action: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-dashed border-line bg-white py-20 text-center">
+    <div className="rounded-2xl border border-dashed border-line bg-surface py-20 text-center">
       <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-bg text-slate-300">{icon}</div>
       <h2 className="mt-5 font-display text-xl font-bold text-navy">{title}</h2>
       <p className="mx-auto mt-2 max-w-sm text-slate2">{text}</p>

@@ -68,7 +68,7 @@ export default function EmployerCabinetPage() {
           <p className="mt-1 text-slate2">{t('subtitle')}</p>
         </div>
         {companies.length > 1 && (
-          <select value={activeId ?? ''} onChange={(e) => setActiveId(e.target.value)} className="rounded-xl border border-line bg-white px-3 py-2 text-sm">
+          <select value={activeId ?? ''} onChange={(e) => setActiveId(e.target.value)} className="rounded-xl border border-line bg-surface px-3 py-2 text-sm">
             {companies.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
         )}
@@ -164,7 +164,7 @@ function JobsTab({ jobs, onNew, onEdit, onArchive, onAts }: {
       ) : (
         <div className="mt-5 space-y-3">
           {jobs.map((j, i) => (
-            <motion.div key={j.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(i * 0.04, 0.3) }} className="rounded-2xl border border-line bg-white p-4 transition hover:border-violet-200">
+            <motion.div key={j.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(i * 0.04, 0.3) }} className="rounded-2xl border border-line bg-surface p-4 transition hover:border-violet-200">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
@@ -217,7 +217,7 @@ function CompanyForm({ submitLabel, initial, companyId, onSaved }: {
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const field = 'w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm focus:border-violet-500 focus:outline-none';
+  const field = 'w-full rounded-xl border border-line bg-surface px-3.5 py-2.5 text-sm focus:border-violet-500 focus:outline-none';
   const patch = (p: Partial<EmployerCompanyInput>) => setF((s) => ({ ...s, ...p }));
 
   const save = async () => {
@@ -265,7 +265,7 @@ function CompanyForm({ submitLabel, initial, companyId, onSaved }: {
 
 function StatCard({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-line bg-white p-4">
+    <div className="rounded-2xl border border-line bg-surface p-4">
       <div className="flex items-center gap-2 text-violet-500">{icon}<span className="text-xs text-slate2">{label}</span></div>
       <div className="mt-1 font-display text-xl font-bold tabular-nums text-navy">{value}</div>
     </div>

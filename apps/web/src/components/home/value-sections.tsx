@@ -23,7 +23,7 @@ export async function HowItWorks() {
         <div className="pointer-events-none absolute inset-x-[16%] top-9 hidden h-px bg-gradient-to-r from-line via-brand/30 to-line md:block" />
         {steps.map((s, i) => (
           <Reveal key={s.k} delay={i * 90} className="h-full">
-            <div className="relative flex h-full flex-col items-center rounded-2xl border border-line bg-white p-7 text-center shadow-card transition hover:-translate-y-1 hover:shadow-pop">
+            <div className="relative flex h-full flex-col items-center rounded-2xl border border-line bg-surface p-7 text-center shadow-card transition hover:-translate-y-1 hover:shadow-pop">
               <div className={`grid h-[72px] w-[72px] place-items-center rounded-2xl bg-gradient-to-br ${s.grad} text-white shadow-md`}>
                 <s.icon size={30} />
               </div>
@@ -58,7 +58,7 @@ export async function WhyIzla() {
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {items.map((it, i) => (
           <Reveal key={it.k} delay={i * 70}>
-            <div className="h-full rounded-2xl border border-line bg-white p-6 transition hover:-translate-y-1 hover:shadow-card">
+            <div className="h-full rounded-2xl border border-line bg-surface p-6 transition hover:-translate-y-1 hover:shadow-card">
               <div className={`grid h-12 w-12 place-items-center rounded-xl ${it.bg} ${it.color}`}>
                 <it.icon size={24} />
               </div>

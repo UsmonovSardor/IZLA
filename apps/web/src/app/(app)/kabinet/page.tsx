@@ -72,7 +72,7 @@ export default function KabinetPage() {
           <select
             value={activeId ?? ''}
             onChange={(e) => setActiveId(e.target.value)}
-            className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm"
+            className="rounded-xl border border-slate-200 bg-surface px-3 py-2 text-sm"
           >
             {vendors.map((v) => <option key={v.id} value={v.id}>{v.name}</option>)}
           </select>
@@ -133,7 +133,7 @@ function VendorDashboard({ vendorId, tab, setTab, locale }: { vendorId: string; 
 
 function StatCard({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4">
+    <div className="rounded-2xl border border-slate-200 bg-surface p-4">
       <div className="flex items-center gap-2 text-slate-400">{icon}<span className="text-xs text-slate2">{label}</span></div>
       <div className="font-display text-xl font-bold text-navy mt-1 tabular-nums">{value}</div>
     </div>
@@ -162,7 +162,7 @@ function ProfileForm({ detail, onSaved }: { detail: KabinetVendorDetail; onSaved
     } finally { setSaving(false); }
   };
 
-  const field = 'w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm focus:border-brand focus:outline-none';
+  const field = 'w-full rounded-xl border border-slate-200 bg-surface px-3.5 py-2.5 text-sm focus:border-brand focus:outline-none';
   const days: [string, string][] = [['mon_fri', t('profile.monFri')], ['sat', t('profile.sat')], ['sun', t('profile.sun')]];
 
   return (
@@ -220,12 +220,12 @@ function ServicesTab({ detail, onChange }: { detail: KabinetVendorDetail; onChan
   const toggle = async (id: string, active: boolean) => { await api.kabinetUpdateService(id, { active: !active }); onChange(); };
   const remove = async (id: string) => { await api.kabinetDeleteService(id); onChange(); };
 
-  const field = 'rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:border-brand focus:outline-none';
+  const field = 'rounded-xl border border-slate-200 bg-surface px-3 py-2 text-sm focus:border-brand focus:outline-none';
 
   return (
     <div className="max-w-2xl">
       {/* Qo'shish */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 flex flex-wrap items-end gap-3">
+      <div className="rounded-2xl border border-slate-200 bg-surface p-4 flex flex-wrap items-end gap-3">
         <div className="flex-1 min-w-[140px]"><span className="text-xs text-slate-400">{t('services.name')}</span>
           <input className={`${field} w-full mt-1`} value={adding.name} onChange={(e) => setAdding({ ...adding, name: e.target.value })} /></div>
         <div className="w-28"><span className="text-xs text-slate-400">{t('services.price')}</span>
@@ -239,7 +239,7 @@ function ServicesTab({ detail, onChange }: { detail: KabinetVendorDetail; onChan
       <div className="mt-4 space-y-2">
         {services.length === 0 && <p className="text-slate2 text-sm py-6 text-center">{t('services.empty')}</p>}
         {services.map((s) => (
-          <div key={s.id} className={`flex items-center gap-3 rounded-xl border p-3 ${s.active ? 'border-slate-200 bg-white' : 'border-slate-100 bg-slate-50 opacity-70'}`}>
+          <div key={s.id} className={`flex items-center gap-3 rounded-xl border p-3 ${s.active ? 'border-slate-200 bg-surface' : 'border-slate-100 bg-slate-50 opacity-70'}`}>
             <div className="flex-1 min-w-0">
               <div className="font-medium text-navy text-sm truncate">{s.name}</div>
               <div className="text-xs text-slate2">{Number(s.price).toLocaleString('ru-RU')} {t('sum')} · {s.durationMin} {t('services.duration').replace(/\s*\(.*\)/, '')}</div>
@@ -271,7 +271,7 @@ function BookingsTab({ vendorId, locale }: { vendorId: string; locale: string })
   return (
     <div className="space-y-2 max-w-3xl">
       {items.map((b) => (
-        <div key={b.id} className="rounded-xl border border-slate-200 bg-white p-3.5 flex flex-wrap items-center gap-3">
+        <div key={b.id} className="rounded-xl border border-slate-200 bg-surface p-3.5 flex flex-wrap items-center gap-3">
           <div className="flex-1 min-w-[160px]">
             <div className="font-medium text-navy text-sm">{b.service?.name ?? t('bookings.noService')}</div>
             <div className="text-xs text-slate2 mt-0.5">

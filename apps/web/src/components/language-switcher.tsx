@@ -34,7 +34,7 @@ export function LanguageSwitcher() {
         onClick={() => setOpen((o) => !o)}
         aria-label="Til / Язык / Language"
         aria-expanded={open}
-        className={`inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-sm font-semibold text-ink transition hover:border-brand/40 hover:text-brand ${
+        className={`inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-sm font-semibold text-ink transition hover:border-brand/40 hover:text-brand ${
           pending ? 'opacity-60' : ''
         }`}
       >
@@ -43,7 +43,7 @@ export function LanguageSwitcher() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-44 overflow-hidden rounded-xl border border-line bg-white shadow-pop animate-fade-up">
+        <div className="absolute right-0 top-full z-50 mt-2 w-44 overflow-hidden rounded-xl border border-line bg-surface shadow-pop animate-fade-up">
           {locales.map((l) => (
             <button
               key={l}

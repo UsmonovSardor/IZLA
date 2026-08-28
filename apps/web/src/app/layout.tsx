@@ -12,6 +12,7 @@ import { HeaderAuth } from '@/components/header-auth';
 import { HeaderBack } from '@/components/header-back';
 import { HeroMarquee } from '@/components/hero-marquee';
 import { LanguageSwitcher } from '@/components/language-switcher';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { FavoritesNavIcon } from '@/components/favorites-nav-icon';
 import { NotificationsBell } from '@/components/notifications-bell';
 import { Footer } from '@/components/footer';
@@ -90,6 +91,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <ViewTransitions>
     <html lang={locale} className={`${sora.variable} ${inter.variable}`}>
       <body className="font-sans min-h-screen bg-bg bg-aurora-soft pb-20 md:pb-0">
+        {/* FOUC oldini olish — dark opt-in tanlovini paint'dan oldin qo'yadi */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem('izla:theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}`,
+          }}
+        />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
           <ToastProvider>
@@ -99,7 +106,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             {/* Qiymat-taklif lentasi — eng tepada (navbar'dan yuqorida), kafil uslubi */}
             <HeroMarquee />
 
-            <header className="sticky top-0 z-40 border-b border-white/50 bg-white/70 backdrop-blur-xl">
+            <header className="sticky top-0 z-40 border-b border-white/50 bg-surface/70 backdrop-blur-xl">
               <div className="container-wide h-16 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2 shrink-0">
                   <HeaderBack />
@@ -121,6 +128,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <div className="flex items-center gap-2">
                   <NotificationsBell />
                   <FavoritesNavIcon />
+                  <ThemeToggle />
                   <LanguageSwitcher />
                   <HeaderAuth />
                 </div>
@@ -143,7 +151,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Footer />
 
             {/* Mobil bottom-nav (TZ: mobil-birinchi) */}
-            <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/50 bg-white/80 backdrop-blur-xl grid grid-cols-4 h-16">
+            <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/50 bg-surface/80 backdrop-blur-xl grid grid-cols-4 h-16">
               {mobileTabs.map((tab) => (
                 <Link
                   key={tab.href}

@@ -16,6 +16,25 @@
   --font-inter: 'Inter';
   /* Nativ tizim monospace — Google shrift yuklanmaydi (faqat kichik raqam/kod uchun) */
   --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+
+  /* ===== Semantik rang tokenlari (LIGHT) — Tailwind bg/surface/ink/slate2/line/navy shularga ishora qiladi ===== */
+  --c-bg: #F6F8FC;
+  --c-surface: #FFFFFF;
+  --c-line: #E6EBF2;
+  --c-ink: #1E293B;
+  --c-slate2: #64748B;
+  --c-heading: #0B1F33; /* navy token = sarlavha matni */
+}
+
+/* ===== DARK — OPT-IN (faqat foydalanuvchi toggle qilsa; tizimga majburlanmaydi) ===== */
+:root[data-theme="dark"] {
+  --c-bg: #0a1526;
+  --c-surface: #0f1d31;
+  --c-line: #24344f;
+  --c-ink: #e6eef9;
+  --c-slate2: #93a5bf;
+  --c-heading: #f1f6fd;
+  color-scheme: dark;
 }
 
 html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
@@ -24,16 +43,16 @@ html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
 .fld {
   width: 100%;
   border-radius: 12px;
-  border: 1px solid #E6EBF2;
-  background: #fff;
+  border: 1px solid var(--c-line);
+  background: var(--c-surface);
   padding: 0.7rem 0.85rem;
   font-size: 0.95rem;
-  color: #1E293B;
+  color: var(--c-ink);
   outline: none;
   transition: border-color .15s, box-shadow .15s;
 }
 .fld:focus { border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
-.fld::placeholder { color: #94a3b8; }
+.fld::placeholder { color: var(--c-slate2); opacity: .7; }
 
 /* ===== Sahifa o'tishi — native View Transitions (next-view-transitions) ===== */
 @keyframes vt-fade-in {
@@ -72,7 +91,7 @@ html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
   }
 }
 /* background-color (shorthand EMAS) — aks holda v4'da unlayered qoida bg-aurora-soft utility'sini bosadi */
-body { background-color: #F6F8FC; color: #1E293B; }
+body { background-color: var(--c-bg); color: var(--c-ink); }
 
 /* Ichki scroll konteynerlar (avval Lenis uchun edi — nativ scroll'da ham foydali) */
 [data-lenis-prevent] { overscroll-behavior: contain; }
@@ -85,7 +104,7 @@ body { background-color: #F6F8FC; color: #1E293B; }
 
   /* Oyna (glass) karta */
   .glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/60 shadow-glass;
+    @apply bg-surface/70 backdrop-blur-xl border border-white/60 shadow-glass;
   }
   .glass-dark {
     background: rgba(15, 31, 51, .55);
@@ -122,7 +141,7 @@ body { background-color: #F6F8FC; color: #1E293B; }
 .izla-range:focus-visible::-webkit-slider-thumb { outline: 2px solid #2563EB; outline-offset: 2px; }
 
 /* Skeleton yuklash */
-.skeleton { position: relative; overflow: hidden; background: #eef2f7; }
+.skeleton { position: relative; overflow: hidden; background: color-mix(in srgb, var(--c-line) 70%, var(--c-bg)); }
 .skeleton::after {
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,.6), transparent);

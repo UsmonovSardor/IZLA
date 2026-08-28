@@ -85,7 +85,7 @@ function ToastViewport({ items, onDismiss }: { items: ToastItem[]; onDismiss: (i
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, x: 40, scale: 0.96 }}
               transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-              className={`pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-2xl border ${s.ring} bg-white/95 px-4 py-3 shadow-[0_16px_50px_-12px_rgba(15,31,51,.28)] backdrop-blur-md`}
+              className={`pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-2xl border ${s.ring} bg-surface/95 px-4 py-3 shadow-[0_16px_50px_-12px_rgba(15,31,51,.28)] backdrop-blur-md`}
               role="status"
             >
               <Icon className={`mt-0.5 h-5 w-5 flex-none ${s.iconCls}`} />

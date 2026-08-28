@@ -89,7 +89,7 @@ export function NotificationsBell() {
           <motion.div
             initial={{ opacity: 0, y: 8, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-            className="absolute right-0 top-11 z-50 w-[340px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-line bg-white shadow-pop"
+            className="absolute right-0 top-11 z-50 w-[340px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-line bg-surface shadow-pop"
           >
             <div className="flex items-center justify-between border-b border-line px-4 py-3">
               <h3 className="font-display text-sm font-bold text-navy">{t('title')}</h3>

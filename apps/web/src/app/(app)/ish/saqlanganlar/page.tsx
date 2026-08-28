@@ -69,7 +69,7 @@ export default function SavedJobsPage() {
 
 function EmptyState({ icon, title, text, action }: { icon: React.ReactNode; title: string; text: string; action: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-dashed border-line bg-white py-20 text-center">
+    <div className="rounded-2xl border border-dashed border-line bg-surface py-20 text-center">
       <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-bg text-slate-300">{icon}</div>
       <h2 className="mt-5 font-display text-xl font-bold text-navy">{title}</h2>
       <p className="mx-auto mt-2 max-w-sm text-slate2">{text}</p>

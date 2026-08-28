@@ -30,7 +30,7 @@ export default function AppError({ error, reset }: { error: Error & { digest?: s
         </button>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-5 py-3 text-sm font-semibold text-slate2 transition hover:text-navy"
+          className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-5 py-3 text-sm font-semibold text-slate2 transition hover:text-navy"
         >
           <Home size={16} /> Bosh sahifa
         </Link>

@@ -62,7 +62,7 @@ export default async function HomePage() {
 
             {/* KONTENT */}
             <div className="relative z-10 max-w-xl px-6 py-10 sm:px-9 md:py-14 lg:max-w-[56%] lg:px-14 lg:py-16">
-              <span className="chip bg-white/10 text-white/90 border border-white/20 animate-fade-up">
+              <span className="chip bg-surface/10 text-white/90 border border-white/20 animate-fade-up">
                 <Sparkles className="h-3.5 w-3.5 text-teal-400" /> {t('badge')}
               </span>
               <h1 className="mt-5 font-display text-4xl sm:text-5xl lg:text-[3.4rem] font-bold leading-[1.05] text-white animate-fade-up">
@@ -95,7 +95,7 @@ export default async function HomePage() {
                 </Suspense>
                 <Link
                   href="/qidiruv"
-                  className="chip border border-white/25 bg-transparent font-semibold text-white transition hover:bg-white/10"
+                  className="chip border border-white/25 bg-transparent font-semibold text-white transition hover:bg-surface/10"
                 >
                   <MapPin className="h-3.5 w-3.5 text-teal-400" /> {th('ctaMap')}
                 </Link>
@@ -160,10 +160,10 @@ export default async function HomePage() {
                 <p className="mt-2 text-white/75">{t('ctaSub')}</p>
               </div>
               <div className="flex gap-3">
-                <Link href="/tg" className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-navy shadow-pop transition hover:scale-105">
+                <Link href="/tg" className="inline-flex items-center gap-2 rounded-xl bg-surface px-6 py-3.5 text-sm font-semibold text-navy shadow-pop transition hover:scale-105">
                   <Send className="h-4 w-4 text-brand" /> {t('ctaTelegram')}
                 </Link>
-                <Link href="/qidiruv" className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-6 py-3.5 text-sm font-semibold text-white border border-white/20 transition hover:bg-white/20">
+                <Link href="/qidiruv" className="inline-flex items-center gap-2 rounded-xl bg-surface/10 px-6 py-3.5 text-sm font-semibold text-white border border-white/20 transition hover:bg-surface/20">
                   {t('ctaStart')} <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -195,7 +195,7 @@ async function HeroChips() {
         <Link
           key={c.id}
           href={`/qidiruv?category=${c.slug}`}
-          className="chip bg-white/10 text-white/85 border border-white/15 transition hover:bg-white/20"
+          className="chip bg-surface/10 text-white/85 border border-white/15 transition hover:bg-surface/20"
         >
           <span>{c.icon}</span> {c.name}
         </Link>
@@ -208,7 +208,7 @@ function HeroChipsSkeleton() {
   return (
     <>
       {[64, 88, 76, 92, 70, 84].map((w, i) => (
-        <span key={i} className="skeleton h-8 rounded-full bg-white/20" style={{ width: w }} />
+        <span key={i} className="skeleton h-8 rounded-full bg-surface/20" style={{ width: w }} />
       ))}
     </>
   );
@@ -235,7 +235,7 @@ function StatsSkeleton() {
   return (
     <div className="mt-8 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
       {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="flex items-center gap-3 rounded-2xl border border-white/20 bg-white/[0.13] px-3.5 py-3">
+        <div key={i} className="flex items-center gap-3 rounded-2xl border border-white/20 bg-surface/[0.13] px-3.5 py-3">
           <Sk className="h-9 w-9 rounded-xl" />
           <div className="flex-1 space-y-1.5">
             <Sk className="h-4 w-10" />
@@ -260,7 +260,7 @@ async function CategoriesGrid() {
             href={`/qidiruv?category=${c.slug}`}
             className={`group flex flex-col items-center gap-3 rounded-xl border border-line bg-gradient-to-br ${TILE_GRADIENTS[i % TILE_GRADIENTS.length]} p-5 transition-all duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-card`}
           >
-            <span className="grid h-14 w-14 place-items-center rounded-2xl bg-white text-2xl shadow-sm transition-transform group-hover:scale-110">
+            <span className="grid h-14 w-14 place-items-center rounded-2xl bg-surface text-2xl shadow-sm transition-transform group-hover:scale-110">
               {c.icon}
             </span>
             <span className="text-center text-sm font-semibold text-ink leading-tight">{c.name}</span>
@@ -275,7 +275,7 @@ function CategoriesSkeleton() {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
       {Array.from({ length: 12 }).map((_, i) => (
-        <div key={i} className="flex flex-col items-center gap-3 rounded-xl border border-line bg-white p-5">
+        <div key={i} className="flex flex-col items-center gap-3 rounded-xl border border-line bg-surface p-5">
           <Sk className="h-14 w-14 rounded-2xl" />
           <Sk className="h-4 w-16" />
         </div>

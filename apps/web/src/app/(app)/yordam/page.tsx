@@ -22,7 +22,7 @@ export default async function FaqPage() {
 
       <div className="mt-8 space-y-3">
         {items.map((it, i) => (
-          <details key={i} className="group rounded-2xl border border-line bg-white px-5 py-4 [&_svg]:open:rotate-180">
+          <details key={i} className="group rounded-2xl border border-line bg-surface px-5 py-4 [&_svg]:open:rotate-180">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display font-semibold text-navy">
               {it.q}
               <ChevronDown className="h-5 w-5 shrink-0 text-slate2 transition-transform" />

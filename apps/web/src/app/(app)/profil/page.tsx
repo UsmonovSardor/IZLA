@@ -149,7 +149,7 @@ export default function ProfilPage() {
             <div className="flex items-center gap-1.5 text-sm font-medium opacity-90"><Coins className="h-4 w-4" /> {t('coinsCard.title')}</div>
             <div className="mt-1 font-display text-3xl font-extrabold tabular-nums">{coins ? coins.balance : user.coins}</div>
           </div>
-          <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white/20"><Gift className="h-7 w-7" /></div>
+          <div className="grid h-14 w-14 place-items-center rounded-2xl bg-surface/20"><Gift className="h-7 w-7" /></div>
         </div>
         <div className="p-5">
           <p className="text-xs text-slate2">{t('coinsCard.sub')}</p>
@@ -198,7 +198,7 @@ export default function ProfilPage() {
             <select
               value={locale}
               onChange={(e) => setLocale(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-line bg-white px-3 py-2.5 text-sm outline-none focus:border-brand"
+              className="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-sm outline-none focus:border-brand"
             >
               {LOCALES.map((l) => <option key={l.value} value={l.value}>{l.label}</option>)}
             </select>

@@ -72,7 +72,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
       <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_340px]">
         {/* Asosiy */}
         <div>
-          <div className="rounded-3xl border border-line bg-white p-6 md:p-8">
+          <div className="rounded-3xl border border-line bg-surface p-6 md:p-8">
             <div className="flex items-start gap-4">
               {co.logo ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -139,7 +139,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
 
         {/* Yon panel */}
         <aside className="space-y-4">
-          <div className="rounded-2xl border border-line bg-white p-5">
+          <div className="rounded-2xl border border-line bg-surface p-5">
             <div className="space-y-4">
               {fact(<Briefcase size={16} />, t('employment'), t(`emp.${job.employment}`))}
               {fact(<TrendingUp size={16} />, t('experience'), t(`exp.${job.experience}`))}
@@ -153,7 +153,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
             </div>
           </div>
 
-          <div className="rounded-2xl border border-line bg-white p-5">
+          <div className="rounded-2xl border border-line bg-surface p-5">
             <div className="flex items-center gap-3">
               {co.logo ? (
                 // eslint-disable-next-line @next/next/no-img-element

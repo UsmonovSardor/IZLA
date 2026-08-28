@@ -55,9 +55,9 @@ export function WelcomeOnboarding() {
           aria-modal="true"
           aria-label={t('title')}
         >
-          <div className="absolute inset-0 bg-navy/50 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-[#0B1F33]/50 backdrop-blur-sm" />
           <motion.div
-            className="relative w-full max-w-md overflow-hidden rounded-3xl border border-white/60 bg-white shadow-2xl"
+            className="relative w-full max-w-md overflow-hidden rounded-3xl border border-white/60 bg-surface shadow-2xl"
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 40, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: 30, scale: 0.97 }}
@@ -70,11 +70,11 @@ export function WelcomeOnboarding() {
               <button
                 onClick={close}
                 aria-label={t('skip')}
-                className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-white/15 text-white/90 transition hover:bg-white/25"
+                className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-surface/15 text-white/90 transition hover:bg-surface/25"
               >
                 <X className="h-4 w-4" />
               </button>
-              <span className="mx-auto inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
+              <span className="mx-auto inline-flex items-center gap-1.5 rounded-full bg-surface/15 px-3 py-1 text-xs font-semibold">
                 <Sparkles className="h-3.5 w-3.5 text-teal-300" /> {t('badge')}
               </span>
               <h2 className="mt-3 font-display text-2xl font-bold">{t('title')}</h2>
