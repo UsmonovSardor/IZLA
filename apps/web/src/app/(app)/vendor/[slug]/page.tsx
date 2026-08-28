@@ -293,6 +293,7 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
               accent={accent}
               anonLabel={t('reviews.anon')}
               ratingLabel={t('reviews.rating')}
+              verifiedLabel={t('reviews.verified')}
             />
           ) : (
             <div className="rounded-2xl border border-dashed border-line bg-surface py-14 text-center">

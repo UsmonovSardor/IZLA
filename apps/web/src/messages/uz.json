@@ -388,7 +388,8 @@
       "rating": "Xizmat sifati uchun",
       "anon": "Foydalanuvchi",
       "word": "sharh",
-      "beFirst": "Birinchi bo‘lib sharh qoldiring!"
+      "beFirst": "Birinchi bo‘lib sharh qoldiring!",
+      "verified": "Tasdiqlangan tashrif"
     },
     "minutes": "{count} daqiqa",
     "hours": {

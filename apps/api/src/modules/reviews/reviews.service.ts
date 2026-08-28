@@ -37,11 +37,25 @@ export class ReviewsService {
     const existing = await this.prisma.review.findFirst({ where: { userId, vendorId: dto.vendorId } });
     if (existing) throw new ConflictException('Siz bu joyga allaqachon sharh qoldirgansiz');
 
+    // "Tasdiqlangan tashrif" — foydalanuvchining shu vendorda hali sharhlanmagan
+    // broni bo'lsa, sharhga bog'lanadi (bookingId → verified belgisi UI'da).
+    const eligibleBooking = await this.prisma.booking.findFirst({
+      where: {
+        userId,
+        vendorId: dto.vendorId,
+        status: { in: ['CONFIRMED', 'COMPLETED'] },
+        review: { is: null },
+      },
+      orderBy: { slotStart: 'desc' },
+      select: { id: true },
+    });
+
     const review = await this.prisma.$transaction(async (tx) => {
       const created = await tx.review.create({
         data: {
           userId,
           vendorId: dto.vendorId,
+          bookingId: eligibleBooking?.id ?? null,
           rating: dto.rating,
           text: dto.text?.trim() || null,
           status: 'PUBLISHED',
@@ -66,6 +80,7 @@ export class ReviewsService {
       rating: review.rating,
       text: review.text,
       createdAt: review.createdAt,
+      verified: review.bookingId != null,
       user: { name: review.user.name, avatarUrl: review.user.avatarUrl },
     };
   }

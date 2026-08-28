@@ -2,18 +2,18 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Quote, Star, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Quote, Star, ArrowLeft, ArrowRight, BadgeCheck } from 'lucide-react';
 
 interface Review {
-  id: string; rating: number; text?: string;
+  id: string; rating: number; text?: string; bookingId?: string | null;
   photos?: string[]; user?: { name?: string; avatarUrl?: string | null };
 }
 
 /** Sharhlar karuseli — katta iqtibos + muallif + reyting kartasi (Dentaire uslubi). */
 export function Testimonials({
-  heading, subheading, reviews, accent, anonLabel, ratingLabel,
+  heading, subheading, reviews, accent, anonLabel, ratingLabel, verifiedLabel,
 }: {
-  heading?: string; subheading?: string; reviews: Review[]; accent: string; anonLabel: string; ratingLabel: string;
+  heading?: string; subheading?: string; reviews: Review[]; accent: string; anonLabel: string; ratingLabel: string; verifiedLabel?: string;
 }) {
   const withText = reviews.filter((r) => r.text);
   const [i, setI] = useState(0);
@@ -76,7 +76,14 @@ export function Testimonials({
                 : (r.user?.name ?? anonLabel).charAt(0)}
             </div>
             <div>
-              <div className="font-semibold text-navy">{r.user?.name ?? anonLabel}</div>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-navy">{r.user?.name ?? anonLabel}</span>
+                {r.bookingId && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">
+                    <BadgeCheck className="h-3.5 w-3.5" /> {verifiedLabel ?? 'Tasdiqlangan tashrif'}
+                  </span>
+                )}
+              </div>
               <div className="flex gap-0.5">
                 {[0, 1, 2, 3, 4].map((s) => (
                   <Star key={s} className={`h-3.5 w-3.5 ${s < r.rating ? 'fill-amber-400 text-amber-400' : 'text-line'}`} />

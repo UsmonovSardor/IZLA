@@ -331,6 +331,7 @@ export interface VendorDetail extends Vendor {
   reviews: {
     id: string; rating: number; text?: string; createdAt: string;
     photos?: string[]; criteria?: Record<string, number>;
+    bookingId?: string | null;
     user?: { name?: string; avatarUrl?: string | null };
   }[];
 }

@@ -388,7 +388,8 @@
       "rating": "For quality service",
       "anon": "Guest",
       "word": "reviews",
-      "beFirst": "Be the first to leave a review!"
+      "beFirst": "Be the first to leave a review!",
+      "verified": "Verified visit"
     },
     "minutes": "{count} min",
     "hours": {
