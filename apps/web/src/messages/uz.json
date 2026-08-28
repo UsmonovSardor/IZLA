@@ -1491,5 +1491,18 @@
     "successTitle": "Ariza qabul qilindi!",
     "successBody": "Kabinetга yo'naltiryapmiz — u yerda profilingizni to'ldiring.",
     "errorTitle": "Xatolik yuz berdi"
+  },
+  "onboarding": {
+    "badge": "Xush kelibsiz",
+    "title": "Izla'ga xush kelibsiz!",
+    "subtitle": "Barcha xizmatlar — bitta ilovada. Bir daqiqada tanishing.",
+    "f1t": "Qidiring va toping",
+    "f1d": "Klinika, salon, restoran, fitnes — xaritadan eng yaqinini.",
+    "f2t": "Onlayn bron qiling",
+    "f2d": "Navbatsiz, 30 soniyada joy band qiling.",
+    "f3t": "Saqlang va kuzating",
+    "f3d": "Sevimlilarni belgilang, bonus tangalar yig'ing.",
+    "cta": "Boshlash",
+    "skip": "O'tkazib yuborish"
   }
 }

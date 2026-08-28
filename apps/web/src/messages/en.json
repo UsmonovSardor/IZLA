@@ -1491,5 +1491,18 @@
     "successTitle": "Request received!",
     "successBody": "Taking you to your dashboard — complete your profile there.",
     "errorTitle": "Something went wrong"
+  },
+  "onboarding": {
+    "badge": "Welcome",
+    "title": "Welcome to Izla!",
+    "subtitle": "Every service — in one app. Get the hang of it in a minute.",
+    "f1t": "Search and find",
+    "f1d": "Clinics, salons, restaurants, fitness — the nearest on the map.",
+    "f2t": "Book online",
+    "f2d": "No queues, a spot in 30 seconds.",
+    "f3t": "Save and track",
+    "f3d": "Mark favorites, collect bonus coins.",
+    "cta": "Get started",
+    "skip": "Skip"
   }
 }

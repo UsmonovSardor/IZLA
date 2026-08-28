@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react';
  */
 const AiAssistant = dynamic(() => import('./ai-assistant').then((m) => m.AiAssistant), { ssr: false });
 const CommandPalette = dynamic(() => import('./command-palette').then((m) => m.CommandPalette), { ssr: false });
+const WelcomeOnboarding = dynamic(() => import('./welcome-onboarding').then((m) => m.WelcomeOnboarding), { ssr: false });
 
 export function DeferredWidgets() {
   const [mounted, setMounted] = useState(false);
@@ -53,6 +54,7 @@ export function DeferredWidgets() {
     <>
       <CommandPalette />
       <AiAssistant />
+      <WelcomeOnboarding />
     </>
   );
 }
