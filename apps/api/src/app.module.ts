@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ScheduleModule } from '@nestjs/schedule';
 import { LoggerModule } from 'nestjs-pino';
 import { PrismaModule } from './prisma/prisma.module';
 import { HealthModule } from './modules/health/health.module';
@@ -21,10 +22,12 @@ import { FavoritesModule } from './modules/favorites/favorites.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { CoinsModule } from './modules/coins/coins.module';
 import { ReferralsModule } from './modules/referrals/referrals.module';
+import { SchedulerModule } from './modules/scheduler/scheduler.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ScheduleModule.forRoot(),
     // Strukturaviy log: prod'da JSON (log-agregator uchun), dev'da pretty. Maxfiy maydonlar redakt.
     LoggerModule.forRoot({
       pinoHttp: {
@@ -69,6 +72,7 @@ import { ReferralsModule } from './modules/referrals/referrals.module';
     ReviewsModule,
     CoinsModule,
     ReferralsModule,
+    SchedulerModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

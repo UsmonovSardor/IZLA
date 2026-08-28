@@ -283,6 +283,10 @@ model Booking {
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
 
+  // Lifecycle avtomatizatsiya (cron) uchun idempotentlik belgilari
+  remindedAt        DateTime?
+  reviewRequestedAt DateTime?
+
   user    User     @relation(fields: [userId], references: [id])
   vendor  Vendor   @relation(fields: [vendorId], references: [id])
   service Service  @relation(fields: [serviceId], references: [id])

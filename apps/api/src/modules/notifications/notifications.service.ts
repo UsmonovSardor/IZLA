@@ -61,6 +61,47 @@ export class NotificationsService {
     await this.dispatch(user, 'payment_refunded', tgText, smsText, { paymentId, amount });
   }
 
+  /** Bron eslatmasi (cron — uchrashuv yaqinlashganda). Best-effort. */
+  async bookingReminder(bookingId: string): Promise<void> {
+    const b = await this.prisma.booking.findUnique({
+      where: { id: bookingId },
+      include: {
+        service: { select: { name: true } },
+        vendor: { select: { name: true } },
+        user: { select: { id: true, phone: true } },
+      },
+    });
+    if (!b || !b.user) return;
+    const when = fmtDateTime(b.slotStart);
+    const tgText =
+      `⏰ Eslatma!\n\n${b.service.name} — ${b.vendor.name}\n🗓 ${when}\n\n` +
+      `Uchrashuvingizni unutmang. Izla.uz`;
+    const smsText = `Izla.uz eslatma: ${b.service.name}, ${b.vendor.name}, ${when}. Kutamiz!`;
+    await this.dispatch(b.user, 'booking_reminder', tgText, smsText, {
+      bookingId, title: 'Uchrashuv eslatmasi', body: `${b.service.name} — ${when}`, href: '/bron',
+    });
+  }
+
+  /** Tashrifdan keyin sharh so'rovi (cron). Best-effort. */
+  async reviewRequest(bookingId: string): Promise<void> {
+    const b = await this.prisma.booking.findUnique({
+      where: { id: bookingId },
+      include: {
+        vendor: { select: { name: true, slug: true } },
+        user: { select: { id: true, phone: true } },
+      },
+    });
+    if (!b || !b.user) return;
+    const href = `/vendor/${b.vendor.slug}#sharh`;
+    const tgText =
+      `⭐ Tashrifingiz qanday o‘tdi?\n\n${b.vendor.name} haqida fikringiz boshqalarga yordam beradi.\n` +
+      `Sharh qoldiring va +30 tanga oling 🪙`;
+    const smsText = `Izla.uz: ${b.vendor.name} tashrifingizni baholang — sharh qoldiring va +30 tanga oling.`;
+    await this.dispatch(b.user, 'review_request', tgText, smsText, {
+      bookingId, title: 'Tashrifingizni baholang', body: `${b.vendor.name} — sharh qoldiring (+30 🪙)`, href,
+    });
+  }
+
   /**
    * Ko'chmas mulk lead'i yaratildi. Developer/rieltorga SMS (best-effort — telefon
    * bo'lsa; kalitsiz LOG rejimi) + xaridorga ilova ichida tasdiq. Best-effort.
