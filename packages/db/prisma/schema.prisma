@@ -128,6 +128,15 @@ enum PolicyStatus {
   CANCELLED // bekor qilingan
 }
 
+// --- Ipoteka (monetizatsiya: bank lead-gen) ---
+enum MortgageStatus {
+  NEW // yangi ariza
+  CONTACTED // bank bog'landi
+  APPROVED // tasdiqlandi
+  FUNDED // kredit berildi (Izla komissiya oladi)
+  REJECTED // rad etildi
+}
+
 // ============================================================
 // CORE
 // ============================================================
@@ -166,6 +175,7 @@ model User {
   jobApplications JobApplication[]
   savedJobs       SavedJob[]
   policies        InsurancePolicy[]
+  mortgageLeads   MortgageLead[]
 
   @@index([role])
   @@map("users")
@@ -818,4 +828,83 @@ model InsurancePolicy {
   @@index([status])
   @@index([type])
   @@map("insurance_policies")
+}
+
+// ============================================================
+// IPOTEKA (embedded lending — bank lead-gen)
+// ============================================================
+
+// Hamkor bank (Ipoteka beruvchi). Izla lead yetkazadi, bank komissiya to'laydi.
+model Bank {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  logoUrl     String?
+  description String?
+  license     String?
+  rating      Float    @default(0)
+  verified    Boolean  @default(false)
+  phone       String?
+  color       String?
+  createdAt   DateTime @default(now())
+
+  programs MortgageProgram[]
+
+  @@map("banks")
+}
+
+// Ipoteka dasturi (masalan: "Ipoteka Bank — Yangi uy 17%").
+model MortgageProgram {
+  id            String   @id @default(cuid())
+  bankId        String
+  name          String
+  slug          String   @unique
+  summary       String?
+  annualRate    Decimal  @db.Decimal(5, 2) // yillik foiz stavkasi (%)
+  maxTermMonths Int      @default(240) // maksimal muddat (oy)
+  minDownPct    Int      @default(15) // boshlang'ich to'lov (%)
+  maxAmount     Decimal? @db.Decimal(16, 2) // maksimal kredit summasi (so'm)
+  propertyTypes String[] @default([]) // NEW/SECONDARY/... yoki bo'sh = barchasi
+  features      Json     @default("[]")
+  // Izla komissiyasi — moliyalashtirilgan kreditga fiks so'm (biznes tomoni).
+  referralFee   Decimal  @default(0) @db.Decimal(14, 2)
+  monthlyFrom   Decimal? @db.Decimal(14, 2) // "dan boshlab" oylik to'lov (marketing/filtr)
+  rating        Float    @default(0)
+  popular       Boolean  @default(false)
+  subsidized    Boolean  @default(false) // imtiyozli davlat dasturi
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  bank  Bank           @relation(fields: [bankId], references: [id], onDelete: Cascade)
+  leads MortgageLead[]
+
+  @@index([active])
+  @@index([bankId])
+  @@map("mortgage_programs")
+}
+
+// Ipoteka arizasi (lead). propertyId/complexId — ixtiyoriy kontekst (FK'siz).
+model MortgageLead {
+  id             String         @id @default(cuid())
+  programId      String?
+  propertyId     String?
+  complexId      String?
+  userId         String
+  amount         Decimal        @db.Decimal(16, 2) // kredit summasi
+  propertyPrice  Decimal        @db.Decimal(16, 2) // obyekt narxi
+  downPayment    Decimal        @db.Decimal(16, 2) // boshlang'ich to'lov
+  termMonths     Int
+  monthlyPayment Decimal        @db.Decimal(14, 2) // hisoblangan oylik to'lov
+  name           String
+  phone          String
+  status         MortgageStatus @default(NEW)
+  createdAt      DateTime       @default(now())
+
+  program MortgageProgram? @relation(fields: [programId], references: [id])
+  user    User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@map("mortgage_leads")
 }

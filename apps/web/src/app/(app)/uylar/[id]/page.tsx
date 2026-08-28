@@ -5,6 +5,7 @@ import { getTranslations } from 'next-intl/server';
 import { api, type PropertyDetail } from '@/lib/api';
 import { Badge } from '@/components/ui/badge';
 import { LeadForm } from '@/components/lead-form';
+import { MortgageAttach } from '@/components/mortgage/attach-banner';
 import { formatUZS } from '@/lib/utils';
 import { JsonLd } from '@/components/json-ld';
 import { abs, breadcrumbJsonLd } from '@/lib/seo';
@@ -126,6 +127,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
 
       <aside className="md:sticky md:top-20 h-fit">
         <LeadForm propertyId={p.id} />
+        <MortgageAttach price={Number(String(p.price).replace(/[^\d.]/g, ''))} propertyId={p.id} />
       </aside>
     </div>
   );

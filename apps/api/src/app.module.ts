@@ -24,6 +24,7 @@ import { CoinsModule } from './modules/coins/coins.module';
 import { ReferralsModule } from './modules/referrals/referrals.module';
 import { SchedulerModule } from './modules/scheduler/scheduler.module';
 import { InsuranceModule } from './modules/insurance/insurance.module';
+import { MortgageModule } from './modules/mortgage/mortgage.module';
 
 @Module({
   imports: [
@@ -75,6 +76,7 @@ import { InsuranceModule } from './modules/insurance/insurance.module';
     ReferralsModule,
     SchedulerModule,
     InsuranceModule,
+    MortgageModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

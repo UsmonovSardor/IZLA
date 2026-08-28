@@ -12,7 +12,8 @@
     "resume": "Rezyume",
     "myApplications": "Arizalarim",
     "partner": "Hamkor",
-    "insurance": "Sug‘urta"
+    "insurance": "Sug‘urta",
+    "mortgage": "Ipoteka"
   },
   "mobileNav": {
     "home": "Asosiy",
@@ -1699,6 +1700,104 @@
         "EXPIRED": "Muddati tugagan",
         "CANCELLED": "Bekor qilingan"
       }
+    }
+  },
+  "ipoteka": {
+    "title": "Ipoteka — aniq oylik to‘lovni hisoblang",
+    "subtitle": "Eng yaxshi bank dasturlarini solishtiring, oylik to‘lovni aniq bilib oling va onlayn ariza qoldiring.",
+    "badge": "Izla Ipoteka",
+    "point1": "Aniq oylik to‘lov",
+    "point2": "Eng past stavkalar",
+    "point3": "Onlayn ariza",
+    "myAppsLink": "Mening arizalarim",
+    "backToList": "Barcha dasturlar",
+    "calcHeading": "Ipoteka kalkulyatori",
+    "programsHeading": "Bank dasturlari",
+    "calc": {
+      "configure": "Parametrlarni tanlang",
+      "price": "Uy narxi",
+      "downPayment": "Boshlang‘ich to‘lov",
+      "minDown": "Minimal {pct}%",
+      "term": "Muddat",
+      "years": "yil",
+      "months": "oy",
+      "rate": "Yillik stavka",
+      "monthly": "Oylik to‘lov",
+      "perMonth": "oyiga",
+      "loanAmount": "Kredit summasi",
+      "downPaid": "Boshlang‘ich to‘lov",
+      "total": "Jami to‘lov",
+      "overpayment": "Ortiqcha to‘lov",
+      "chooseProgram": "Dasturni tanlash",
+      "disclaimer": "Hisob taxminiy — yakuniy shartlar bank tomonidan tasdiqlanadi."
+    },
+    "card": {
+      "rate": "Stavka",
+      "monthlyFrom": "Oylik to‘lov dan",
+      "minDown": "Boshlang‘ich",
+      "years": "yil",
+      "calculate": "Hisoblash",
+      "popular": "Ommabop",
+      "subsidized": "Imtiyozli"
+    },
+    "filter": {
+      "title": "Filtr",
+      "clear": "Tozalash",
+      "subsidized": "Imtiyozli dasturlar",
+      "bank": "Bank",
+      "maxRate": "Stavka (gacha)",
+      "propertyType": "Uy turi",
+      "sort": "Saralash",
+      "sortPopular": "Ommabop",
+      "sortRate": "Past stavka",
+      "sortMonthly": "Past oylik",
+      "sortRating": "Reyting",
+      "results": "{count} ta dastur",
+      "empty": "Mos dastur topilmadi"
+    },
+    "propType": {
+      "NEW": "Yangi uy",
+      "SECONDARY": "Ikkilamchi",
+      "CONSTRUCTION": "Qurilayotgan"
+    },
+    "facts": {
+      "maxTerm": "Maksimal muddat",
+      "maxAmount": "Maksimal summa"
+    },
+    "apply": {
+      "cta": "Ariza yuborish",
+      "loginCta": "Kirish va ariza",
+      "title": "Ipoteka arizasi",
+      "subtitle": "{bank} siz bilan bog‘lanadi",
+      "name": "Ismingiz",
+      "submit": "Yuborish",
+      "sending": "Yuborilmoqda…",
+      "done": "Ariza yuborildi",
+      "doneTitle": "Ariza qabul qilindi",
+      "doneMsg": "Bank tez orada siz bilan bog‘lanadi.",
+      "myApps": "Arizalarim"
+    },
+    "myApps": {
+      "title": "Mening arizalarim",
+      "subtitle": "Ipoteka arizalaringiz holati",
+      "loginNeeded": "Arizalaringizni ko‘rish uchun kiring",
+      "login": "Kirish",
+      "empty": "Hozircha ariza yo‘q",
+      "emptyCta": "Ipoteka tanlash",
+      "generic": "Ipoteka arizasi",
+      "price": "Uy narxi",
+      "status": {
+        "NEW": "Yangi",
+        "CONTACTED": "Bog‘lanildi",
+        "APPROVED": "Tasdiqlandi",
+        "FUNDED": "Kredit berildi",
+        "REJECTED": "Rad etildi"
+      }
+    },
+    "attach": {
+      "title": "Bu uyni ipoteka bilan oling",
+      "text": "Oylik to‘lovni hisoblang va bankka ariza qoldiring.",
+      "cta": "Ipotekani hisoblash"
     }
   }
 }

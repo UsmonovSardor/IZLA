@@ -24,6 +24,7 @@ export async function Footer() {
       links: [
         { label: tn('search'), href: '/qidiruv' },
         { label: tn('insurance'), href: '/sugurta' },
+        { label: tn('mortgage'), href: '/ipoteka' },
         { label: tn('jobs'), href: '/ish' },
         { label: tn('realEstate'), href: '/uylar' },
         { label: t('byDistrict'), href: '/xizmatlar' },

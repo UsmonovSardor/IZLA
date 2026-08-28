@@ -12,7 +12,8 @@
     "resume": "Resume",
     "myApplications": "My applications",
     "partner": "Partners",
-    "insurance": "Insurance"
+    "insurance": "Insurance",
+    "mortgage": "Mortgage"
   },
   "mobileNav": {
     "home": "Home",
@@ -1699,6 +1700,104 @@
         "EXPIRED": "Expired",
         "CANCELLED": "Cancelled"
       }
+    }
+  },
+  "ipoteka": {
+    "title": "Mortgage — calculate the exact payment",
+    "subtitle": "Compare the best bank programs, know your exact monthly payment and apply online.",
+    "badge": "Izla Mortgage",
+    "point1": "Exact monthly payment",
+    "point2": "Lowest rates",
+    "point3": "Online application",
+    "myAppsLink": "My applications",
+    "backToList": "All programs",
+    "calcHeading": "Mortgage calculator",
+    "programsHeading": "Bank programs",
+    "calc": {
+      "configure": "Choose parameters",
+      "price": "Property price",
+      "downPayment": "Down payment",
+      "minDown": "Minimum {pct}%",
+      "term": "Term",
+      "years": "years",
+      "months": "mo",
+      "rate": "Annual rate",
+      "monthly": "Monthly payment",
+      "perMonth": "per month",
+      "loanAmount": "Loan amount",
+      "downPaid": "Down payment",
+      "total": "Total payable",
+      "overpayment": "Overpayment",
+      "chooseProgram": "Choose a program",
+      "disclaimer": "Estimate only — final terms are confirmed by the bank."
+    },
+    "card": {
+      "rate": "Rate",
+      "monthlyFrom": "Payment from",
+      "minDown": "Down",
+      "years": "yrs",
+      "calculate": "Calculate",
+      "popular": "Popular",
+      "subsidized": "Subsidized"
+    },
+    "filter": {
+      "title": "Filter",
+      "clear": "Clear",
+      "subsidized": "Subsidized programs",
+      "bank": "Bank",
+      "maxRate": "Rate (up to)",
+      "propertyType": "Property type",
+      "sort": "Sort",
+      "sortPopular": "Popular",
+      "sortRate": "Lowest rate",
+      "sortMonthly": "Lowest payment",
+      "sortRating": "Rating",
+      "results": "{count} programs",
+      "empty": "No matching programs"
+    },
+    "propType": {
+      "NEW": "New building",
+      "SECONDARY": "Secondary",
+      "CONSTRUCTION": "Under construction"
+    },
+    "facts": {
+      "maxTerm": "Maximum term",
+      "maxAmount": "Maximum amount"
+    },
+    "apply": {
+      "cta": "Apply",
+      "loginCta": "Sign in & apply",
+      "title": "Mortgage application",
+      "subtitle": "{bank} will contact you",
+      "name": "Your name",
+      "submit": "Submit",
+      "sending": "Sending…",
+      "done": "Application sent",
+      "doneTitle": "Application received",
+      "doneMsg": "The bank will contact you shortly.",
+      "myApps": "My applications"
+    },
+    "myApps": {
+      "title": "My applications",
+      "subtitle": "Status of your mortgage applications",
+      "loginNeeded": "Sign in to see your applications",
+      "login": "Sign in",
+      "empty": "No applications yet",
+      "emptyCta": "Choose a mortgage",
+      "generic": "Mortgage application",
+      "price": "Property price",
+      "status": {
+        "NEW": "New",
+        "CONTACTED": "Contacted",
+        "APPROVED": "Approved",
+        "FUNDED": "Funded",
+        "REJECTED": "Rejected"
+      }
+    },
+    "attach": {
+      "title": "Buy this home with a mortgage",
+      "text": "Calculate the payment and apply to a bank.",
+      "cta": "Calculate mortgage"
     }
   }
 }

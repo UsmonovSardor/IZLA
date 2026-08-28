@@ -161,8 +161,57 @@ export const api = {
     authed<InsurancePolicy>('/insurance/buy', { method: 'POST', body: JSON.stringify(body) }),
   myPolicies: () => authed<MyPolicy[]>('/insurance/mine'),
 
+  // --- Ipoteka (embedded lending) ---
+  mortgagePrograms: (qs = '') => get<MortgageProgram[]>(`/mortgage/programs${qs}`, 120),
+  mortgageFacets: (qs = '') => get<MortgageFacets>(`/mortgage/facets${qs}`, 120),
+  mortgageProgram: (slug: string) => get<MortgageProgramDetail>(`/mortgage/program/${slug}`, 120),
+  mortgageCalc: (body: MortgageCalcInput) => post<MortgageCalcResult>('/mortgage/calc', body),
+  applyMortgage: (body: MortgageApplyInput) =>
+    authed<MortgageLead>('/mortgage/apply', { method: 'POST', body: JSON.stringify(body) }),
+  myMortgageLeads: () => authed<MyMortgageLead[]>('/mortgage/mine'),
+
   base: BASE,
 };
+
+// --- Ipoteka tiplari ---
+export interface BankBrief {
+  name: string; slug: string; logoUrl?: string | null; rating: number; verified: boolean; color?: string | null;
+}
+export interface MortgageProgram {
+  id: string; name: string; slug: string; summary?: string | null;
+  annualRate: number; maxTermMonths: number; minDownPct: number; maxAmount: number | null;
+  propertyTypes: string[]; features: string[]; monthlyFrom: number;
+  rating: number; popular: boolean; subsidized: boolean; bank: BankBrief;
+}
+export interface MortgageCalcResult {
+  price: number; downPayment: number; loanAmount: number; monthlyPayment: number;
+  totalPayment: number; overpayment: number; termMonths: number; annualRate: number;
+  breakdown: BreakdownRow[];
+  program: { id: string; name: string; slug: string; bank: { name: string; slug: string } } | null;
+  minDownPct: number; maxTermMonths: number;
+}
+export interface MortgageProgramDetail extends MortgageProgram {
+  preview: MortgageCalcResult;
+}
+export interface MortgageFacets {
+  total: number; subsidized: number;
+  banks: { slug: string; name: string; logoUrl?: string | null; count: number }[];
+  rateRange: { min: number; max: number } | null;
+}
+export interface MortgageCalcInput {
+  programId?: string; price: number; downPct?: number; downAmount?: number; termMonths: number; annualRate?: number;
+}
+export interface MortgageApplyInput extends MortgageCalcInput {
+  propertyId?: string; complexId?: string; name: string; phone: string;
+}
+export interface MortgageLead {
+  id: string; status: string; amount: number; monthlyPayment: number; termMonths: number; createdAt: string;
+}
+export interface MyMortgageLead {
+  id: string; status: string; amount: number; propertyPrice: number; downPayment: number;
+  monthlyPayment: number; termMonths: number; createdAt: string;
+  program: { name: string; slug: string; annualRate: number; bank: { name: string; slug: string; logoUrl?: string | null; color?: string | null } } | null;
+}
 
 // --- Sug'urta tiplari ---
 export type InsuranceTypeId = 'OSAGO' | 'KASKO' | 'TRAVEL' | 'PROPERTY' | 'ACCIDENT' | 'HEALTH';
