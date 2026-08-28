@@ -36,6 +36,11 @@
   --c-heading: #f1f6fd;
   color-scheme: dark;
 }
+/* Tailwind v4 nuance: text-slate2 utility ba'zан var o'rniga fallback'ga tushadi
+   (ink/heading'dan farqli). Dark'da muted matnni to'g'ridan-to'g'ri majburlaymiz
+   (unlayered + yuqori spetsifiklik → utility'ni yengadi). */
+:root[data-theme="dark"] .text-slate2 { color: #93a5bf; }
+:root[data-theme="dark"] .text-slate2\/40 { color: color-mix(in oklab, #93a5bf 40%, transparent); }
 
 html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
 
