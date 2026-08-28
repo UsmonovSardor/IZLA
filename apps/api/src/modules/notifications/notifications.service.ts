@@ -61,6 +61,50 @@ export class NotificationsService {
     await this.dispatch(user, 'payment_refunded', tgText, smsText, { paymentId, amount });
   }
 
+  /**
+   * Ko'chmas mulk lead'i yaratildi. Developer/rieltorga SMS (best-effort — telefon
+   * bo'lsa; kalitsiz LOG rejimi) + xaridorga ilova ichida tasdiq. Best-effort.
+   */
+  async propertyLeadCreated(leadId: string): Promise<void> {
+    try {
+      const lead = await this.prisma.propertyLead.findUnique({
+        where: { id: leadId },
+        include: {
+          property: { select: { title: true } },
+          complex: { select: { name: true, developer: { select: { name: true, phone: true } } } },
+        },
+      });
+      if (!lead) return;
+
+      const objectName = lead.property?.title || lead.complex?.name || 'obyekt';
+      const devPhone = lead.complex?.developer?.phone;
+
+      // 1) Developer/rieltorga SMS (agar telefon bo'lsa)
+      if (devPhone) {
+        const smsText =
+          `Izla.uz: "${objectName}" bo'yicha yangi murojaat. ` +
+          `${lead.name}, tel: ${lead.phone}.` +
+          (lead.message ? ` Izoh: ${lead.message.slice(0, 60)}` : '');
+        try {
+          await this.sms.send(devPhone, smsText);
+        } catch (e) {
+          this.logger.error(`Lead SMS xato: ${(e as Error).message}`);
+        }
+      } else {
+        this.logger.log(`Lead ${leadId}: developer telefoni yo'q — SMS o'tkazildi`);
+      }
+
+      // 2) Xaridorga ilova ichida tasdiq
+      await this.pushInApp(lead.userId, 'property_lead_sent', {
+        title: 'Murojaatingiz yuborildi',
+        body: `"${objectName}" bo'yicha so'rovingiz qabul qilindi. Tez orada bog'lanishadi.`,
+        href: lead.propertyId ? `/uylar/${lead.propertyId}` : '/uylar',
+      });
+    } catch (e) {
+      this.logger.error(`propertyLeadCreated xato: ${(e as Error).message}`);
+    }
+  }
+
   // --- Ilova ichidagi bildirishnomalar (bell markazi) ---
 
   /** Ilova ichida bildirishnoma yaratadi (PUSH kanal, darhol "sent"). Best-effort. */
@@ -117,6 +161,7 @@ export class NotificationsService {
   private fallbackTitle(type: string): string {
     if (type === 'payment_paid') return "To'lov qabul qilindi";
     if (type === 'payment_refunded') return "To'lov qaytarildi";
+    if (type === 'property_lead_sent') return 'Murojaatingiz yuborildi';
     return 'Bildirishnoma';
   }
 

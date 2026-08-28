@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, PropertyType } from '@izla/db';
 import { PrismaService } from '../../prisma/prisma.service';
+import { NotificationsService } from '../notifications/notifications.service';
 
 export interface PropertyQuery {
   type?: PropertyType;
@@ -12,7 +13,10 @@ export interface PropertyQuery {
 
 @Injectable()
 export class PropertiesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notifications: NotificationsService,
+  ) {}
 
   list(query: PropertyQuery) {
     const where: Prisma.PropertyWhereInput = { status: 'AVAILABLE' };
@@ -62,7 +66,9 @@ export class PropertiesService {
       },
     });
 
-    // TODO: Notification Service orqali developer/rieltorga SMS+Push+Telegram
+    // Developer/rieltorga SMS + xaridorga ilova-ichi tasdiq (best-effort, bloklamaydi)
+    void this.notifications.propertyLeadCreated(lead.id);
+
     return { ok: true, leadId: lead.id, status: lead.status };
   }
 }

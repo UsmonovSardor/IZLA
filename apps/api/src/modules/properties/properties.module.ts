@@ -1,5 +1,11 @@
 import { Module } from '@nestjs/common';
 import { PropertiesController } from './properties.controller';
 import { PropertiesService } from './properties.service';
-@Module({ controllers: [PropertiesController], providers: [PropertiesService] })
+import { NotificationsModule } from '../notifications/notifications.module';
+
+@Module({
+  imports: [NotificationsModule],
+  controllers: [PropertiesController],
+  providers: [PropertiesService],
+})
 export class PropertiesModule {}
