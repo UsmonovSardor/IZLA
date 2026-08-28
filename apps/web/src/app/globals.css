@@ -36,11 +36,15 @@
   --c-heading: #f1f6fd;
   color-scheme: dark;
 }
-/* Tailwind v4 nuance: text-slate2 utility ba'zан var o'rniga fallback'ga tushadi
-   (ink/heading'dan farqli). Dark'da muted matnni to'g'ridan-to'g'ri majburlaymiz
-   (unlayered + yuqori spetsifiklik → utility'ni yengadi). */
-:root[data-theme="dark"] .text-slate2 { color: #93a5bf; }
-:root[data-theme="dark"] .text-slate2\/40 { color: color-mix(in oklab, #93a5bf 40%, transparent); }
+/* Semantik rang tokenlarini @property bilan ro'yxatga olamiz — <color> sintaksis +
+   inherits:true → var() hech qachon fallback'ga tushmaydi va to'g'ri meros oladi
+   (Tailwind v4'da text-slate2 fallback nuance'ini hal qiladi). */
+@property --c-bg { syntax: '<color>'; inherits: true; initial-value: #F6F8FC; }
+@property --c-surface { syntax: '<color>'; inherits: true; initial-value: #FFFFFF; }
+@property --c-line { syntax: '<color>'; inherits: true; initial-value: #E6EBF2; }
+@property --c-ink { syntax: '<color>'; inherits: true; initial-value: #1E293B; }
+@property --c-slate2 { syntax: '<color>'; inherits: true; initial-value: #64748B; }
+@property --c-heading { syntax: '<color>'; inherits: true; initial-value: #0B1F33; }
 
 html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
 
