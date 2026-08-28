@@ -14,7 +14,8 @@
 :root {
   --font-sora: 'Sora';
   --font-inter: 'Inter';
-  --font-mono: 'JetBrains Mono';
+  /* Nativ tizim monospace — Google shrift yuklanmaydi (faqat kichik raqam/kod uchun) */
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 }
 
 html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }

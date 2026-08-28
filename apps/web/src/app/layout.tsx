@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Sora, Inter, JetBrains_Mono } from 'next/font/google';
+import { Sora, Inter } from 'next/font/google';
 import Link from 'next/link';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
@@ -17,8 +17,7 @@ import { NotificationsBell } from '@/components/notifications-bell';
 import { Footer } from '@/components/footer';
 import { Logo } from '@/components/logo';
 import { SmoothScroll } from '@/components/smooth-scroll';
-import { AiAssistant } from '@/components/ai-assistant';
-import { CommandPalette } from '@/components/command-palette';
+import { DeferredWidgets } from '@/components/deferred-widgets';
 import { PwaRegister } from '@/components/pwa-register';
 import { Analytics } from '@/components/analytics';
 import { JsonLd } from '@/components/json-ld';
@@ -29,7 +28,6 @@ const OG_LOCALE: Record<string, string> = { uz: 'uz_UZ', ru: 'ru_RU', en: 'en_US
 
 const sora = Sora({ subsets: ['latin'], variable: '--font-sora', display: 'swap' });
 const inter = Inter({ subsets: ['latin', 'cyrillic'], variable: '--font-inter', display: 'swap' });
-const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' });
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('metadata');
@@ -89,7 +87,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   ];
 
   return (
-    <html lang={locale} className={`${sora.variable} ${inter.variable} ${mono.variable}`}>
+    <html lang={locale} className={`${sora.variable} ${inter.variable}`}>
       <body className="font-sans min-h-screen bg-bg bg-aurora-soft pb-20 md:pb-0">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <SmoothScroll />
@@ -131,11 +129,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
             <main>{children}</main>
 
-            {/* ⌘K global qidiruv/navigatsiya paneli */}
-            <CommandPalette />
-
-            {/* AI yordamchi — global suzuvchi widget (pastki-o'ng) */}
-            <AiAssistant />
+            {/* ⌘K panel + AI yordamchi — initial bundle'dan chiqarilgan, idle'da yuklanadi */}
+            <DeferredWidgets />
 
             {/* PWA: service worker registratsiyasi + o'rnatish banneri */}
             <PwaRegister />

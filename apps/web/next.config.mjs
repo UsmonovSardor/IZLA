@@ -49,6 +49,10 @@ const nextConfig = {
   outputFileTracingRoot: path.join(__dirname, '../../'),
   poweredByHeader: false,
   compress: true,
+  // Ko'p ishlatiladigan kutubxonalarni per-import tree-shake (bundle kichrayadi)
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [

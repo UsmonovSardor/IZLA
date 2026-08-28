@@ -9,6 +9,7 @@ import { StatsRow, type Stat } from '@/components/stats-row';
 import { SearchAutocomplete } from '@/components/search-autocomplete';
 import { HowItWorks, WhyIzla } from '@/components/home/value-sections';
 import { RecentlyViewed } from '@/components/home/recently-viewed';
+import { HeroVideo } from '@/components/hero-video';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -67,17 +68,8 @@ export default async function HomePage() {
         <div className="container-wide relative z-10 py-12 md:py-16 lg:py-20">
           {/* ===== YAGONA BANNER (kafil uslubi): video to'ldiradi, kontent chapda ustida blend ===== */}
           <div className="relative overflow-hidden rounded-[28px] border border-white/[0.12] bg-gradient-to-br from-[#0b1f3a] via-[#0c2338] to-[#0a2c31] shadow-[0_40px_100px_-30px_rgba(0,0,0,.85)] lg:min-h-[520px]">
-            {/* Jonli video — butun bannerni to'ldiradi */}
-            <video
-              className="absolute inset-0 h-full w-full object-cover"
-              src="/izla.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="metadata"
-              aria-hidden
-            />
+            {/* Jonli video — poster darrov (LCP), 2.6MB video idle'da lazy yuklanadi */}
+            <HeroVideo />
             {/* Blend qatlamlari — yupqa (video ko'proq ko'rinadi), matn baribir o'qiladi */}
             <div className="absolute inset-0 bg-gradient-to-b from-[#0a1b30]/72 via-[#0a1b30]/78 to-[#0a1b30]/90 lg:hidden" aria-hidden />
             <div className="absolute inset-0 hidden bg-[linear-gradient(90deg,rgba(10,27,48,0.94)_0%,rgba(10,27,48,0.6)_40%,rgba(10,27,48,0.15)_62%,transparent_80%)] lg:block" aria-hidden />
