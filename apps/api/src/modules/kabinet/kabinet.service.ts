@@ -90,6 +90,8 @@ export class KabinetService {
       name: v.name,
       status: v.status,
       verified: v.verified,
+      plan: v.plan,
+      planExpiresAt: v.planExpiresAt,
       rating: v.rating,
       reviewCount: v.reviewCount,
       photos: v.photos,
@@ -225,6 +227,48 @@ export class KabinetService {
       reviewCount: vendor.reviewCount,
       paidCount: paidAgg._count._all,
       revenue: paidAgg._sum.amount?.toString() ?? '0',
+    };
+  }
+
+  /** Tarifni tanlash/yangilash. DEMO: darrov faollashadi (+30 kun). */
+  async selectPlan(vendorId: string, userId: string, plan: string) {
+    await this.ownedVendor(vendorId, userId);
+    if (!['FREE', 'PRO', 'PREMIUM'].includes(plan)) throw new NotFoundException('Noma‘lum tarif');
+    const now = new Date();
+    const expires = plan === 'FREE' ? null : new Date(now.getTime() + 30 * 24 * 3600 * 1000);
+    const updated = await this.prisma.vendor.update({
+      where: { id: vendorId },
+      data: { plan: plan as 'FREE' | 'PRO' | 'PREMIUM', planActivatedAt: plan === 'FREE' ? null : now, planExpiresAt: expires },
+      select: { id: true, plan: true, planExpiresAt: true },
+    });
+    return updated;
+  }
+
+  /** Vendor daromadi + Izla komissiyasi (take-rate) — tarifga qarab. */
+  async earnings(vendorId: string, userId: string) {
+    const vendor = await this.ownedVendor(vendorId, userId);
+    const { commissionRateFor, planConfig } = await import('../../common/plans');
+    const rate = commissionRateFor(vendor.plan);
+
+    const agg = await this.prisma.payment.aggregate({
+      where: { booking: { vendorId }, status: 'PAID' },
+      _sum: { amount: true, commissionAmount: true },
+      _count: { _all: true },
+    });
+    const revenue = Number(agg._sum.amount ?? 0);
+    // Eski to'lovlarda commissionAmount 0 bo'lishi mumkin → joriy stavka bilan hisoblab ko'rsatamiz
+    const storedCommission = Number(agg._sum.commissionAmount ?? 0);
+    const commission = storedCommission > 0 ? storedCommission : Math.round(revenue * rate);
+    const net = revenue - commission;
+
+    return {
+      plan: vendor.plan,
+      commissionRate: rate,
+      paidCount: agg._count._all,
+      revenue,
+      commission,
+      net,
+      config: planConfig(vendor.plan),
     };
   }
 }

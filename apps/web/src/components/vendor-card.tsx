@@ -31,6 +31,18 @@ export async function VendorCard({ v, priority = false }: { v: Vendor; priority?
             </span>
           )}
 
+          {/* Tarif badge (PRO/PREMIUM) — take-rate featured belgisi */}
+          {(v.plan === 'PRO' || v.plan === 'PREMIUM') && (
+            <span
+              className="chip absolute bottom-14 left-3 font-semibold text-white shadow-sm"
+              style={v.plan === 'PREMIUM'
+                ? { background: 'linear-gradient(135deg,#B45309,#F59E0B)' }
+                : { background: 'linear-gradient(135deg,#1E40AF,#2563EB)' }}
+            >
+              {v.plan === 'PREMIUM' ? '★ Premium' : 'Pro'}
+            </span>
+          )}
+
           {/* Sevimli (yurak) — o'ng yuqori */}
           <div className="absolute top-2.5 right-2.5">
             <FavoriteButton vendorId={v.id} />

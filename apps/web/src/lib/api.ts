@@ -151,6 +151,12 @@ export const api = {
   registerVendor: (body: RegisterVendorInput) =>
     authed<{ id: string; slug: string; status: string }>('/kabinet/register', { method: 'POST', body: JSON.stringify(body) }),
 
+  // --- Tariflar (platforma take-rate) ---
+  plans: () => get<PlanConfig[]>('/plans', 600),
+  kabinetEarnings: (id: string) => authed<VendorEarnings>(`/kabinet/vendors/${id}/earnings`),
+  kabinetSelectPlan: (id: string, plan: VendorPlanId) =>
+    authed<{ id: string; plan: VendorPlanId; planExpiresAt: string | null }>(`/kabinet/vendors/${id}/plan`, { method: 'POST', body: JSON.stringify({ plan }) }),
+
   // --- Sug'urta (embedded insurance) ---
   insuranceProducts: (qs = '') => get<InsuranceProduct[]>(`/insurance/products${qs}`, 120),
   insuranceFacets: (qs = '') => get<InsuranceFacets>(`/insurance/facets${qs}`, 120),
@@ -341,9 +347,18 @@ export interface AtsApplication {
 
 export interface KabinetVendor {
   id: string; slug: string; name: string; status: string; verified: boolean;
+  plan: VendorPlanId; planExpiresAt?: string | null;
   rating: number; reviewCount: number; photos: string[];
   category?: { slug: string; name: string; icon?: string };
   counts: { services: number; bookings: number; reviews: number };
+}
+export interface PlanConfig {
+  id: VendorPlanId; priceMonthly: number; commissionRate: number; photoLimit: number;
+  rankBoost: number; featured: boolean; analytics: boolean; featureKeys: string[];
+}
+export interface VendorEarnings {
+  plan: VendorPlanId; commissionRate: number; paidCount: number;
+  revenue: number; commission: number; net: number; config: PlanConfig;
 }
 export interface RegisterVendorInput {
   name: string; categoryId: string; phone?: string; district?: string; address?: string; description?: string;
@@ -393,10 +408,11 @@ export interface AssistantReply {
 export interface FacetCategory { slug: string; name: string; icon?: string; count: number }
 export interface PriceRange { min: number; max: number }
 export interface Facets { total: number; categories: FacetCategory[]; priceRange?: PriceRange | null }
+export type VendorPlanId = 'FREE' | 'PRO' | 'PREMIUM';
 export interface Vendor {
   id: string; slug: string; name: string; description?: string; district?: string;
   lat: number; lng: number; address?: string | null; phone?: string | null;
-  rating: number; reviewCount: number; photos: string[]; verified: boolean;
+  rating: number; reviewCount: number; photos: string[]; verified: boolean; plan?: VendorPlanId;
   distanceKm?: number | null; category?: { slug: string; name: string; icon?: string };
 }
 /** Ijtimoiy tarmoq havolalari (`Vendor.socials` JSON). */

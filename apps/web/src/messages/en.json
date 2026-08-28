@@ -13,7 +13,8 @@
     "myApplications": "My applications",
     "partner": "Partners",
     "insurance": "Insurance",
-    "mortgage": "Mortgage"
+    "mortgage": "Mortgage",
+    "pricing": "Pricing"
   },
   "mobileNav": {
     "home": "Home",
@@ -1007,7 +1008,8 @@
     "tabs": {
       "profile": "Profile",
       "services": "Services",
-      "bookings": "Bookings"
+      "bookings": "Bookings",
+      "plan": "Plan"
     },
     "stats": {
       "totalBookings": "Total bookings",
@@ -1056,7 +1058,21 @@
       "COMPLETED": "Completed",
       "NO_SHOW": "No-show"
     },
-    "sum": "UZS"
+    "sum": "UZS",
+    "plans": {
+      "planTitle": "Plan",
+      "currentPlan": "Current plan",
+      "upgrade": "Upgrade",
+      "earningsTitle": "Earnings",
+      "revenue": "Total revenue",
+      "commission": "Izla commission",
+      "net": "Your payout",
+      "paidCount": "Paid bookings",
+      "activating": "Activating…",
+      "activated": "Plan activated",
+      "pickPlan": "Choose a plan",
+      "viewPricing": "All plans"
+    }
   },
   "ish": {
     "heroTitle": "Start your future here",
@@ -1798,6 +1814,50 @@
       "title": "Buy this home with a mortgage",
       "text": "Calculate the payment and apply to a bank.",
       "cta": "Calculate mortgage"
+    }
+  },
+  "narxlar": {
+    "title": "Choose a plan for your business",
+    "subtitle": "More customers, lower commission, higher ranking. Change anytime.",
+    "badge": "Plans",
+    "perMonth": "UZS/mo",
+    "free": "Free",
+    "commission": "Booking commission: {rate}%",
+    "cta": "Choose",
+    "ctaCurrent": "Current plan",
+    "popular": "Popular",
+    "kabinetHint": "Activate the plan in your cabinet",
+    "plan": {
+      "FREE": {
+        "name": "Free",
+        "desc": "To get started"
+      },
+      "PRO": {
+        "name": "Pro",
+        "desc": "For growing business"
+      },
+      "PREMIUM": {
+        "name": "Premium",
+        "desc": "For leaders"
+      }
+    },
+    "feat": {
+      "listing": "Free listing",
+      "photos5": "Up to 5 photos",
+      "bookingOnline": "Online booking",
+      "support": "Standard support",
+      "everythingFree": "Everything in Free",
+      "badge": "Pro badge",
+      "photos20": "Up to 20 photos",
+      "analytics": "Analytics dashboard",
+      "higherRanking": "Higher in search",
+      "commission10": "Commission 10%",
+      "everythingPro": "Everything in Pro",
+      "topRanking": "Top of search",
+      "photos100": "Unlimited photos",
+      "prioritySupport": "Priority support",
+      "featuredHome": "Featured on homepage",
+      "commission7": "Commission 7%"
     }
   }
 }

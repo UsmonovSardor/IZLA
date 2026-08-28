@@ -143,7 +143,11 @@ export class VendorsService {
       where,
       take: needsPostFilter ? Math.max(take * 5, 200) : take,
       include: { category: { select: CATEGORY_SELECT } },
-      orderBy: query.sort === 'rating' ? { rating: 'desc' } : { createdAt: 'desc' },
+      // Take-rate: pullik tariflar (PREMIUM→PRO→FREE) yuqori joylashadi (featured placement).
+      orderBy:
+        query.sort === 'rating'
+          ? [{ plan: 'desc' }, { rating: 'desc' }]
+          : [{ plan: 'desc' }, { createdAt: 'desc' }],
     });
 
     // shape() masofani hisoblaydi va sort (masofa/reyting) qo'llaydi.
@@ -217,7 +221,8 @@ export class VendorsService {
            coalesce(c.name, '') || ' ' || coalesce(c."nameRu", '') || ' ' || coalesce(c."nameEn", '') || ' ' ||
            coalesce(svc.service_names, '')) AS doc,
           v.name AS vname,
-          v.rating AS rating
+          v.rating AS rating,
+          v.plan AS plan
         FROM vendors v
         JOIN categories c ON c.id = v."categoryId"
         LEFT JOIN svc ON svc."vendorId" = v.id
@@ -233,6 +238,7 @@ export class VendorsService {
         + word_similarity(${term}, doc) * 2
         + (CASE WHEN vname ILIKE ${like} THEN 1.5 ELSE 0 END)
         + rating / 5.0
+        + (CASE plan WHEN 'PREMIUM' THEN 0.4 WHEN 'PRO' THEN 0.2 ELSE 0 END)
       ) DESC
       LIMIT ${take}
     `);

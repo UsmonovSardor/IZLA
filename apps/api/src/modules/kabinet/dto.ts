@@ -53,3 +53,8 @@ export class UpdateBookingStatusDto {
   @IsIn(OWNER_BOOKING_STATUSES)
   status!: (typeof OWNER_BOOKING_STATUSES)[number];
 }
+
+export class SelectPlanDto {
+  @IsIn(['FREE', 'PRO', 'PREMIUM'])
+  plan!: 'FREE' | 'PRO' | 'PREMIUM';
+}

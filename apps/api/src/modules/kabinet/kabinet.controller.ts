@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { KabinetService } from './kabinet.service';
-import { CreateServiceDto, RegisterVendorDto, UpdateBookingStatusDto, UpdateServiceDto, UpdateVendorDto } from './dto';
+import { CreateServiceDto, RegisterVendorDto, SelectPlanDto, UpdateBookingStatusDto, UpdateServiceDto, UpdateVendorDto } from './dto';
 import { JwtAuthGuard, type AuthUser } from '../../common/jwt.guard';
 import { CurrentUser } from '../../common/current-user.decorator';
 
@@ -71,5 +71,15 @@ export class KabinetController {
   @Patch('bookings/:id')
   updateBooking(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() dto: UpdateBookingStatusDto) {
     return this.kabinet.updateBookingStatus(id, user.sub, dto);
+  }
+
+  @Get('vendors/:id/earnings')
+  earnings(@CurrentUser() user: AuthUser, @Param('id') id: string) {
+    return this.kabinet.earnings(id, user.sub);
+  }
+
+  @Post('vendors/:id/plan')
+  selectPlan(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() dto: SelectPlanDto) {
+    return this.kabinet.selectPlan(id, user.sub, dto.plan);
   }
 }

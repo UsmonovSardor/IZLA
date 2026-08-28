@@ -6,10 +6,13 @@ import {
   Briefcase, CalendarClock, Check, Loader2, Plus, Star, Trash2, Wallet,
 } from 'lucide-react';
 import { useAuth } from '@/components/auth-provider';
-import { api, type KabinetVendor, type KabinetVendorDetail, type KabinetStats, type KabinetBooking } from '@/lib/api';
+import { api, type KabinetVendor, type KabinetVendorDetail, type KabinetStats, type KabinetBooking, type PlanConfig, type VendorEarnings, type VendorPlanId } from '@/lib/api';
 import { Button } from '@/components/ui/button';
+import { PlanCards } from '@/components/plans/plan-cards';
+import { useToast } from '@/components/toast';
+import { formatUZS } from '@/lib/utils';
 
-type Tab = 'profile' | 'services' | 'bookings';
+type Tab = 'profile' | 'services' | 'bookings' | 'plan';
 const STATUS_STYLE: Record<string, string> = {
   PENDING: 'bg-amber-50 text-amber-700 border-amber-200',
   CONFIRMED: 'bg-blue-50 text-brand border-blue-200',
@@ -110,7 +113,7 @@ function VendorDashboard({ vendorId, tab, setTab, locale }: { vendorId: string; 
 
       {/* Tablar */}
       <div className="mt-8 flex gap-1 border-b border-slate-200">
-        {(['profile', 'services', 'bookings'] as Tab[]).map((tb) => (
+        {(['profile', 'services', 'bookings', 'plan'] as Tab[]).map((tb) => (
           <button
             key={tb}
             onClick={() => setTab(tb)}
@@ -126,6 +129,7 @@ function VendorDashboard({ vendorId, tab, setTab, locale }: { vendorId: string; 
         {tab === 'profile' && detail && <ProfileForm detail={detail} onSaved={reload} />}
         {tab === 'services' && detail && <ServicesTab detail={detail} onChange={reload} />}
         {tab === 'bookings' && <BookingsTab vendorId={vendorId} locale={locale} />}
+        {tab === 'plan' && <PlanTab vendorId={vendorId} />}
       </div>
     </>
   );
@@ -292,6 +296,68 @@ function BookingsTab({ vendorId, locale }: { vendorId: string; locale: string })
           </div>
         </div>
       ))}
+    </div>
+  );
+}
+
+function PlanTab({ vendorId }: { vendorId: string }) {
+  const t = useTranslations('kabinet');
+  const { toast, dismiss } = useToast();
+  const [plans, setPlans] = useState<PlanConfig[] | null>(null);
+  const [earnings, setEarnings] = useState<VendorEarnings | null>(null);
+  const [busy, setBusy] = useState<VendorPlanId | null>(null);
+
+  const load = useCallback(() => {
+    api.plans().then(setPlans).catch(() => setPlans([]));
+    api.kabinetEarnings(vendorId).then(setEarnings).catch(() => {});
+  }, [vendorId]);
+  useEffect(load, [load]);
+
+  const select = async (plan: VendorPlanId) => {
+    setBusy(plan);
+    const id = toast({ variant: 'loading', title: t('plans.activating') });
+    try {
+      await api.kabinetSelectPlan(vendorId, plan);
+      dismiss(id);
+      toast({ variant: 'success', title: t('plans.activated') });
+      load();
+    } catch (e) {
+      dismiss(id);
+      toast({ variant: 'error', title: (e as Error).message || 'Xatolik' });
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Daromad paneli — take-rate shaffofligi */}
+      <div>
+        <h3 className="font-display text-lg font-bold text-navy">{t('plans.earningsTitle')}</h3>
+        <div className="mt-3 grid gap-3 sm:grid-cols-4">
+          <EarnCard label={t('plans.revenue')} value={earnings ? formatUZS(earnings.revenue) : '—'} />
+          <EarnCard label={t('plans.commission')} value={earnings ? `− ${formatUZS(earnings.commission)}` : '—'} accent="#B45309" />
+          <EarnCard label={t('plans.net')} value={earnings ? formatUZS(earnings.net) : '—'} accent="#059669" strong />
+          <EarnCard label={t('plans.paidCount')} value={earnings ? String(earnings.paidCount) : '—'} />
+        </div>
+      </div>
+
+      {/* Tariflar */}
+      <div>
+        <h3 className="font-display text-lg font-bold text-navy">{t('plans.pickPlan')}</h3>
+        <div className="mt-3">
+          {plans && <PlanCards plans={plans} currentPlan={earnings?.plan} onSelect={select} busyPlan={busy} />}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EarnCard({ label, value, accent, strong }: { label: string; value: string; accent?: string; strong?: boolean }) {
+  return (
+    <div className="rounded-2xl border border-line bg-surface px-4 py-3 shadow-card">
+      <div className="text-xs text-muted">{label}</div>
+      <div className={`mt-0.5 font-display ${strong ? 'text-xl' : 'text-lg'} font-bold tabular-nums`} style={{ color: accent ?? 'var(--c-heading)' }}>{value}</div>
     </div>
   );
 }

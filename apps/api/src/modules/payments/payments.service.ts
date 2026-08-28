@@ -9,6 +9,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { NotificationsService } from '../notifications/notifications.service';
 import { env } from '../../config/env';
 import { toTiyin } from './money';
+import { commissionRateFor } from '../../common/plans';
 
 // Checkout URL'i bor provayderlar
 const CHECKOUT_PROVIDERS = ['PAYME', 'CLICK'] as const;
@@ -101,6 +102,18 @@ export class PaymentsService {
         await tx.booking.updateMany({
           where: { id: payment.bookingId, status: 'PENDING' },
           data: { status: 'CONFIRMED' },
+        });
+        // Platforma take-rate: vendor tarifiga qarab Izla komissiyasini hisoblab yozamiz.
+        const booking = await tx.booking.findUnique({
+          where: { id: payment.bookingId },
+          select: { vendor: { select: { plan: true } } },
+        });
+        const rate = commissionRateFor(booking?.vendor?.plan);
+        const amount = Number(payment.amount);
+        const commission = Math.round(amount * rate);
+        await tx.payment.update({
+          where: { id: paymentId },
+          data: { commissionAmount: commission, netAmount: amount - commission },
         });
       }
     });

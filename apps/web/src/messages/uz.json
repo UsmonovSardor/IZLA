@@ -13,7 +13,8 @@
     "myApplications": "Arizalarim",
     "partner": "Hamkor",
     "insurance": "Sug‘urta",
-    "mortgage": "Ipoteka"
+    "mortgage": "Ipoteka",
+    "pricing": "Tariflar"
   },
   "mobileNav": {
     "home": "Asosiy",
@@ -1007,7 +1008,8 @@
     "tabs": {
       "profile": "Profil",
       "services": "Xizmatlar",
-      "bookings": "Bronlar"
+      "bookings": "Bronlar",
+      "plan": "Tarif"
     },
     "stats": {
       "totalBookings": "Jami bron",
@@ -1056,7 +1058,21 @@
       "COMPLETED": "Yakunlangan",
       "NO_SHOW": "Kelmadi"
     },
-    "sum": "so‘m"
+    "sum": "so‘m",
+    "plans": {
+      "planTitle": "Tarif",
+      "currentPlan": "Joriy tarif",
+      "upgrade": "Yangilash",
+      "earningsTitle": "Daromad",
+      "revenue": "Umumiy tushum",
+      "commission": "Izla komissiyasi",
+      "net": "Sizga o‘tadi",
+      "paidCount": "To‘langan bronlar",
+      "activating": "Faollashtirilmoqda…",
+      "activated": "Tarif faollashtirildi",
+      "pickPlan": "Tarifni tanlang",
+      "viewPricing": "Barcha tariflar"
+    }
   },
   "ish": {
     "heroTitle": "Kelajagingizni shu yerdan boshlang",
@@ -1798,6 +1814,50 @@
       "title": "Bu uyni ipoteka bilan oling",
       "text": "Oylik to‘lovni hisoblang va bankka ariza qoldiring.",
       "cta": "Ipotekani hisoblash"
+    }
+  },
+  "narxlar": {
+    "title": "Biznesingiz uchun tarif tanlang",
+    "subtitle": "Ko‘proq mijoz, past komissiya, yuqori joylashuv. Istalgan vaqtda o‘zgartiring.",
+    "badge": "Tariflar",
+    "perMonth": "so‘m/oy",
+    "free": "Bepul",
+    "commission": "Bron komissiyasi: {rate}%",
+    "cta": "Tanlash",
+    "ctaCurrent": "Joriy tarif",
+    "popular": "Ommabop",
+    "kabinetHint": "Tarifni kabinetda faollashtirasiz",
+    "plan": {
+      "FREE": {
+        "name": "Bepul",
+        "desc": "Boshlash uchun"
+      },
+      "PRO": {
+        "name": "Pro",
+        "desc": "O‘sayotgan biznes uchun"
+      },
+      "PREMIUM": {
+        "name": "Premium",
+        "desc": "Yetakchilar uchun"
+      }
+    },
+    "feat": {
+      "listing": "Bepul e‘lon",
+      "photos5": "5 tagacha rasm",
+      "bookingOnline": "Onlayn bron",
+      "support": "Standart qo‘llab-quvvatlash",
+      "everythingFree": "Bepul tarifdagi hammasi",
+      "badge": "Pro belgisi",
+      "photos20": "20 tagacha rasm",
+      "analytics": "Analitika paneli",
+      "higherRanking": "Qidiruvda yuqori joylashuv",
+      "commission10": "Komissiya 10%",
+      "everythingPro": "Pro tarifdagi hammasi",
+      "topRanking": "Qidiruvda eng yuqori",
+      "photos100": "Cheksiz rasm",
+      "prioritySupport": "Prioritet qo‘llab-quvvatlash",
+      "featuredHome": "Bosh sahifada featured",
+      "commission7": "Komissiya 7%"
     }
   }
 }
