@@ -144,6 +144,15 @@ enum MortgageStatus {
   REJECTED // rad etildi
 }
 
+// --- Nasiya / BNPL (monetizatsiya: bo'lib to'lash lead-gen) ---
+enum NasiyaStatus {
+  NEW
+  CONTACTED
+  APPROVED
+  ISSUED // rasmiylashtirildi (Izla merchant fee oladi)
+  REJECTED
+}
+
 // ============================================================
 // CORE
 // ============================================================
@@ -183,6 +192,7 @@ model User {
   savedJobs       SavedJob[]
   policies        InsurancePolicy[]
   mortgageLeads   MortgageLead[]
+  nasiyaLeads     NasiyaLead[]
 
   @@index([role])
   @@map("users")
@@ -919,4 +929,57 @@ model MortgageLead {
   @@index([userId])
   @@index([status])
   @@map("mortgage_leads")
+}
+
+// ============================================================
+// NASIYA / BNPL (embedded lending — bo'lib to'lash)
+// ============================================================
+
+// Nasiya provayderi (Uzum Nasiya, Alif, Anor, Zoodpay). terms = {oy: ustama%}.
+model NasiyaProvider {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  logoUrl     String?
+  description String?
+  color       String?
+  rating      Float    @default(0)
+  verified    Boolean  @default(false)
+  // Har muddat (oy) uchun ustama koeffitsenti (0..1). Masalan {"3":0,"6":0.09,"12":0.2}.
+  terms       Json     @default("{}")
+  merchantFee Decimal  @default(0) @db.Decimal(5, 4) // Izla ulushi (xarid summasidan, 0..1)
+  minAmount   Decimal? @db.Decimal(14, 2)
+  maxAmount   Decimal? @db.Decimal(14, 2)
+  features    Json     @default("[]")
+  popular     Boolean  @default(false)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  leads NasiyaLead[]
+
+  @@map("nasiya_providers")
+}
+
+// Nasiya arizasi (lead). vendorId/serviceId — ixtiyoriy kontekst (FK'siz).
+model NasiyaLead {
+  id             String       @id @default(cuid())
+  providerId     String
+  userId         String
+  vendorId       String?
+  serviceId      String?
+  amount         Decimal      @db.Decimal(14, 2) // xarid summasi
+  months         Int
+  monthlyPayment Decimal      @db.Decimal(14, 2)
+  totalPayment   Decimal      @db.Decimal(14, 2)
+  name           String
+  phone          String
+  status         NasiyaStatus @default(NEW)
+  createdAt      DateTime     @default(now())
+
+  provider NasiyaProvider @relation(fields: [providerId], references: [id])
+  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@map("nasiya_leads")
 }

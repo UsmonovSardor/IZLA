@@ -25,6 +25,7 @@ import { ReferralsModule } from './modules/referrals/referrals.module';
 import { SchedulerModule } from './modules/scheduler/scheduler.module';
 import { InsuranceModule } from './modules/insurance/insurance.module';
 import { MortgageModule } from './modules/mortgage/mortgage.module';
+import { NasiyaModule } from './modules/nasiya/nasiya.module';
 
 @Module({
   imports: [
@@ -77,6 +78,7 @@ import { MortgageModule } from './modules/mortgage/mortgage.module';
     SchedulerModule,
     InsuranceModule,
     MortgageModule,
+    NasiyaModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

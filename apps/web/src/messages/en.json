@@ -14,7 +14,8 @@
     "partner": "Partners",
     "insurance": "Insurance",
     "mortgage": "Mortgage",
-    "pricing": "Pricing"
+    "pricing": "Pricing",
+    "installment": "Installments"
   },
   "mobileNav": {
     "home": "Home",
@@ -1858,6 +1859,58 @@
       "prioritySupport": "Priority support",
       "featuredHome": "Featured on homepage",
       "commission7": "Commission 7%"
+    }
+  },
+  "nasiya": {
+    "title": "Installments (BNPL)",
+    "subtitle": "Pay for your purchase in parts. Compare providers and the exact monthly payment.",
+    "badge": "Izla Installments",
+    "point1": "3 months 0% markup",
+    "point2": "Decision in minutes",
+    "point3": "Trusted providers",
+    "myAppsLink": "My applications",
+    "amount": "Purchase amount",
+    "term": "Term",
+    "months": "mo",
+    "providersHeading": "Providers",
+    "monthly": "Monthly",
+    "total": "Total",
+    "overpay": "Markup",
+    "free": "0 UZS",
+    "markup": "markup",
+    "notAvailable": "Amount/term not available",
+    "apply": {
+      "cta": "Apply",
+      "loginCta": "Sign in & apply",
+      "title": "Installment application",
+      "subtitle": "{provider} will contact you",
+      "name": "Your name",
+      "submit": "Submit",
+      "sending": "Sending…",
+      "done": "Application sent",
+      "doneTitle": "Application received",
+      "doneMsg": "The provider will contact you shortly.",
+      "myApps": "My applications"
+    },
+    "myApps": {
+      "title": "My applications",
+      "subtitle": "Your installment applications",
+      "loginNeeded": "Sign in to see applications",
+      "login": "Sign in",
+      "empty": "No applications yet",
+      "emptyCta": "Calculate installment",
+      "status": {
+        "NEW": "New",
+        "CONTACTED": "Contacted",
+        "APPROVED": "Approved",
+        "ISSUED": "Issued",
+        "REJECTED": "Rejected"
+      }
+    },
+    "attach": {
+      "title": "Installments available",
+      "text": "Get this service on installments.",
+      "cta": "Calculate installment"
     }
   }
 }

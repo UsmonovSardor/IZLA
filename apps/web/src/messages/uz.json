@@ -14,7 +14,8 @@
     "partner": "Hamkor",
     "insurance": "Sug‘urta",
     "mortgage": "Ipoteka",
-    "pricing": "Tariflar"
+    "pricing": "Tariflar",
+    "installment": "Nasiya"
   },
   "mobileNav": {
     "home": "Asosiy",
@@ -1858,6 +1859,58 @@
       "prioritySupport": "Prioritet qo‘llab-quvvatlash",
       "featuredHome": "Bosh sahifada featured",
       "commission7": "Komissiya 7%"
+    }
+  },
+  "nasiya": {
+    "title": "Nasiya — bo‘lib to‘lash",
+    "subtitle": "Xaridni bo‘lib to‘lang. Provayderlarni taqqoslang va aniq oylik to‘lovni ko‘ring.",
+    "badge": "Izla Nasiya",
+    "point1": "3 oy 0% ustama",
+    "point2": "Bir necha daqiqada qaror",
+    "point3": "Ishonchli provayderlar",
+    "myAppsLink": "Mening arizalarim",
+    "amount": "Xarid summasi",
+    "term": "Muddat",
+    "months": "oy",
+    "providersHeading": "Provayderlar",
+    "monthly": "Oylik to‘lov",
+    "total": "Jami",
+    "overpay": "Ustama",
+    "free": "0 so‘m",
+    "markup": "ustama",
+    "notAvailable": "Bu summa/muddat mavjud emas",
+    "apply": {
+      "cta": "Ariza yuborish",
+      "loginCta": "Kirish va ariza",
+      "title": "Nasiya arizasi",
+      "subtitle": "{provider} siz bilan bog‘lanadi",
+      "name": "Ismingiz",
+      "submit": "Yuborish",
+      "sending": "Yuborilmoqda…",
+      "done": "Ariza yuborildi",
+      "doneTitle": "Ariza qabul qilindi",
+      "doneMsg": "Provayder tez orada bog‘lanadi.",
+      "myApps": "Arizalarim"
+    },
+    "myApps": {
+      "title": "Mening arizalarim",
+      "subtitle": "Nasiya arizalaringiz",
+      "loginNeeded": "Arizalarni ko‘rish uchun kiring",
+      "login": "Kirish",
+      "empty": "Hozircha ariza yo‘q",
+      "emptyCta": "Nasiya hisoblash",
+      "status": {
+        "NEW": "Yangi",
+        "CONTACTED": "Bog‘lanildi",
+        "APPROVED": "Tasdiqlandi",
+        "ISSUED": "Rasmiylashtirildi",
+        "REJECTED": "Rad etildi"
+      }
+    },
+    "attach": {
+      "title": "Bo‘lib to‘lash mavjud",
+      "text": "Bu xizmatni nasiyaga rasmiylashtiring.",
+      "cta": "Nasiyani hisoblash"
     }
   }
 }

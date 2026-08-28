@@ -26,6 +26,7 @@ export async function Footer() {
         { label: tn('search'), href: '/qidiruv' },
         { label: tn('insurance'), href: '/sugurta' },
         { label: tn('mortgage'), href: '/ipoteka' },
+        { label: tn('installment'), href: '/nasiya' },
         { label: tn('jobs'), href: '/ish' },
         { label: tn('realEstate'), href: '/uylar' },
         { label: t('byDistrict'), href: '/xizmatlar' },

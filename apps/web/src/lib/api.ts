@@ -176,8 +176,37 @@ export const api = {
     authed<MortgageLead>('/mortgage/apply', { method: 'POST', body: JSON.stringify(body) }),
   myMortgageLeads: () => authed<MyMortgageLead[]>('/mortgage/mine'),
 
+  // --- Nasiya / BNPL ---
+  nasiyaProviders: () => get<NasiyaProvider[]>('/nasiya/providers', 300),
+  nasiyaQuote: (amount: number, months: number, providerId?: string) =>
+    post<NasiyaQuoteRow[]>('/nasiya/quote', { amount, months, providerId }),
+  applyNasiya: (body: NasiyaApplyInput) =>
+    authed<NasiyaLead>('/nasiya/apply', { method: 'POST', body: JSON.stringify(body) }),
+  myNasiyaLeads: () => authed<MyNasiyaLead[]>('/nasiya/mine'),
+
   base: BASE,
 };
+
+// --- Nasiya tiplari ---
+export interface NasiyaProvider {
+  id: string; name: string; slug: string; logoUrl?: string | null; color?: string | null;
+  rating: number; verified: boolean; terms: Record<string, number>; months: number[];
+  minAmount: number | null; maxAmount: number | null; features: string[]; popular: boolean;
+}
+export interface NasiyaQuoteRow {
+  provider: { id: string; name: string; slug: string; logoUrl?: string | null; color?: string | null; rating: number; popular: boolean; features: string[]; months: number[] };
+  months: number; amount: number; monthlyPayment: number; totalPayment: number; overpayment: number; markupPct: number; available: boolean;
+}
+export interface NasiyaApplyInput {
+  providerId: string; amount: number; months: number; vendorId?: string; serviceId?: string; name: string; phone: string;
+}
+export interface NasiyaLead {
+  id: string; status: string; months: number; monthlyPayment: number; totalPayment: number; createdAt: string;
+}
+export interface MyNasiyaLead {
+  id: string; status: string; amount: number; months: number; monthlyPayment: number; totalPayment: number; createdAt: string;
+  provider: { name: string; slug: string; logoUrl?: string | null; color?: string | null };
+}
 
 // --- Ipoteka tiplari ---
 export interface BankBrief {

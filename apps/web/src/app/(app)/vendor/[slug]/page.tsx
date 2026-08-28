@@ -9,6 +9,7 @@ import { JsonLd } from '@/components/json-ld';
 import { abs, breadcrumbJsonLd, vendorJsonLd } from '@/lib/seo';
 import { sectionConfig } from '@/lib/vendor-sections';
 import { InsuranceAttach } from '@/components/insurance/attach-banner';
+import { NasiyaAttach } from '@/components/nasiya/attach-banner';
 import { FavoriteButton } from '@/components/favorite-button';
 import { RecordRecentView } from '@/components/record-recent-view';
 import { ReviewComposer } from '@/components/vendor/review-composer';
@@ -199,6 +200,8 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
 
           {/* Kontekstli sug'urta (avto→OSAGO, mehmonxona→sayohat, klinika→VMD) */}
           <InsuranceAttach categorySlug={v.category?.slug} />
+          {/* Nasiya — qimmat xizmatlarga bo'lib to'lash */}
+          <NasiyaAttach amount={Math.max(0, ...v.services.map((s) => Number(String(s.price).replace(/[^\d.]/g, '')) || 0))} vendorId={v.id} />
 
           <div className="space-y-4 rounded-2xl border border-line bg-surface p-5 shadow-card">
             <div>
