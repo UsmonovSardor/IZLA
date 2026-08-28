@@ -90,13 +90,22 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <ViewTransitions>
     <html lang={locale} className={`${sora.variable} ${inter.variable}`}>
-      <body className="font-sans min-h-screen bg-bg bg-aurora-soft pb-20 md:pb-0">
+      <head>
         {/* FOUC oldini olish — dark opt-in tanlovini paint'dan oldin qo'yadi */}
         <script
           dangerouslySetInnerHTML={{
             __html: `try{if(localStorage.getItem('izla:theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}`,
           }}
         />
+        {/* Dark muted matn — xom style (Tailwind qayta ishlamaydi/strip qilmaydi,
+            unlayered → text-muted var-fallback nuance'ini kafolatli yengadi) */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `:root[data-theme="dark"] .text-muted{color:#93a5bf}:root[data-theme="dark"] .text-muted\\/40{color:color-mix(in oklab,#93a5bf 40%,transparent)}`,
+          }}
+        />
+      </head>
+      <body className="font-sans min-h-screen bg-bg bg-aurora-soft pb-20 md:pb-0">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
           <ToastProvider>
