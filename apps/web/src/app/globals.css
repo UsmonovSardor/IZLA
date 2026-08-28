@@ -35,14 +35,24 @@ html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
 .fld:focus { border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
 .fld::placeholder { color: #94a3b8; }
 
-/* ===== Sahifa o'tish animatsiyasi (sof CSS, template.tsx) ===== */
-@keyframes page-enter {
+/* ===== Sahifa o'tishi — native View Transitions (next-view-transitions) ===== */
+@keyframes vt-fade-in {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.page-enter { animation: page-enter 0.32s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes vt-fade-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-6px); }
+}
+::view-transition-old(root) {
+  animation: vt-fade-out 0.22s cubic-bezier(0.4, 0, 1, 1) both;
+}
+::view-transition-new(root) {
+  animation: vt-fade-in 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
 @media (prefers-reduced-motion: reduce) {
-  .page-enter { animation: none; }
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none; }
 }
 
 /* ===== Scroll-reveal (sof CSS, reveal.tsx) — progressive enhancement ===== */

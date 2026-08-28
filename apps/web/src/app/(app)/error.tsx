@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { RotateCw, Home, AlertTriangle } from 'lucide-react';
 
 /** Marshrut xato chegarasi — server/klient xatosida chiroyli qayta urinish ekrani. */

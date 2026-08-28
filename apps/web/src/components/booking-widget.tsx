@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { useLocale, useTranslations } from 'next-intl';
 import { CalendarClock, Check, ChevronLeft, Clock, Loader2 } from 'lucide-react';
 import { api, type Slot, type Booking } from '@/lib/api';

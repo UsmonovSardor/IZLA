@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { getTranslations } from 'next-intl/server';
 import { api, type Property } from '@/lib/api';
 import { PropertyCard } from '@/components/property-card';

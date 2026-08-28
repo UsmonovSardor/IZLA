@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Script from 'next/script';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { useLocale, useTranslations } from 'next-intl';
 import { api, type Category } from '@/lib/api';
 import { telegramLogin } from '@/lib/auth';

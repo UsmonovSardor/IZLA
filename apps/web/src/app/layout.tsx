@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Sora, Inter } from 'next/font/google';
-import Link from 'next/link';
+import { Link, ViewTransitions } from 'next-view-transitions';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import { Search, Home, Sparkles, User } from 'lucide-react';
@@ -87,6 +87,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   ];
 
   return (
+    <ViewTransitions>
     <html lang={locale} className={`${sora.variable} ${inter.variable}`}>
       <body className="font-sans min-h-screen bg-bg bg-aurora-soft pb-20 md:pb-0">
         <NextIntlClientProvider locale={locale} messages={messages}>
@@ -161,5 +162,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </NextIntlClientProvider>
       </body>
     </html>
+    </ViewTransitions>
   );
 }

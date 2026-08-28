@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { getTranslations } from 'next-intl/server';
 import { Instagram, Send, Facebook } from 'lucide-react';
 import { Logo } from '@/components/logo';

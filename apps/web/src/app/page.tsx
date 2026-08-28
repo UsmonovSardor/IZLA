@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { Suspense } from 'react';
 import { Sparkles, ArrowRight, Send, BadgeCheck, ShieldCheck, Clock, MapPin } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';

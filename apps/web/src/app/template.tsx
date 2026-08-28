@@ -1,9 +1,8 @@
 /**
- * Sahifa o'tish animatsiyasi — sof CSS (JS'siz). Next har navigatsiyada
- * template'ni qayta mount qiladi → `.page-enter` animatsiyasi har o'tishda
- * yangidan ishlaydi (fade + yuqoriga silliq). framer-motion YUKLANMAYDI.
- * `prefers-reduced-motion` globals.css'da hurmat qilinadi.
+ * Sahifa o'tishi endi native View Transitions API bilan boshqariladi
+ * (next-view-transitions + globals.css `::view-transition` crossfade).
+ * Template pass-through — qo'shimcha animatsiya yo'q (ikki marta bo'lmasligi uchun).
  */
 export default function Template({ children }: { children: React.ReactNode }) {
-  return <div className="page-enter">{children}</div>;
+  return <>{children}</>;
 }

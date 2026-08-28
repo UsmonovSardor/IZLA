@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { ArrowLeft, Wifi, MapPin, Briefcase, TrendingUp, Eye, Users, Globe, BadgeCheck, Building2 } from 'lucide-react';

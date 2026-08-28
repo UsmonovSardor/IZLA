@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { getTranslations } from 'next-intl/server';
 import { FileText, ClipboardList, Building2, Bookmark } from 'lucide-react';
 import { api } from '@/lib/api';

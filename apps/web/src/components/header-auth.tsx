@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { useTranslations } from 'next-intl';
 import { CalendarClock, ChevronDown, LayoutDashboard, LogOut, User as UserIcon } from 'lucide-react';
 import { useAuth } from './auth-provider';

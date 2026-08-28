@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { BadgeCheck, MapPin, Star } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import type { Vendor } from '@/lib/api';

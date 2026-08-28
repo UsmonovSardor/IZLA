@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Gift, Copy, Check, Send, Users, Coins, Loader2, Share2 } from 'lucide-react';

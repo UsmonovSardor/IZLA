@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { BadgeCheck, List, MapPin, Star, MapIcon } from 'lucide-react';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { Bookmark, Loader2, ArrowRight, Compass } from 'lucide-react';

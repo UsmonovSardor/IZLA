@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { MapPin } from 'lucide-react';
 import { api, type Category } from '@/lib/api';

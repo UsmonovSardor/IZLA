@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { useTranslations } from 'next-intl';
 import { Check, Loader2, LogOut, Monitor, Shield, UserCircle2, Coins, CalendarCheck, Star, Gift } from 'lucide-react';
 import { useAuth } from '@/components/auth-provider';
