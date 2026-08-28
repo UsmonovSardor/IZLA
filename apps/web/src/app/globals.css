@@ -46,6 +46,12 @@
 @property --c-slate2 { syntax: '<color>'; inherits: true; initial-value: #64748B; }
 @property --c-heading { syntax: '<color>'; inherits: true; initial-value: #0B1F33; }
 
+/* Bulletproof: muted matn (slate2) dark'da to'g'ri kontrast — @layer utilities
+   ichida (Tailwind saqlaydi), guruhlanmagan toza selektor. */
+@layer utilities {
+  :root[data-theme="dark"] .text-slate2 { color: #93a5bf; }
+}
+
 html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
 
 /* Forma maydoni (input/select/textarea) — qayta ishlatiladigan uslub */
