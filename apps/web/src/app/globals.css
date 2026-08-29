@@ -203,6 +203,15 @@ body { background-color: var(--c-bg); color: var(--c-ink); }
 .izla-pop-cat { font-size: 12px; color: #64748B; }
 .izla-pop-link { margin-top: 4px; font-size: 12px; font-weight: 700; color: #2563EB; }
 
+/* ===== 2GIS xarita markerlari (HTML markerlar, brend ko'rinishда) ===== */
+.izla-2g-pin { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.izla-2g-dot { width: 16px; height: 16px; border-radius: 50%; background: #2563EB; border: 2.5px solid #fff; box-shadow: 0 2px 6px rgba(15, 31, 51, .35); transition: transform .18s ease; }
+.izla-2g-pin:hover .izla-2g-dot { transform: scale(1.18); }
+.izla-2g-cluster { display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 13px; border-radius: 50%; border: 3px solid rgba(255, 255, 255, .9); box-shadow: 0 4px 14px rgba(15, 31, 51, .28); cursor: pointer; font-family: var(--font-sora), system-ui, sans-serif; }
+.izla-2g-hoverring { width: 34px; height: 34px; border-radius: 50%; background: rgba(37, 99, 235, .18); border: 2px solid rgba(37, 99, 235, .5); pointer-events: none; }
+.izla-2g-pop { position: absolute; transform: translate(-50%, calc(-100% - 16px)); background: #fff; border: 1px solid #E6EBF2; border-radius: 16px; overflow: hidden; box-shadow: 0 16px 50px rgba(15, 31, 51, .22); }
+.izla-2g-pop::after { content: ''; position: absolute; left: 50%; bottom: -7px; width: 14px; height: 14px; background: #fff; border-right: 1px solid #E6EBF2; border-bottom: 1px solid #E6EBF2; transform: translateX(-50%) rotate(45deg); }
+
 /* ===== Brend logo animatsiyasi (pin-i) ===== */
 .izla-pin { transform-box: fill-box; transform-origin: 50% 60%; }
 .izla-ping { transform-box: fill-box; transform-origin: center; opacity: 0; pointer-events: none; }

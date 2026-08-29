@@ -26,6 +26,13 @@ const MAP_ORIGIN = (() => {
   }
 })();
 
+// 2GIS MapGL — kalit berilgandagina CSP'ga qo'shiladi (SDK skripti + tayl/style/font/api).
+// Kalitsiz holatda CSP toza qoladi (faqat MapLibre/OpenFreeMap ishlatiladi).
+const USE_2GIS = !!process.env.NEXT_PUBLIC_2GIS_KEY;
+const MAP_2GIS = USE_2GIS
+  ? ' https://*.2gis.com https://*.maps.2gis.com https://*.api.2gis.com'
+  : '';
+
 // Content-Security-Policy — ENFORCING (bosh + /qidiruv xarita sahifalarida
 // Report-Only rejimida 0 buzilish tasdiqlangach yoqildi, 2026-08-28).
 const csp = [
@@ -34,16 +41,16 @@ const csp = [
   "object-src 'none'",
   "frame-ancestors 'none'",
   "form-action 'self'",
-  // Next.js gidratsiya inline skriptlaridan foydalanadi
-  "script-src 'self' 'unsafe-inline' https://eu-assets.i.posthog.com",
+  // Next.js gidratsiya inline skriptlaridan foydalanadi + 2GIS SDK loader
+  `script-src 'self' 'unsafe-inline' https://eu-assets.i.posthog.com${MAP_2GIS}`,
   "style-src 'self' 'unsafe-inline'",
-  // Xarita raster tayllari (ne2_shaded) + sprite PNG shu origin'dan keladi
-  `img-src 'self' data: blob: https://images.unsplash.com https://picsum.photos ${MAP_ORIGIN} https://lh3.googleusercontent.com https://t.me`,
+  // Xarita raster tayllari (ne2_shaded) + sprite PNG + 2GIS tayl/sprite
+  `img-src 'self' data: blob: https://images.unsplash.com https://picsum.photos ${MAP_ORIGIN}${MAP_2GIS} https://lh3.googleusercontent.com https://t.me`,
   "font-src 'self' data:",
-  // MapLibre web-worker'lari blob'dan yuklanadi
+  // MapLibre/2GIS web-worker'lari blob'dan yuklanadi
   "worker-src 'self' blob:",
-  // Xarita: style JSON + vektor tayl (.pbf) + glyph/font (.pbf) — hammasi MAP_ORIGIN
-  `connect-src 'self' ${API_ORIGIN} ${MAP_ORIGIN} https://eu.i.posthog.com https://eu-assets.i.posthog.com`.trim(),
+  // Xarita: style JSON + vektor tayl (.pbf) + glyph/font (.pbf) + 2GIS style/tayl/api
+  `connect-src 'self' ${API_ORIGIN} ${MAP_ORIGIN}${MAP_2GIS} https://eu.i.posthog.com https://eu-assets.i.posthog.com`.trim(),
   "manifest-src 'self'",
 ].join('; ');
 
