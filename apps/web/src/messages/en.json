@@ -144,7 +144,8 @@
     "sortPopular": "Popular",
     "sortNearby": "Nearest first",
     "sortAz": "A–Z",
-    "nearMe": "Near me"
+    "nearMe": "Near me",
+    "allShown": "All results shown"
   },
   "hero": {
     "m1": "Book in 30 seconds",

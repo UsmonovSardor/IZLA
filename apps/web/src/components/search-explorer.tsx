@@ -1,9 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
 import { Link } from 'next-view-transitions';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useTranslations, useLocale } from 'next-intl';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import {
   BadgeCheck,
   List,
@@ -15,114 +17,145 @@ import {
   X,
   Check,
   ArrowUpDown,
+  Clock,
 } from 'lucide-react';
-import type { Vendor } from '@/lib/api';
+import { api, type Vendor, type Facets } from '@/lib/api';
+import { vendorsQS, type SearchFilters, type SortKey } from '@/lib/search';
 import { VendorMap } from './vendor-map';
 
-type Props = { vendors: Vendor[]; initialCategory?: string };
+type Props = {
+  initialVendors: Vendor[];
+  facets: Facets;
+  filters: SearchFilters;
+  pageSize: number;
+};
 
-type CatMeta = { slug: string; name: string; icon?: string; total: number };
+type Geo = { lat: number; lng: number };
 
-type SortKey = 'popular' | 'rating' | 'nearby' | 'az';
-type Pos = { lat: number; lng: number };
-
-const R = 6371;
-function haversineKm(a: Pos, bLat: number, bLng: number): number {
-  const dLat = ((bLat - a.lat) * Math.PI) / 180;
-  const dLng = ((bLng - a.lng) * Math.PI) / 180;
-  const s =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos((a.lat * Math.PI) / 180) * Math.cos((bLat * Math.PI) / 180) * Math.sin(dLng / 2) ** 2;
-  return +(R * 2 * Math.atan2(Math.sqrt(s), Math.sqrt(1 - s))).toFixed(1);
-}
-
-export function SearchExplorer({ vendors, initialCategory }: Props) {
+export function SearchExplorer({ initialVendors, facets, filters, pageSize }: Props) {
   const t = useTranslations('search');
   const tc = useTranslations('common');
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
-  // ── Filtr holati ──────────────────────────────────────────────────────────
-  const [category, setCategory] = useState<string | null>(initialCategory ?? null);
-  const [minRating, setMinRating] = useState<0 | 4 | 4.5>(0);
-  const [verifiedOnly, setVerifiedOnly] = useState(false);
-  const [sort, setSort] = useState<SortKey>('popular');
-  const [pos, setPos] = useState<Pos | null>(null);
+  // ── Ro'yxat: server 1-sahifa + klient infinite scroll ────────────────────
+  const [items, setItems] = useState<Vendor[]>(initialVendors);
+  const [page, setPage] = useState(2);
+  const [hasMore, setHasMore] = useState(initialVendors.length >= pageSize);
+  const [loading, setLoading] = useState(false);
+
+  // ── Geolokatsiya: URL'ga YOZILMAYDI (maxfiylik), faqat klient fetch'ida ──
+  const [geoPos, setGeoPos] = useState<Geo | null>(null);
   const [geo, setGeo] = useState<'idle' | 'locating' | 'error'>('idle');
 
-  // ── UI holati ─────────────────────────────────────────────────────────────
+  // ── UI ──
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [mobileView, setMobileView] = useState<'list' | 'map'>('list');
-  const listRef = useRef<HTMLDivElement>(null);
+  const parentRef = useRef<HTMLDivElement>(null);
 
-  // Kategoriya chiplari — vendorlarning o'zidan (sonlar 100% mos, ko'p bo'yicha saralangan).
-  const cats = useMemo<CatMeta[]>(() => {
-    const m = new Map<string, CatMeta>();
-    for (const v of vendors) {
-      const c = v.category;
-      if (!c?.slug) continue;
-      const cur = m.get(c.slug);
-      if (cur) cur.total += 1;
-      else m.set(c.slug, { slug: c.slug, name: c.name, icon: c.icon, total: 1 });
-    }
-    return [...m.values()].sort((a, b) => b.total - a.total);
-  }, [vendors]);
-
-  // Kategoriya-bo'lmagan filtrlarni qo'llagan ro'yxat — chip sonlari shunga qarab hisoblanadi.
-  const baseFiltered = useMemo(
-    () =>
-      vendors.filter(
-        (v) => v.rating >= minRating && (!verifiedOnly || v.verified),
-      ),
-    [vendors, minRating, verifiedOnly],
-  );
-
-  const countByCat = useMemo(() => {
-    const m = new Map<string, number>();
-    for (const v of baseFiltered) {
-      const s = v.category?.slug;
-      if (s) m.set(s, (m.get(s) ?? 0) + 1);
-    }
-    return m;
-  }, [baseFiltered]);
-
-  // Yakuniy ro'yxat: kategoriya + masofa + saralash.
-  const results = useMemo(() => {
-    let list = baseFiltered.filter((v) => !category || v.category?.slug === category);
-    const withDist = list.map((v) => ({
-      ...v,
-      distanceKm: pos && Number.isFinite(v.lat) && Number.isFinite(v.lng)
-        ? haversineKm(pos, v.lat, v.lng)
-        : v.distanceKm ?? null,
-    }));
-    withDist.sort((a, b) => {
-      if (sort === 'rating') return b.rating - a.rating || b.reviewCount - a.reviewCount;
-      if (sort === 'az') return a.name.localeCompare(b.name);
-      if (sort === 'nearby')
-        return (a.distanceKm ?? 1e9) - (b.distanceKm ?? 1e9) || b.rating - a.rating;
-      return b.reviewCount - a.reviewCount || b.rating - a.rating; // popular
-    });
-    return withDist;
-  }, [baseFiltered, category, pos, sort]);
-
-  // Xaritadan tanlansa — mos qatorni ko'rinishga surish.
+  // Server 1-sahifa (URL o'zgarganda) → ro'yxatni tiklash. Geo rejimida alohida oqim.
   useEffect(() => {
-    if (!selectedId || !listRef.current) return;
-    const row = listRef.current.querySelector<HTMLElement>(`[data-vid="${selectedId}"]`);
-    row?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (geoPos) return;
+    setItems(initialVendors);
+    setPage(2);
+    setHasMore(initialVendors.length >= pageSize);
+    parentRef.current?.scrollTo({ top: 0 });
+  }, [initialVendors, geoPos, pageSize]);
+
+  // Geo rejimi: 1-sahifani klientda lat/lng + sort=distance bilan olamiz.
+  useEffect(() => {
+    if (!geoPos) return;
+    let cancelled = false;
+    setLoading(true);
+    api
+      .vendors(vendorsQS(filters, { withCategory: true, page: 1, geo: geoPos }), locale)
+      .then((res) => {
+        if (cancelled) return;
+        setItems(res);
+        setPage(2);
+        setHasMore(res.length >= pageSize);
+        parentRef.current?.scrollTo({ top: 0 });
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setItems([]);
+          setHasMore(false);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [geoPos, filters, locale, pageSize]);
+
+  const loadMore = useCallback(async () => {
+    if (loading || !hasMore) return;
+    setLoading(true);
+    try {
+      const res = await api.vendors(
+        vendorsQS(filters, { withCategory: true, page, geo: geoPos }),
+        locale,
+      );
+      setItems((prev) => {
+        const seen = new Set(prev.map((v) => v.id));
+        return [...prev, ...res.filter((v) => !seen.has(v.id))];
+      });
+      setPage((p) => p + 1);
+      setHasMore(res.length >= pageSize);
+    } catch {
+      setHasMore(false);
+    } finally {
+      setLoading(false);
+    }
+  }, [loading, hasMore, page, filters, geoPos, locale, pageSize]);
+
+  // ── Virtualizatsiya (uzun ro'yxat = kam DOM) ──────────────────────────────
+  const rowVirtualizer = useVirtualizer({
+    count: items.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 140,
+    overscan: 6,
+    gap: 12,
+  });
+  const virtualItems = rowVirtualizer.getVirtualItems();
+  const lastIndex = virtualItems.length ? virtualItems[virtualItems.length - 1].index : 0;
+
+  // Oxiriga yaqinlashganда keyingi sahifa (infinite scroll).
+  useEffect(() => {
+    if (lastIndex >= items.length - 5 && hasMore && !loading) loadMore();
+  }, [lastIndex, items.length, hasMore, loading, loadMore]);
+
+  // Xaritadan tanlanса — mos qatorni ko'rinishga surish.
+  useEffect(() => {
+    if (!selectedId) return;
+    const idx = items.findIndex((v) => v.id === selectedId);
+    if (idx >= 0) rowVirtualizer.scrollToIndex(idx, { align: 'center' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedId]);
 
-  const hasFilters = category !== null || minRating !== 0 || verifiedOnly || sort !== 'popular';
-
-  function clearAll() {
-    setCategory(null);
-    setMinRating(0);
-    setVerifiedOnly(false);
-    setSort('popular');
-  }
+  // ── URL filtr setterlari (ulashiladigan, back tugma, SEO) ─────────────────
+  const setParams = useCallback(
+    (patch: Record<string, string | null>) => {
+      const p = new URLSearchParams(searchParams.toString());
+      for (const [k, val] of Object.entries(patch)) {
+        if (val === null || val === '') p.delete(k);
+        else p.set(k, val);
+      }
+      const qs = p.toString();
+      startTransition(() => router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false }));
+    },
+    [searchParams, pathname, router],
+  );
 
   function requestNearby() {
-    if (pos) {
-      setSort((s) => (s === 'nearby' ? 'popular' : 'nearby'));
+    if (geoPos) {
+      setGeoPos(null);
       return;
     }
     if (!('geolocation' in navigator)) {
@@ -132,59 +165,87 @@ export function SearchExplorer({ vendors, initialCategory }: Props) {
     setGeo('locating');
     navigator.geolocation.getCurrentPosition(
       (p) => {
-        setPos({ lat: p.coords.latitude, lng: p.coords.longitude });
+        setGeoPos({ lat: p.coords.latitude, lng: p.coords.longitude });
         setGeo('idle');
-        setSort('nearby');
       },
       () => setGeo('error'),
       { enableHighAccuracy: true, timeout: 8000 },
     );
   }
 
-  const sortOptions: { key: SortKey; label: string; disabled?: boolean }[] = [
+  function clearAll() {
+    setGeoPos(null);
+    startTransition(() => router.replace(pathname, { scroll: false }));
+  }
+
+  const hasFilters =
+    !!filters.category ||
+    filters.minRating !== 0 ||
+    filters.verified ||
+    filters.openNow ||
+    filters.sort !== 'popular' ||
+    !!geoPos;
+
+  const sortOptions: { key: SortKey; label: string }[] = [
     { key: 'popular', label: t('sortPopular') },
     { key: 'rating', label: t('sortRating') },
-    { key: 'nearby', label: t('sortNearby'), disabled: !pos },
     { key: 'az', label: t('sortAz') },
   ];
+
+  const busy = loading || isPending;
 
   return (
     <div>
       {/* ─────────────────  FILTR PANELI  ───────────────── */}
       <div className="sticky top-16 z-20 -mx-4 mb-5 border-b border-line/70 bg-bg/85 px-4 pt-3 pb-2.5 backdrop-blur-xl sm:-mx-6 sm:px-6 lg:-mx-10 lg:px-10">
-        {/* Kategoriya segment-scroller */}
+        {/* Kategoriya segment-scroller — server facet sanoqlari (butun DB) */}
         <div className="no-scrollbar -mx-1 flex items-center gap-2 overflow-x-auto px-1 pb-2.5">
           <CatChip
-            active={category === null}
+            active={!filters.category}
             icon="✨"
             label={tc('all')}
-            count={baseFiltered.length}
-            onClick={() => setCategory(null)}
+            count={facets.total}
+            onClick={() => setParams({ category: null })}
           />
-          {cats.map((c) => (
+          {facets.categories.map((c) => (
             <CatChip
               key={c.slug}
-              active={category === c.slug}
+              active={filters.category === c.slug}
               icon={c.icon}
               label={c.name}
-              count={countByCat.get(c.slug) ?? 0}
-              onClick={() => setCategory((cur) => (cur === c.slug ? null : c.slug))}
+              count={c.count}
+              onClick={() => setParams({ category: filters.category === c.slug ? null : c.slug })}
             />
           ))}
         </div>
 
         {/* Fasetlar + saralash */}
         <div className="flex flex-wrap items-center gap-2">
-          <FacetPill active={minRating === 4.5} onClick={() => setMinRating((r) => (r === 4.5 ? 0 : 4.5))}>
+          <FacetPill
+            active={filters.minRating === 4.5}
+            onClick={() => setParams({ minRating: filters.minRating === 4.5 ? null : '4.5' })}
+          >
             <Star className="h-3.5 w-3.5 fill-warning text-warning" /> 4.5+
           </FacetPill>
-          <FacetPill active={minRating === 4} onClick={() => setMinRating((r) => (r === 4 ? 0 : 4))}>
+          <FacetPill
+            active={filters.minRating === 4}
+            onClick={() => setParams({ minRating: filters.minRating === 4 ? null : '4' })}
+          >
             <Star className="h-3.5 w-3.5 fill-warning text-warning" /> 4+
           </FacetPill>
-          <FacetPill active={verifiedOnly} onClick={() => setVerifiedOnly((v) => !v)}>
+          <FacetPill
+            active={filters.verified}
+            onClick={() => setParams({ verified: filters.verified ? null : 'true' })}
+          >
             <BadgeCheck className="h-3.5 w-3.5 text-teal-600" /> {t('verified')}
           </FacetPill>
-          <FacetPill active={sort === 'nearby'} onClick={requestNearby}>
+          <FacetPill
+            active={filters.openNow}
+            onClick={() => setParams({ openNow: filters.openNow ? null : 'true' })}
+          >
+            <Clock className="h-3.5 w-3.5" /> {t('openNow')}
+          </FacetPill>
+          <FacetPill active={!!geoPos} onClick={requestNearby}>
             {geo === 'locating' ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
             ) : (
@@ -202,16 +263,19 @@ export function SearchExplorer({ vendors, initialCategory }: Props) {
                 <X className="h-3.5 w-3.5" /> {t('clear')}
               </button>
             )}
-            <label className="relative inline-flex items-center">
+            <label className={`relative inline-flex items-center ${geoPos ? 'opacity-40 pointer-events-none' : ''}`}>
               <ArrowUpDown className="pointer-events-none absolute left-3 h-3.5 w-3.5 text-muted" />
               <select
-                value={sort}
-                onChange={(e) => setSort(e.target.value as SortKey)}
+                value={filters.sort}
+                onChange={(e) => {
+                  const key = e.target.value as SortKey;
+                  setParams({ sort: key === 'popular' ? null : key });
+                }}
                 aria-label={t('sort')}
                 className="cursor-pointer appearance-none rounded-full border border-line bg-surface py-1.5 pl-8 pr-8 text-xs font-medium text-navy shadow-sm outline-none transition hover:border-brand/40 focus:border-brand focus:ring-2 focus:ring-brand/15"
               >
                 {sortOptions.map((o) => (
-                  <option key={o.key} value={o.key} disabled={o.disabled}>
+                  <option key={o.key} value={o.key}>
                     {o.label}
                   </option>
                 ))}
@@ -225,8 +289,11 @@ export function SearchExplorer({ vendors, initialCategory }: Props) {
 
         {/* Natija soni + mobil almashtirgich */}
         <div className="mt-2.5 flex items-center justify-between">
-          <p className="text-sm text-muted">
-            <span className="font-semibold text-navy">{results.length}</span> {t('foundSuffix')}
+          <p className="flex items-center gap-2 text-sm text-muted">
+            <span>
+              <span className="font-semibold text-navy">{facets.total}</span> {t('foundSuffix')}
+            </span>
+            {busy && <Loader2 className="h-3.5 w-3.5 animate-spin text-brand" />}
           </p>
           <div className="lg:hidden inline-flex rounded-full border border-line bg-surface p-0.5 shadow-sm">
             <SegBtn active={mobileView === 'list'} onClick={() => setMobileView('list')}>
@@ -240,7 +307,7 @@ export function SearchExplorer({ vendors, initialCategory }: Props) {
       </div>
 
       {/* ─────────────────  NATIJALAR + XARITA  ───────────────── */}
-      {results.length === 0 ? (
+      {items.length === 0 && !busy ? (
         <div className="rounded-2xl border border-line bg-surface p-10 text-center">
           <p className="text-muted">{t('empty')}</p>
           {hasFilters && (
@@ -255,21 +322,42 @@ export function SearchExplorer({ vendors, initialCategory }: Props) {
       ) : (
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
           <div
-            ref={listRef}
+            ref={parentRef}
             data-lenis-prevent
-            className={`${mobileView === 'map' ? 'hidden' : 'block'} lg:block lg:max-h-[calc(100dvh-11rem)] lg:overflow-y-auto lg:pr-2 -mr-2 space-y-3`}
+            className={`${mobileView === 'map' ? 'hidden' : 'block'} lg:block h-[calc(100dvh-13rem)] lg:h-[calc(100dvh-11rem)] overflow-y-auto -mr-2 pr-2`}
           >
-            {results.map((v) => (
-              <ResultRow
-                key={v.id}
-                v={v}
-                active={v.id === selectedId}
-                onHover={setHoveredId}
-                onSelect={setSelectedId}
-                reviewsLabel={tc('reviews', { count: v.reviewCount })}
-                detailsLabel={tc('viewDetails')}
-              />
-            ))}
+            <div style={{ height: rowVirtualizer.getTotalSize(), position: 'relative' }}>
+              {virtualItems.map((vi) => {
+                const v = items[vi.index];
+                if (!v) return null;
+                return (
+                  <div
+                    key={v.id}
+                    data-index={vi.index}
+                    ref={rowVirtualizer.measureElement}
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', transform: `translateY(${vi.start}px)` }}
+                  >
+                    <ResultRow
+                      v={v}
+                      active={v.id === selectedId}
+                      onHover={setHoveredId}
+                      onSelect={setSelectedId}
+                      reviewsLabel={tc('reviews', { count: v.reviewCount })}
+                      detailsLabel={tc('viewDetails')}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            <div className="flex items-center justify-center py-4 text-xs text-muted">
+              {loading ? (
+                <span className="inline-flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" /> {tc('loading')}
+                </span>
+              ) : !hasMore && items.length > 0 ? (
+                <span>{t('allShown')}</span>
+              ) : null}
+            </div>
           </div>
 
           <div
@@ -277,7 +365,7 @@ export function SearchExplorer({ vendors, initialCategory }: Props) {
             className={`${mobileView === 'list' ? 'hidden' : 'block'} lg:block lg:sticky lg:top-[8.5rem] h-[calc(100dvh-13rem)] lg:h-[calc(100dvh-11rem)]`}
           >
             <VendorMap
-              vendors={results}
+              vendors={items}
               selectedId={selectedId}
               hoveredId={hoveredId}
               onSelect={setSelectedId}
