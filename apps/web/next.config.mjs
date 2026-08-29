@@ -14,6 +14,18 @@ const API_ORIGIN = (() => {
   }
 })();
 
+// Basemap tayl kelib chiqishi — CSP va xarita uslubi HECH QACHON ajralib qolmasligi
+// uchun bitta manbadan olinadi (vendor-map.tsx dagi MAP_STYLE bilan bir xil default).
+// OpenFreeMap: style/vektor tayl/font/sprite hammasi shu origin'da (kalitsiz).
+const MAP_STYLE = process.env.NEXT_PUBLIC_MAP_STYLE || 'https://tiles.openfreemap.org/styles/liberty';
+const MAP_ORIGIN = (() => {
+  try {
+    return new URL(MAP_STYLE).origin;
+  } catch {
+    return 'https://tiles.openfreemap.org';
+  }
+})();
+
 // Content-Security-Policy — ENFORCING (bosh + /qidiruv xarita sahifalarida
 // Report-Only rejimida 0 buzilish tasdiqlangach yoqildi, 2026-08-28).
 const csp = [
@@ -25,11 +37,13 @@ const csp = [
   // Next.js gidratsiya inline skriptlaridan foydalanadi
   "script-src 'self' 'unsafe-inline' https://eu-assets.i.posthog.com",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://images.unsplash.com https://picsum.photos https://*.basemaps.cartocdn.com https://lh3.googleusercontent.com https://t.me",
+  // Xarita raster tayllari (ne2_shaded) + sprite PNG shu origin'dan keladi
+  `img-src 'self' data: blob: https://images.unsplash.com https://picsum.photos ${MAP_ORIGIN} https://lh3.googleusercontent.com https://t.me`,
   "font-src 'self' data:",
   // MapLibre web-worker'lari blob'dan yuklanadi
   "worker-src 'self' blob:",
-  `connect-src 'self' ${API_ORIGIN} https://*.basemaps.cartocdn.com https://demotiles.maplibre.org https://eu.i.posthog.com https://eu-assets.i.posthog.com`.trim(),
+  // Xarita: style JSON + vektor tayl (.pbf) + glyph/font (.pbf) — hammasi MAP_ORIGIN
+  `connect-src 'self' ${API_ORIGIN} ${MAP_ORIGIN} https://eu.i.posthog.com https://eu-assets.i.posthog.com`.trim(),
   "manifest-src 'self'",
 ].join('; ');
 
