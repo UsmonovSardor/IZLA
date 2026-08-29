@@ -138,7 +138,13 @@
     "locating": "Aniqlanmoqda…",
     "geoError": "Joylashuv aniqlanmadi. Brauzerda ruxsat bering.",
     "price": "Narx",
-    "som": "so‘m"
+    "som": "so‘m",
+    "foundSuffix": "ta joy topildi",
+    "sort": "Saralash",
+    "sortPopular": "Ommabop",
+    "sortNearby": "Avval yaqin",
+    "sortAz": "A–Z",
+    "nearMe": "Menga yaqin"
   },
   "hero": {
     "m1": "30 soniyada bron",

@@ -138,7 +138,13 @@
     "locating": "Locating…",
     "geoError": "Could not get your location. Allow access in the browser.",
     "price": "Price",
-    "som": "UZS"
+    "som": "UZS",
+    "foundSuffix": "places found",
+    "sort": "Sort",
+    "sortPopular": "Popular",
+    "sortNearby": "Nearest first",
+    "sortAz": "A–Z",
+    "nearMe": "Near me"
   },
   "hero": {
     "m1": "Book in 30 seconds",

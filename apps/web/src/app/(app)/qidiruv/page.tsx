@@ -1,52 +1,35 @@
 import { getLocale, getTranslations } from 'next-intl/server';
-import { api, type Vendor, type Facets } from '@/lib/api';
+import { api, type Vendor } from '@/lib/api';
 import { SearchExplorer } from '@/components/search-explorer';
-import { SearchFilters } from '@/components/search-filters';
-import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
-
-// Qidiruv query kombinatsiyalari duplicate bo'lmasligi uchun asosiy sahifaga canonical.
-export function generateMetadata(): Metadata {
-  return { alternates: { canonical: '/qidiruv' } };
-}
-
-const FILTER_KEYS = ['category', 'q', 'district', 'verified', 'minRating', 'priceMin', 'priceMax', 'openNow', 'lat', 'lng', 'radiusKm'] as const;
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const sp = await searchParams;
   const locale = await getLocale();
   const t = await getTranslations('search');
 
-  // Ro'yxat uchun — barcha filtrlar + sort
-  const listQs = new URLSearchParams();
-  for (const k of FILTER_KEYS) if (sp[k]) listQs.set(k, sp[k]);
-  // Sort: aniq berilsa — o'sha; radius bo'lsa masofa; q bo'lsa relevance (sort'siz); aks holda rating
-  const sort = sp.sort || (sp.radiusKm ? 'distance' : sp.q ? '' : 'rating');
-  if (sort) listQs.set('sort', sort);
-
-  // Facets uchun — kategoriyadan tashqari barcha filtrlar
-  const facetQs = new URLSearchParams();
-  for (const k of FILTER_KEYS) if (k !== 'category' && sp[k]) facetQs.set(k, sp[k]);
+  // Barcha kategoriyalarni olib kelamiz (klientda tez almashtirish uchun) — URL'dagi
+  // ?category faqat boshlang'ich tanlov sifatida ishlatiladi.
+  const qs = new URLSearchParams();
+  if (sp.q) qs.set('q', sp.q);
+  if (sp.district) qs.set('district', sp.district);
+  qs.set('sort', 'rating');
 
   let vendors: Vendor[] = [];
-  let facets: Facets = { total: 0, categories: [] };
   try {
-    [vendors, facets] = await Promise.all([
-      api.vendors(`?${listQs.toString()}`, locale),
-      api.facets(facetQs.toString() ? `?${facetQs.toString()}` : '', locale),
-    ]);
+    vendors = await api.vendors(`?${qs.toString()}`, locale);
   } catch {
     vendors = [];
   }
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold text-navy mb-1">{t('title')}</h1>
-      <p className="text-muted text-sm mb-5">{t('found', { count: vendors.length })}</p>
-
-      <SearchFilters categories={facets.categories} priceRange={facets.priceRange} />
-      <SearchExplorer vendors={vendors} />
+      <div className="mb-1 flex items-baseline gap-3">
+        <h1 className="font-display text-2xl font-bold text-navy">{t('title')}</h1>
+        {sp.q && <span className="text-sm text-muted">“{sp.q}”</span>}
+      </div>
+      <SearchExplorer vendors={vendors} initialCategory={sp.category ?? undefined} />
     </div>
   );
 }
