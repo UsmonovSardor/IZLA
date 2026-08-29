@@ -9,8 +9,9 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   const locale = await getLocale();
   const t = await getTranslations('search');
 
+  // Barcha kategoriyalarni olib kelamiz (klientda tez almashtirish uchun) — URL'dagi
+  // ?category faqat boshlang'ich tanlov sifatida ishlatiladi.
   const qs = new URLSearchParams();
-  if (sp.category) qs.set('category', sp.category);
   if (sp.q) qs.set('q', sp.q);
   if (sp.district) qs.set('district', sp.district);
   qs.set('sort', 'rating');
@@ -24,12 +25,11 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold text-navy mb-1">{t('title')}</h1>
-      <p className="text-slate2 text-sm mb-6">
-        {t('found', { count: vendors.length })}
-        {sp.category ? ` · ${sp.category}` : ''}
-      </p>
-      <SearchExplorer vendors={vendors} />
+      <div className="mb-1 flex items-baseline gap-3">
+        <h1 className="font-display text-2xl font-bold text-navy">{t('title')}</h1>
+        {sp.q && <span className="text-sm text-slate2">“{sp.q}”</span>}
+      </div>
+      <SearchExplorer vendors={vendors} initialCategory={sp.category ?? undefined} />
     </div>
   );
 }

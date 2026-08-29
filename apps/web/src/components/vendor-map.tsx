@@ -8,10 +8,13 @@ import type { Vendor } from '@/lib/api';
 /** Toshkent markazi (lng, lat) */
 const TASHKENT: [number, number] = [69.2797, 41.3111];
 
-/** Kalitsiz, bepul CARTO Voyager raster tayllar (OSM ma'lumoti). Premium light basemap. */
-const CARTO = ['a', 'b', 'c', 'd'].map(
-  (s) => `https://${s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png`,
-);
+/**
+ * Basemap uslubi — KALITSIZ, bepul, limitsiz OpenFreeMap vektor uslubi (OSM ma'lumoti).
+ * (Eski CARTO raster tayllari endi API kalit talab qiladi → "API KEY REQUIRED" suvbelgisi.)
+ * MapTiler kaliti bo'lsa NEXT_PUBLIC_MAP_STYLE env orqali almashtiriladi (o'zbekcha yorliqlar aniqroq).
+ */
+const MAP_STYLE =
+  process.env.NEXT_PUBLIC_MAP_STYLE ?? 'https://tiles.openfreemap.org/styles/liberty';
 
 const BRAND = '#2563EB';
 const TEAL = '#14B8A6';
@@ -96,20 +99,8 @@ export function VendorMap({ vendors, selectedId, hoveredId, onSelect, labels, cl
 
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: {
-        version: 8,
-        // Kalitsiz, ishonchli glyph manbasi (MapLibre CDN — klaster raqamlari uchun).
-        glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
-        sources: {
-          carto: {
-            type: 'raster',
-            tiles: CARTO,
-            tileSize: 256,
-            attribution: '© OpenStreetMap · © CARTO',
-          },
-        },
-        layers: [{ id: 'carto', type: 'raster', source: 'carto' }],
-      },
+      // Vektor uslub URL'i — glyphs/sources/layers hammasi uslub ichida (kalitsiz).
+      style: MAP_STYLE,
       center: TASHKENT,
       zoom: 10.5,
       minZoom: 3,

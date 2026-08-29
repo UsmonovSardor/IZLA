@@ -64,7 +64,17 @@
     "found": "{count} ta joy topildi",
     "list": "Ro'yxat",
     "map": "Xarita",
-    "empty": "Hech narsa topilmadi yoki API ishga tushmagan."
+    "empty": "Hech narsa topilmadi yoki API ishga tushmagan.",
+    "foundSuffix": "ta joy topildi",
+    "sort": "Saralash",
+    "sortPopular": "Ommabop",
+    "sortRating": "Reyting",
+    "sortNearby": "Avval yaqin",
+    "sortAz": "A–Z",
+    "verified": "Tasdiqlangan",
+    "nearMe": "Menga yaqin",
+    "geoError": "Joylashuv yo'q",
+    "clear": "Tozalash"
   },
   "hero": {
     "m1": "30 soniyada bron",

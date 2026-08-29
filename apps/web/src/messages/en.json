@@ -64,7 +64,17 @@
     "found": "{count} places found",
     "list": "List",
     "map": "Map",
-    "empty": "Nothing found or the API is down."
+    "empty": "Nothing found or the API is down.",
+    "foundSuffix": "places found",
+    "sort": "Sort",
+    "sortPopular": "Popular",
+    "sortRating": "Rating",
+    "sortNearby": "Nearest first",
+    "sortAz": "A–Z",
+    "verified": "Verified",
+    "nearMe": "Near me",
+    "geoError": "No location",
+    "clear": "Clear"
   },
   "hero": {
     "m1": "Book in 30 seconds",
