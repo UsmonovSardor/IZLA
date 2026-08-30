@@ -194,6 +194,11 @@ export function SearchExplorer({ initialVendors, facets, filters, pageSize }: Pr
 
   const busy = loading || isPending;
 
+  // Sanoq: kategoriya tanlanган bo'lsa — o'sha kategoriya soni; aks holda umumiy (facets.total).
+  const displayTotal = filters.category
+    ? facets.categories.find((c) => c.slug === filters.category)?.count ?? 0
+    : facets.total;
+
   return (
     <div>
       {/* ─────────────────  FILTR PANELI  ───────────────── */}
@@ -291,7 +296,7 @@ export function SearchExplorer({ initialVendors, facets, filters, pageSize }: Pr
         <div className="mt-2.5 flex items-center justify-between">
           <p className="flex items-center gap-2 text-sm text-muted">
             <span>
-              <span className="font-semibold text-navy">{facets.total}</span> {t('foundSuffix')}
+              <span className="font-semibold text-navy">{displayTotal}</span> {t('foundSuffix')}
             </span>
             {busy && <Loader2 className="h-3.5 w-3.5 animate-spin text-brand" />}
           </p>
