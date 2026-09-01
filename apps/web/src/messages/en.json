@@ -995,6 +995,11 @@
       "reviews": "Reviews",
       "doctors": "Specialists",
       "experience": "Years experience"
+    },
+    "taxi": {
+      "call": "Order a taxi",
+      "hint": "Yandex Go · destination prefilled",
+      "short": "Taxi"
     }
   },
   "pwa": {

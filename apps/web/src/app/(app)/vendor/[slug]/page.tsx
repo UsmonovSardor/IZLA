@@ -16,12 +16,11 @@ import { ReviewComposer } from '@/components/vendor/review-composer';
 import { VendorHero } from '@/components/vendor/vendor-hero';
 import { StatCounters } from '@/components/vendor/stat-counters';
 import { ServiceMenu } from '@/components/vendor/service-menu';
-import { WhyChoose } from '@/components/vendor/why-choose';
 import { TeamGrid, type TeamMember } from '@/components/vendor/team-grid';
-import { HowItWork } from '@/components/vendor/how-it-work';
 import { Testimonials } from '@/components/vendor/testimonials';
 import { Gallery } from '@/components/vendor/gallery';
 import { LocationMap } from '@/components/vendor/location-map';
+import { StickyActionBar } from '@/components/vendor/sticky-action-bar';
 import type { Metadata } from 'next';
 import { cache } from 'react';
 
@@ -73,8 +72,6 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
   // ── Rasmlar ────────────────────────────────────────────────────────────────
   const gallery = uniq([...(v.photos ?? []), ...(a.gallery ?? [])]);
   const heroImg = gallery[0] ?? FALLBACK;
-  const whyImg = gallery[1] ?? heroImg;
-  const howImg = gallery[2] ?? gallery[0] ?? FALLBACK;
 
   // ── Jamoa (attributes.team → staff fallback) ────────────────────────────────
   const team: TeamMember[] = (a.team?.length
@@ -94,18 +91,6 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
         ...(expYears ? [{ value: `${expYears}+`, label: t('counters.experience') }] : []),
       ].slice(0, 4);
 
-  // ── Highlights & steps (konfiguratsiya + i18n) ──────────────────────────────
-  const highlights = cfg.highlights.map((h) => ({
-    icon: h.icon,
-    title: t(`cat.${cfg.i18nKey}.highlights.${h.key}.t`),
-    text: t(`cat.${cfg.i18nKey}.highlights.${h.key}.d`),
-  }));
-  const steps = cfg.steps.map((s) => ({
-    icon: s.icon,
-    title: t(`cat.${cfg.i18nKey}.steps.${s.key}.t`),
-    text: t(`cat.${cfg.i18nKey}.steps.${s.key}.d`),
-  }));
-
   const crumbs = [{ name: 'Bosh sahifa', path: '/' }];
   if (v.category) crumbs.push({ name: v.category.name, path: `/qidiruv?category=${v.category.slug}` });
   crumbs.push({ name: v.name, path: `/vendor/${v.slug}` });
@@ -121,7 +106,7 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
   const hours = v.hours ?? {};
 
   return (
-    <div className="space-y-14">
+    <div className="space-y-14 pb-24 lg:pb-0">
       <JsonLd data={[vendorJsonLd(v), breadcrumbJsonLd(crumbs)]} />
       <RecordRecentView
         slug={v.slug}
@@ -251,16 +236,6 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
         </aside>
       </div>
 
-      {has('whyChoose') && (
-        <WhyChoose
-          heading={t(`cat.${cfg.i18nKey}.whyTitle`)}
-          subheading={t('sections.whyChooseSub')}
-          items={highlights}
-          image={whyImg}
-          accent={accent}
-        />
-      )}
-
       {has('team') && team.length > 0 && (
         <TeamGrid
           heading={t(cfg.teamLabelKey)}
@@ -268,16 +243,6 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
           members={team}
           accent={accent}
           expLabel={t('team.exp')}
-        />
-      )}
-
-      {has('howItWork') && (
-        <HowItWork
-          heading={t(`cat.${cfg.i18nKey}.howTitle`)}
-          subheading={t('sections.howSub')}
-          steps={steps}
-          image={howImg}
-          accent={accent}
         />
       )}
 
@@ -319,8 +284,24 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
           detailsWord={t('sections.details')}
           reviewsWord={t('reviews.word')}
           directionsWord={t('sections.directions')}
+          labels={{
+            taxi: t('taxi.call'), taxiHint: t('taxi.hint'), call: t('hero.call'),
+            openNow: t('hours.openNow'), closedNow: t('hours.closedNow'),
+            hoursTitle: t('sections.hoursTitle'), closed: t('hours.closed'),
+          }}
         />
       )}
+
+      <StickyActionBar
+        lat={v.lat}
+        lng={v.lng}
+        phone={v.phone}
+        accent={accent}
+        hasBooking={v.services.length > 0}
+        bookLabel={t('hero.book')}
+        taxiLabel={t('taxi.short')}
+        callLabel={t('hero.call')}
+      />
     </div>
   );
 }

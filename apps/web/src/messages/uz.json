@@ -995,6 +995,11 @@
       "reviews": "Sharhlar",
       "doctors": "Mutaxassislar",
       "experience": "Yillik tajriba"
+    },
+    "taxi": {
+      "call": "Taksi chaqirish",
+      "hint": "Yandex Go · manzil oldindan tayyor",
+      "short": "Taksi"
     }
   },
   "pwa": {
