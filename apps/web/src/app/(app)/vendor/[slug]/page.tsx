@@ -300,7 +300,6 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
         hasBooking={v.services.length > 0}
         bookLabel={t('hero.book')}
         taxiLabel={t('taxi.short')}
-        callLabel={t('hero.call')}
       />
     </div>
   );
