@@ -106,7 +106,7 @@ export default async function VendorPage({ params }: { params: Promise<{ slug: s
   const hours = v.hours ?? {};
 
   return (
-    <div className="space-y-14 pb-24 lg:pb-0">
+    <div className="space-y-14 pb-36 md:pb-24 lg:pb-0">
       <JsonLd data={[vendorJsonLd(v), breadcrumbJsonLd(crumbs)]} />
       <RecordRecentView
         slug={v.slug}

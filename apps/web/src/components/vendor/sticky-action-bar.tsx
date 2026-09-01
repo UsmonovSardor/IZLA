@@ -17,7 +17,7 @@ export function StickyActionBar({
   const [loading, setLoading] = useState(false);
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 px-3 py-2.5 backdrop-blur lg:hidden" style={{ paddingBottom: 'calc(0.625rem + env(safe-area-inset-bottom))' }}>
+    <div className="fixed inset-x-0 bottom-16 z-50 border-t border-line bg-surface/95 px-3 py-2.5 backdrop-blur md:bottom-0 lg:hidden">
       <div className="mx-auto flex max-w-3xl items-center gap-2">
         <a
           href={hasBooking ? '#booking' : (phone ? `tel:${phone}` : '#booking')}
