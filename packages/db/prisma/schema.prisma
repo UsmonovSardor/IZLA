@@ -25,6 +25,7 @@ enum Role {
   DEVELOPER // ko'chmas mulk: quruvchi kompaniya
   REALTOR // rieltor / agentlik
   SELLER // jismoniy shaxs sotuvchi
+  PARTNER // B2B homiy (bank / sug'urta / BNPL) — Izla Biznes portali
 }
 
 enum VendorStatus {
@@ -38,6 +39,41 @@ enum VendorPlan {
   FREE
   PRO
   PREMIUM
+}
+
+// ─── Izla Biznes: B2B homiy portali (bank / sug'urta / BNPL) ───────────────
+// Homiy obuna tarifi (oy-ma-oy recurring daromad). Yagona manba: common/partner-plans.ts
+enum PartnerPlan {
+  FREE // sinov: cheklangan mahsulot, lead ko'rish faqat
+  GROWTH // o'sish: ko'proq mahsulot, analitika, arzonroq lead
+  ENTERPRISE // korxona: cheksiz, API, featured slotlar, eng arzon lead
+}
+
+enum PartnerStatus {
+  PENDING // ro'yxatdan o'tgan, moderatsiya kutmoqda
+  ACTIVE
+  SUSPENDED
+}
+
+// Homiy kompaniyasidagi foydalanuvchi roli (jamoa)
+enum PartnerMemberRole {
+  OWNER // to'liq huquq (billing, jamoa)
+  MANAGER // mahsulot + lead boshqaruvi
+  VIEWER // faqat ko'rish
+}
+
+// Homiy hisob-fakturasi holati
+enum InvoiceStatus {
+  DRAFT // shakllanmoqda (joriy davr)
+  OPEN // yuborilgan, to'lov kutilmoqda
+  PAID
+  VOID // bekor qilingan
+}
+
+// Hamyon harakati turi (audit izi)
+enum LedgerKind {
+  CREDIT // hisobga tushdi (to'ldirish / bonus)
+  DEBIT // hisobdan yechildi (obuna / lead / reklama)
 }
 
 enum BookingStatus {
@@ -157,42 +193,43 @@ enum NasiyaStatus {
 // CORE
 // ============================================================
 model User {
-  id        String   @id @default(cuid())
-  phone     String   @unique // real telefon yoki sintetik identifikator: tg:<id> / google:<sub>
-  email     String?  @unique
-  googleId  String?  @unique
-  name      String?
-  role      Role     @default(USER)
-  coins     Int      @default(0)
-  locale    String   @default("uz")
-  avatarUrl String?
-  lastLat   Float?
-  lastLng   Float?
+  id           String   @id @default(cuid())
+  phone        String   @unique // real telefon yoki sintetik identifikator: tg:<id> / google:<sub>
+  email        String?  @unique
+  googleId     String?  @unique
+  name         String?
+  role         Role     @default(USER)
+  coins        Int      @default(0)
+  locale       String   @default("uz")
+  avatarUrl    String?
+  lastLat      Float?
+  lastLng      Float?
   referralCode String?  @unique // foydalanuvchining taklif kodi (talab bo'lganda yaratiladi)
   referredById String? // kim taklif qilgan
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  referredBy      User?    @relation("Referrals", fields: [referredById], references: [id], onDelete: SetNull)
-  referred        User[]   @relation("Referrals")
+  referredBy User?  @relation("Referrals", fields: [referredById], references: [id], onDelete: SetNull)
+  referred   User[] @relation("Referrals")
 
-  vendors         Vendor[]
-  bookings        Booking[]
-  reviews         Review[]
-  coinLedger      CoinLedger[]
-  notifications   Notification[]
-  aiConversations AiConversation[]
-  favorites       Favorite[]
-  propertyLeads   PropertyLead[]
-  geoAlertPref    GeoAlertPref?
-  sessions        Session[]
-  companies       Company[]
-  resume          Resume?
-  jobApplications JobApplication[]
-  savedJobs       SavedJob[]
-  policies        InsurancePolicy[]
-  mortgageLeads   MortgageLead[]
-  nasiyaLeads     NasiyaLead[]
+  vendors            Vendor[]
+  bookings           Booking[]
+  reviews            Review[]
+  coinLedger         CoinLedger[]
+  notifications      Notification[]
+  aiConversations    AiConversation[]
+  favorites          Favorite[]
+  propertyLeads      PropertyLead[]
+  geoAlertPref       GeoAlertPref?
+  sessions           Session[]
+  companies          Company[]
+  resume             Resume?
+  jobApplications    JobApplication[]
+  savedJobs          SavedJob[]
+  policies           InsurancePolicy[]
+  mortgageLeads      MortgageLead[]
+  nasiyaLeads        NasiyaLead[]
+  partnerMemberships PartnerMember[]
 
   @@index([role])
   @@map("users")
@@ -247,33 +284,36 @@ model Category {
 }
 
 model Vendor {
-  id          String       @id @default(cuid())
-  ownerId     String
-  categoryId  String
-  name        String
-  slug        String       @unique
-  description String?
-  lat         Float
-  lng         Float
-  address     String?
-  district    String?
-  status      VendorStatus @default(PENDING)
-  verified    Boolean      @default(false)
-  plan        VendorPlan   @default(FREE) // obuna tarifi (take-rate + ranking + featured)
+  id              String       @id @default(cuid())
+  ownerId         String
+  categoryId      String
+  name            String
+  slug            String       @unique
+  description     String?
+  lat             Float
+  lng             Float
+  address         String?
+  district        String?
+  status          VendorStatus @default(PENDING)
+  verified        Boolean      @default(false)
+  plan            VendorPlan   @default(FREE) // obuna tarifi (take-rate + ranking + featured)
   planActivatedAt DateTime?
   planExpiresAt   DateTime?
-  rating      Float        @default(0)
-  reviewCount Int          @default(0)
-  hours       Json         @default("{}") // ish vaqti jadvali
-  phone       String?
-  socials     Json         @default("{}")
-  photos      String[]     @default([])
-  attributes  Json         @default("{}") // kategoriyaga xos qiymatlar
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  rating          Float        @default(0)
+  reviewCount     Int          @default(0)
+  hours           Json         @default("{}") // ish vaqti jadvali
+  phone           String?
+  socials         Json         @default("{}")
+  photos          String[]     @default([])
+  attributes      Json         @default("{}") // kategoriyaga xos qiymatlar
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 
-  owner    User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  category Category  @relation(fields: [categoryId], references: [id])
+  partnerId String? // Izla Biznes: agar vendor B2B homiyga tegishli bo'lsa (null = mustaqil)
+
+  owner    User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  category Category        @relation(fields: [categoryId], references: [id])
+  partner  PartnerAccount? @relation(fields: [partnerId], references: [id], onDelete: SetNull)
   services Service[]
   staff    Staff[]
   bookings Booking[]
@@ -282,6 +322,7 @@ model Vendor {
   @@index([categoryId])
   @@index([status])
   @@index([district])
+  @@index([partnerId])
   @@map("vendors")
 }
 
@@ -352,21 +393,21 @@ model Booking {
 }
 
 model Payment {
-  id          String          @id @default(cuid())
-  bookingId   String?         @unique
-  policyId    String?         @unique // sug'urta polisi uchun to'lov (embedded insurance)
-  userId      String
-  amount           Decimal    @db.Decimal(12, 2) // so'm (UZS)
-  commissionAmount Decimal    @default(0) @db.Decimal(12, 2) // Izla take-rate (bron uchun)
-  netAmount        Decimal?   @db.Decimal(12, 2) // vendorga o'tadigan sof summa
-  currency    String          @default("UZS")
-  provider    PaymentProvider // tanlangan provayder (checkout uchun)
-  status      PaymentStatus   @default(PENDING)
-  escrowState EscrowState     @default(NONE)
-  externalId  String? // to'langan tranzaksiyaning tashqi ID'si (Payme _id / Click trans_id)
-  paidAt      DateTime?
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  id               String          @id @default(cuid())
+  bookingId        String?         @unique
+  policyId         String?         @unique // sug'urta polisi uchun to'lov (embedded insurance)
+  userId           String
+  amount           Decimal         @db.Decimal(12, 2) // so'm (UZS)
+  commissionAmount Decimal         @default(0) @db.Decimal(12, 2) // Izla take-rate (bron uchun)
+  netAmount        Decimal?        @db.Decimal(12, 2) // vendorga o'tadigan sof summa
+  currency         String          @default("UZS")
+  provider         PaymentProvider // tanlangan provayder (checkout uchun)
+  status           PaymentStatus   @default(PENDING)
+  escrowState      EscrowState     @default(NONE)
+  externalId       String? // to'langan tranzaksiyaning tashqi ID'si (Payme _id / Click trans_id)
+  paidAt           DateTime?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
 
   booking      Booking?             @relation(fields: [bookingId], references: [id])
   policy       InsurancePolicy?     @relation(fields: [policyId], references: [id])
@@ -784,10 +825,13 @@ model Insurer {
   verified    Boolean  @default(false)
   phone       String?
   color       String? // brend rangi (UI aksenti)
+  partnerId   String? // Izla Biznes: bu kompaniyaga egalik qiluvchi homiy (null = da'vo qilinmagan)
   createdAt   DateTime @default(now())
 
   products InsuranceProduct[]
+  partner  PartnerAccount?    @relation(fields: [partnerId], references: [id], onDelete: SetNull)
 
+  @@index([partnerId])
   @@map("insurers")
 }
 
@@ -868,10 +912,13 @@ model Bank {
   verified    Boolean  @default(false)
   phone       String?
   color       String?
+  partnerId   String? // Izla Biznes: egasi homiy (null = da'vo qilinmagan)
   createdAt   DateTime @default(now())
 
   programs MortgageProgram[]
+  partner  PartnerAccount?   @relation(fields: [partnerId], references: [id], onDelete: SetNull)
 
+  @@index([partnerId])
   @@map("banks")
 }
 
@@ -953,10 +1000,13 @@ model NasiyaProvider {
   features    Json     @default("[]")
   popular     Boolean  @default(false)
   active      Boolean  @default(true)
+  partnerId   String? // Izla Biznes: egasi homiy (null = da'vo qilinmagan)
   createdAt   DateTime @default(now())
 
-  leads NasiyaLead[]
+  leads   NasiyaLead[]
+  partner PartnerAccount? @relation(fields: [partnerId], references: [id], onDelete: SetNull)
 
+  @@index([partnerId])
   @@map("nasiya_providers")
 }
 
@@ -982,4 +1032,115 @@ model NasiyaLead {
   @@index([userId])
   @@index([status])
   @@map("nasiya_leads")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// IZLA BIZNES — B2B homiy portali (Partner Portal poydevori)
+// Homiy = bank / sug'urta kompaniyasi / BNPL provayderi. Bir kompaniya kanallar
+// bo'ylab bir nechta obyektga (Insurer/Bank/NasiyaProvider/Vendor) ega bo'lishi mumkin.
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Homiy kompaniyasi (tashkilot). Mavjud User auth'ni qayta ishlatadi: kompaniyaga
+// PartnerMember orqali foydalanuvchilar biriktiriladi.
+model PartnerAccount {
+  id              String        @id @default(cuid())
+  name            String // brend nomi (portalda ko'rinadi)
+  slug            String        @unique
+  legalName       String? // yuridik nom (hisob-faktura uchun)
+  taxId           String? // STIR / INN
+  logoUrl         String?
+  website         String?
+  phone           String?
+  email           String?
+  color           String? // brend rangi
+  status          PartnerStatus @default(PENDING)
+  plan            PartnerPlan   @default(FREE) // oy-ma-oy obuna tarifi
+  planActivatedAt DateTime?
+  planExpiresAt   DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  members         PartnerMember[]
+  wallet          PartnerWallet?
+  ledger          LedgerEntry[]
+  invoices        Invoice[]
+  insurers        Insurer[]
+  banks           Bank[]
+  nasiyaProviders NasiyaProvider[]
+  vendors         Vendor[]
+
+  @@index([status])
+  @@index([plan])
+  @@map("partner_accounts")
+}
+
+// Kompaniya jamoasi: foydalanuvchi ↔ kompaniya (rol bilan).
+model PartnerMember {
+  id        String            @id @default(cuid())
+  partnerId String
+  userId    String
+  role      PartnerMemberRole @default(OWNER)
+  createdAt DateTime          @default(now())
+
+  partner PartnerAccount @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([partnerId, userId])
+  @@index([userId])
+  @@map("partner_members")
+}
+
+// Homiy hamyoni (prepaid balans — obuna/lead/reklama shundan yechiladi). FAZA 1: struktura.
+model PartnerWallet {
+  id        String   @id @default(cuid())
+  partnerId String   @unique
+  balance   Decimal  @default(0) @db.Decimal(14, 2) // joriy balans (so'm)
+  currency  String   @default("UZS")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  partner PartnerAccount @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  @@map("partner_wallets")
+}
+
+// Hamyon harakati audit izi (har credit/debit yoziladi).
+model LedgerEntry {
+  id           String     @id @default(cuid())
+  partnerId    String
+  kind         LedgerKind
+  amount       Decimal    @db.Decimal(14, 2) // musbat summa (so'm)
+  reason       String // "obuna: GROWTH", "lead: mortgage", "to'ldirish" ...
+  refType      String? // bog'langan obyekt turi (invoice/lead/...)
+  refId        String?
+  balanceAfter Decimal?   @db.Decimal(14, 2) // yozuvdan keyingi balans (audit)
+  createdAt    DateTime   @default(now())
+
+  partner PartnerAccount @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  @@index([partnerId])
+  @@index([createdAt])
+  @@map("ledger_entries")
+}
+
+// Homiy hisob-fakturasi (davr bo'yicha jami: obuna + lead + reklama). FAZA 1: struktura.
+model Invoice {
+  id          String        @id @default(cuid())
+  partnerId   String
+  number      String        @unique // IZB-2026-000123
+  periodStart DateTime
+  periodEnd   DateTime
+  amount      Decimal       @db.Decimal(14, 2) // jami (so'm)
+  status      InvoiceStatus @default(DRAFT)
+  lines       Json          @default("[]") // [{label, qty, unit, amount}]
+  dueAt       DateTime?
+  paidAt      DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  partner PartnerAccount @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  @@index([partnerId])
+  @@index([status])
+  @@map("invoices")
 }

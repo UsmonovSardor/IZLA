@@ -14,6 +14,7 @@ export async function Footer() {
       title: t('company'),
       links: [
         { label: t('about'), href: '/haqida' },
+        { label: tn('business'), href: '/biznes' },
         { label: tn('partner'), href: '/hamkor' },
         { label: tn('pricing'), href: '/narxlar' },
         { label: t('careers'), href: '/ish' },

@@ -15,7 +15,8 @@
     "insurance": "Insurance",
     "mortgage": "Mortgage",
     "pricing": "Pricing",
-    "installment": "Installments"
+    "installment": "Installments",
+    "business": "Izla Biznes"
   },
   "mobileNav": {
     "home": "Home",
@@ -1911,6 +1912,141 @@
       "title": "Installments available",
       "text": "Get this service on installments.",
       "cta": "Calculate installment"
+    }
+  },
+  "biznes": {
+    "landing": {
+      "metaTitle": "Izla Business — a platform for partners",
+      "metaDesc": "Lead flow, ranking and analytics for banks, insurers and BNPL providers. In one place.",
+      "badge": "Izla Business",
+      "title": "Reach millions of customers from one platform",
+      "subtitle": "Izla is a super-platform connecting banks, insurers and BNPL providers with consumers. List your products, get qualified leads, track growth in analytics.",
+      "cta": "Open portal",
+      "ctaPlans": "See plans",
+      "whyTitle": "Why Izla Business?",
+      "value": {
+        "leads": {
+          "title": "Qualified leads",
+          "desc": "Customers who calculated the amount and chose your exact product — ready to convert."
+        },
+        "ranking": {
+          "title": "More visibility",
+          "desc": "Higher search position and featured placement by plan — more inquiries."
+        },
+        "analytics": {
+          "title": "Analytics",
+          "desc": "Impressions, leads, conversion and revenue in one real-time dashboard."
+        },
+        "selfServe": {
+          "title": "Run it yourself",
+          "desc": "Configure products, plan and leads on your own — no calls, instant."
+        }
+      },
+      "plansTitle": "Simple, transparent plans",
+      "plansSubtitle": "Monthly subscription. Change anytime. No hidden fees."
+    },
+    "portal": {
+      "metaTitle": "Izla Business portal",
+      "metaDesc": "Partner cabinet — leads, products, plan and analytics.",
+      "title": "Izla Business portal",
+      "subtitle": "Manage your company, leads and plan.",
+      "loginNeeded": "Sign in to open the portal.",
+      "login": "Sign in",
+      "tab": {
+        "overview": "Overview",
+        "leads": "Leads",
+        "products": "Products",
+        "plan": "Plan"
+      }
+    },
+    "onboarding": {
+      "title": "Register your company",
+      "subtitle": "Start in a minute. With the free plan you go live instantly.",
+      "name": "Brand name",
+      "namePh": "e.g. Kafil Insurance",
+      "legalName": "Legal name",
+      "taxId": "Tax ID",
+      "phone": "Phone",
+      "email": "Email",
+      "website": "Website",
+      "submit": "Create company",
+      "note": "By registering you agree to the Izla Business terms.",
+      "done": "Company created"
+    },
+    "overview": {
+      "products": "Products",
+      "leadsTotal": "Total leads",
+      "leads30d": "Leads (30 days)",
+      "balance": "Wallet balance",
+      "leadsByChannel": "Leads by channel",
+      "until": "until",
+      "freePlan": "Free plan"
+    },
+    "leads": {
+      "all": "All",
+      "empty": "No leads yet. They will appear here once your products start attracting customers.",
+      "client": "Client",
+      "channel": "Channel",
+      "product": "Product",
+      "amount": "Amount",
+      "status": "Status",
+      "date": "Date"
+    },
+    "products": {
+      "empty": "No products attached. Contact the Izla team to connect them.",
+      "active": "Active",
+      "inactive": "Inactive",
+      "from": "from"
+    },
+    "channel": {
+      "insurance": "Insurance",
+      "mortgage": "Mortgage",
+      "nasiya": "Installment",
+      "vendor": "Service"
+    },
+    "status": {
+      "ACTIVE": "Active",
+      "PENDING": "Under review",
+      "SUSPENDED": "Suspended"
+    },
+    "plans": {
+      "popular": "Popular",
+      "free": "Free",
+      "month": "mo",
+      "choose": "Choose",
+      "current": "Current plan",
+      "activated": "Plan activated",
+      "portalHint": "Change your plan anytime. Higher plan means cheaper leads, more featured slots and deeper analytics.",
+      "FREE": {
+        "name": "Free",
+        "tagline": "To try it out"
+      },
+      "GROWTH": {
+        "name": "Growth",
+        "tagline": "For growing companies"
+      },
+      "ENTERPRISE": {
+        "name": "Enterprise",
+        "tagline": "For large volume"
+      }
+    },
+    "features": {
+      "listing2": "Up to 2 products",
+      "leadsInbox": "Leads inbox (all channels)",
+      "basicProfile": "Company profile",
+      "emailSupport": "Email support",
+      "listing10": "Up to 10 products",
+      "featured1": "1 featured slot",
+      "analytics": "Analytics dashboard",
+      "leadDiscount15": "15% off leads",
+      "verifiedBadge": "Verified badge",
+      "prioritySupport": "Priority support",
+      "listingUnlimited": "Unlimited products",
+      "featured5": "5 featured slots",
+      "analyticsPro": "Advanced analytics",
+      "leadDiscount30": "30% off leads",
+      "apiAccess": "API access (lead/quote)",
+      "dedicatedManager": "Dedicated manager"
     }
   }
 }

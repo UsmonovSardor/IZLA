@@ -15,7 +15,8 @@
     "insurance": "Sug‘urta",
     "mortgage": "Ipoteka",
     "pricing": "Tariflar",
-    "installment": "Nasiya"
+    "installment": "Nasiya",
+    "business": "Izla Biznes"
   },
   "mobileNav": {
     "home": "Asosiy",
@@ -1911,6 +1912,141 @@
       "title": "Bo‘lib to‘lash mavjud",
       "text": "Bu xizmatni nasiyaga rasmiylashtiring.",
       "cta": "Nasiyani hisoblash"
+    }
+  },
+  "biznes": {
+    "landing": {
+      "metaTitle": "Izla Biznes — homiylar uchun platforma",
+      "metaDesc": "Bank, sug‘urta va nasiya kompaniyalari uchun lid oqimi, ranking va analitika. Bir joyda.",
+      "badge": "Izla Biznes",
+      "title": "Millionlab mijozga bitta platformadan yeting",
+      "subtitle": "Izla — bank, sug‘urta va nasiya kompaniyalarini iste’molchi bilan bog‘laydigan super-platforma. Mahsulotingizni joylang, malakali lidlar oling, o‘sishni analitikada kuzating.",
+      "cta": "Portalga kirish",
+      "ctaPlans": "Tariflarni ko‘rish",
+      "whyTitle": "Nega Izla Biznes?",
+      "value": {
+        "leads": {
+          "title": "Malakali lidlar",
+          "desc": "Kalkulyatorda summani hisoblab, aynan sizning mahsulotingizni tanlagan tayyor mijozlar."
+        },
+        "ranking": {
+          "title": "Yuqori ko‘rinish",
+          "desc": "Tarifga qarab qidiruvda yuqori o‘rin va featured joylashuv — ko‘proq murojaat."
+        },
+        "analytics": {
+          "title": "Analitika",
+          "desc": "Ko‘rinish, lid, konversiya va daromadni bitta panelda real vaqtda kuzating."
+        },
+        "selfServe": {
+          "title": "O‘zingiz boshqaring",
+          "desc": "Mahsulot, tarif va lidlarni o‘zingiz sozlaysiz — qo‘ng‘iroqsiz, darrov."
+        }
+      },
+      "plansTitle": "Oddiy, shaffof tariflar",
+      "plansSubtitle": "Oylik obuna. Istalgan vaqtda o‘zgartiring. Yashirin to‘lovlarsiz."
+    },
+    "portal": {
+      "metaTitle": "Izla Biznes portali",
+      "metaDesc": "Homiy kabineti — lidlar, mahsulotlar, tarif va analitika.",
+      "title": "Izla Biznes portali",
+      "subtitle": "Kompaniyangiz, lidlaringiz va tarifingizni boshqaring.",
+      "loginNeeded": "Portalga kirish uchun tizimga kiring.",
+      "login": "Kirish",
+      "tab": {
+        "overview": "Umumiy",
+        "leads": "Lidlar",
+        "products": "Mahsulotlar",
+        "plan": "Tarif"
+      }
+    },
+    "onboarding": {
+      "title": "Kompaniyangizni ro‘yxatdan o‘tkazing",
+      "subtitle": "Bir daqiqada boshlang. Bepul tarif bilan darrov ishga tushasiz.",
+      "name": "Brend nomi",
+      "namePh": "Masalan: Kafil Sug‘urta",
+      "legalName": "Yuridik nom",
+      "taxId": "STIR",
+      "phone": "Telefon",
+      "email": "Email",
+      "website": "Veb-sayt",
+      "submit": "Kompaniya yaratish",
+      "note": "Ro‘yxatdan o‘tish orqali Izla Biznes shartlariga rozilik bildirasiz.",
+      "done": "Kompaniya yaratildi"
+    },
+    "overview": {
+      "products": "Mahsulotlar",
+      "leadsTotal": "Jami lidlar",
+      "leads30d": "Lidlar (30 kun)",
+      "balance": "Hamyon balansi",
+      "leadsByChannel": "Kanal bo‘yicha lidlar",
+      "until": "gacha",
+      "freePlan": "Bepul tarif"
+    },
+    "leads": {
+      "all": "Barchasi",
+      "empty": "Hozircha lid yo‘q. Mahsulotlaringiz mijozlarni jalb qila boshlaganda bu yerda paydo bo‘ladi.",
+      "client": "Mijoz",
+      "channel": "Kanal",
+      "product": "Mahsulot",
+      "amount": "Summa",
+      "status": "Holat",
+      "date": "Sana"
+    },
+    "products": {
+      "empty": "Sizga biriktirilgan mahsulot yo‘q. Ulash uchun Izla jamoasi bilan bog‘laning.",
+      "active": "Faol",
+      "inactive": "Faol emas",
+      "from": "dan"
+    },
+    "channel": {
+      "insurance": "Sug‘urta",
+      "mortgage": "Ipoteka",
+      "nasiya": "Nasiya",
+      "vendor": "Xizmat"
+    },
+    "status": {
+      "ACTIVE": "Faol",
+      "PENDING": "Ko‘rib chiqilmoqda",
+      "SUSPENDED": "To‘xtatilgan"
+    },
+    "plans": {
+      "popular": "Ommabop",
+      "free": "Bepul",
+      "month": "oy",
+      "choose": "Tanlash",
+      "current": "Joriy tarif",
+      "activated": "Tarif faollashtirildi",
+      "portalHint": "Tarifni istalgan vaqtda o‘zgartiring. Yuqori tarif — arzonroq lidlar, ko‘proq featured o‘rin va kengroq analitika.",
+      "FREE": {
+        "name": "Bepul",
+        "tagline": "Sinab ko‘rish uchun"
+      },
+      "GROWTH": {
+        "name": "O‘sish",
+        "tagline": "O‘sayotgan kompaniyalar uchun"
+      },
+      "ENTERPRISE": {
+        "name": "Korxona",
+        "tagline": "Yirik hajm uchun"
+      }
+    },
+    "features": {
+      "listing2": "2 tagacha mahsulot",
+      "leadsInbox": "Lidlar inboxi (barcha kanal)",
+      "basicProfile": "Kompaniya profili",
+      "emailSupport": "Email qo‘llab-quvvatlash",
+      "listing10": "10 tagacha mahsulot",
+      "featured1": "1 ta featured o‘rin",
+      "analytics": "Analitika paneli",
+      "leadDiscount15": "Lidlarga 15% chegirma",
+      "verifiedBadge": "Tasdiqlangan nishon",
+      "prioritySupport": "Ustuvor qo‘llab-quvvatlash",
+      "listingUnlimited": "Cheksiz mahsulot",
+      "featured5": "5 ta featured o‘rin",
+      "analyticsPro": "Kengaytirilgan analitika",
+      "leadDiscount30": "Lidlarga 30% chegirma",
+      "apiAccess": "API kirish (lead/quote)",
+      "dedicatedManager": "Shaxsiy menejer"
     }
   }
 }

@@ -184,8 +184,64 @@ export const api = {
     authed<NasiyaLead>('/nasiya/apply', { method: 'POST', body: JSON.stringify(body) }),
   myNasiyaLeads: () => authed<MyNasiyaLead[]>('/nasiya/mine'),
 
+  // --- Izla Biznes (homiy portali) ---
+  partnerPlans: () => get<PartnerPlanConfig[]>('/partner-plans', 600),
+  partnerRegister: (body: PartnerRegisterInput) =>
+    authed<PartnerBrief>('/partner/register', { method: 'POST', body: JSON.stringify(body) }),
+  partnerMe: () => authed<PartnerAccountBrief[]>('/partner/me'),
+  partner: (id: string) => authed<PartnerAccountDetail>(`/partner/${id}`),
+  partnerUpdate: (id: string, body: Partial<PartnerRegisterInput> & { logoUrl?: string }) =>
+    authed<PartnerBrief>(`/partner/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+  partnerDashboard: (id: string) => authed<PartnerDashboard>(`/partner/${id}/dashboard`),
+  partnerProducts: (id: string) => authed<PartnerProducts>(`/partner/${id}/products`),
+  partnerLeads: (id: string, qs = '') => authed<PartnerLead[]>(`/partner/${id}/leads${qs}`),
+  partnerSelectPlan: (id: string, plan: PartnerPlanId) =>
+    authed<{ plan: PartnerPlanId; planExpiresAt: string | null; priceMonthly: number }>(`/partner/${id}/plan`, { method: 'POST', body: JSON.stringify({ plan }) }),
+
   base: BASE,
 };
+
+// --- Izla Biznes (homiy) tiplari ---
+export type PartnerPlanId = 'FREE' | 'GROWTH' | 'ENTERPRISE';
+export interface PartnerPlanConfig {
+  id: PartnerPlanId; priceMonthly: number; productLimit: number; featuredSlots: number;
+  leadBasePrice: number; leadDiscount: number; analytics: boolean; apiAccess: boolean;
+  prioritySupport: boolean; featureKeys: string[];
+}
+export interface PartnerRegisterInput {
+  name: string; legalName?: string; taxId?: string; phone?: string; email?: string; website?: string; color?: string;
+}
+export interface PartnerBrief {
+  id: string; slug: string; name: string; status: string; plan: PartnerPlanId;
+}
+export interface PartnerAccountBrief {
+  id: string; name: string; slug: string; logoUrl?: string | null; color?: string | null;
+  status: string; plan: PartnerPlanId; planExpiresAt: string | null; memberRole: string;
+}
+export interface PartnerAccountDetail extends PartnerAccountBrief {
+  legalName?: string | null; taxId?: string | null; website?: string | null; phone?: string | null;
+  email?: string | null; planActivatedAt: string | null; createdAt: string; planConfig: PartnerPlanConfig;
+}
+export interface PartnerDashboard {
+  partner: { id: string; name: string; slug: string; plan: PartnerPlanId; status: string; planExpiresAt: string | null };
+  plan: PartnerPlanConfig;
+  wallet: { balance: number; currency: string };
+  counts: { insurers: number; banks: number; nasiyaProviders: number; vendors: number; products: number };
+  leads: { total: number; last30d: number; byChannel: { insurance: number; mortgage: number; nasiya: number } };
+  featured: { used: number; limit: number };
+  limits: { products: number; productsUsed: number };
+}
+export interface PartnerProductRow {
+  id: string; channel: 'insurance' | 'mortgage' | 'nasiya' | 'vendor'; name: string; slug: string;
+  meta: string; active: boolean; price?: number; brand: string;
+}
+export interface PartnerProducts {
+  insurance: PartnerProductRow[]; mortgage: PartnerProductRow[]; nasiya: PartnerProductRow[]; vendors: PartnerProductRow[];
+}
+export interface PartnerLead {
+  id: string; channel: 'insurance' | 'mortgage' | 'nasiya'; name: string | null; phone: string | null;
+  amount: number; status: string; product: string | null; brand: string | null; createdAt: string;
+}
 
 // --- Nasiya tiplari ---
 export interface NasiyaProvider {
