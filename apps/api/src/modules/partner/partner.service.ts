@@ -7,9 +7,16 @@ import {
 import type { Prisma, PartnerMemberRole } from '@izla/db';
 import { PrismaService } from '../../prisma/prisma.service';
 import { partnerPlanConfig, PARTNER_PLAN_LIST } from '../../common/partner-plans';
-import { CreateMortgageProgramDto, RegisterPartnerDto, UpdateMortgageProgramDto, UpdatePartnerDto } from './dto';
+import {
+  CreateInsuranceProductDto, CreateInsurerDto, CreateMortgageProgramDto, CreateNasiyaProviderDto,
+  RegisterPartnerDto, UpdateInsuranceProductDto, UpdateMortgageProgramDto, UpdateNasiyaProviderDto, UpdatePartnerDto,
+} from './dto';
 
 const dec = (v: unknown): number => (v == null ? 0 : Number(v));
+
+// Platforma standart komissiyalari (Izla ulushi) — homiy tahrirlay olmaydi.
+const INSURANCE_COMMISSION_DEFAULT = 0.15; // premiyaning 15%
+const NASIYA_MERCHANT_FEE_DEFAULT = 0.03; // xarid summasining 3%
 
 function slugify(s: string): string {
   return (
@@ -462,6 +469,184 @@ export class PartnerService {
     await this.assertMember(userId, partnerId, ['OWNER', 'MANAGER']);
     await this.assertOwnedProgram(partnerId, programId);
     await this.prisma.mortgageProgram.delete({ where: { id: programId } });
+    return { ok: true };
+  }
+
+  // ═══ Self-serve: SUG'URTA (insurer + mahsulot) ═══════════════════════════
+
+  async myInsurers(userId: string, partnerId: string) {
+    await this.assertMember(userId, partnerId);
+    return this.prisma.insurer.findMany({
+      where: { partnerId },
+      orderBy: { createdAt: 'asc' },
+      select: { id: true, name: true, slug: true, color: true, verified: true },
+    });
+  }
+
+  async createInsurer(userId: string, partnerId: string, dto: CreateInsurerDto) {
+    await this.assertMember(userId, partnerId, ['OWNER', 'MANAGER']);
+    await this.assertNotSuspended(partnerId);
+    const slug = await this.uniqueSlug(slugify(dto.name), async (s) => !!(await this.prisma.insurer.findUnique({ where: { slug: s }, select: { id: true } })));
+    return this.prisma.insurer.create({
+      data: {
+        name: dto.name.trim(), slug,
+        color: dto.color?.trim() || null,
+        logoUrl: dto.logoUrl?.trim() || null,
+        description: dto.description?.trim() || null,
+        verified: false,
+        partnerId,
+      },
+      select: { id: true, name: true, slug: true },
+    });
+  }
+
+  private async assertOwnedInsurer(partnerId: string, insurerId: string) {
+    const ins = await this.prisma.insurer.findUnique({ where: { id: insurerId }, select: { partnerId: true } });
+    if (!ins || ins.partnerId !== partnerId) throw new ForbiddenException('Kompaniya sizga tegishli emas');
+  }
+
+  private async assertOwnedInsProduct(partnerId: string, productId: string) {
+    const p = await this.prisma.insuranceProduct.findUnique({ where: { id: productId }, select: { insurer: { select: { partnerId: true } } } });
+    if (!p || p.insurer.partnerId !== partnerId) throw new ForbiddenException('Mahsulot sizga tegishli emas');
+  }
+
+  /** Sug'urta mahsuloti yaratish → darrov /sugurta marketplace + kalkulyatorда jonli. */
+  async createInsuranceProduct(userId: string, partnerId: string, dto: CreateInsuranceProductDto) {
+    await this.assertMember(userId, partnerId, ['OWNER', 'MANAGER']);
+    await this.assertNotSuspended(partnerId);
+    await this.assertOwnedInsurer(partnerId, dto.insurerId);
+    const partner = await this.prisma.partnerAccount.findUnique({ where: { id: partnerId }, select: { plan: true } });
+    await this.assertUnderLimit(partnerId, partner?.plan ?? 'FREE');
+
+    const slug = await this.uniqueSlug(slugify(dto.name), async (s) => !!(await this.prisma.insuranceProduct.findUnique({ where: { slug: s }, select: { id: true } })));
+    // tariff bo'sh bo'lsa pricing DEFAULTS ishlatiladi; override berilsa qo'shamiz.
+    const tariff: Record<string, number> = {};
+    if (dto.basePremium) tariff.base = dto.basePremium;
+    if (dto.coverageFrom) tariff.insuredSum = dto.coverageFrom;
+
+    const prod = await this.prisma.insuranceProduct.create({
+      data: {
+        insurerId: dto.insurerId,
+        type: dto.type,
+        name: dto.name.trim(), slug,
+        summary: dto.summary?.trim() || null,
+        tariff: tariff as unknown as Prisma.InputJsonValue,
+        commissionRate: INSURANCE_COMMISSION_DEFAULT, // Izla ulushi — platforma belgilaydi
+        priceFrom: dto.priceFrom ?? null,
+        coverageFrom: dto.coverageFrom ?? null,
+        termsMonths: dto.termsMonths?.length ? dto.termsMonths : [12],
+        features: (dto.features ?? []) as unknown as Prisma.InputJsonValue,
+        active: true,
+      },
+      select: { id: true, name: true, slug: true, type: true, active: true },
+    });
+    return prod;
+  }
+
+  async updateInsuranceProduct(userId: string, partnerId: string, productId: string, dto: UpdateInsuranceProductDto) {
+    await this.assertMember(userId, partnerId, ['OWNER', 'MANAGER']);
+    await this.assertOwnedInsProduct(partnerId, productId);
+    // tariff override'ni yangilash (agar base/coverage berilsa)
+    let tariff: Prisma.InputJsonValue | undefined;
+    if (dto.basePremium != null || dto.coverageFrom != null) {
+      const cur = await this.prisma.insuranceProduct.findUnique({ where: { id: productId }, select: { tariff: true } });
+      const t = { ...((cur?.tariff as Record<string, number>) ?? {}) };
+      if (dto.basePremium != null) t.base = dto.basePremium;
+      if (dto.coverageFrom != null) t.insuredSum = dto.coverageFrom;
+      tariff = t as unknown as Prisma.InputJsonValue;
+    }
+    const prod = await this.prisma.insuranceProduct.update({
+      where: { id: productId },
+      data: {
+        name: dto.name?.trim() ?? undefined,
+        summary: dto.summary?.trim() ?? undefined,
+        priceFrom: dto.priceFrom ?? undefined,
+        coverageFrom: dto.coverageFrom ?? undefined,
+        termsMonths: dto.termsMonths ?? undefined,
+        features: dto.features != null ? (dto.features as unknown as Prisma.InputJsonValue) : undefined,
+        active: dto.active ?? undefined,
+        tariff,
+      },
+      select: { id: true, name: true, active: true, type: true },
+    });
+    return prod;
+  }
+
+  async deleteInsuranceProduct(userId: string, partnerId: string, productId: string) {
+    await this.assertMember(userId, partnerId, ['OWNER', 'MANAGER']);
+    await this.assertOwnedInsProduct(partnerId, productId);
+    await this.prisma.insuranceProduct.delete({ where: { id: productId } });
+    return { ok: true };
+  }
+
+  // ═══ Self-serve: NASIYA (provayder) ══════════════════════════════════════
+
+  private sanitizeTerms(terms: Record<string, number>): Record<string, number> {
+    const out: Record<string, number> = {};
+    for (const [k, v] of Object.entries(terms ?? {})) {
+      const m = Number(k);
+      const val = Number(v);
+      if (Number.isInteger(m) && m > 0 && m <= 60 && isFinite(val) && val >= 0 && val <= 2) out[String(m)] = val;
+    }
+    return out;
+  }
+
+  async createNasiyaProvider(userId: string, partnerId: string, dto: CreateNasiyaProviderDto) {
+    await this.assertMember(userId, partnerId, ['OWNER', 'MANAGER']);
+    await this.assertNotSuspended(partnerId);
+    const partner = await this.prisma.partnerAccount.findUnique({ where: { id: partnerId }, select: { plan: true } });
+    await this.assertUnderLimit(partnerId, partner?.plan ?? 'FREE');
+
+    const terms = this.sanitizeTerms(dto.terms);
+    if (Object.keys(terms).length === 0) throw new BadRequestException('Kamida bitta muddat/ustama kiriting');
+    const slug = await this.uniqueSlug(slugify(dto.name), async (s) => !!(await this.prisma.nasiyaProvider.findUnique({ where: { slug: s }, select: { id: true } })));
+
+    return this.prisma.nasiyaProvider.create({
+      data: {
+        name: dto.name.trim(), slug,
+        color: dto.color?.trim() || null,
+        logoUrl: dto.logoUrl?.trim() || null,
+        terms: terms as unknown as Prisma.InputJsonValue,
+        merchantFee: NASIYA_MERCHANT_FEE_DEFAULT, // Izla ulushi — platforma belgilaydi
+        minAmount: dto.minAmount ?? null,
+        maxAmount: dto.maxAmount ?? null,
+        features: (dto.features ?? []) as unknown as Prisma.InputJsonValue,
+        active: true,
+        partnerId,
+      },
+      select: { id: true, name: true, slug: true, active: true },
+    });
+  }
+
+  private async assertOwnedProvider(partnerId: string, providerId: string) {
+    const p = await this.prisma.nasiyaProvider.findUnique({ where: { id: providerId }, select: { partnerId: true } });
+    if (!p || p.partnerId !== partnerId) throw new ForbiddenException('Provayder sizga tegishli emas');
+  }
+
+  async updateNasiyaProvider(userId: string, partnerId: string, providerId: string, dto: UpdateNasiyaProviderDto) {
+    await this.assertMember(userId, partnerId, ['OWNER', 'MANAGER']);
+    await this.assertOwnedProvider(partnerId, providerId);
+    const terms = dto.terms != null ? this.sanitizeTerms(dto.terms) : undefined;
+    return this.prisma.nasiyaProvider.update({
+      where: { id: providerId },
+      data: {
+        name: dto.name?.trim() ?? undefined,
+        color: dto.color?.trim() ?? undefined,
+        logoUrl: dto.logoUrl?.trim() ?? undefined,
+        terms: terms != null ? (terms as unknown as Prisma.InputJsonValue) : undefined,
+        minAmount: dto.minAmount ?? undefined,
+        maxAmount: dto.maxAmount ?? undefined,
+        features: dto.features != null ? (dto.features as unknown as Prisma.InputJsonValue) : undefined,
+        active: dto.active ?? undefined,
+      },
+      select: { id: true, name: true, active: true },
+    });
+  }
+
+  async deleteNasiyaProvider(userId: string, partnerId: string, providerId: string) {
+    await this.assertMember(userId, partnerId, ['OWNER', 'MANAGER']);
+    await this.assertOwnedProvider(partnerId, providerId);
+    await this.prisma.nasiyaProvider.delete({ where: { id: providerId } });
     return { ok: true };
   }
 

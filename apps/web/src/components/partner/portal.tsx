@@ -15,7 +15,7 @@ import { formatUZS } from '@/lib/utils';
 import {
   api, type PartnerAccountBrief, type PartnerDashboard, type PartnerLead,
   type PartnerProducts, type PartnerPlanConfig, type PartnerPlanId, type PartnerBank,
-  type PartnerBillingOverview, type PartnerInvoice,
+  type PartnerBillingOverview, type PartnerInvoice, type PartnerInsurer, type InsuranceType,
 } from '@/lib/api';
 import { PartnerPlanCards } from './plan-cards';
 
@@ -355,33 +355,279 @@ function Products({ partnerId }: { partnerId: string }) {
 
   if (!p) return <Centered><Loader2 className="animate-spin text-brand" /></Centered>;
 
-  const others = [...p.insurance, ...p.nasiya, ...p.vendors];
-
   return (
-    <div className="flex flex-col gap-8">
-      {/* Ipoteka — tahrirlanadigan */}
+    <div className="flex flex-col gap-10">
+      <InsuranceManager partnerId={partnerId} products={p.insurance} onChanged={reload} />
       <MortgageManager partnerId={partnerId} programs={p.mortgage} onChanged={reload} />
+      <NasiyaManager partnerId={partnerId} providers={p.nasiya} onChanged={reload} />
 
-      {/* Boshqa kanallar — read-only */}
-      {others.length > 0 && (
+      {/* Xizmat vendorlari — read-only (bu portalda emas, vendor kabinetida boshqariladi) */}
+      {p.vendors.length > 0 && (
         <div>
-          <h3 className="text-sm font-semibold text-heading">{t('products.otherChannels')}</h3>
-          <p className="mt-1 text-xs text-muted">{t('products.readonly')}</p>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {others.map((row) => (
-              <div key={`${row.channel}-${row.id}`} className="rounded-2xl border border-line bg-surface p-4 shadow-card">
-                <div className="flex items-center justify-between">
-                  <span className="rounded-full bg-bg px-2.5 py-0.5 text-xs font-semibold text-muted">{t(`channel.${row.channel}`)}</span>
-                  <span className={`h-2 w-2 rounded-full ${row.active ? 'bg-emerald-500' : 'bg-slate-300'}`} title={row.active ? t('products.active') : t('products.inactive')} />
-                </div>
-                <div className="mt-2 font-semibold text-heading">{row.name}</div>
-                <div className="mt-0.5 text-xs text-muted">{row.brand} · {row.meta}</div>
-                {row.price != null && row.price > 0 && (
-                  <div className="mt-2 text-sm font-semibold text-heading">{t('products.from')} {formatUZS(row.price)}</div>
-                )}
+          <h3 className="text-sm font-semibold text-heading">{t('channel.vendor')}</h3>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {p.vendors.map((row) => (
+              <div key={row.id} className="rounded-2xl border border-line bg-surface p-4 shadow-card">
+                <div className="font-semibold text-heading">{row.name}</div>
+                <div className="mt-0.5 text-xs text-muted">{row.meta}</div>
               </div>
             ))}
           </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Umumiy: mahsulot ro'yxati qatori (toggle + o'chirish) ───────────────────
+function ProductRow({ name, meta, brand, active, onToggle, onDelete, t }: {
+  name: string; meta: string; brand: string; active: boolean;
+  onToggle: () => void; onDelete: () => void; t: (k: string) => string;
+}) {
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-surface p-4 shadow-card">
+      <div className="min-w-0">
+        <div className="flex items-center gap-2">
+          <span className="font-semibold text-heading">{name}</span>
+          <span className="rounded-full bg-brand/10 px-2 py-0.5 text-xs font-semibold text-brand">{meta}</span>
+        </div>
+        <div className="mt-0.5 text-xs text-muted">{brand}</div>
+      </div>
+      <div className="flex items-center gap-2">
+        <button onClick={onToggle} className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${active ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-line text-muted hover:bg-bg'}`}>
+          {active ? t('products.active') : t('products.inactive')}
+        </button>
+        <button onClick={onDelete} className="grid h-8 w-8 place-items-center rounded-full border border-line text-rose-500 transition hover:bg-rose-50" title={t('common.delete')}>
+          <Trash2 className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Sug'urta self-serve menejeri ────────────────────────────────────────────
+const INS_TYPES: { value: string; }[] = [
+  { value: 'OSAGO' }, { value: 'KASKO' }, { value: 'TRAVEL' }, { value: 'PROPERTY' }, { value: 'ACCIDENT' }, { value: 'HEALTH' },
+];
+
+function InsuranceManager({ partnerId, products, onChanged }: { partnerId: string; products: PartnerProducts['insurance']; onChanged: () => void }) {
+  const t = useTranslations('biznes');
+  const { toast } = useToast();
+  const [insurers, setInsurers] = useState<PartnerInsurer[] | null>(null);
+  const [showBrand, setShowBrand] = useState(false);
+  const [showProduct, setShowProduct] = useState(false);
+  const [brandName, setBrandName] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [form, setForm] = useState({ insurerId: '', type: 'OSAGO', name: '', priceFrom: '', coverageFrom: '', basePremium: '' });
+  const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
+
+  const loadInsurers = useCallback(() => { api.partnerInsurers(partnerId).then(setInsurers).catch(() => setInsurers([])); }, [partnerId]);
+  useEffect(() => { loadInsurers(); }, [loadInsurers]);
+
+  async function createBrand() {
+    if (brandName.trim().length < 2) return;
+    setBusy(true);
+    try { await api.partnerCreateInsurer(partnerId, { name: brandName.trim() }); toast({ variant: 'success', title: t('products.ins.brandCreated') }); setBrandName(''); setShowBrand(false); loadInsurers(); }
+    catch (e) { toast({ variant: 'error', title: (e as Error).message }); } finally { setBusy(false); }
+  }
+
+  async function createProduct() {
+    const insurerId = form.insurerId || insurers?.[0]?.id;
+    if (!insurerId || form.name.trim().length < 2) { toast({ variant: 'error', title: t('products.mortgage.fillRequired') }); return; }
+    setBusy(true);
+    try {
+      await api.partnerCreateInsProduct(partnerId, {
+        insurerId, type: form.type as InsuranceType, name: form.name.trim(),
+        priceFrom: form.priceFrom ? Number(form.priceFrom) : undefined,
+        coverageFrom: form.coverageFrom ? Number(form.coverageFrom) : undefined,
+        basePremium: form.basePremium ? Number(form.basePremium) : undefined,
+      });
+      toast({ variant: 'success', title: t('products.ins.productLive') });
+      setShowProduct(false);
+      setForm({ insurerId: '', type: 'OSAGO', name: '', priceFrom: '', coverageFrom: '', basePremium: '' });
+      onChanged();
+    } catch (e) { toast({ variant: 'error', title: (e as Error).message }); } finally { setBusy(false); }
+  }
+
+  const hasBrand = (insurers?.length ?? 0) > 0;
+
+  return (
+    <div>
+      <ManagerHeader icon={ShieldCheck} title={t('products.ins.title')} live="/sugurta" liveLabel={t('products.mortgage.viewLive')}
+        onAdd={hasBrand ? () => { setShowProduct((v) => !v); setShowBrand(false); } : undefined} addLabel={t('products.ins.addProduct')} t={t} />
+      <p className="mt-1 text-xs text-muted">{t('products.ins.liveHint')}</p>
+
+      {insurers === null ? <div className="mt-4"><Loader2 className="h-5 w-5 animate-spin text-brand" /></div> : !hasBrand ? (
+        <BrandCreate label={t('products.ins.noBrand')} btn={t('products.ins.createBrand')} ph={t('products.ins.brandPh')} show={showBrand} setShow={setShowBrand} value={brandName} setValue={setBrandName} onCreate={createBrand} busy={busy} t={t} />
+      ) : (
+        <>
+          {showProduct && (
+            <div className="mt-4 rounded-2xl border border-line bg-surface p-5 shadow-card">
+              <div className="grid gap-4 sm:grid-cols-2">
+                {insurers.length > 1 && (
+                  <div className="sm:col-span-2">
+                    <label className="text-sm font-medium text-muted">{t('products.ins.brand')}</label>
+                    <select value={form.insurerId || insurers[0].id} onChange={(e) => set('insurerId', e.target.value)} className="mt-1.5 w-full rounded-xl border border-line bg-bg px-3 py-2.5 text-sm text-heading">
+                      {insurers.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
+                    </select>
+                  </div>
+                )}
+                <div>
+                  <label className="text-sm font-medium text-muted">{t('products.ins.type')}</label>
+                  <select value={form.type} onChange={(e) => set('type', e.target.value)} className="mt-1.5 w-full rounded-xl border border-line bg-bg px-3 py-2.5 text-sm text-heading">
+                    {INS_TYPES.map((o) => <option key={o.value} value={o.value}>{t(`insType.${o.value}`)}</option>)}
+                  </select>
+                </div>
+                <NumField label={t('products.ins.name')} text value={form.name} onChange={(v) => set('name', v)} placeholder={t('products.ins.namePh')} />
+                <NumField label={t('products.ins.priceFrom')} value={form.priceFrom} onChange={(v) => set('priceFrom', v)} placeholder="0" />
+                <NumField label={t('products.ins.coverageFrom')} value={form.coverageFrom} onChange={(v) => set('coverageFrom', v)} placeholder="0" />
+                <NumField label={t('products.ins.basePremium')} value={form.basePremium} onChange={(v) => set('basePremium', v)} placeholder={t('products.ins.optional')} />
+              </div>
+              <div className="mt-4 flex gap-2">
+                <button onClick={createProduct} disabled={busy} className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white transition hover:brightness-110 disabled:opacity-60">
+                  {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />} {t('products.mortgage.publish')}
+                </button>
+                <button onClick={() => setShowProduct(false)} className="rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-heading transition hover:bg-bg">{t('common.cancel')}</button>
+              </div>
+            </div>
+          )}
+          {products.length === 0 ? (
+            <div className="mt-4 rounded-2xl border border-dashed border-line py-10 text-center text-sm text-muted">{t('products.ins.noProduct')}</div>
+          ) : (
+            <div className="mt-4 flex flex-col gap-2">
+              {products.map((row) => (
+                <ProductRow key={row.id} name={row.name} meta={t(`insType.${row.meta}`)} brand={row.brand} active={row.active} t={t}
+                  onToggle={async () => { try { await api.partnerUpdateInsProduct(partnerId, row.id, { active: !row.active }); onChanged(); } catch (e) { toast({ variant: 'error', title: (e as Error).message }); } }}
+                  onDelete={async () => { if (!confirm(t('products.ins.deleteConfirm'))) return; try { await api.partnerDeleteInsProduct(partnerId, row.id); onChanged(); } catch (e) { toast({ variant: 'error', title: (e as Error).message }); } }} />
+              ))}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+// ─── Nasiya self-serve menejeri ──────────────────────────────────────────────
+const NASIYA_MONTHS = [3, 6, 9, 12];
+
+function NasiyaManager({ partnerId, providers, onChanged }: { partnerId: string; providers: PartnerProducts['nasiya']; onChanged: () => void }) {
+  const t = useTranslations('biznes');
+  const { toast } = useToast();
+  const [show, setShow] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [name, setName] = useState('');
+  const [minAmount, setMinAmount] = useState('');
+  const [maxAmount, setMaxAmount] = useState('');
+  const [markup, setMarkup] = useState<Record<number, string>>({ 3: '0', 6: '9', 9: '', 12: '20' });
+
+  async function create() {
+    const terms: Record<string, number> = {};
+    for (const m of NASIYA_MONTHS) { const v = markup[m]; if (v !== '' && v != null) terms[String(m)] = Number(v) / 100; }
+    if (name.trim().length < 2 || Object.keys(terms).length === 0) { toast({ variant: 'error', title: t('products.nasiya.fillRequired') }); return; }
+    setBusy(true);
+    try {
+      await api.partnerCreateProvider(partnerId, { name: name.trim(), terms, minAmount: minAmount ? Number(minAmount) : undefined, maxAmount: maxAmount ? Number(maxAmount) : undefined });
+      toast({ variant: 'success', title: t('products.nasiya.live') });
+      setShow(false); setName(''); setMinAmount(''); setMaxAmount(''); setMarkup({ 3: '0', 6: '9', 9: '', 12: '20' });
+      onChanged();
+    } catch (e) { toast({ variant: 'error', title: (e as Error).message }); } finally { setBusy(false); }
+  }
+
+  return (
+    <div>
+      <ManagerHeader icon={ShoppingBag} title={t('products.nasiya.title')} live="/nasiya" liveLabel={t('products.mortgage.viewLive')}
+        onAdd={() => setShow((v) => !v)} addLabel={t('products.nasiya.add')} t={t} />
+      <p className="mt-1 text-xs text-muted">{t('products.nasiya.liveHint')}</p>
+
+      {show && (
+        <div className="mt-4 rounded-2xl border border-line bg-surface p-5 shadow-card">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <NumField label={t('products.nasiya.name')} text value={name} onChange={setName} placeholder={t('products.nasiya.namePh')} full />
+            <NumField label={t('products.nasiya.minAmount')} value={minAmount} onChange={setMinAmount} placeholder="0" />
+            <NumField label={t('products.nasiya.maxAmount')} value={maxAmount} onChange={setMaxAmount} placeholder="0" />
+          </div>
+          <div className="mt-4">
+            <label className="text-sm font-medium text-muted">{t('products.nasiya.terms')}</label>
+            <div className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {NASIYA_MONTHS.map((m) => (
+                <div key={m}>
+                  <div className="text-xs text-muted">{m} {t('plans.month')}</div>
+                  <div className="mt-1 flex items-center gap-1">
+                    <input type="number" value={markup[m]} onChange={(e) => setMarkup((x) => ({ ...x, [m]: e.target.value }))}
+                      className="w-full rounded-xl border border-line bg-bg px-3 py-2 text-sm text-heading outline-none focus:border-brand" placeholder="—" />
+                    <span className="text-sm text-muted">%</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="mt-1.5 text-xs text-muted/80">{t('products.nasiya.termsHint')}</p>
+          </div>
+          <div className="mt-4 flex gap-2">
+            <button onClick={create} disabled={busy} className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white transition hover:brightness-110 disabled:opacity-60">
+              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />} {t('products.mortgage.publish')}
+            </button>
+            <button onClick={() => setShow(false)} className="rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-heading transition hover:bg-bg">{t('common.cancel')}</button>
+          </div>
+        </div>
+      )}
+
+      {providers.length === 0 ? (
+        <div className="mt-4 rounded-2xl border border-dashed border-line py-10 text-center text-sm text-muted">{t('products.nasiya.empty')}</div>
+      ) : (
+        <div className="mt-4 flex flex-col gap-2">
+          {providers.map((row) => (
+            <ProductRow key={row.id} name={row.name} meta={row.meta} brand={row.brand} active={row.active} t={t}
+              onToggle={async () => { try { await api.partnerUpdateProvider(partnerId, row.id, { active: !row.active }); onChanged(); } catch (e) { toast({ variant: 'error', title: (e as Error).message }); } }}
+              onDelete={async () => { if (!confirm(t('products.nasiya.deleteConfirm'))) return; try { await api.partnerDeleteProvider(partnerId, row.id); onChanged(); } catch (e) { toast({ variant: 'error', title: (e as Error).message }); } }} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Umumiy menejer sarlavhasi + "jonli ko'rish" + "qo'shish"
+function ManagerHeader({ icon: Icon, title, live, liveLabel, onAdd, addLabel, t }: {
+  icon: typeof ShieldCheck; title: string; live: string; liveLabel: string; onAdd?: () => void; addLabel: string; t: (k: string) => string;
+}) {
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex items-center gap-2">
+        <Icon className="h-5 w-5 text-brand" />
+        <h3 className="font-display text-lg font-bold text-heading">{title}</h3>
+      </div>
+      <div className="flex gap-2">
+        <Link href={live} target="_blank" className="inline-flex items-center gap-1.5 rounded-full border border-line px-3.5 py-2 text-xs font-semibold text-heading transition hover:bg-bg">
+          <ExternalLink className="h-3.5 w-3.5" /> {liveLabel}
+        </Link>
+        {onAdd && (
+          <button onClick={onAdd} className="inline-flex items-center gap-1.5 rounded-full bg-brand px-3.5 py-2 text-xs font-bold text-white transition hover:brightness-110">
+            <Plus className="h-3.5 w-3.5" /> {addLabel}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Umumiy brend yaratish bloki (insurer/bank)
+function BrandCreate({ label, btn, ph, show, setShow, value, setValue, onCreate, busy, t }: {
+  label: string; btn: string; ph: string; show: boolean; setShow: (v: boolean) => void; value: string; setValue: (v: string) => void; onCreate: () => void; busy: boolean; t: (k: string) => string;
+}) {
+  return (
+    <div className="mt-4 rounded-2xl border border-dashed border-line p-6 text-center">
+      <p className="text-sm text-muted">{label}</p>
+      {!show ? (
+        <button onClick={() => setShow(true)} className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-brand px-4 py-2.5 text-sm font-bold text-white transition hover:brightness-110">
+          <Plus className="h-4 w-4" /> {btn}
+        </button>
+      ) : (
+        <div className="mx-auto mt-3 flex max-w-sm gap-2">
+          <input value={value} onChange={(e) => setValue(e.target.value)} placeholder={ph} className="flex-1 rounded-xl border border-line bg-bg px-3 py-2.5 text-sm text-heading outline-none focus:border-brand" />
+          <button onClick={onCreate} disabled={busy} className="rounded-xl bg-brand px-4 py-2.5 text-sm font-bold text-white disabled:opacity-60">
+            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : t('common.add')}
+          </button>
         </div>
       )}
     </div>

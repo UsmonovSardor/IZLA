@@ -2021,6 +2021,41 @@
         "maxAmount": "Maksimal summa (so‘m)",
         "publish": "E’lon qilish",
         "noProgram": "Hali dastur yo‘q. Birinchisini qo‘shing."
+      },
+      "ins": {
+        "title": "Sug‘urta mahsulotlari",
+        "addProduct": "Mahsulot qo‘shish",
+        "liveHint": "Qo‘shgan mahsulotingiz darrov /sugurta sahifasida va kalkulyatorda mijozlarga ko‘rinadi.",
+        "noBrand": "Avval sug‘urta brendingizni yarating — keyin mahsulot qo‘shasiz.",
+        "createBrand": "Brend yaratish",
+        "brandPh": "Sug‘urta kompaniyasi nomi",
+        "brandCreated": "Brend yaratildi",
+        "productLive": "Mahsulot jonli efirga chiqdi",
+        "brand": "Brend",
+        "type": "Sug‘urta turi",
+        "name": "Mahsulot nomi",
+        "namePh": "Masalan: OSAGO Standart",
+        "priceFrom": "Narx (dan, so‘m)",
+        "coverageFrom": "Qoplama (dan, so‘m)",
+        "basePremium": "Bazaviy premiya (so‘m)",
+        "optional": "ixtiyoriy",
+        "noProduct": "Hali mahsulot yo‘q. Birinchisini qo‘shing.",
+        "deleteConfirm": "Bu mahsulotni o‘chirasizmi?"
+      },
+      "nasiya": {
+        "title": "Nasiya (bo‘lib to‘lash)",
+        "add": "Provayder qo‘shish",
+        "liveHint": "Qo‘shgan provayderingiz darrov /nasiya sahifasida taqqoslashda ko‘rinadi.",
+        "name": "Provayder nomi",
+        "namePh": "Masalan: MyPay Nasiya",
+        "minAmount": "Min summa (so‘m)",
+        "maxAmount": "Maks summa (so‘m)",
+        "terms": "Muddat va ustama",
+        "termsHint": "Har muddat uchun ustama foizini kiriting (bo‘sh = mavjud emas). Masalan 3 oy = 0%.",
+        "live": "Provayder jonli efirga chiqdi",
+        "empty": "Hali provayder yo‘q. Birinchisini qo‘shing.",
+        "deleteConfirm": "Bu provayderni o‘chirasizmi?",
+        "fillRequired": "Nom va kamida bitta muddat kiriting"
       }
     },
     "channel": {
@@ -2107,6 +2142,14 @@
         "SUSPENDED": "Neaktiv",
         "CANCELLED": "Bekor qilingan"
       }
+    },
+    "insType": {
+      "OSAGO": "OSAGO",
+      "KASKO": "KASKO",
+      "TRAVEL": "Sayohat",
+      "PROPERTY": "Mol-mulk",
+      "ACCIDENT": "Baxtsiz hodisa",
+      "HEALTH": "Tibbiy (VMD)"
     }
   }
 }

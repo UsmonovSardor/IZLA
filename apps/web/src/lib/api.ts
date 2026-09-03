@@ -214,6 +214,23 @@ export const api = {
     authed<{ id: string; name: string; active: boolean; annualRate: number }>(`/partner/${id}/mortgage-programs/${programId}`, { method: 'PATCH', body: JSON.stringify(body) }),
   partnerDeleteProgram: (id: string, programId: string) =>
     authed<{ ok: boolean }>(`/partner/${id}/mortgage-programs/${programId}`, { method: 'DELETE' }),
+  // Self-serve: sug'urta
+  partnerInsurers: (id: string) => authed<PartnerInsurer[]>(`/partner/${id}/insurers`),
+  partnerCreateInsurer: (id: string, body: { name: string; color?: string }) =>
+    authed<PartnerInsurer>(`/partner/${id}/insurers`, { method: 'POST', body: JSON.stringify(body) }),
+  partnerCreateInsProduct: (id: string, body: InsuranceProductInput) =>
+    authed<{ id: string; name: string; slug: string; type: string; active: boolean }>(`/partner/${id}/insurance-products`, { method: 'POST', body: JSON.stringify(body) }),
+  partnerUpdateInsProduct: (id: string, productId: string, body: Partial<InsuranceProductInput> & { active?: boolean }) =>
+    authed<{ id: string; name: string; active: boolean }>(`/partner/${id}/insurance-products/${productId}`, { method: 'PATCH', body: JSON.stringify(body) }),
+  partnerDeleteInsProduct: (id: string, productId: string) =>
+    authed<{ ok: boolean }>(`/partner/${id}/insurance-products/${productId}`, { method: 'DELETE' }),
+  // Self-serve: nasiya
+  partnerCreateProvider: (id: string, body: NasiyaProviderInput) =>
+    authed<{ id: string; name: string; slug: string; active: boolean }>(`/partner/${id}/nasiya-providers`, { method: 'POST', body: JSON.stringify(body) }),
+  partnerUpdateProvider: (id: string, providerId: string, body: Partial<NasiyaProviderInput> & { active?: boolean }) =>
+    authed<{ id: string; name: string; active: boolean }>(`/partner/${id}/nasiya-providers/${providerId}`, { method: 'PATCH', body: JSON.stringify(body) }),
+  partnerDeleteProvider: (id: string, providerId: string) =>
+    authed<{ ok: boolean }>(`/partner/${id}/nasiya-providers/${providerId}`, { method: 'DELETE' }),
 
   base: BASE,
 };
@@ -280,6 +297,17 @@ export interface PartnerSubscribeResult {
   plan: PartnerPlanId; activated: boolean;
   invoice?: { id: string; number: string; amount: number; plan: PartnerPlanId | null; status: string; dueAt: string | null };
   checkout?: { demo: boolean };
+}
+export interface PartnerInsurer {
+  id: string; name: string; slug: string; color?: string | null; verified: boolean;
+}
+export type InsuranceType = 'OSAGO' | 'KASKO' | 'TRAVEL' | 'PROPERTY' | 'ACCIDENT' | 'HEALTH';
+export interface InsuranceProductInput {
+  insurerId: string; type: InsuranceType; name: string; summary?: string;
+  priceFrom?: number; coverageFrom?: number; termsMonths?: number[]; basePremium?: number;
+}
+export interface NasiyaProviderInput {
+  name: string; color?: string; terms: Record<string, number>; minAmount?: number; maxAmount?: number; features?: string[];
 }
 
 // --- Nasiya tiplari ---

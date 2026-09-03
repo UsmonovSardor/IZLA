@@ -3,8 +3,9 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PartnerService } from './partner.service';
 import { PartnerBillingService } from './partner-billing.service';
 import {
-  CreateBankDto, CreateMortgageProgramDto, LeadFilterDto, RegisterPartnerDto,
-  SelectPartnerPlanDto, SimulateBillingDto, UpdateMortgageProgramDto, UpdatePartnerDto,
+  CreateBankDto, CreateInsuranceProductDto, CreateInsurerDto, CreateMortgageProgramDto,
+  CreateNasiyaProviderDto, LeadFilterDto, RegisterPartnerDto, SelectPartnerPlanDto, SimulateBillingDto,
+  UpdateInsuranceProductDto, UpdateMortgageProgramDto, UpdateNasiyaProviderDto, UpdatePartnerDto,
 } from './dto';
 import { JwtAuthGuard, type AuthUser } from '../../common/jwt.guard';
 import { CurrentUser } from '../../common/current-user.decorator';
@@ -110,5 +111,47 @@ export class PartnerController {
   @Delete(':id/mortgage-programs/:programId')
   deleteProgram(@CurrentUser() user: AuthUser, @Param('id') id: string, @Param('programId') programId: string) {
     return this.partner.deleteMortgageProgram(user.sub, id, programId);
+  }
+
+  // ─── Self-serve: sug'urta ─────────────────────────────────────────────────
+  @Get(':id/insurers')
+  insurers(@CurrentUser() user: AuthUser, @Param('id') id: string) {
+    return this.partner.myInsurers(user.sub, id);
+  }
+
+  @Post(':id/insurers')
+  createInsurer(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() dto: CreateInsurerDto) {
+    return this.partner.createInsurer(user.sub, id, dto);
+  }
+
+  @Post(':id/insurance-products')
+  createInsProduct(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() dto: CreateInsuranceProductDto) {
+    return this.partner.createInsuranceProduct(user.sub, id, dto);
+  }
+
+  @Patch(':id/insurance-products/:productId')
+  updateInsProduct(@CurrentUser() user: AuthUser, @Param('id') id: string, @Param('productId') productId: string, @Body() dto: UpdateInsuranceProductDto) {
+    return this.partner.updateInsuranceProduct(user.sub, id, productId, dto);
+  }
+
+  @Delete(':id/insurance-products/:productId')
+  deleteInsProduct(@CurrentUser() user: AuthUser, @Param('id') id: string, @Param('productId') productId: string) {
+    return this.partner.deleteInsuranceProduct(user.sub, id, productId);
+  }
+
+  // ─── Self-serve: nasiya ───────────────────────────────────────────────────
+  @Post(':id/nasiya-providers')
+  createProvider(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() dto: CreateNasiyaProviderDto) {
+    return this.partner.createNasiyaProvider(user.sub, id, dto);
+  }
+
+  @Patch(':id/nasiya-providers/:providerId')
+  updateProvider(@CurrentUser() user: AuthUser, @Param('id') id: string, @Param('providerId') providerId: string, @Body() dto: UpdateNasiyaProviderDto) {
+    return this.partner.updateNasiyaProvider(user.sub, id, providerId, dto);
+  }
+
+  @Delete(':id/nasiya-providers/:providerId')
+  deleteProvider(@CurrentUser() user: AuthUser, @Param('id') id: string, @Param('providerId') providerId: string) {
+    return this.partner.deleteNasiyaProvider(user.sub, id, providerId);
   }
 }

@@ -2021,6 +2021,41 @@
         "maxAmount": "Max amount (UZS)",
         "publish": "Publish",
         "noProgram": "No programs yet. Add the first one."
+      },
+      "ins": {
+        "title": "Insurance products",
+        "addProduct": "Add product",
+        "liveHint": "A product you add appears instantly on /sugurta and in the calculator for customers.",
+        "noBrand": "First create your insurance brand — then add products.",
+        "createBrand": "Create brand",
+        "brandPh": "Insurance company name",
+        "brandCreated": "Brand created",
+        "productLive": "Product is live",
+        "brand": "Brand",
+        "type": "Insurance type",
+        "name": "Product name",
+        "namePh": "e.g. OSAGO Standard",
+        "priceFrom": "Price (from, UZS)",
+        "coverageFrom": "Coverage (from, UZS)",
+        "basePremium": "Base premium (UZS)",
+        "optional": "optional",
+        "noProduct": "No products yet. Add the first one.",
+        "deleteConfirm": "Delete this product?"
+      },
+      "nasiya": {
+        "title": "Installment (BNPL)",
+        "add": "Add provider",
+        "liveHint": "A provider you add appears instantly in the comparison on /nasiya.",
+        "name": "Provider name",
+        "namePh": "e.g. MyPay Installment",
+        "minAmount": "Min amount (UZS)",
+        "maxAmount": "Max amount (UZS)",
+        "terms": "Term and markup",
+        "termsHint": "Enter markup % for each term (empty = unavailable). E.g. 3 months = 0%.",
+        "live": "Provider is live",
+        "empty": "No providers yet. Add the first one.",
+        "deleteConfirm": "Delete this provider?",
+        "fillRequired": "Enter a name and at least one term"
       }
     },
     "channel": {
@@ -2107,6 +2142,14 @@
         "SUSPENDED": "Suspended",
         "CANCELLED": "Cancelled"
       }
+    },
+    "insType": {
+      "OSAGO": "OSAGO",
+      "KASKO": "KASKO",
+      "TRAVEL": "Travel",
+      "PROPERTY": "Property",
+      "ACCIDENT": "Accident",
+      "HEALTH": "Health (VMI)"
     }
   }
 }
