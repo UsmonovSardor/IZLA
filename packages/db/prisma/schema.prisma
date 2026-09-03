@@ -76,6 +76,15 @@ enum LedgerKind {
   DEBIT // hisobdan yechildi (obuna / lead / reklama)
 }
 
+// Homiy obuna billing holati (lifecycle avtomati boshqaradi)
+enum PartnerBillingStatus {
+  TRIALING // sinov davri
+  ACTIVE // to'langan / joriy (yoki FREE — hech narsa undirilmaydi)
+  PAST_DUE // muddat tugadi, grace davrida (ogohlantirilmoqda)
+  SUSPENDED // grace o'tdi — mahsulotlar yashirin (ma'lumot SAQLANADI)
+  CANCELLED // ixtiyoriy chiqdi (ma'lumot SAQLANADI, qayta faollashtiriladi)
+}
+
 enum BookingStatus {
   PENDING
   CONFIRMED
@@ -396,6 +405,7 @@ model Payment {
   id               String          @id @default(cuid())
   bookingId        String?         @unique
   policyId         String?         @unique // sug'urta polisi uchun to'lov (embedded insurance)
+  invoiceId        String?         @unique // homiy obuna hisob-fakturasi uchun to'lov (Izla Biznes)
   userId           String
   amount           Decimal         @db.Decimal(12, 2) // so'm (UZS)
   commissionAmount Decimal         @default(0) @db.Decimal(12, 2) // Izla take-rate (bron uchun)
@@ -411,6 +421,7 @@ model Payment {
 
   booking      Booking?             @relation(fields: [bookingId], references: [id])
   policy       InsurancePolicy?     @relation(fields: [policyId], references: [id])
+  invoice      Invoice?             @relation(fields: [invoiceId], references: [id])
   transactions PaymentTransaction[]
 
   @@index([userId])
@@ -1043,22 +1054,27 @@ model NasiyaLead {
 // Homiy kompaniyasi (tashkilot). Mavjud User auth'ni qayta ishlatadi: kompaniyaga
 // PartnerMember orqali foydalanuvchilar biriktiriladi.
 model PartnerAccount {
-  id              String        @id @default(cuid())
-  name            String // brend nomi (portalda ko'rinadi)
-  slug            String        @unique
-  legalName       String? // yuridik nom (hisob-faktura uchun)
-  taxId           String? // STIR / INN
-  logoUrl         String?
-  website         String?
-  phone           String?
-  email           String?
-  color           String? // brend rangi
-  status          PartnerStatus @default(PENDING)
-  plan            PartnerPlan   @default(FREE) // oy-ma-oy obuna tarifi
-  planActivatedAt DateTime?
-  planExpiresAt   DateTime?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  id               String               @id @default(cuid())
+  name             String // brend nomi (portalda ko'rinadi)
+  slug             String               @unique
+  legalName        String? // yuridik nom (hisob-faktura uchun)
+  taxId            String? // STIR / INN
+  logoUrl          String?
+  website          String?
+  phone            String?
+  email            String?
+  color            String? // brend rangi
+  status           PartnerStatus        @default(PENDING)
+  plan             PartnerPlan          @default(FREE) // oy-ma-oy obuna tarifi
+  planActivatedAt  DateTime?
+  planExpiresAt    DateTime?
+  // ─── Billing lifecycle avtomati ───
+  billingStatus    PartnerBillingStatus @default(ACTIVE) // FREE = doim ACTIVE
+  gracePeriodEnds  DateTime? // PAST_DUE grace oxiri (shundan keyin SUSPENDED)
+  lastDunningStage Int                  @default(0) // oxirgi yuborilgan ogohlantirish bosqichi (idempotent)
+  autoRenew        Boolean              @default(true) // muddat tugaganda avto-invoice yaratiladimi
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
 
   members         PartnerMember[]
   wallet          PartnerWallet?
@@ -1135,10 +1151,13 @@ model Invoice {
   lines       Json          @default("[]") // [{label, qty, unit, amount}]
   dueAt       DateTime?
   paidAt      DateTime?
+  plan        PartnerPlan? // qaysi tarif uchun (obuna invoice'i)
+  periodLabel String? // "2026-09" ko'rinishida davr yorlig'i
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
   partner PartnerAccount @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  payment Payment?
 
   @@index([partnerId])
   @@index([status])

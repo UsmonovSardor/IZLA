@@ -1,9 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PartnerService } from './partner.service';
+import { PartnerBillingService } from './partner-billing.service';
 import {
   CreateBankDto, CreateMortgageProgramDto, LeadFilterDto, RegisterPartnerDto,
-  SelectPartnerPlanDto, UpdateMortgageProgramDto, UpdatePartnerDto,
+  SelectPartnerPlanDto, SimulateBillingDto, UpdateMortgageProgramDto, UpdatePartnerDto,
 } from './dto';
 import { JwtAuthGuard, type AuthUser } from '../../common/jwt.guard';
 import { CurrentUser } from '../../common/current-user.decorator';
@@ -14,7 +15,10 @@ import { CurrentUser } from '../../common/current-user.decorator';
 @UseGuards(JwtAuthGuard)
 @Controller('partner')
 export class PartnerController {
-  constructor(private readonly partner: PartnerService) {}
+  constructor(
+    private readonly partner: PartnerService,
+    private readonly billing: PartnerBillingService,
+  ) {}
 
   /** Yangi homiy kompaniyasini ro'yxatdan o'tkazish (onboarding). */
   @Post('register')
@@ -53,9 +57,33 @@ export class PartnerController {
     return this.partner.leads(user.sub, id, filter);
   }
 
+  // ─── Obuna / billing lifecycle ────────────────────────────────────────────
+  /** Tarif tanlash: FREE darrov faollashadi, pullik → hisob-faktura yaratiladi. */
   @Post(':id/plan')
   selectPlan(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() dto: SelectPartnerPlanDto) {
-    return this.partner.selectPlan(user.sub, id, dto.plan);
+    return this.billing.subscribe(user.sub, id, dto.plan);
+  }
+
+  @Get(':id/billing')
+  billingOverview(@CurrentUser() user: AuthUser, @Param('id') id: string) {
+    return this.billing.overview(user.sub, id);
+  }
+
+  @Get(':id/invoices')
+  invoices(@CurrentUser() user: AuthUser, @Param('id') id: string) {
+    return this.billing.invoices(user.sub, id);
+  }
+
+  /** Hisob-fakturani to'lash (DEMO — real Payme/Click webhook ham shu natijani beradi). */
+  @Post(':id/invoices/:invoiceId/pay')
+  payInvoice(@CurrentUser() user: AuthUser, @Param('id') id: string, @Param('invoiceId') invoiceId: string) {
+    return this.billing.payInvoiceDemo(user.sub, id, invoiceId);
+  }
+
+  /** DEMO: muddatni surib, lifecycle bosqichini darrov sinash (renew→dunning→suspend). */
+  @Post(':id/billing/simulate')
+  simulate(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() dto: SimulateBillingDto) {
+    return this.billing.simulate(user.sub, id, dto.daysPast);
   }
 
   // ─── Self-serve: bank + ipoteka dasturi boshqaruvi ───────────────────────

@@ -2077,6 +2077,36 @@
       "add": "Qo‘shish",
       "cancel": "Bekor qilish",
       "delete": "O‘chirish"
+    },
+    "billing": {
+      "invoiceCreated": "Hisob-faktura yaratildi — to‘lang",
+      "paidOk": "To‘lov qabul qilindi",
+      "simDone": "Simulyatsiya qo‘llandi",
+      "freeActive": "Bepul tarif — to‘lov talab qilinmaydi",
+      "renewsOn": "Yangilanadi:",
+      "expiredOn": "Muddat tugadi:",
+      "graceHint": "Obuna muddati tugadi. Grace davri davom etmoqda — to‘lang, aks holda mahsulotlar yashiriladi.",
+      "suspendedHint": "Obuna neaktiv. Mahsulotlaringiz platformada yashirilgan, lekin barcha ma’lumot saqlangan. To‘lasangiz darrov tiklanadi.",
+      "openInvoice": "To‘lanmagan hisob-faktura",
+      "due": "muddat:",
+      "payDemo": "To‘lash (demo)",
+      "invoicesTitle": "Hisob-fakturalar tarixi",
+      "invStatus": {
+        "OPEN": "Kutilmoqda",
+        "PAID": "To‘langan",
+        "VOID": "Bekor",
+        "DRAFT": "Qoralama"
+      },
+      "demoTitle": "Demo: lifecycle sinovi",
+      "demoHint": "Muddatni surib, avtomatik ketma-ketlikni sinang: ogohlantirish → grace → neaktiv. Real to‘lovda ham xuddi shunday ishlaydi.",
+      "simDay": "{d} kun",
+      "status": {
+        "ACTIVE": "Faol",
+        "TRIALING": "Sinov",
+        "PAST_DUE": "To‘lov kutilmoqda",
+        "SUSPENDED": "Neaktiv",
+        "CANCELLED": "Bekor qilingan"
+      }
     }
   }
 }

@@ -317,40 +317,7 @@ export class PartnerService {
     return unified;
   }
 
-  // ─── Obuna tarifini tanlash (FAZA 1: demo darrov faollashadi) ─────────────
-  async selectPlan(userId: string, partnerId: string, plan: 'FREE' | 'GROWTH' | 'ENTERPRISE') {
-    await this.assertMember(userId, partnerId, ['OWNER']);
-    const cfg = partnerPlanConfig(plan);
-    const now = new Date();
-    const expires = plan === 'FREE' ? null : new Date(now.getTime() + 30 * 24 * 3600 * 1000);
-
-    await this.prisma.$transaction(async (tx) => {
-      await tx.partnerAccount.update({
-        where: { id: partnerId },
-        data: {
-          plan,
-          planActivatedAt: plan === 'FREE' ? null : now,
-          planExpiresAt: expires,
-          // FAZA 1 demo: tanlagach ACTIVE bo'ladi (real moderatsiya keyin)
-          status: 'ACTIVE',
-        },
-      });
-      // Billing audit izi (FAZA 1: demo yozuv — real yechim FAZA 2)
-      if (cfg.priceMonthly > 0) {
-        await tx.ledgerEntry.create({
-          data: {
-            partnerId,
-            kind: 'DEBIT',
-            amount: cfg.priceMonthly,
-            reason: `Obuna: ${plan} (demo)`,
-            refType: 'subscription',
-          },
-        });
-      }
-    });
-
-    return { plan, planExpiresAt: expires, priceMonthly: cfg.priceMonthly };
-  }
+  // Obuna tanlash → PartnerBillingService.subscribe (billing lifecycle avtomati).
 
   // ═══ Self-serve: bank + ipoteka dasturi boshqaruvi ═══════════════════════
 
@@ -396,9 +363,18 @@ export class PartnerService {
     });
   }
 
+  /** Obuna neaktiv (SUSPENDED) bo'lsa — yozish (yangi mahsulot) bloklanadi. */
+  private async assertNotSuspended(partnerId: string) {
+    const p = await this.prisma.partnerAccount.findUnique({ where: { id: partnerId }, select: { billingStatus: true } });
+    if (p?.billingStatus === 'SUSPENDED') {
+      throw new BadRequestException('Obuna neaktiv. Yangi mahsulot qo‘shish uchun avval obunani to‘lang.');
+    }
+  }
+
   /** Homiy o'z bank brendini yaratadi. */
   async createBank(userId: string, partnerId: string, dto: { name: string; color?: string; logoUrl?: string; description?: string }) {
     await this.assertMember(userId, partnerId, ['OWNER', 'MANAGER']);
+    await this.assertNotSuspended(partnerId);
     const slug = await this.uniqueSlug(slugify(dto.name), async (s) => !!(await this.prisma.bank.findUnique({ where: { slug: s }, select: { id: true } })));
     const bank = await this.prisma.bank.create({
       data: {
@@ -432,6 +408,7 @@ export class PartnerService {
   async createMortgageProgram(userId: string, partnerId: string, dto: CreateMortgageProgramDto) {
     const { role } = await this.assertMember(userId, partnerId, ['OWNER', 'MANAGER']);
     void role;
+    await this.assertNotSuspended(partnerId);
     await this.assertOwnedBank(partnerId, dto.bankId);
     const partner = await this.prisma.partnerAccount.findUnique({ where: { id: partnerId }, select: { plan: true } });
     await this.assertUnderLimit(partnerId, partner?.plan ?? 'FREE');

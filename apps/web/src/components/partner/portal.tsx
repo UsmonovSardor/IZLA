@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import {
   Building2, Loader2, LayoutDashboard, Inbox, Package, CreditCard, Wallet,
   TrendingUp, ShieldCheck, Landmark, ShoppingBag, Phone, Check, Plus, Trash2, ExternalLink,
+  AlertTriangle, Clock, Receipt, CheckCircle2, Zap,
 } from 'lucide-react';
 import { Link } from 'next-view-transitions';
 import { useAuth } from '@/components/auth-provider';
@@ -14,6 +15,7 @@ import { formatUZS } from '@/lib/utils';
 import {
   api, type PartnerAccountBrief, type PartnerDashboard, type PartnerLead,
   type PartnerProducts, type PartnerPlanConfig, type PartnerPlanId, type PartnerBank,
+  type PartnerBillingOverview, type PartnerInvoice,
 } from '@/lib/api';
 import { PartnerPlanCards } from './plan-cards';
 
@@ -564,20 +566,43 @@ function NumField({ label, value, onChange, placeholder, text, full }: { label: 
   );
 }
 
-// ─── Plan tab ───────────────────────────────────────────────────────────────
+// ─── Plan / Billing tab ──────────────────────────────────────────────────────
+const BILLING_BADGE: Record<string, string> = {
+  ACTIVE: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  TRIALING: 'bg-blue-50 text-brand border-blue-200',
+  PAST_DUE: 'bg-amber-50 text-amber-700 border-amber-200',
+  SUSPENDED: 'bg-rose-50 text-rose-600 border-rose-200',
+  CANCELLED: 'bg-slate-100 text-slate-500 border-slate-200',
+};
+
 function PlanTab({ partnerId, currentPlan, onChanged }: { partnerId: string; currentPlan: PartnerPlanId; onChanged: () => void }) {
   const t = useTranslations('biznes');
   const { toast } = useToast();
   const [plans, setPlans] = useState<PartnerPlanConfig[] | null>(null);
+  const [billing, setBilling] = useState<PartnerBillingOverview | null>(null);
+  const [invoices, setInvoices] = useState<PartnerInvoice[]>([]);
   const [busyPlan, setBusyPlan] = useState<PartnerPlanId | null>(null);
+  const [payingId, setPayingId] = useState<string | null>(null);
+  const [simBusy, setSimBusy] = useState<number | null>(null);
 
-  useEffect(() => { api.partnerPlans().then(setPlans).catch(() => setPlans([])); }, []);
+  const reload = useCallback(() => {
+    Promise.all([api.partnerBilling(partnerId), api.partnerInvoices(partnerId)])
+      .then(([b, inv]) => { setBilling(b); setInvoices(inv); })
+      .catch(() => {});
+  }, [partnerId]);
+
+  useEffect(() => {
+    api.partnerPlans().then(setPlans).catch(() => setPlans([]));
+    reload();
+  }, [reload]);
 
   async function select(plan: PartnerPlanId) {
     setBusyPlan(plan);
     try {
-      await api.partnerSelectPlan(partnerId, plan);
-      toast({ variant: 'success', title: t('plans.activated') });
+      const res = await api.partnerSelectPlan(partnerId, plan);
+      if (res.activated) toast({ variant: 'success', title: t('plans.activated') });
+      else toast({ variant: 'success', title: t('billing.invoiceCreated') });
+      reload();
       onChanged();
     } catch (e) {
       toast({ variant: 'error', title: (e as Error).message || 'Xatolik' });
@@ -586,12 +611,146 @@ function PlanTab({ partnerId, currentPlan, onChanged }: { partnerId: string; cur
     }
   }
 
-  if (!plans) return <Centered><Loader2 className="animate-spin text-brand" /></Centered>;
+  async function pay(invoiceId: string) {
+    setPayingId(invoiceId);
+    try {
+      await api.partnerPayInvoice(partnerId, invoiceId);
+      toast({ variant: 'success', title: t('billing.paidOk') });
+      reload();
+      onChanged();
+    } catch (e) {
+      toast({ variant: 'error', title: (e as Error).message || 'Xatolik' });
+    } finally {
+      setPayingId(null);
+    }
+  }
+
+  async function simulate(daysPast: number) {
+    setSimBusy(daysPast);
+    try {
+      await api.partnerSimulateBilling(partnerId, daysPast);
+      toast({ variant: 'success', title: t('billing.simDone') });
+      reload();
+      onChanged();
+    } catch (e) {
+      toast({ variant: 'error', title: (e as Error).message || 'Xatolik' });
+    } finally {
+      setSimBusy(null);
+    }
+  }
+
+  if (!plans || !billing) return <Centered><Loader2 className="animate-spin text-brand" /></Centered>;
+
+  const bs = billing.billingStatus;
 
   return (
-    <div>
-      <p className="mb-6 max-w-2xl text-sm text-muted">{t('plans.portalHint')}</p>
-      <PartnerPlanCards plans={plans} currentPlan={currentPlan} onSelect={select} busyPlan={busyPlan} />
+    <div className="flex flex-col gap-6">
+      {/* Billing holati banneri */}
+      <div className="rounded-2xl border border-line bg-surface p-5 shadow-card">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-brand/10 text-brand"><CreditCard className="h-5 w-5" /></div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-heading">{t(`plans.${billing.plan}.name`)}</span>
+                <span className={`rounded-full border px-2.5 py-0.5 text-xs font-semibold ${BILLING_BADGE[bs] ?? 'border-line text-muted'}`}>{t(`billing.status.${bs}`)}</span>
+              </div>
+              <div className="mt-0.5 text-xs text-muted">
+                {billing.plan === 'FREE'
+                  ? t('billing.freeActive')
+                  : billing.planExpiresAt
+                    ? `${bs === 'PAST_DUE' || bs === 'SUSPENDED' ? t('billing.expiredOn') : t('billing.renewsOn')} ${new Date(billing.planExpiresAt).toLocaleDateString('uz')}`
+                    : ''}
+              </div>
+            </div>
+          </div>
+          {billing.priceMonthly > 0 && (
+            <div className="text-right">
+              <div className="font-display text-xl font-bold text-heading" style={{ fontVariantNumeric: 'tabular-nums' }}>{formatUZS(billing.priceMonthly)}</div>
+              <div className="text-xs text-muted">/ {t('plans.month')}</div>
+            </div>
+          )}
+        </div>
+
+        {/* Grace / suspended ogohlantirish */}
+        {bs === 'PAST_DUE' && (
+          <div className="mt-4 flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+            <Clock className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>{t('billing.graceHint')}{billing.gracePeriodEnds ? ` (${new Date(billing.gracePeriodEnds).toLocaleDateString('uz')})` : ''}</span>
+          </div>
+        )}
+        {bs === 'SUSPENDED' && (
+          <div className="mt-4 flex items-start gap-2 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>{t('billing.suspendedHint')}</span>
+          </div>
+        )}
+
+        {/* Ochiq hisob-faktura → to'lash */}
+        {billing.openInvoice && (
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-brand/20 bg-brand/[0.03] p-4">
+            <div className="flex items-center gap-3">
+              <Receipt className="h-5 w-5 text-brand" />
+              <div>
+                <div className="text-sm font-semibold text-heading">{t('billing.openInvoice')} · {billing.openInvoice.number}</div>
+                <div className="text-xs text-muted">{formatUZS(billing.openInvoice.amount)}{billing.openInvoice.dueAt ? ` · ${t('billing.due')} ${new Date(billing.openInvoice.dueAt).toLocaleDateString('uz')}` : ''}</div>
+              </div>
+            </div>
+            <button onClick={() => pay(billing.openInvoice!.id)} disabled={payingId != null}
+              className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white transition hover:brightness-110 disabled:opacity-60">
+              {payingId ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />} {t('billing.payDemo')}
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Tariflar */}
+      <div>
+        <p className="mb-5 max-w-2xl text-sm text-muted">{t('plans.portalHint')}</p>
+        <PartnerPlanCards plans={plans} currentPlan={currentPlan} onSelect={select} busyPlan={busyPlan} />
+      </div>
+
+      {/* Hisob-fakturalar tarixi */}
+      {invoices.length > 0 && (
+        <div className="rounded-2xl border border-line bg-surface p-5 shadow-card">
+          <h3 className="text-sm font-semibold text-heading">{t('billing.invoicesTitle')}</h3>
+          <div className="mt-3 overflow-x-auto">
+            <table className="w-full min-w-[520px] text-sm">
+              <tbody>
+                {invoices.map((inv) => (
+                  <tr key={inv.id} className="border-b border-line/60 last:border-0">
+                    <td className="py-2.5 font-mono text-xs text-muted">{inv.number}</td>
+                    <td className="py-2.5 text-ink">{inv.plan ? t(`plans.${inv.plan}.name`) : '—'}</td>
+                    <td className="py-2.5 text-right font-semibold text-heading" style={{ fontVariantNumeric: 'tabular-nums' }}>{formatUZS(inv.amount)}</td>
+                    <td className="py-2.5 pl-3">
+                      <span className={`rounded-full border px-2 py-0.5 text-xs font-semibold ${inv.status === 'PAID' ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : inv.status === 'OPEN' ? 'border-amber-200 bg-amber-50 text-amber-700' : 'border-line text-muted'}`}>
+                        {t(`billing.invStatus.${inv.status}`)}
+                      </span>
+                    </td>
+                    <td className="py-2.5 pl-3 text-right text-xs text-muted">{new Date(inv.createdAt).toLocaleDateString('uz')}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* DEMO: lifecycle simulyatori */}
+      {billing.plan !== 'FREE' && (
+        <div className="rounded-2xl border border-dashed border-line bg-bg/40 p-5">
+          <div className="flex items-center gap-2 text-sm font-semibold text-heading"><Zap className="h-4 w-4 text-brand" /> {t('billing.demoTitle')}</div>
+          <p className="mt-1 text-xs text-muted">{t('billing.demoHint')}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {([['-3', -3], ['+3', 3], ['+6', 6], ['+8', 8]] as [string, number][]).map(([label, d]) => (
+              <button key={d} onClick={() => simulate(d)} disabled={simBusy != null}
+                className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3.5 py-2 text-xs font-semibold text-heading transition hover:bg-bg disabled:opacity-60">
+                {simBusy === d ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Clock className="h-3.5 w-3.5" />} {t('billing.simDay', { d: label })}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

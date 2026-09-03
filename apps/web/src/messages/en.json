@@ -2077,6 +2077,36 @@
       "add": "Add",
       "cancel": "Cancel",
       "delete": "Delete"
+    },
+    "billing": {
+      "invoiceCreated": "Invoice created — please pay",
+      "paidOk": "Payment received",
+      "simDone": "Simulation applied",
+      "freeActive": "Free plan — no payment required",
+      "renewsOn": "Renews:",
+      "expiredOn": "Expired:",
+      "graceHint": "Your subscription has expired. Grace period is running — pay now, otherwise products will be hidden.",
+      "suspendedHint": "Subscription inactive. Your products are hidden on the platform, but all data is preserved. Paying restores everything instantly.",
+      "openInvoice": "Unpaid invoice",
+      "due": "due:",
+      "payDemo": "Pay (demo)",
+      "invoicesTitle": "Invoice history",
+      "invStatus": {
+        "OPEN": "Pending",
+        "PAID": "Paid",
+        "VOID": "Void",
+        "DRAFT": "Draft"
+      },
+      "demoTitle": "Demo: lifecycle test",
+      "demoHint": "Shift the due date and test the automation: reminder → grace → suspended. Works the same with real payment.",
+      "simDay": "{d} days",
+      "status": {
+        "ACTIVE": "Active",
+        "TRIALING": "Trial",
+        "PAST_DUE": "Payment due",
+        "SUSPENDED": "Suspended",
+        "CANCELLED": "Cancelled"
+      }
     }
   }
 }

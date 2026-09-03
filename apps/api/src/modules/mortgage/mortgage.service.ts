@@ -22,7 +22,12 @@ export class MortgageService {
 
   private buildWhere(f: ProgramFilter): Prisma.MortgageProgramWhereInput {
     const where: Prisma.MortgageProgramWhereInput = { active: true };
-    if (f.bank) where.bank = { slug: f.bank };
+    // Egasi neaktiv (SUSPENDED) homiy dasturlarini yashiramiz (obuna to'lanmagan).
+    const bankFilter: Prisma.BankWhereInput = {
+      OR: [{ partnerId: null }, { partner: { billingStatus: { not: 'SUSPENDED' } } }],
+    };
+    if (f.bank) bankFilter.slug = f.bank;
+    where.bank = bankFilter;
     if (typeof f.maxRate === 'number') where.annualRate = { lte: f.maxRate };
     if (typeof f.minTerm === 'number') where.maxTermMonths = { gte: f.minTerm };
     if (typeof f.maxDown === 'number') where.minDownPct = { lte: f.maxDown };

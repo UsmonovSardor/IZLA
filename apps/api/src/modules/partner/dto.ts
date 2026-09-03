@@ -23,10 +23,15 @@ export class UpdatePartnerDto {
   @IsOptional() @IsString() @MaxLength(300) logoUrl?: string;
 }
 
-/** Obuna tarifini tanlash (FAZA 1: demo faollashadi; FAZA 2: real to'lov). */
+/** Obuna tarifini tanlash: FREE darrov, pullik → hisob-faktura. */
 export class SelectPartnerPlanDto {
   @IsIn(['FREE', 'GROWTH', 'ENTERPRISE'])
   plan!: 'FREE' | 'GROWTH' | 'ENTERPRISE';
+}
+
+/** DEMO: billing lifecycle'ni sinash — muddatni `daysPast` kun oldinga surish. */
+export class SimulateBillingDto {
+  @IsInt() @Min(-3) @Max(30) daysPast!: number;
 }
 
 /** Lead inbox filtri. */

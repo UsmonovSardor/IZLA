@@ -196,7 +196,14 @@ export const api = {
   partnerProducts: (id: string) => authed<PartnerProducts>(`/partner/${id}/products`),
   partnerLeads: (id: string, qs = '') => authed<PartnerLead[]>(`/partner/${id}/leads${qs}`),
   partnerSelectPlan: (id: string, plan: PartnerPlanId) =>
-    authed<{ plan: PartnerPlanId; planExpiresAt: string | null; priceMonthly: number }>(`/partner/${id}/plan`, { method: 'POST', body: JSON.stringify({ plan }) }),
+    authed<PartnerSubscribeResult>(`/partner/${id}/plan`, { method: 'POST', body: JSON.stringify({ plan }) }),
+  // Billing lifecycle
+  partnerBilling: (id: string) => authed<PartnerBillingOverview>(`/partner/${id}/billing`),
+  partnerInvoices: (id: string) => authed<PartnerInvoice[]>(`/partner/${id}/invoices`),
+  partnerPayInvoice: (id: string, invoiceId: string) =>
+    authed<PartnerBillingOverview>(`/partner/${id}/invoices/${invoiceId}/pay`, { method: 'POST' }),
+  partnerSimulateBilling: (id: string, daysPast: number) =>
+    authed<PartnerBillingOverview>(`/partner/${id}/billing/simulate`, { method: 'POST', body: JSON.stringify({ daysPast }) }),
   // Self-serve: bank + ipoteka dasturi boshqaruvi
   partnerBanks: (id: string) => authed<PartnerBank[]>(`/partner/${id}/banks`),
   partnerCreateBank: (id: string, body: { name: string; color?: string }) =>
@@ -258,6 +265,21 @@ export interface PartnerBank {
 export interface MortgageProgramInput {
   bankId: string; name: string; summary?: string; annualRate: number; maxTermMonths: number;
   minDownPct: number; maxAmount?: number; propertyTypes?: string[]; features?: string[]; subsidized?: boolean;
+}
+export type PartnerBillingStatus = 'TRIALING' | 'ACTIVE' | 'PAST_DUE' | 'SUSPENDED' | 'CANCELLED';
+export interface PartnerInvoice {
+  id: string; number: string; amount: number; plan: PartnerPlanId | null; status: 'DRAFT' | 'OPEN' | 'PAID' | 'VOID';
+  dueAt: string | null; paidAt: string | null; createdAt: string; periodLabel: string | null;
+}
+export interface PartnerBillingOverview {
+  plan: PartnerPlanId; priceMonthly: number; billingStatus: PartnerBillingStatus; status: string;
+  planExpiresAt: string | null; gracePeriodEnds: string | null; autoRenew: boolean;
+  openInvoice: { id: string; number: string; amount: number; plan: PartnerPlanId | null; dueAt: string | null; createdAt: string } | null;
+}
+export interface PartnerSubscribeResult {
+  plan: PartnerPlanId; activated: boolean;
+  invoice?: { id: string; number: string; amount: number; plan: PartnerPlanId | null; status: string; dueAt: string | null };
+  checkout?: { demo: boolean };
 }
 
 // --- Nasiya tiplari ---

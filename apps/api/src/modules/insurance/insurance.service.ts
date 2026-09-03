@@ -28,7 +28,12 @@ export class InsuranceService {
     if (!opts.ignoreType && f.type && TYPES.includes(f.type as InsType)) {
       where.type = f.type as InsType;
     }
-    if (f.insurer) where.insurer = { slug: f.insurer };
+    // Egasi neaktiv (SUSPENDED) homiy mahsulotlarini yashiramiz (obuna to'lanmagan).
+    const insurerFilter: Prisma.InsurerWhereInput = {
+      OR: [{ partnerId: null }, { partner: { billingStatus: { not: 'SUSPENDED' } } }],
+    };
+    if (f.insurer) insurerFilter.slug = f.insurer;
+    where.insurer = insurerFilter;
     if (typeof f.maxPrice === 'number') where.priceFrom = { lte: f.maxPrice };
     if (typeof f.minCoverage === 'number') where.coverageFrom = { gte: f.minCoverage };
     if (typeof f.term === 'number') where.termsMonths = { has: f.term };

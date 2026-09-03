@@ -32,7 +32,8 @@ export class NasiyaService {
 
   async providers() {
     const rows = await this.prisma.nasiyaProvider.findMany({
-      where: { active: true },
+      // Egasi neaktiv (SUSPENDED) homiy provayderlarini yashiramiz (obuna to'lanmagan).
+      where: { active: true, OR: [{ partnerId: null }, { partner: { billingStatus: { not: 'SUSPENDED' } } }] },
       orderBy: [{ popular: 'desc' }, { rating: 'desc' }],
       select: this.select,
     });
