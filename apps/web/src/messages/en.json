@@ -2150,6 +2150,35 @@
       "PROPERTY": "Property",
       "ACCIDENT": "Accident",
       "HEALTH": "Health (VMI)"
+    },
+    "admin": {
+      "consoleLink": "Admin console",
+      "title": "Revenue console",
+      "subtitle": "All-channel commissions, subscriptions and partners — in one place.",
+      "loginNeeded": "Sign in to open the console.",
+      "deniedTitle": "No access",
+      "denied": "This page is for administrators only.",
+      "grandTotal": "Total revenue",
+      "mrr": "MRR (monthly recurring)",
+      "arr": "ARR (annual)",
+      "activePartners": "Active partners",
+      "byChannel": "Revenue by channel",
+      "tx": "transactions",
+      "channel": {
+        "insurance": "Insurance commission",
+        "mortgage": "Mortgage (funded)",
+        "booking": "Booking take-rate",
+        "nasiya": "Installment merchant fee",
+        "subscription": "Subscription payments"
+      },
+      "col": {
+        "name": "Partner",
+        "plan": "Plan",
+        "status": "Status",
+        "entities": "Entities",
+        "monthly": "Monthly",
+        "expires": "Expires"
+      }
     }
   }
 }

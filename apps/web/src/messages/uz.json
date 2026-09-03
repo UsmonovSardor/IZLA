@@ -2150,6 +2150,35 @@
       "PROPERTY": "Mol-mulk",
       "ACCIDENT": "Baxtsiz hodisa",
       "HEALTH": "Tibbiy (VMD)"
+    },
+    "admin": {
+      "consoleLink": "Admin konsoli",
+      "title": "Daromad konsoli",
+      "subtitle": "Barcha kanal komissiyasi, obuna va homiylar — bir joyda.",
+      "loginNeeded": "Konsolga kirish uchun tizimga kiring.",
+      "deniedTitle": "Ruxsat yo‘q",
+      "denied": "Bu sahifa faqat administrator uchun.",
+      "grandTotal": "Jami daromad",
+      "mrr": "MRR (oylik takror)",
+      "arr": "ARR (yillik)",
+      "activePartners": "Faol homiylar",
+      "byChannel": "Kanal bo‘yicha daromad",
+      "tx": "tranzaksiya",
+      "channel": {
+        "insurance": "Sug‘urta komissiyasi",
+        "mortgage": "Ipoteka (moliyalangan)",
+        "booking": "Bron take-rate",
+        "nasiya": "Nasiya merchant fee",
+        "subscription": "Obuna to‘lovlari"
+      },
+      "col": {
+        "name": "Homiy",
+        "plan": "Tarif",
+        "status": "Holat",
+        "entities": "Obyektlar",
+        "monthly": "Oylik",
+        "expires": "Muddat"
+      }
     }
   }
 }

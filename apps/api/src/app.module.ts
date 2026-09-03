@@ -27,6 +27,7 @@ import { InsuranceModule } from './modules/insurance/insurance.module';
 import { MortgageModule } from './modules/mortgage/mortgage.module';
 import { NasiyaModule } from './modules/nasiya/nasiya.module';
 import { PartnerModule } from './modules/partner/partner.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 @Module({
   imports: [
@@ -81,6 +82,7 @@ import { PartnerModule } from './modules/partner/partner.module';
     MortgageModule,
     NasiyaModule,
     PartnerModule,
+    AdminModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

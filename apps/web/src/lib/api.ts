@@ -232,8 +232,29 @@ export const api = {
   partnerDeleteProvider: (id: string, providerId: string) =>
     authed<{ ok: boolean }>(`/partner/${id}/nasiya-providers/${providerId}`, { method: 'DELETE' }),
 
+  // --- Admin daromad konsoli (role=ADMIN) ---
+  adminRevenue: () => authed<AdminRevenue>('/admin/revenue'),
+  adminPartners: () => authed<AdminPartnerRow[]>('/admin/partners'),
+
   base: BASE,
 };
+
+// --- Admin tiplari ---
+export interface RevenueChannel { amount: number; count: number }
+export interface AdminRevenue {
+  totals: {
+    grandTotal: number;
+    byChannel: { insurance: RevenueChannel; mortgage: RevenueChannel; booking: RevenueChannel; nasiya: RevenueChannel; subscription: RevenueChannel };
+  };
+  mrr: number;
+  arr: number;
+  partners: { total: number; active: number; pastDue: number; suspended: number; byPlan: { FREE: number; GROWTH: number; ENTERPRISE: number } };
+}
+export interface AdminPartnerRow {
+  id: string; name: string; slug: string; plan: PartnerPlanId; status: string;
+  billingStatus: PartnerBillingStatus; planExpiresAt: string | null; createdAt: string;
+  monthlyValue: number; entities: number;
+}
 
 // --- Izla Biznes (homiy) tiplari ---
 export type PartnerPlanId = 'FREE' | 'GROWTH' | 'ENTERPRISE';

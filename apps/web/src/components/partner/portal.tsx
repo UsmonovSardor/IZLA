@@ -86,15 +86,22 @@ export function PartnerPortal() {
           <h1 className="font-display text-2xl font-bold text-heading md:text-3xl">{t('portal.title')}</h1>
           <p className="mt-1 text-muted">{t('portal.subtitle')}</p>
         </div>
-        {partners.length > 1 && (
-          <select
-            value={active.id}
-            onChange={(e) => { setActiveId(e.target.value); setTab('overview'); }}
-            className="rounded-xl border border-line bg-surface px-4 py-2.5 text-sm font-semibold text-heading"
-          >
-            {partners.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
-          </select>
-        )}
+        <div className="flex items-center gap-3">
+          {user?.role === 'ADMIN' && (
+            <Link href="/biznes/admin" className="inline-flex items-center gap-1.5 rounded-full border border-brand/30 bg-brand/5 px-4 py-2.5 text-sm font-semibold text-brand transition hover:bg-brand/10">
+              <TrendingUp className="h-4 w-4" /> {t('admin.consoleLink')}
+            </Link>
+          )}
+          {partners.length > 1 && (
+            <select
+              value={active.id}
+              onChange={(e) => { setActiveId(e.target.value); setTab('overview'); }}
+              className="rounded-xl border border-line bg-surface px-4 py-2.5 text-sm font-semibold text-heading"
+            >
+              {partners.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+            </select>
+          )}
+        </div>
       </div>
 
       {/* Tablar */}
