@@ -197,6 +197,16 @@ export const api = {
   partnerLeads: (id: string, qs = '') => authed<PartnerLead[]>(`/partner/${id}/leads${qs}`),
   partnerSelectPlan: (id: string, plan: PartnerPlanId) =>
     authed<{ plan: PartnerPlanId; planExpiresAt: string | null; priceMonthly: number }>(`/partner/${id}/plan`, { method: 'POST', body: JSON.stringify({ plan }) }),
+  // Self-serve: bank + ipoteka dasturi boshqaruvi
+  partnerBanks: (id: string) => authed<PartnerBank[]>(`/partner/${id}/banks`),
+  partnerCreateBank: (id: string, body: { name: string; color?: string }) =>
+    authed<PartnerBank>(`/partner/${id}/banks`, { method: 'POST', body: JSON.stringify(body) }),
+  partnerCreateProgram: (id: string, body: MortgageProgramInput) =>
+    authed<{ id: string; name: string; slug: string; active: boolean; annualRate: number }>(`/partner/${id}/mortgage-programs`, { method: 'POST', body: JSON.stringify(body) }),
+  partnerUpdateProgram: (id: string, programId: string, body: Partial<MortgageProgramInput> & { active?: boolean }) =>
+    authed<{ id: string; name: string; active: boolean; annualRate: number }>(`/partner/${id}/mortgage-programs/${programId}`, { method: 'PATCH', body: JSON.stringify(body) }),
+  partnerDeleteProgram: (id: string, programId: string) =>
+    authed<{ ok: boolean }>(`/partner/${id}/mortgage-programs/${programId}`, { method: 'DELETE' }),
 
   base: BASE,
 };
@@ -241,6 +251,13 @@ export interface PartnerProducts {
 export interface PartnerLead {
   id: string; channel: 'insurance' | 'mortgage' | 'nasiya'; name: string | null; phone: string | null;
   amount: number; status: string; product: string | null; brand: string | null; createdAt: string;
+}
+export interface PartnerBank {
+  id: string; name: string; slug: string; color?: string | null; verified: boolean;
+}
+export interface MortgageProgramInput {
+  bankId: string; name: string; summary?: string; annualRate: number; maxTermMonths: number;
+  minDownPct: number; maxAmount?: number; propertyTypes?: string[]; features?: string[]; subsidized?: boolean;
 }
 
 // --- Nasiya tiplari ---

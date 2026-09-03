@@ -1996,7 +1996,32 @@
       "empty": "No products attached. Contact the Izla team to connect them.",
       "active": "Active",
       "inactive": "Inactive",
-      "from": "from"
+      "from": "from",
+      "otherChannels": "Other channels",
+      "readonly": "These products were connected by the Izla team. Contact us to edit.",
+      "mortgage": {
+        "title": "Mortgage programs",
+        "viewLive": "View live",
+        "addProgram": "Add program",
+        "liveHint": "A program you add appears instantly on /ipoteka and in the calculator for customers.",
+        "noBank": "First create your bank brand — then add mortgage programs.",
+        "createBank": "Create bank",
+        "bankNamePh": "Bank name",
+        "bankCreated": "Bank created",
+        "programLive": "Program is live",
+        "fillRequired": "Fill in the required fields",
+        "deleteConfirm": "Delete this program?",
+        "deleted": "Program deleted",
+        "selectBank": "Bank",
+        "programName": "Program name",
+        "programNamePh": "e.g. New housing mortgage",
+        "rate": "Annual rate",
+        "term": "Max term (months)",
+        "down": "Down payment",
+        "maxAmount": "Max amount (UZS)",
+        "publish": "Publish",
+        "noProgram": "No programs yet. Add the first one."
+      }
     },
     "channel": {
       "insurance": "Insurance",
@@ -2047,6 +2072,11 @@
       "leadDiscount30": "30% off leads",
       "apiAccess": "API access (lead/quote)",
       "dedicatedManager": "Dedicated manager"
+    },
+    "common": {
+      "add": "Add",
+      "cancel": "Cancel",
+      "delete": "Delete"
     }
   }
 }

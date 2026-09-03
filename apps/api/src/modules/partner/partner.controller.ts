@@ -1,7 +1,10 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PartnerService } from './partner.service';
-import { LeadFilterDto, RegisterPartnerDto, SelectPartnerPlanDto, UpdatePartnerDto } from './dto';
+import {
+  CreateBankDto, CreateMortgageProgramDto, LeadFilterDto, RegisterPartnerDto,
+  SelectPartnerPlanDto, UpdateMortgageProgramDto, UpdatePartnerDto,
+} from './dto';
 import { JwtAuthGuard, type AuthUser } from '../../common/jwt.guard';
 import { CurrentUser } from '../../common/current-user.decorator';
 
@@ -53,5 +56,31 @@ export class PartnerController {
   @Post(':id/plan')
   selectPlan(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() dto: SelectPartnerPlanDto) {
     return this.partner.selectPlan(user.sub, id, dto.plan);
+  }
+
+  // ─── Self-serve: bank + ipoteka dasturi boshqaruvi ───────────────────────
+  @Get(':id/banks')
+  banks(@CurrentUser() user: AuthUser, @Param('id') id: string) {
+    return this.partner.myBanks(user.sub, id);
+  }
+
+  @Post(':id/banks')
+  createBank(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() dto: CreateBankDto) {
+    return this.partner.createBank(user.sub, id, dto);
+  }
+
+  @Post(':id/mortgage-programs')
+  createProgram(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() dto: CreateMortgageProgramDto) {
+    return this.partner.createMortgageProgram(user.sub, id, dto);
+  }
+
+  @Patch(':id/mortgage-programs/:programId')
+  updateProgram(@CurrentUser() user: AuthUser, @Param('id') id: string, @Param('programId') programId: string, @Body() dto: UpdateMortgageProgramDto) {
+    return this.partner.updateMortgageProgram(user.sub, id, programId, dto);
+  }
+
+  @Delete(':id/mortgage-programs/:programId')
+  deleteProgram(@CurrentUser() user: AuthUser, @Param('id') id: string, @Param('programId') programId: string) {
+    return this.partner.deleteMortgageProgram(user.sub, id, programId);
   }
 }

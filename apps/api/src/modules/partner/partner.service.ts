@@ -7,7 +7,7 @@ import {
 import type { Prisma, PartnerMemberRole } from '@izla/db';
 import { PrismaService } from '../../prisma/prisma.service';
 import { partnerPlanConfig, PARTNER_PLAN_LIST } from '../../common/partner-plans';
-import { RegisterPartnerDto, UpdatePartnerDto } from './dto';
+import { CreateMortgageProgramDto, RegisterPartnerDto, UpdateMortgageProgramDto, UpdatePartnerDto } from './dto';
 
 const dec = (v: unknown): number => (v == null ? 0 : Number(v));
 
@@ -350,6 +350,142 @@ export class PartnerService {
     });
 
     return { plan, planExpiresAt: expires, priceMonthly: cfg.priceMonthly };
+  }
+
+  // ═══ Self-serve: bank + ipoteka dasturi boshqaruvi ═══════════════════════
+
+  /** Homiyning jami faol mahsulotlari (tarif chegarasi uchun). */
+  private async totalProductCount(partnerId: string): Promise<number> {
+    const [insurerIds, bankIds, nasiya, vendors] = await Promise.all([
+      this.prisma.insurer.findMany({ where: { partnerId }, select: { id: true } }),
+      this.prisma.bank.findMany({ where: { partnerId }, select: { id: true } }),
+      this.prisma.nasiyaProvider.count({ where: { partnerId } }),
+      this.prisma.vendor.count({ where: { partnerId } }),
+    ]);
+    const [ins, mort] = await Promise.all([
+      this.prisma.insuranceProduct.count({ where: { insurerId: { in: insurerIds.map((x) => x.id) } } }),
+      this.prisma.mortgageProgram.count({ where: { bankId: { in: bankIds.map((x) => x.id) } } }),
+    ]);
+    return ins + mort + nasiya + vendors;
+  }
+
+  private async assertUnderLimit(partnerId: string, plan: string) {
+    const limit = partnerPlanConfig(plan).productLimit;
+    const used = await this.totalProductCount(partnerId);
+    if (used >= limit) {
+      throw new BadRequestException(`Tarif chegarasi (${limit} mahsulot) to‘ldi. Tarifni oshiring.`);
+    }
+  }
+
+  private async uniqueSlug(base: string, exists: (slug: string) => Promise<boolean>): Promise<string> {
+    let slug = `${base}-${Math.random().toString(36).slice(2, 6)}`;
+    for (let i = 0; i < 5; i++) {
+      if (!(await exists(slug))) return slug;
+      slug = `${base}-${Math.random().toString(36).slice(2, 7)}`;
+    }
+    return slug;
+  }
+
+  /** Homiyning banklari (dastur qo'shish formasi uchun). */
+  async myBanks(userId: string, partnerId: string) {
+    await this.assertMember(userId, partnerId);
+    return this.prisma.bank.findMany({
+      where: { partnerId },
+      orderBy: { createdAt: 'asc' },
+      select: { id: true, name: true, slug: true, color: true, verified: true },
+    });
+  }
+
+  /** Homiy o'z bank brendini yaratadi. */
+  async createBank(userId: string, partnerId: string, dto: { name: string; color?: string; logoUrl?: string; description?: string }) {
+    await this.assertMember(userId, partnerId, ['OWNER', 'MANAGER']);
+    const slug = await this.uniqueSlug(slugify(dto.name), async (s) => !!(await this.prisma.bank.findUnique({ where: { slug: s }, select: { id: true } })));
+    const bank = await this.prisma.bank.create({
+      data: {
+        name: dto.name.trim(),
+        slug,
+        color: dto.color?.trim() || null,
+        logoUrl: dto.logoUrl?.trim() || null,
+        description: dto.description?.trim() || null,
+        verified: false, // moderatsiya keyin (tasdiqlangan nishon berilmaydi)
+        partnerId,
+      },
+      select: { id: true, name: true, slug: true },
+    });
+    return bank;
+  }
+
+  private async assertOwnedBank(partnerId: string, bankId: string) {
+    const bank = await this.prisma.bank.findUnique({ where: { id: bankId }, select: { partnerId: true } });
+    if (!bank || bank.partnerId !== partnerId) throw new ForbiddenException('Bank sizga tegishli emas');
+  }
+
+  private async assertOwnedProgram(partnerId: string, programId: string) {
+    const prog = await this.prisma.mortgageProgram.findUnique({
+      where: { id: programId },
+      select: { bank: { select: { partnerId: true } } },
+    });
+    if (!prog || prog.bank.partnerId !== partnerId) throw new ForbiddenException('Dastur sizga tegishli emas');
+  }
+
+  /** Ipoteka dasturi yaratish → darrov /ipoteka marketplace + kalkulyatorda jonli. */
+  async createMortgageProgram(userId: string, partnerId: string, dto: CreateMortgageProgramDto) {
+    const { role } = await this.assertMember(userId, partnerId, ['OWNER', 'MANAGER']);
+    void role;
+    await this.assertOwnedBank(partnerId, dto.bankId);
+    const partner = await this.prisma.partnerAccount.findUnique({ where: { id: partnerId }, select: { plan: true } });
+    await this.assertUnderLimit(partnerId, partner?.plan ?? 'FREE');
+
+    const slug = await this.uniqueSlug(slugify(dto.name), async (s) => !!(await this.prisma.mortgageProgram.findUnique({ where: { slug: s }, select: { id: true } })));
+    const prog = await this.prisma.mortgageProgram.create({
+      data: {
+        bankId: dto.bankId,
+        name: dto.name.trim(),
+        slug,
+        summary: dto.summary?.trim() || null,
+        annualRate: dto.annualRate,
+        maxTermMonths: dto.maxTermMonths,
+        minDownPct: dto.minDownPct,
+        maxAmount: dto.maxAmount ?? null,
+        propertyTypes: dto.propertyTypes ?? [],
+        features: (dto.features ?? []) as unknown as Prisma.InputJsonValue,
+        subsidized: dto.subsidized ?? false,
+        active: true,
+        // referralFee (Izla ulushi) — platforma belgilaydi; homiy tahrirlay olmaydi.
+        referralFee: 0,
+      },
+      select: { id: true, name: true, slug: true, active: true, annualRate: true },
+    });
+    return { ...prog, annualRate: dec(prog.annualRate) };
+  }
+
+  async updateMortgageProgram(userId: string, partnerId: string, programId: string, dto: UpdateMortgageProgramDto) {
+    await this.assertMember(userId, partnerId, ['OWNER', 'MANAGER']);
+    await this.assertOwnedProgram(partnerId, programId);
+    const prog = await this.prisma.mortgageProgram.update({
+      where: { id: programId },
+      data: {
+        name: dto.name?.trim() ?? undefined,
+        summary: dto.summary?.trim() ?? undefined,
+        annualRate: dto.annualRate ?? undefined,
+        maxTermMonths: dto.maxTermMonths ?? undefined,
+        minDownPct: dto.minDownPct ?? undefined,
+        maxAmount: dto.maxAmount ?? undefined,
+        propertyTypes: dto.propertyTypes ?? undefined,
+        features: dto.features != null ? (dto.features as unknown as Prisma.InputJsonValue) : undefined,
+        subsidized: dto.subsidized ?? undefined,
+        active: dto.active ?? undefined,
+      },
+      select: { id: true, name: true, active: true, annualRate: true },
+    });
+    return { ...prog, annualRate: dec(prog.annualRate) };
+  }
+
+  async deleteMortgageProgram(userId: string, partnerId: string, programId: string) {
+    await this.assertMember(userId, partnerId, ['OWNER', 'MANAGER']);
+    await this.assertOwnedProgram(partnerId, programId);
+    await this.prisma.mortgageProgram.delete({ where: { id: programId } });
+    return { ok: true };
   }
 
   // ─── Ochiq: tariflar ro'yxati ─────────────────────────────────────────────

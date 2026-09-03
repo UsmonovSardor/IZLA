@@ -1996,7 +1996,32 @@
       "empty": "Sizga biriktirilgan mahsulot yo‘q. Ulash uchun Izla jamoasi bilan bog‘laning.",
       "active": "Faol",
       "inactive": "Faol emas",
-      "from": "dan"
+      "from": "dan",
+      "otherChannels": "Boshqa kanallar",
+      "readonly": "Bu mahsulotlar Izla jamoasi tomonidan ulangan. Tahrirlash uchun bog‘laning.",
+      "mortgage": {
+        "title": "Ipoteka dasturlari",
+        "viewLive": "Jonli ko‘rish",
+        "addProgram": "Dastur qo‘shish",
+        "liveHint": "Qo‘shgan dasturingiz darrov /ipoteka sahifasida va kalkulyatorda mijozlarga ko‘rinadi.",
+        "noBank": "Avval bank brendingizni yarating — keyin ipoteka dasturlari qo‘shasiz.",
+        "createBank": "Bank yaratish",
+        "bankNamePh": "Bank nomi",
+        "bankCreated": "Bank yaratildi",
+        "programLive": "Dastur jonli efirga chiqdi",
+        "fillRequired": "Majburiy maydonlarni to‘ldiring",
+        "deleteConfirm": "Bu dasturni o‘chirishni tasdiqlaysizmi?",
+        "deleted": "Dastur o‘chirildi",
+        "selectBank": "Bank",
+        "programName": "Dastur nomi",
+        "programNamePh": "Masalan: Yangi uy-joy ipotekasi",
+        "rate": "Yillik stavka",
+        "term": "Maksimal muddat (oy)",
+        "down": "Boshlang‘ich to‘lov",
+        "maxAmount": "Maksimal summa (so‘m)",
+        "publish": "E’lon qilish",
+        "noProgram": "Hali dastur yo‘q. Birinchisini qo‘shing."
+      }
     },
     "channel": {
       "insurance": "Sug‘urta",
@@ -2047,6 +2072,11 @@
       "leadDiscount30": "Lidlarga 30% chegirma",
       "apiAccess": "API kirish (lead/quote)",
       "dedicatedManager": "Shaxsiy menejer"
+    },
+    "common": {
+      "add": "Qo‘shish",
+      "cancel": "Bekor qilish",
+      "delete": "O‘chirish"
     }
   }
 }

@@ -5,14 +5,15 @@ import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import {
   Building2, Loader2, LayoutDashboard, Inbox, Package, CreditCard, Wallet,
-  TrendingUp, ShieldCheck, Landmark, ShoppingBag, ArrowUpRight, Phone, Check,
+  TrendingUp, ShieldCheck, Landmark, ShoppingBag, Phone, Check, Plus, Trash2, ExternalLink,
 } from 'lucide-react';
+import { Link } from 'next-view-transitions';
 import { useAuth } from '@/components/auth-provider';
 import { useToast } from '@/components/toast';
 import { formatUZS } from '@/lib/utils';
 import {
   api, type PartnerAccountBrief, type PartnerDashboard, type PartnerLead,
-  type PartnerProducts, type PartnerPlanConfig, type PartnerPlanId,
+  type PartnerProducts, type PartnerPlanConfig, type PartnerPlanId, type PartnerBank,
 } from '@/lib/api';
 import { PartnerPlanCards } from './plan-cards';
 
@@ -343,39 +344,222 @@ function Leads({ partnerId }: { partnerId: string }) {
   );
 }
 
-// ─── Products ───────────────────────────────────────────────────────────────
+// ─── Products (ipoteka self-serve boshqaruvi + boshqa kanallar read-only) ────
 function Products({ partnerId }: { partnerId: string }) {
   const t = useTranslations('biznes');
   const [p, setP] = useState<PartnerProducts | null>(null);
-  useEffect(() => { setP(null); api.partnerProducts(partnerId).then(setP).catch(() => setP(null)); }, [partnerId]);
+  const reload = useCallback(() => { api.partnerProducts(partnerId).then(setP).catch(() => setP(null)); }, [partnerId]);
+  useEffect(() => { setP(null); reload(); }, [partnerId, reload]);
 
   if (!p) return <Centered><Loader2 className="animate-spin text-brand" /></Centered>;
 
-  const all = [...p.insurance, ...p.mortgage, ...p.nasiya, ...p.vendors];
-  if (all.length === 0) {
-    return (
-      <div className="rounded-2xl border border-dashed border-line py-16 text-center text-muted">
-        <Package className="mx-auto h-8 w-8 text-slate-300" />
-        <p className="mt-2 text-sm">{t('products.empty')}</p>
-      </div>
-    );
-  }
+  const others = [...p.insurance, ...p.nasiya, ...p.vendors];
 
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      {all.map((row) => (
-        <div key={`${row.channel}-${row.id}`} className="rounded-2xl border border-line bg-surface p-4 shadow-card">
-          <div className="flex items-center justify-between">
-            <span className="rounded-full bg-bg px-2.5 py-0.5 text-xs font-semibold text-muted">{t(`channel.${row.channel === 'vendor' ? 'vendor' : row.channel}`)}</span>
-            <span className={`h-2 w-2 rounded-full ${row.active ? 'bg-emerald-500' : 'bg-slate-300'}`} title={row.active ? t('products.active') : t('products.inactive')} />
+    <div className="flex flex-col gap-8">
+      {/* Ipoteka — tahrirlanadigan */}
+      <MortgageManager partnerId={partnerId} programs={p.mortgage} onChanged={reload} />
+
+      {/* Boshqa kanallar — read-only */}
+      {others.length > 0 && (
+        <div>
+          <h3 className="text-sm font-semibold text-heading">{t('products.otherChannels')}</h3>
+          <p className="mt-1 text-xs text-muted">{t('products.readonly')}</p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {others.map((row) => (
+              <div key={`${row.channel}-${row.id}`} className="rounded-2xl border border-line bg-surface p-4 shadow-card">
+                <div className="flex items-center justify-between">
+                  <span className="rounded-full bg-bg px-2.5 py-0.5 text-xs font-semibold text-muted">{t(`channel.${row.channel}`)}</span>
+                  <span className={`h-2 w-2 rounded-full ${row.active ? 'bg-emerald-500' : 'bg-slate-300'}`} title={row.active ? t('products.active') : t('products.inactive')} />
+                </div>
+                <div className="mt-2 font-semibold text-heading">{row.name}</div>
+                <div className="mt-0.5 text-xs text-muted">{row.brand} · {row.meta}</div>
+                {row.price != null && row.price > 0 && (
+                  <div className="mt-2 text-sm font-semibold text-heading">{t('products.from')} {formatUZS(row.price)}</div>
+                )}
+              </div>
+            ))}
           </div>
-          <div className="mt-2 font-semibold text-heading">{row.name}</div>
-          <div className="mt-0.5 text-xs text-muted">{row.brand} · {row.meta}</div>
-          {row.price != null && row.price > 0 && (
-            <div className="mt-2 text-sm font-semibold text-heading">{t('products.from')} {formatUZS(row.price)}</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Ipoteka self-serve menejeri ─────────────────────────────────────────────
+function MortgageManager({ partnerId, programs, onChanged }: { partnerId: string; programs: PartnerProducts['mortgage']; onChanged: () => void }) {
+  const t = useTranslations('biznes');
+  const { toast } = useToast();
+  const [banks, setBanks] = useState<PartnerBank[] | null>(null);
+  const [showBank, setShowBank] = useState(false);
+  const [showProgram, setShowProgram] = useState(false);
+  const [bankName, setBankName] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [form, setForm] = useState({ bankId: '', name: '', annualRate: '18', maxTermMonths: '240', minDownPct: '15', maxAmount: '' });
+  const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
+
+  const loadBanks = useCallback(() => { api.partnerBanks(partnerId).then(setBanks).catch(() => setBanks([])); }, [partnerId]);
+  useEffect(() => { loadBanks(); }, [loadBanks]);
+
+  async function createBank() {
+    if (bankName.trim().length < 2) return;
+    setBusy(true);
+    try {
+      await api.partnerCreateBank(partnerId, { name: bankName.trim() });
+      toast({ variant: 'success', title: t('products.mortgage.bankCreated') });
+      setBankName(''); setShowBank(false); loadBanks();
+    } catch (e) { toast({ variant: 'error', title: (e as Error).message }); }
+    finally { setBusy(false); }
+  }
+
+  async function createProgram() {
+    const bankId = form.bankId || banks?.[0]?.id;
+    if (!bankId || form.name.trim().length < 2) { toast({ variant: 'error', title: t('products.mortgage.fillRequired') }); return; }
+    setBusy(true);
+    try {
+      await api.partnerCreateProgram(partnerId, {
+        bankId,
+        name: form.name.trim(),
+        annualRate: Number(form.annualRate),
+        maxTermMonths: Number(form.maxTermMonths),
+        minDownPct: Number(form.minDownPct),
+        maxAmount: form.maxAmount ? Number(form.maxAmount) : undefined,
+      });
+      toast({ variant: 'success', title: t('products.mortgage.programLive') });
+      setShowProgram(false);
+      setForm({ bankId: '', name: '', annualRate: '18', maxTermMonths: '240', minDownPct: '15', maxAmount: '' });
+      onChanged();
+    } catch (e) { toast({ variant: 'error', title: (e as Error).message }); }
+    finally { setBusy(false); }
+  }
+
+  async function toggle(programId: string, active: boolean) {
+    try { await api.partnerUpdateProgram(partnerId, programId, { active: !active }); onChanged(); }
+    catch (e) { toast({ variant: 'error', title: (e as Error).message }); }
+  }
+
+  async function remove(programId: string) {
+    if (!confirm(t('products.mortgage.deleteConfirm'))) return;
+    try { await api.partnerDeleteProgram(partnerId, programId); toast({ variant: 'success', title: t('products.mortgage.deleted') }); onChanged(); }
+    catch (e) { toast({ variant: 'error', title: (e as Error).message }); }
+  }
+
+  const hasBank = (banks?.length ?? 0) > 0;
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <Landmark className="h-5 w-5 text-brand" />
+          <h3 className="font-display text-lg font-bold text-heading">{t('products.mortgage.title')}</h3>
+        </div>
+        <div className="flex gap-2">
+          <Link href="/ipoteka" target="_blank" className="inline-flex items-center gap-1.5 rounded-full border border-line px-3.5 py-2 text-xs font-semibold text-heading transition hover:bg-bg">
+            <ExternalLink className="h-3.5 w-3.5" /> {t('products.mortgage.viewLive')}
+          </Link>
+          {hasBank && (
+            <button onClick={() => { setShowProgram((v) => !v); setShowBank(false); }} className="inline-flex items-center gap-1.5 rounded-full bg-brand px-3.5 py-2 text-xs font-bold text-white transition hover:brightness-110">
+              <Plus className="h-3.5 w-3.5" /> {t('products.mortgage.addProgram')}
+            </button>
           )}
         </div>
-      ))}
+      </div>
+      <p className="mt-1 text-xs text-muted">{t('products.mortgage.liveHint')}</p>
+
+      {/* Bank yo'q → yaratish */}
+      {banks === null ? (
+        <div className="mt-4"><Loader2 className="h-5 w-5 animate-spin text-brand" /></div>
+      ) : !hasBank ? (
+        <div className="mt-4 rounded-2xl border border-dashed border-line p-6 text-center">
+          <p className="text-sm text-muted">{t('products.mortgage.noBank')}</p>
+          {!showBank ? (
+            <button onClick={() => setShowBank(true)} className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-brand px-4 py-2.5 text-sm font-bold text-white transition hover:brightness-110">
+              <Plus className="h-4 w-4" /> {t('products.mortgage.createBank')}
+            </button>
+          ) : (
+            <div className="mx-auto mt-3 flex max-w-sm gap-2">
+              <input value={bankName} onChange={(e) => setBankName(e.target.value)} placeholder={t('products.mortgage.bankNamePh')}
+                className="flex-1 rounded-xl border border-line bg-bg px-3 py-2.5 text-sm text-heading outline-none focus:border-brand" />
+              <button onClick={createBank} disabled={busy} className="rounded-xl bg-brand px-4 py-2.5 text-sm font-bold text-white disabled:opacity-60">
+                {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : t('common.add')}
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <>
+          {/* Dastur qo'shish formasi */}
+          {showProgram && (
+            <div className="mt-4 rounded-2xl border border-line bg-surface p-5 shadow-card">
+              <div className="grid gap-4 sm:grid-cols-2">
+                {(banks.length > 1) && (
+                  <div className="sm:col-span-2">
+                    <label className="text-sm font-medium text-muted">{t('products.mortgage.selectBank')}</label>
+                    <select value={form.bankId || banks[0].id} onChange={(e) => set('bankId', e.target.value)}
+                      className="mt-1.5 w-full rounded-xl border border-line bg-bg px-3 py-2.5 text-sm text-heading">
+                      {banks.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
+                    </select>
+                  </div>
+                )}
+                <NumField label={t('products.mortgage.programName')} text value={form.name} onChange={(v) => set('name', v)} placeholder={t('products.mortgage.programNamePh')} full />
+                <NumField label={`${t('products.mortgage.rate')} (%)`} value={form.annualRate} onChange={(v) => set('annualRate', v)} />
+                <NumField label={t('products.mortgage.term')} value={form.maxTermMonths} onChange={(v) => set('maxTermMonths', v)} />
+                <NumField label={`${t('products.mortgage.down')} (%)`} value={form.minDownPct} onChange={(v) => set('minDownPct', v)} />
+                <NumField label={t('products.mortgage.maxAmount')} value={form.maxAmount} onChange={(v) => set('maxAmount', v)} placeholder="0" />
+              </div>
+              <div className="mt-4 flex gap-2">
+                <button onClick={createProgram} disabled={busy} className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white transition hover:brightness-110 disabled:opacity-60">
+                  {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />} {t('products.mortgage.publish')}
+                </button>
+                <button onClick={() => setShowProgram(false)} className="rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-heading transition hover:bg-bg">{t('common.cancel')}</button>
+              </div>
+            </div>
+          )}
+
+          {/* Dasturlar ro'yxati */}
+          {programs.length === 0 ? (
+            <div className="mt-4 rounded-2xl border border-dashed border-line py-10 text-center text-sm text-muted">{t('products.mortgage.noProgram')}</div>
+          ) : (
+            <div className="mt-4 flex flex-col gap-2">
+              {programs.map((row) => (
+                <div key={row.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-surface p-4 shadow-card">
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-heading">{row.name}</span>
+                      <span className="rounded-full bg-brand/10 px-2 py-0.5 text-xs font-semibold text-brand">{row.meta}</span>
+                    </div>
+                    <div className="mt-0.5 text-xs text-muted">{row.brand}</div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button onClick={() => toggle(row.id, row.active)}
+                      className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${row.active ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-line text-muted hover:bg-bg'}`}>
+                      {row.active ? t('products.active') : t('products.inactive')}
+                    </button>
+                    <button onClick={() => remove(row.id)} className="grid h-8 w-8 place-items-center rounded-full border border-line text-rose-500 transition hover:bg-rose-50" title={t('common.delete')}>
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+function NumField({ label, value, onChange, placeholder, text, full }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string; text?: boolean; full?: boolean }) {
+  return (
+    <div className={full ? 'sm:col-span-2' : ''}>
+      <label className="text-sm font-medium text-muted">{label}</label>
+      <input
+        type={text ? 'text' : 'number'}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="mt-1.5 w-full rounded-xl border border-line bg-bg px-3 py-2.5 text-sm text-heading outline-none transition focus:border-brand"
+      />
     </div>
   );
 }
