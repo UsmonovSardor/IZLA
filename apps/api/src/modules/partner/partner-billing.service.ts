@@ -3,7 +3,11 @@ import { Cron } from '@nestjs/schedule';
 import type { Prisma, PartnerMemberRole } from '@izla/db';
 import { PrismaService } from '../../prisma/prisma.service';
 import { NotificationsService } from '../notifications/notifications.service';
-import { partnerPlanConfig } from '../../common/partner-plans';
+import { LeadDeliveryService } from '../lead/lead-delivery.service';
+import { partnerPlanConfig, leadPriceFor } from '../../common/partner-plans';
+
+const TOPUP_MIN = 50_000; // hamyonni to'ldirish minimumi (so'm)
+const TOPUP_MAX = 500_000_000; // bir martalik maksimum (demo himoyasi)
 
 const DAY = 24 * 60 * 60 * 1000;
 const PERIOD_DAYS = 30; // obuna davri
@@ -42,6 +46,7 @@ export class PartnerBillingService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly notifications: NotificationsService,
+    private readonly leadDelivery: LeadDeliveryService,
   ) {}
 
   // ─── Egalik ────────────────────────────────────────────────────────────────
@@ -228,6 +233,77 @@ export class PartnerBillingService {
   private async assertMemberAny(userId: string, partnerId: string) {
     const m = await this.prisma.partnerMember.findUnique({ where: { partnerId_userId: { partnerId, userId } }, select: { role: true } });
     if (!m) throw new ForbiddenException('Bu kompaniyaga ruxsatingiz yo‘q');
+  }
+
+  // ═══ CPL hamyon (prepaid balans — har lead uchun to'lov shundan yechiladi) ═══
+
+  /** Hamyon holati: balans, 1 lead narxi (CPL), yetkazilgan/bloklangan leadlar. */
+  async wallet(userId: string, partnerId: string) {
+    await this.assertMemberAny(userId, partnerId);
+    const p = await this.prisma.partnerAccount.findUnique({ where: { id: partnerId }, select: { plan: true } });
+    if (!p) throw new NotFoundException('Kompaniya topilmadi');
+    const cplPrice = leadPriceFor(p.plan);
+
+    const [walletRow, deliveredAgg, blockedIns, blockedMort, blockedNas] = await Promise.all([
+      this.prisma.partnerWallet.findUnique({ where: { partnerId }, select: { balance: true, currency: true } }),
+      this.prisma.ledgerEntry.aggregate({ where: { partnerId, kind: 'DEBIT', refType: 'lead' }, _sum: { amount: true }, _count: { _all: true } }),
+      this.prisma.insurancePolicy.count({ where: { partnerId, delivery: 'BLOCKED' } }),
+      this.prisma.mortgageLead.count({ where: { partnerId, delivery: 'BLOCKED' } }),
+      this.prisma.nasiyaLead.count({ where: { partnerId, delivery: 'BLOCKED' } }),
+    ]);
+
+    const balance = dec(walletRow?.balance);
+    return {
+      balance,
+      currency: walletRow?.currency ?? 'UZS',
+      cplPrice,
+      leadsRunway: cplPrice > 0 ? Math.floor(balance / cplPrice) : 0, // qolgan balansga nechta lead
+      delivered: { count: deliveredAgg._count._all, spent: dec(deliveredAgg._sum.amount) },
+      blocked: blockedIns + blockedMort + blockedNas,
+      minTopUp: TOPUP_MIN,
+    };
+  }
+
+  /** Hamyon harakatlari (audit izi — to'ldirish, obuna, lead). */
+  async walletLedger(userId: string, partnerId: string) {
+    await this.assertMemberAny(userId, partnerId);
+    const rows = await this.prisma.ledgerEntry.findMany({
+      where: { partnerId },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+      select: { id: true, kind: true, amount: true, reason: true, refType: true, balanceAfter: true, createdAt: true },
+    });
+    return rows.map((r) => ({ ...r, amount: dec(r.amount), balanceAfter: r.balanceAfter != null ? dec(r.balanceAfter) : null }));
+  }
+
+  /**
+   * Hamyonni to'ldirish (DEMO — real Payme/Click ham shu natijani beradi).
+   * To'ldirilgach BLOCKED leadlar avtomatik yetkaziladi (flush).
+   */
+  async topUpDemo(userId: string, partnerId: string, amount: number) {
+    await this.assertOwner(userId, partnerId, ['OWNER', 'MANAGER']);
+    const amt = Math.round(Number(amount) || 0);
+    if (amt < TOPUP_MIN) throw new BadRequestException(`Minimal to'ldirish: ${TOPUP_MIN.toLocaleString('ru-RU')} so'm`);
+    if (amt > TOPUP_MAX) throw new BadRequestException('To‘ldirish summasi juda katta');
+
+    const balanceAfter = await this.prisma.$transaction(async (tx) => {
+      const w = await tx.partnerWallet.upsert({
+        where: { partnerId },
+        update: { balance: { increment: amt } },
+        create: { partnerId, balance: amt },
+        select: { balance: true },
+      });
+      const bal = dec(w.balance);
+      await tx.ledgerEntry.create({
+        data: { partnerId, kind: 'CREDIT', amount: amt, reason: 'Hamyon to‘ldirish', refType: 'topup', balanceAfter: bal },
+      });
+      return bal;
+    });
+
+    // To'ldirilgach — kutayotgan (BLOCKED) leadlarni yetkazamiz.
+    const flushed = await this.leadDelivery.flushForPartner(partnerId).catch(() => 0);
+    const wallet = await this.wallet(userId, partnerId);
+    return { ...wallet, balance: balanceAfter, toppedUp: amt, flushed };
   }
 
   // ─── DEMO: muddatni surish + darrov lifecycle tekshiruvi ─────────────────

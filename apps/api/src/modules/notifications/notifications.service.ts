@@ -146,6 +146,63 @@ export class NotificationsService {
     }
   }
 
+  // --- Izla Biznes: homiyga lead yetkazish bildirishnomalari ---
+
+  /**
+   * Yangi malakali lead homiyga YETKAZILDI (CPL hisoblandi). Kompaniya egalari/
+   * menejerlariga ilova ichida push + kompaniya telefoniga SMS (best-effort).
+   */
+  async notifyPartnerNewLead(
+    partnerId: string,
+    lead: { channel: string; name: string | null; phone: string | null; product: string | null; amount: number },
+  ): Promise<void> {
+    try {
+      const channelLabel: Record<string, string> = { insurance: 'Sug‘urta', mortgage: 'Ipoteka', nasiya: 'Nasiya' };
+      const label = channelLabel[lead.channel] ?? lead.channel;
+      const [partner, members] = await Promise.all([
+        this.prisma.partnerAccount.findUnique({ where: { id: partnerId }, select: { phone: true } }),
+        this.prisma.partnerMember.findMany({ where: { partnerId, role: { in: ['OWNER', 'MANAGER'] } }, select: { userId: true } }),
+      ]);
+      const contact = [lead.name, lead.phone].filter(Boolean).join(' · ');
+      const body = `${contact}${lead.product ? ` — ${lead.product}` : ''} · ${fmtMoney(lead.amount)}`;
+      for (const m of members) {
+        await this.pushInApp(m.userId, 'partner_lead_new', {
+          title: `Yangi lead: ${label}`,
+          body,
+          href: '/biznes/kabinet',
+        }).catch(() => {});
+      }
+      if (partner?.phone) {
+        const sms = `Izla Biznes: yangi ${label} lead — ${lead.name ?? ''} ${lead.phone ?? ''}. Kabinet: izla.uz/biznes/kabinet`;
+        await this.sms.send(partner.phone, sms).catch(() => {});
+      }
+    } catch (e) {
+      this.logger.error(`notifyPartnerNewLead xato: ${(e as Error).message}`);
+    }
+  }
+
+  /**
+   * Yangi lead keldi, lekin homiy hamyonida CPL uchun balans YETMADI — lead BLOCKED.
+   * Egalarni ilova ichida ogohlantiramiz: hamyonni to'ldirsa lead yetkaziladi.
+   */
+  async notifyPartnerLeadBlocked(partnerId: string): Promise<void> {
+    try {
+      const members = await this.prisma.partnerMember.findMany({
+        where: { partnerId, role: { in: ['OWNER', 'MANAGER'] } },
+        select: { userId: true },
+      });
+      for (const m of members) {
+        await this.pushInApp(m.userId, 'partner_lead_blocked', {
+          title: 'Yangi lead — hamyonni to‘ldiring',
+          body: 'Sizga yangi mijoz keldi, lekin hamyon balansi yetmadi. To‘ldirsangiz lead darrov yetkaziladi.',
+          href: '/biznes/kabinet',
+        }).catch(() => {});
+      }
+    } catch (e) {
+      this.logger.error(`notifyPartnerLeadBlocked xato: ${(e as Error).message}`);
+    }
+  }
+
   // --- Ilova ichidagi bildirishnomalar (bell markazi) ---
 
   /** Ilova ichida bildirishnoma yaratadi (PUSH kanal, darhol "sent"). Best-effort. */
@@ -203,6 +260,8 @@ export class NotificationsService {
     if (type === 'payment_paid') return "To'lov qabul qilindi";
     if (type === 'payment_refunded') return "To'lov qaytarildi";
     if (type === 'property_lead_sent') return 'Murojaatingiz yuborildi';
+    if (type === 'partner_lead_new') return 'Yangi lead';
+    if (type === 'partner_lead_blocked') return 'Yangi lead — hamyonni to‘ldiring';
     return 'Bildirishnoma';
   }
 

@@ -1956,7 +1956,8 @@
         "overview": "Overview",
         "leads": "Leads",
         "products": "Products",
-        "plan": "Plan"
+        "plan": "Plan",
+        "wallet": "Wallet"
       }
     },
     "onboarding": {
@@ -1990,7 +1991,12 @@
       "product": "Product",
       "amount": "Amount",
       "status": "Status",
-      "date": "Date"
+      "date": "Date",
+      "cpl": "CPL",
+      "locked": "Contact locked",
+      "blockedTitle": "{count} lead(s) awaiting payment",
+      "blockedHint": "Top up your wallet — contacts unlock instantly.",
+      "pendingPay": "Pending"
     },
     "products": {
       "empty": "No products attached. Contact the Izla team to connect them.",
@@ -2169,7 +2175,8 @@
         "mortgage": "Mortgage (funded)",
         "booking": "Booking take-rate",
         "nasiya": "Installment merchant fee",
-        "subscription": "Subscription payments"
+        "subscription": "Subscription payments",
+        "cpl": "CPL (lead delivery)"
       },
       "col": {
         "name": "Partner",
@@ -2179,6 +2186,23 @@
         "monthly": "Monthly",
         "expires": "Expires"
       }
+    },
+    "wallet": {
+      "manage": "Manage wallet →",
+      "balance": "Wallet balance",
+      "runway": "≈ covers {count} lead(s)",
+      "cplPrice": "Price per lead (CPL)",
+      "delivered": "Leads delivered",
+      "spent": "Spent",
+      "topUp": "Top up wallet",
+      "topUpTitle": "Top up wallet",
+      "topUpHint": "Each qualified lead deducts the CPL from your wallet. If the balance runs out, leads wait.",
+      "demoNote": "Demo: payment is accepted instantly. Payme/Click coming soon.",
+      "history": "Transaction history",
+      "historyEmpty": "No transactions yet",
+      "toppedUp": "Wallet topped up: {amount}",
+      "flushed": "Delivered {count} waiting lead(s)",
+      "blockedWaiting": "{count} lead(s) awaiting payment"
     }
   }
 }

@@ -204,6 +204,11 @@ export const api = {
     authed<PartnerBillingOverview>(`/partner/${id}/invoices/${invoiceId}/pay`, { method: 'POST' }),
   partnerSimulateBilling: (id: string, daysPast: number) =>
     authed<PartnerBillingOverview>(`/partner/${id}/billing/simulate`, { method: 'POST', body: JSON.stringify({ daysPast }) }),
+  // CPL hamyon (prepaid balans — har lead uchun to'lov)
+  partnerWallet: (id: string) => authed<PartnerWallet>(`/partner/${id}/wallet`),
+  partnerWalletLedger: (id: string) => authed<PartnerWalletEntry[]>(`/partner/${id}/wallet/ledger`),
+  partnerTopUp: (id: string, amount: number) =>
+    authed<PartnerTopUpResult>(`/partner/${id}/wallet/topup`, { method: 'POST', body: JSON.stringify({ amount }) }),
   // Self-serve: bank + ipoteka dasturi boshqaruvi
   partnerBanks: (id: string) => authed<PartnerBank[]>(`/partner/${id}/banks`),
   partnerCreateBank: (id: string, body: { name: string; color?: string }) =>
@@ -244,7 +249,7 @@ export interface RevenueChannel { amount: number; count: number }
 export interface AdminRevenue {
   totals: {
     grandTotal: number;
-    byChannel: { insurance: RevenueChannel; mortgage: RevenueChannel; booking: RevenueChannel; nasiya: RevenueChannel; subscription: RevenueChannel };
+    byChannel: { insurance: RevenueChannel; mortgage: RevenueChannel; booking: RevenueChannel; nasiya: RevenueChannel; subscription: RevenueChannel; cpl: RevenueChannel };
   };
   mrr: number;
   arr: number;
@@ -296,6 +301,18 @@ export interface PartnerProducts {
 export interface PartnerLead {
   id: string; channel: 'insurance' | 'mortgage' | 'nasiya'; name: string | null; phone: string | null;
   amount: number; status: string; product: string | null; brand: string | null; createdAt: string;
+  delivery: 'PENDING' | 'DELIVERED' | 'BLOCKED'; billed: number | null; locked: boolean;
+}
+export interface PartnerWallet {
+  balance: number; currency: string; cplPrice: number; leadsRunway: number;
+  delivered: { count: number; spent: number }; blocked: number; minTopUp: number;
+}
+export interface PartnerWalletEntry {
+  id: string; kind: 'CREDIT' | 'DEBIT'; amount: number; reason: string;
+  refType: string | null; balanceAfter: number | null; createdAt: string;
+}
+export interface PartnerTopUpResult extends PartnerWallet {
+  toppedUp: number; flushed: number;
 }
 export interface PartnerBank {
   id: string; name: string; slug: string; color?: string | null; verified: boolean;

@@ -20,6 +20,7 @@ interface PartnerSeed {
   email: string;
   website: string;
   plan: PartnerPlan;
+  walletBalance: number; // CPL uchun boshlang'ich hamyon balansi (demo — faqat balans 0 bo'lsa)
   // Biriktiriladigan kanal obyektlari (slug bo'yicha)
   insurers?: string[];
   banks?: string[];
@@ -37,6 +38,7 @@ const PARTNERS: PartnerSeed[] = [
     email: 'biznes@kafil.uz',
     website: 'https://kafil.uz',
     plan: 'GROWTH',
+    walletBalance: 2_000_000,
     insurers: ['kafil'],
   },
   {
@@ -49,6 +51,7 @@ const PARTNERS: PartnerSeed[] = [
     email: 'partner@ipotekabank.uz',
     website: 'https://ipotekabank.uz',
     plan: 'ENTERPRISE',
+    walletBalance: 5_000_000,
     banks: ['ipoteka-bank'],
   },
   {
@@ -61,6 +64,7 @@ const PARTNERS: PartnerSeed[] = [
     email: 'partners@uzum.uz',
     website: 'https://uzum.uz',
     plan: 'FREE',
+    walletBalance: 300_000,
     nasiyaProviders: ['uzum-nasiya'],
   },
 ];
@@ -102,12 +106,14 @@ async function main() {
       select: { id: true, name: true },
     });
 
-    // Hamyon (bo'lmasa yaratamiz)
-    await prisma.partnerWallet.upsert({
-      where: { partnerId: partner.id },
-      update: {},
-      create: { partnerId: partner.id, balance: 0 },
-    });
+    // Hamyon (bo'lmasa yaratamiz). Demo: balans 0 bo'lsa boshlang'ich balans
+    // beramiz (CPL deduksiyasi ko'rinsin) — real to'ldirishni clobber qilmaymiz.
+    const existingWallet = await prisma.partnerWallet.findUnique({ where: { partnerId: partner.id }, select: { balance: true } });
+    if (!existingWallet) {
+      await prisma.partnerWallet.create({ data: { partnerId: partner.id, balance: p.walletBalance } });
+    } else if (Number(existingWallet.balance) === 0) {
+      await prisma.partnerWallet.update({ where: { partnerId: partner.id }, data: { balance: p.walletBalance } });
+    }
 
     // Kanal obyektlarini biriktirish (idempotent: partnerId o'rnatiladi)
     if (p.insurers?.length) {

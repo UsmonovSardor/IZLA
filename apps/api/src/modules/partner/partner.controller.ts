@@ -5,7 +5,7 @@ import { PartnerBillingService } from './partner-billing.service';
 import {
   CreateBankDto, CreateInsuranceProductDto, CreateInsurerDto, CreateMortgageProgramDto,
   CreateNasiyaProviderDto, LeadFilterDto, RegisterPartnerDto, SelectPartnerPlanDto, SimulateBillingDto,
-  UpdateInsuranceProductDto, UpdateMortgageProgramDto, UpdateNasiyaProviderDto, UpdatePartnerDto,
+  TopUpWalletDto, UpdateInsuranceProductDto, UpdateMortgageProgramDto, UpdateNasiyaProviderDto, UpdatePartnerDto,
 } from './dto';
 import { JwtAuthGuard, type AuthUser } from '../../common/jwt.guard';
 import { CurrentUser } from '../../common/current-user.decorator';
@@ -85,6 +85,23 @@ export class PartnerController {
   @Post(':id/billing/simulate')
   simulate(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() dto: SimulateBillingDto) {
     return this.billing.simulate(user.sub, id, dto.daysPast);
+  }
+
+  // ─── CPL hamyon (prepaid balans — har lead uchun to'lov) ──────────────────
+  @Get(':id/wallet')
+  wallet(@CurrentUser() user: AuthUser, @Param('id') id: string) {
+    return this.billing.wallet(user.sub, id);
+  }
+
+  @Get(':id/wallet/ledger')
+  walletLedger(@CurrentUser() user: AuthUser, @Param('id') id: string) {
+    return this.billing.walletLedger(user.sub, id);
+  }
+
+  /** Hamyonni to'ldirish (DEMO). To'ldirilgach BLOCKED leadlar avtomatik yetkaziladi. */
+  @Post(':id/wallet/topup')
+  topUp(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() dto: TopUpWalletDto) {
+    return this.billing.topUpDemo(user.sub, id, dto.amount);
   }
 
   // ─── Self-serve: bank + ipoteka dasturi boshqaruvi ───────────────────────

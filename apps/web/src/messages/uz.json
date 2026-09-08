@@ -1956,7 +1956,8 @@
         "overview": "Umumiy",
         "leads": "Lidlar",
         "products": "Mahsulotlar",
-        "plan": "Tarif"
+        "plan": "Tarif",
+        "wallet": "Hamyon"
       }
     },
     "onboarding": {
@@ -1990,7 +1991,12 @@
       "product": "Mahsulot",
       "amount": "Summa",
       "status": "Holat",
-      "date": "Sana"
+      "date": "Sana",
+      "cpl": "CPL",
+      "locked": "Kontakt berk",
+      "blockedTitle": "{count} ta lead to‘lovni kutmoqda",
+      "blockedHint": "Hamyonni to‘ldiring — kontaktlar darrov ochiladi.",
+      "pendingPay": "Kutmoqda"
     },
     "products": {
       "empty": "Sizga biriktirilgan mahsulot yo‘q. Ulash uchun Izla jamoasi bilan bog‘laning.",
@@ -2169,7 +2175,8 @@
         "mortgage": "Ipoteka (moliyalangan)",
         "booking": "Bron take-rate",
         "nasiya": "Nasiya merchant fee",
-        "subscription": "Obuna to‘lovlari"
+        "subscription": "Obuna to‘lovlari",
+        "cpl": "CPL (lead yetkazish)"
       },
       "col": {
         "name": "Homiy",
@@ -2179,6 +2186,23 @@
         "monthly": "Oylik",
         "expires": "Muddat"
       }
+    },
+    "wallet": {
+      "manage": "Hamyonni boshqarish →",
+      "balance": "Hamyon balansi",
+      "runway": "≈ {count} ta leadga yetadi",
+      "cplPrice": "1 lead narxi (CPL)",
+      "delivered": "Yetkazilgan leadlar",
+      "spent": "Sarflangan",
+      "topUp": "Hamyonni to‘ldirish",
+      "topUpTitle": "Hamyonni to‘ldirish",
+      "topUpHint": "Har malakali lead uchun hamyondan CPL yechiladi. Balans yetmasa leadlar kutib turadi.",
+      "demoNote": "Demo: to‘lov darrov qabul qilinadi. Tez orada Payme/Click ulanadi.",
+      "history": "Harakatlar tarixi",
+      "historyEmpty": "Hozircha harakat yo‘q",
+      "toppedUp": "Hamyon to‘ldirildi: {amount}",
+      "flushed": "{count} ta kutayotgan lead yetkazildi",
+      "blockedWaiting": "{count} ta lead to‘lovni kutmoqda"
     }
   }
 }

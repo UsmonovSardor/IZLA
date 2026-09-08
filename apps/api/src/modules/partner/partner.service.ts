@@ -40,6 +40,10 @@ interface UnifiedLead {
   product: string | null; // mahsulot/dastur nomi
   brand: string | null; // kompaniya nomi
   createdAt: Date;
+  // ─── CPL yetkazish ───
+  delivery: string; // PENDING | DELIVERED | BLOCKED
+  billed: number | null; // yechilgan CPL (so'm)
+  locked: boolean; // BLOCKED — kontakt berk (hamyonni to'ldiring)
 }
 
 @Injectable()
@@ -273,7 +277,7 @@ export class PartnerService {
             orderBy: { createdAt: 'desc' },
             take: 100,
             select: {
-              id: true, premium: true, status: true, createdAt: true,
+              id: true, premium: true, status: true, createdAt: true, delivery: true, billedAmount: true,
               user: { select: { name: true, phone: true } },
               product: { select: { name: true, insurer: { select: { name: true } } } },
             },
@@ -285,7 +289,7 @@ export class PartnerService {
             orderBy: { createdAt: 'desc' },
             take: 100,
             select: {
-              id: true, amount: true, status: true, createdAt: true, name: true, phone: true,
+              id: true, amount: true, status: true, createdAt: true, name: true, phone: true, delivery: true, billedAmount: true,
               program: { select: { name: true, bank: { select: { name: true } } } },
             },
           })
@@ -296,28 +300,34 @@ export class PartnerService {
             orderBy: { createdAt: 'desc' },
             take: 100,
             select: {
-              id: true, amount: true, status: true, createdAt: true, name: true, phone: true,
+              id: true, amount: true, status: true, createdAt: true, name: true, phone: true, delivery: true, billedAmount: true,
               provider: { select: { name: true } },
             },
           })
         : Promise.resolve([]),
     ]);
 
+    // BLOCKED leadlar kontakti berk (homiy hamyonni to'ldirmaguncha ko'rinmaydi).
+    const mask = (delivery: string, v: string | null): string | null => (delivery === 'BLOCKED' ? null : v);
+
     const unified: UnifiedLead[] = [
       ...insPolicies.map((p) => ({
-        id: p.id, channel: 'insurance' as const, name: p.user?.name ?? null, phone: p.user?.phone ?? null,
+        id: p.id, channel: 'insurance' as const, name: mask(p.delivery, p.user?.name ?? null), phone: mask(p.delivery, p.user?.phone ?? null),
         amount: dec(p.premium), status: p.status, product: p.product?.name ?? null,
         brand: p.product?.insurer?.name ?? null, createdAt: p.createdAt,
+        delivery: p.delivery, billed: p.billedAmount != null ? dec(p.billedAmount) : null, locked: p.delivery === 'BLOCKED',
       })),
       ...mortLeads.map((l) => ({
-        id: l.id, channel: 'mortgage' as const, name: l.name, phone: l.phone,
+        id: l.id, channel: 'mortgage' as const, name: mask(l.delivery, l.name), phone: mask(l.delivery, l.phone),
         amount: dec(l.amount), status: l.status, product: l.program?.name ?? null,
         brand: l.program?.bank?.name ?? null, createdAt: l.createdAt,
+        delivery: l.delivery, billed: l.billedAmount != null ? dec(l.billedAmount) : null, locked: l.delivery === 'BLOCKED',
       })),
       ...nasLeads.map((l) => ({
-        id: l.id, channel: 'nasiya' as const, name: l.name, phone: l.phone,
+        id: l.id, channel: 'nasiya' as const, name: mask(l.delivery, l.name), phone: mask(l.delivery, l.phone),
         amount: dec(l.amount), status: l.status, product: l.provider?.name ?? null,
         brand: l.provider?.name ?? null, createdAt: l.createdAt,
+        delivery: l.delivery, billed: l.billedAmount != null ? dec(l.billedAmount) : null, locked: l.delivery === 'BLOCKED',
       })),
     ].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 

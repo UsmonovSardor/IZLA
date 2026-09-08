@@ -1,7 +1,10 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import type { Prisma } from '@izla/db';
 import { PrismaService } from '../../prisma/prisma.service';
+import { LeadDeliveryService } from '../lead/lead-delivery.service';
 import { computeMortgage } from './mortgage-calc';
+
+const DEDUP_MS = 2 * 60 * 1000; // takroriy yuborish oynasi (ikki marta CPL hisoblanmasin)
 
 export interface ProgramFilter {
   bank?: string; // slug
@@ -18,7 +21,10 @@ const dec = (v: unknown): number => (v == null ? 0 : Number(v));
 
 @Injectable()
 export class MortgageService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly leadDelivery: LeadDeliveryService,
+  ) {}
 
   private buildWhere(f: ProgramFilter): Prisma.MortgageProgramWhereInput {
     const where: Prisma.MortgageProgramWhereInput = { active: true };
@@ -174,6 +180,16 @@ export class MortgageService {
     const calc = await this.calc({ programId: dto.programId, price: dto.price, downPct: dto.downPct, downAmount: dto.downAmount, termMonths: dto.termMonths });
     if (calc.loanAmount <= 0) throw new BadRequestException('Kredit summasi noto‘g‘ri');
 
+    // Takroriy yuborishdan himoya (ikki marta CPL hisoblanmasin): oxirgi 2 daqiqada
+    // ayni user + dastur + telefon bo'yicha lead bo'lsa — o'shani qaytaramiz.
+    if (dto.programId) {
+      const dup = await this.prisma.mortgageLead.findFirst({
+        where: { userId, programId: dto.programId, phone: dto.phone.trim(), createdAt: { gte: new Date(Date.now() - DEDUP_MS) } },
+        select: { id: true, status: true, amount: true, monthlyPayment: true, termMonths: true, createdAt: true },
+      });
+      if (dup) return { ...dup, amount: dec(dup.amount), monthlyPayment: dec(dup.monthlyPayment) };
+    }
+
     const lead = await this.prisma.mortgageLead.create({
       data: {
         programId: dto.programId ?? null,
@@ -191,6 +207,8 @@ export class MortgageService {
       },
       select: { id: true, status: true, amount: true, monthlyPayment: true, termMonths: true, createdAt: true },
     });
+    // CPL: leadni egasi bankning homiysiga yetkazish + hamyondan hisob (best-effort).
+    await this.leadDelivery.deliver('mortgage', lead.id);
     return { ...lead, amount: dec(lead.amount), monthlyPayment: dec(lead.monthlyPayment) };
   }
 

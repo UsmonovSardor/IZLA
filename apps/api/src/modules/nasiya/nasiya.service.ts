@@ -1,12 +1,17 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { LeadDeliveryService } from '../lead/lead-delivery.service';
 import { computeNasiya } from './nasiya-calc';
 
 const dec = (v: unknown): number => (v == null ? 0 : Number(v));
+const DEDUP_MS = 2 * 60 * 1000; // takroriy yuborish oynasi (ikki marta CPL hisoblanmasin)
 
 @Injectable()
 export class NasiyaService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly leadDelivery: LeadDeliveryService,
+  ) {}
 
   private shape(p: {
     id: string; name: string; slug: string; logoUrl: string | null; color: string | null;
@@ -60,6 +65,13 @@ export class NasiyaService {
     const q = computeNasiya(dto.amount, dto.months, (provider.terms as Record<string, number>) ?? {}, { min: provider.minAmount != null ? dec(provider.minAmount) : null, max: provider.maxAmount != null ? dec(provider.maxAmount) : null });
     if (!q.available) throw new BadRequestException('Summa yoki muddat bu provayderда mavjud emas');
 
+    // Takroriy yuborishdan himoya (ikki marta CPL hisoblanmasin).
+    const dup = await this.prisma.nasiyaLead.findFirst({
+      where: { userId, providerId: provider.id, phone: dto.phone.trim(), createdAt: { gte: new Date(Date.now() - DEDUP_MS) } },
+      select: { id: true, status: true, months: true, monthlyPayment: true, totalPayment: true, createdAt: true },
+    });
+    if (dup) return { ...dup, monthlyPayment: dec(dup.monthlyPayment), totalPayment: dec(dup.totalPayment) };
+
     const lead = await this.prisma.nasiyaLead.create({
       data: {
         providerId: provider.id, userId, vendorId: dto.vendorId ?? null, serviceId: dto.serviceId ?? null,
@@ -68,6 +80,8 @@ export class NasiyaService {
       },
       select: { id: true, status: true, months: true, monthlyPayment: true, totalPayment: true, createdAt: true },
     });
+    // CPL: leadni provayder homiysiga yetkazish + hamyondan hisob (best-effort).
+    await this.leadDelivery.deliver('nasiya', lead.id);
     return { ...lead, monthlyPayment: dec(lead.monthlyPayment), totalPayment: dec(lead.totalPayment) };
   }
 

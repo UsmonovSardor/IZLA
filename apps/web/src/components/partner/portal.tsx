@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import {
   Building2, Loader2, LayoutDashboard, Inbox, Package, CreditCard, Wallet,
   TrendingUp, ShieldCheck, Landmark, ShoppingBag, Phone, Check, Plus, Trash2, ExternalLink,
-  AlertTriangle, Clock, Receipt, CheckCircle2, Zap,
+  AlertTriangle, Clock, Receipt, CheckCircle2, Zap, Lock, ArrowDownRight, ArrowUpRight,
 } from 'lucide-react';
 import { Link } from 'next-view-transitions';
 import { useAuth } from '@/components/auth-provider';
@@ -16,10 +16,11 @@ import {
   api, type PartnerAccountBrief, type PartnerDashboard, type PartnerLead,
   type PartnerProducts, type PartnerPlanConfig, type PartnerPlanId, type PartnerBank,
   type PartnerBillingOverview, type PartnerInvoice, type PartnerInsurer, type InsuranceType,
+  type PartnerWallet, type PartnerWalletEntry,
 } from '@/lib/api';
 import { PartnerPlanCards } from './plan-cards';
 
-type Tab = 'overview' | 'leads' | 'products' | 'plan';
+type Tab = 'overview' | 'leads' | 'wallet' | 'products' | 'plan';
 
 const CHANNEL_ICON = { insurance: ShieldCheck, mortgage: Landmark, nasiya: ShoppingBag } as const;
 const STATUS_STYLE: Record<string, string> = {
@@ -109,6 +110,7 @@ export function PartnerPortal() {
         {([
           ['overview', LayoutDashboard],
           ['leads', Inbox],
+          ['wallet', Wallet],
           ['products', Package],
           ['plan', CreditCard],
         ] as [Tab, typeof Inbox][]).map(([id, Icon]) => (
@@ -125,8 +127,9 @@ export function PartnerPortal() {
       </div>
 
       <div className="mt-6">
-        {tab === 'overview' && <Overview partnerId={active.id} />}
-        {tab === 'leads' && <Leads partnerId={active.id} />}
+        {tab === 'overview' && <Overview partnerId={active.id} onGoToWallet={() => setTab('wallet')} />}
+        {tab === 'leads' && <Leads partnerId={active.id} onGoToWallet={() => setTab('wallet')} />}
+        {tab === 'wallet' && <WalletTab partnerId={active.id} />}
         {tab === 'products' && <Products partnerId={active.id} />}
         {tab === 'plan' && <PlanTab partnerId={active.id} currentPlan={active.plan} onChanged={loadPartners} />}
       </div>
@@ -217,7 +220,7 @@ function Field({ label, value, onChange, placeholder, required }: { label: strin
 }
 
 // ─── Overview ───────────────────────────────────────────────────────────────
-function Overview({ partnerId }: { partnerId: string }) {
+function Overview({ partnerId, onGoToWallet }: { partnerId: string; onGoToWallet?: () => void }) {
   const t = useTranslations('biznes');
   const [d, setD] = useState<PartnerDashboard | null>(null);
   useEffect(() => { setD(null); api.partnerDashboard(partnerId).then(setD).catch(() => setD(null)); }, [partnerId]);
@@ -225,10 +228,10 @@ function Overview({ partnerId }: { partnerId: string }) {
   if (!d) return <Centered><Loader2 className="animate-spin text-brand" /></Centered>;
 
   const stats = [
-    { label: t('overview.products'), value: String(d.counts.products), icon: Package, note: `${d.limits.productsUsed}/${d.limits.products === 999 ? '∞' : d.limits.products}` },
-    { label: t('overview.leadsTotal'), value: String(d.leads.total), icon: Inbox },
-    { label: t('overview.leads30d'), value: String(d.leads.last30d), icon: TrendingUp },
-    { label: t('overview.balance'), value: formatUZS(d.wallet.balance), icon: Wallet },
+    { label: t('overview.products'), value: String(d.counts.products), icon: Package, note: `${d.limits.productsUsed}/${d.limits.products === 999 ? '∞' : d.limits.products}`, onClick: undefined },
+    { label: t('overview.leadsTotal'), value: String(d.leads.total), icon: Inbox, note: undefined, onClick: undefined },
+    { label: t('overview.leads30d'), value: String(d.leads.last30d), icon: TrendingUp, note: undefined, onClick: undefined },
+    { label: t('overview.balance'), value: formatUZS(d.wallet.balance), icon: Wallet, note: t('wallet.manage'), onClick: onGoToWallet },
   ];
 
   return (
@@ -253,13 +256,14 @@ function Overview({ partnerId }: { partnerId: string }) {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((s, i) => (
           <motion.div key={s.label} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
-            className="rounded-2xl border border-line bg-surface p-5 shadow-card">
+            onClick={s.onClick}
+            className={`rounded-2xl border border-line bg-surface p-5 shadow-card ${s.onClick ? 'cursor-pointer transition hover:border-brand/40 hover:shadow-md' : ''}`}>
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted">{s.label}</span>
               <s.icon className="h-4 w-4 text-brand" />
             </div>
             <div className="mt-2 font-display text-2xl font-bold text-heading" style={{ fontVariantNumeric: 'tabular-nums' }}>{s.value}</div>
-            {s.note && <div className="mt-0.5 text-xs text-muted">{s.note}</div>}
+            {s.note && <div className={`mt-0.5 text-xs ${s.onClick ? 'font-semibold text-brand' : 'text-muted'}`}>{s.note}</div>}
           </motion.div>
         ))}
       </div>
@@ -287,7 +291,7 @@ function Overview({ partnerId }: { partnerId: string }) {
 }
 
 // ─── Leads inbox ────────────────────────────────────────────────────────────
-function Leads({ partnerId }: { partnerId: string }) {
+function Leads({ partnerId, onGoToWallet }: { partnerId: string; onGoToWallet?: () => void }) {
   const t = useTranslations('biznes');
   const [leads, setLeads] = useState<PartnerLead[] | null>(null);
   const [channel, setChannel] = useState<'' | 'insurance' | 'mortgage' | 'nasiya'>('');
@@ -296,6 +300,8 @@ function Leads({ partnerId }: { partnerId: string }) {
     setLeads(null);
     api.partnerLeads(partnerId, channel ? `?channel=${channel}` : '').then(setLeads).catch(() => setLeads([]));
   }, [partnerId, channel]);
+
+  const blockedCount = leads?.filter((l) => l.locked).length ?? 0;
 
   return (
     <div>
@@ -308,6 +314,22 @@ function Leads({ partnerId }: { partnerId: string }) {
         ))}
       </div>
 
+      {/* Bloklangan leadlar bannerи — hamyonни to'ldirsa ochiladi */}
+      {blockedCount > 0 && (
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+          <div className="flex items-center gap-3">
+            <div className="grid h-9 w-9 place-items-center rounded-xl bg-amber-100 text-amber-700"><Lock className="h-4 w-4" /></div>
+            <div className="text-sm">
+              <div className="font-semibold text-amber-900">{t('leads.blockedTitle', { count: blockedCount })}</div>
+              <div className="text-xs text-amber-700">{t('leads.blockedHint')}</div>
+            </div>
+          </div>
+          <button onClick={onGoToWallet} className="inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-4 py-2 text-sm font-bold text-white transition hover:brightness-110">
+            <Wallet className="h-4 w-4" /> {t('wallet.topUp')}
+          </button>
+        </div>
+      )}
+
       {leads === null ? (
         <Centered><Loader2 className="animate-spin text-brand" /></Centered>
       ) : leads.length === 0 ? (
@@ -317,7 +339,7 @@ function Leads({ partnerId }: { partnerId: string }) {
         </div>
       ) : (
         <div className="mt-5 overflow-x-auto rounded-2xl border border-line bg-surface shadow-card">
-          <table className="w-full min-w-[640px] text-sm">
+          <table className="w-full min-w-[720px] text-sm">
             <thead>
               <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-muted">
                 <th className="px-4 py-3 font-semibold">{t('leads.client')}</th>
@@ -325,6 +347,7 @@ function Leads({ partnerId }: { partnerId: string }) {
                 <th className="px-4 py-3 font-semibold">{t('leads.product')}</th>
                 <th className="px-4 py-3 text-right font-semibold">{t('leads.amount')}</th>
                 <th className="px-4 py-3 font-semibold">{t('leads.status')}</th>
+                <th className="px-4 py-3 text-right font-semibold">{t('leads.cpl')}</th>
                 <th className="px-4 py-3 font-semibold">{t('leads.date')}</th>
               </tr>
             </thead>
@@ -332,15 +355,28 @@ function Leads({ partnerId }: { partnerId: string }) {
               {leads.map((l) => {
                 const Icon = CHANNEL_ICON[l.channel];
                 return (
-                  <tr key={`${l.channel}-${l.id}`} className="border-b border-line/60 last:border-0">
+                  <tr key={`${l.channel}-${l.id}`} className={`border-b border-line/60 last:border-0 ${l.locked ? 'bg-amber-50/40' : ''}`}>
                     <td className="px-4 py-3">
-                      <div className="font-medium text-heading">{l.name ?? '—'}</div>
-                      {l.phone && <div className="flex items-center gap-1 text-xs text-muted"><Phone className="h-3 w-3" /> {l.phone}</div>}
+                      {l.locked ? (
+                        <div className="flex items-center gap-1.5 text-sm text-amber-700"><Lock className="h-3.5 w-3.5" /> {t('leads.locked')}</div>
+                      ) : (
+                        <>
+                          <div className="font-medium text-heading">{l.name ?? '—'}</div>
+                          {l.phone && <a href={`tel:${l.phone}`} className="flex items-center gap-1 text-xs text-brand hover:underline"><Phone className="h-3 w-3" /> {l.phone}</a>}
+                        </>
+                      )}
                     </td>
                     <td className="px-4 py-3"><span className="inline-flex items-center gap-1.5 text-muted"><Icon className="h-4 w-4 text-brand" /> {t(`channel.${l.channel}`)}</span></td>
                     <td className="px-4 py-3 text-ink">{l.product ?? '—'}</td>
                     <td className="px-4 py-3 text-right font-semibold text-heading" style={{ fontVariantNumeric: 'tabular-nums' }}>{formatUZS(l.amount)}</td>
                     <td className="px-4 py-3"><span className={`rounded-full border px-2.5 py-0.5 text-xs font-semibold ${STATUS_STYLE[l.status] ?? 'border-line text-muted'}`}>{l.status}</span></td>
+                    <td className="px-4 py-3 text-right text-xs" style={{ fontVariantNumeric: 'tabular-nums' }}>
+                      {l.delivery === 'DELIVERED' && l.billed != null ? (
+                        <span className="font-semibold text-emerald-600">−{formatUZS(l.billed)}</span>
+                      ) : l.locked ? (
+                        <span className="font-semibold text-amber-600">{t('leads.pendingPay')}</span>
+                      ) : <span className="text-muted">—</span>}
+                    </td>
                     <td className="px-4 py-3 text-xs text-muted">{new Date(l.createdAt).toLocaleDateString('uz')}</td>
                   </tr>
                 );
@@ -349,6 +385,119 @@ function Leads({ partnerId }: { partnerId: string }) {
           </table>
         </div>
       )}
+    </div>
+  );
+}
+
+// ─── CPL hamyon ──────────────────────────────────────────────────────────────
+const TOPUP_PRESETS = [500_000, 1_000_000, 2_000_000, 5_000_000];
+
+function WalletTab({ partnerId }: { partnerId: string }) {
+  const t = useTranslations('biznes');
+  const { toast } = useToast();
+  const [w, setW] = useState<PartnerWallet | null>(null);
+  const [ledger, setLedger] = useState<PartnerWalletEntry[] | null>(null);
+  const [busy, setBusy] = useState<number | null>(null);
+
+  const reload = useCallback(() => {
+    api.partnerWallet(partnerId).then(setW).catch(() => setW(null));
+    api.partnerWalletLedger(partnerId).then(setLedger).catch(() => setLedger([]));
+  }, [partnerId]);
+  useEffect(() => { setW(null); setLedger(null); reload(); }, [reload]);
+
+  async function topUp(amount: number) {
+    setBusy(amount);
+    try {
+      const r = await api.partnerTopUp(partnerId, amount);
+      toast({
+        variant: 'success',
+        title: t('wallet.toppedUp', { amount: formatUZS(r.toppedUp) }),
+        description: r.flushed > 0 ? t('wallet.flushed', { count: r.flushed }) : undefined,
+      });
+      reload();
+    } catch (e) {
+      toast({ variant: 'error', title: (e as Error).message });
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  if (!w) return <Centered><Loader2 className="animate-spin text-brand" /></Centered>;
+
+  const low = w.leadsRunway <= 5;
+
+  return (
+    <div className="flex flex-col gap-6">
+      {/* Balans + CPL */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        <div className="rounded-2xl border border-brand/20 bg-gradient-to-br from-brand/[0.06] to-transparent p-6 lg:col-span-2">
+          <div className="flex items-center gap-2 text-sm text-muted"><Wallet className="h-4 w-4 text-brand" /> {t('wallet.balance')}</div>
+          <div className="mt-2 font-display text-4xl font-bold text-heading" style={{ fontVariantNumeric: 'tabular-nums' }}>{formatUZS(w.balance)}</div>
+          <div className={`mt-2 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${low ? 'bg-amber-100 text-amber-700' : 'bg-emerald-50 text-emerald-700'}`}>
+            {low && <AlertTriangle className="h-3.5 w-3.5" />} {t('wallet.runway', { count: w.leadsRunway })}
+          </div>
+          {w.blocked > 0 && (
+            <div className="mt-3 flex items-center gap-1.5 text-sm text-amber-700"><Lock className="h-4 w-4" /> {t('wallet.blockedWaiting', { count: w.blocked })}</div>
+          )}
+        </div>
+        <div className="rounded-2xl border border-line bg-surface p-6 shadow-card">
+          <div className="text-sm text-muted">{t('wallet.cplPrice')}</div>
+          <div className="mt-2 font-display text-2xl font-bold text-heading" style={{ fontVariantNumeric: 'tabular-nums' }}>{formatUZS(w.cplPrice)}</div>
+          <div className="mt-4 border-t border-line pt-3 text-sm">
+            <div className="flex justify-between"><span className="text-muted">{t('wallet.delivered')}</span><span className="font-semibold text-heading">{w.delivered.count}</span></div>
+            <div className="mt-1 flex justify-between"><span className="text-muted">{t('wallet.spent')}</span><span className="font-semibold text-heading" style={{ fontVariantNumeric: 'tabular-nums' }}>{formatUZS(w.delivered.spent)}</span></div>
+          </div>
+        </div>
+      </div>
+
+      {/* To'ldirish */}
+      <div className="rounded-2xl border border-line bg-surface p-6 shadow-card">
+        <h3 className="text-sm font-semibold text-heading">{t('wallet.topUpTitle')}</h3>
+        <p className="mt-1 text-xs text-muted">{t('wallet.topUpHint')}</p>
+        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {TOPUP_PRESETS.map((amount) => (
+            <button key={amount} onClick={() => topUp(amount)} disabled={busy != null}
+              className="flex flex-col items-center gap-1 rounded-xl border border-line bg-bg px-4 py-4 text-sm font-bold text-heading transition hover:border-brand hover:bg-brand/5 disabled:opacity-50">
+              {busy === amount ? <Loader2 className="h-5 w-5 animate-spin text-brand" /> : <Plus className="h-5 w-5 text-brand" />}
+              <span style={{ fontVariantNumeric: 'tabular-nums' }}>{formatUZS(amount)}</span>
+            </button>
+          ))}
+        </div>
+        <p className="mt-3 text-[11px] text-muted">{t('wallet.demoNote')}</p>
+      </div>
+
+      {/* Harakatlar tarixi */}
+      <div className="overflow-x-auto rounded-2xl border border-line bg-surface shadow-card">
+        <div className="border-b border-line px-5 py-3 text-sm font-semibold text-heading">{t('wallet.history')}</div>
+        {ledger === null ? (
+          <Centered><Loader2 className="animate-spin text-brand" /></Centered>
+        ) : ledger.length === 0 ? (
+          <div className="py-12 text-center text-sm text-muted">{t('wallet.historyEmpty')}</div>
+        ) : (
+          <table className="w-full min-w-[560px] text-sm">
+            <tbody>
+              {ledger.map((e) => {
+                const credit = e.kind === 'CREDIT';
+                return (
+                  <tr key={e.id} className="border-b border-line/60 last:border-0">
+                    <td className="px-5 py-3">
+                      <span className={`inline-flex h-7 w-7 items-center justify-center rounded-full ${credit ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500'}`}>
+                        {credit ? <ArrowDownRight className="h-4 w-4" /> : <ArrowUpRight className="h-4 w-4" />}
+                      </span>
+                    </td>
+                    <td className="px-2 py-3 text-ink">{e.reason}</td>
+                    <td className="px-4 py-3 text-right font-semibold" style={{ fontVariantNumeric: 'tabular-nums' }}>
+                      <span className={credit ? 'text-emerald-600' : 'text-rose-500'}>{credit ? '+' : '−'}{formatUZS(e.amount)}</span>
+                    </td>
+                    <td className="px-4 py-3 text-right text-xs text-muted" style={{ fontVariantNumeric: 'tabular-nums' }}>{e.balanceAfter != null ? formatUZS(e.balanceAfter) : '—'}</td>
+                    <td className="px-5 py-3 text-right text-xs text-muted">{new Date(e.createdAt).toLocaleDateString('uz')}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }

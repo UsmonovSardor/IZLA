@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import type { Prisma } from '@izla/db';
 import { PrismaService } from '../../prisma/prisma.service';
+import { LeadDeliveryService } from '../lead/lead-delivery.service';
 import { computeQuote, commissionFor, type InsType } from './pricing';
 import { FORM_SCHEMAS, defaultParams } from './forms';
 
@@ -20,7 +21,10 @@ const dec = (v: unknown): number => (v == null ? 0 : Number(v));
 
 @Injectable()
 export class InsuranceService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly leadDelivery: LeadDeliveryService,
+  ) {}
 
   // --- Filtr WHERE quruvchi (products + facets bir xil mantiqni ishlatadi) ---
   private buildWhere(f: ProductFilter, opts: { ignoreType?: boolean } = {}): Prisma.InsuranceProductWhereInput {
@@ -265,6 +269,8 @@ export class InsuranceService {
       },
       select: { id: true, policyNumber: true, premium: true, insuredSum: true, status: true, termMonths: true, endsAt: true },
     });
+    // CPL: polis so'rovini sug'urta kompaniyasi homiysiga yetkazish + hamyondan hisob (best-effort).
+    await this.leadDelivery.deliver('insurance', policy.id);
     return { ...policy, premium: dec(policy.premium), insuredSum: dec(policy.insuredSum) };
   }
 

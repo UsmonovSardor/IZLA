@@ -5,10 +5,11 @@ import { PartnerPlansController } from './partner-plans.controller';
 import { PartnerService } from './partner.service';
 import { PartnerBillingService } from './partner-billing.service';
 import { NotificationsModule } from '../notifications/notifications.module';
+import { LeadModule } from '../lead/lead.module';
 import { JwtAuthGuard } from '../../common/jwt.guard';
 
 @Module({
-  imports: [JwtModule.register({}), NotificationsModule],
+  imports: [JwtModule.register({}), NotificationsModule, LeadModule],
   controllers: [PartnerController, PartnerPlansController],
   providers: [PartnerService, PartnerBillingService, JwtAuthGuard],
 })

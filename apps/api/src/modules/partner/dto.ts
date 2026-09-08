@@ -34,6 +34,11 @@ export class SimulateBillingDto {
   @IsInt() @Min(-3) @Max(30) daysPast!: number;
 }
 
+/** CPL hamyonini to'ldirish (DEMO — real Payme/Click ham shu natijani beradi). */
+export class TopUpWalletDto {
+  @IsInt() @Min(50_000) @Max(500_000_000) amount!: number;
+}
+
 // ─── Self-serve: sug'urta (insurer + mahsulot) ──────────────────────────────
 const INS_TYPES = ['OSAGO', 'KASKO', 'TRAVEL', 'PROPERTY', 'ACCIDENT', 'HEALTH'] as const;
 

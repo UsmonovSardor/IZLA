@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import {
   Loader2, ShieldAlert, TrendingUp, Wallet, CalendarClock, Building2,
-  ShieldCheck, Landmark, ShoppingBag, CalendarCheck, CreditCard,
+  ShieldCheck, Landmark, ShoppingBag, CalendarCheck, CreditCard, Inbox,
 } from 'lucide-react';
 import { useAuth } from '@/components/auth-provider';
 import { formatUZS } from '@/lib/utils';
@@ -16,6 +16,7 @@ const CHANNEL_META = {
   mortgage: { icon: Landmark, color: '#6366f1' },
   booking: { icon: CalendarCheck, color: '#10b981' },
   nasiya: { icon: ShoppingBag, color: '#7c3aed' },
+  cpl: { icon: Inbox, color: '#f59e0b' },
   subscription: { icon: CreditCard, color: '#cf3337' },
 } as const;
 type ChannelKey = keyof typeof CHANNEL_META;

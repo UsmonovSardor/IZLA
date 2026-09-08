@@ -198,6 +198,16 @@ enum NasiyaStatus {
   REJECTED
 }
 
+// --- Lead yetkazish holati (CPL — cost-per-lead billing) ---
+// Homiy har malakali lead uchun to'laydi (prepaid hamyondan). Balans yetmasa
+// yetkazish BLOCKED bo'ladi (homiy ko'rmaydi, hisoblanmaydi) — hamyon to'ldirilsa
+// yetkaziladi. Egasi bo'lmagan (partnerId=null, platforma obyekti) lead PENDING qoladi.
+enum LeadDeliveryStatus {
+  PENDING // yetkazish urinilmagan / egasi yo'q (platforma obyekti)
+  DELIVERED // homiyga yetkazildi + CPL hisoblandi (hamyondan yechildi)
+  BLOCKED // egasi bor, lekin hamyon balansi yetmadi (to'ldirilsa yetkaziladi)
+}
+
 // ============================================================
 // CORE
 // ============================================================
@@ -894,6 +904,11 @@ model InsurancePolicy {
   policyNumber     String?       @unique
   startsAt         DateTime?
   endsAt           DateTime?
+  // ─── CPL lead-delivery (homiyga yetkazish + hisob) ───
+  partnerId        String? // yetkazilgan homiy (insurer.partnerId'dan denormalizatsiya)
+  delivery         LeadDeliveryStatus @default(PENDING)
+  deliveredAt      DateTime?
+  billedAmount     Decimal?           @db.Decimal(14, 2) // yechilgan CPL (so'm)
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
@@ -904,6 +919,7 @@ model InsurancePolicy {
   @@index([userId])
   @@index([status])
   @@index([type])
+  @@index([partnerId])
   @@map("insurance_policies")
 }
 
@@ -979,11 +995,17 @@ model MortgageLead {
   name           String
   phone          String
   status         MortgageStatus @default(NEW)
+  // ─── CPL lead-delivery (homiyga yetkazish + hisob) ───
+  partnerId      String? // yetkazilgan homiy (bank.partnerId'dan denormalizatsiya)
+  delivery       LeadDeliveryStatus @default(PENDING)
+  deliveredAt    DateTime?
+  billedAmount   Decimal?           @db.Decimal(14, 2) // yechilgan CPL (so'm)
   createdAt      DateTime       @default(now())
 
   program MortgageProgram? @relation(fields: [programId], references: [id])
   user    User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([partnerId])
   @@index([userId])
   @@index([status])
   @@map("mortgage_leads")
@@ -1035,11 +1057,17 @@ model NasiyaLead {
   name           String
   phone          String
   status         NasiyaStatus @default(NEW)
+  // ─── CPL lead-delivery (homiyga yetkazish + hisob) ───
+  partnerId      String? // yetkazilgan homiy (provider.partnerId'dan denormalizatsiya)
+  delivery       LeadDeliveryStatus @default(PENDING)
+  deliveredAt    DateTime?
+  billedAmount   Decimal?           @db.Decimal(14, 2) // yechilgan CPL (so'm)
   createdAt      DateTime     @default(now())
 
   provider NasiyaProvider @relation(fields: [providerId], references: [id])
   user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([partnerId])
   @@index([userId])
   @@index([status])
   @@map("nasiya_leads")

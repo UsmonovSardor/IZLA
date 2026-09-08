@@ -9,7 +9,7 @@ const round = (n: number) => Math.round(n);
  * Izla Biznes — yagona daromad konsoli (admin).
  * Barcha kanal komissiyasi bir joyda:
  *  ① sug'urta commissionAmount · ② ipoteka referralFee(FUNDED) · ③ bron take-rate
- *  ④ nasiya merchant fee(ISSUED) · ⑤ obuna (to'langan invoice) + MRR.
+ *  ④ nasiya merchant fee(ISSUED) · ⑤ obuna (to'langan invoice) + MRR · ⑥ CPL (lead yetkazish).
  */
 @Injectable()
 export class AdminService {
@@ -22,6 +22,7 @@ export class AdminService {
       fundedLeads,
       issuedLeads,
       invoiceAgg,
+      cplAgg,
       activePaidPartners,
       partnersByStatus,
       partnersByPlan,
@@ -37,6 +38,8 @@ export class AdminService {
       this.prisma.nasiyaLead.findMany({ where: { status: 'ISSUED' }, select: { amount: true, provider: { select: { merchantFee: true } } } }),
       // ⑤ Obuna — to'langan hisob-fakturalar
       this.prisma.invoice.aggregate({ _sum: { amount: true }, _count: { _all: true }, where: { status: 'PAID' } }),
+      // ⑥ CPL — homiyga yetkazilgan har lead uchun hamyondan yechilgan summa
+      this.prisma.ledgerEntry.aggregate({ _sum: { amount: true }, _count: { _all: true }, where: { kind: 'DEBIT', refType: 'lead' } }),
       // MRR uchun: faol pullik homiylar
       this.prisma.partnerAccount.findMany({ where: { billingStatus: 'ACTIVE', plan: { not: 'FREE' } }, select: { plan: true } }),
       this.prisma.partnerAccount.groupBy({ by: ['billingStatus'], _count: { _all: true } }),
@@ -55,8 +58,9 @@ export class AdminService {
       count: issuedLeads.length,
     };
     const subscription = { amount: round(dec(invoiceAgg._sum.amount)), count: invoiceAgg._count._all };
+    const cpl = { amount: round(dec(cplAgg._sum.amount)), count: cplAgg._count._all };
 
-    const grandTotal = insurance.amount + mortgage.amount + booking.amount + nasiya.amount + subscription.amount;
+    const grandTotal = insurance.amount + mortgage.amount + booking.amount + nasiya.amount + subscription.amount + cpl.amount;
 
     // MRR — faol pullik obunalarning oylik summasi
     const mrr = activePaidPartners.reduce((s, p) => s + partnerPlanConfig(p.plan).priceMonthly, 0);
@@ -69,7 +73,7 @@ export class AdminService {
     return {
       totals: {
         grandTotal,
-        byChannel: { insurance, mortgage, booking, nasiya, subscription },
+        byChannel: { insurance, mortgage, booking, nasiya, subscription, cpl },
       },
       mrr,
       arr: mrr * 12,
