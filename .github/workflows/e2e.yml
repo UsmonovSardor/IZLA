@@ -1,0 +1,36 @@
+name: E2E smoke (live)
+
+# Kritik-oqim smoke testlari JONLI saytga qarshi. PR CI'ni tashqi flakiness bilan
+# bloklamaslik uchun ALOHIDA: qo'lda (workflow_dispatch) yoki kunlik jadval bo'yicha.
+# Boshqa saytga qarshi ishga tushirish: E2E_BASE_URL repo variable/secret.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * *' # har kuni 06:00 UTC (post-deploy sog'lik tekshiruvi)
+
+jobs:
+  e2e:
+    name: Playwright smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Playwright chromium o'rnatish
+        run: pnpm --filter @izla/web exec playwright install --with-deps chromium
+      - name: E2E smoke (jonli)
+        run: pnpm --filter @izla/web test:e2e
+        env:
+          E2E_BASE_URL: ${{ vars.E2E_BASE_URL || 'https://web-production-66316.up.railway.app' }}
+      - name: Hisobotni yuklash (xato bo'lsa)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: apps/web/playwright-report/
+          retention-days: 7

@@ -15,3 +15,7 @@ coverage/
 prisma/*.db
 .vercel/
 .gstack/
+
+# Playwright E2E artefaktlari
+test-results/
+playwright-report/
