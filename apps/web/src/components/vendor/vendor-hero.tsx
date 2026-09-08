@@ -116,8 +116,8 @@ export function VendorHero(p: Props) {
             <div className="absolute inset-0 bg-gradient-to-t from-navy/25 to-transparent" />
           </motion.div>
 
-          {/* Reyting kartasi (yuqori o'ng) — statik, nozik hover ko'tarilish */}
-          <motion.div {...enter(0.25)} className="absolute -right-3 top-8 rounded-2xl bg-surface/95 px-4 py-3 shadow-lg ring-1 ring-line backdrop-blur transition-transform duration-300 hover:-translate-y-0.5">
+          {/* Reyting kartasi — yuqori o'ng burchakka toza pinlangan, statik + hover */}
+          <motion.div {...enter(0.25)} className="absolute right-4 top-4 rounded-2xl bg-surface/95 px-3.5 py-2.5 shadow-xl ring-1 ring-black/5 backdrop-blur transition-transform duration-300 hover:-translate-y-0.5">
             <div className="flex items-center gap-1 text-amber-400">
               {[0, 1, 2, 3, 4].map((i) => <Star key={i} className="h-3 w-3 fill-current" />)}
             </div>
@@ -129,7 +129,7 @@ export function VendorHero(p: Props) {
           {(p.verified || p.established) && (
             <motion.div
               {...enter(0.4)}
-              className="absolute -left-3 bottom-10 flex items-center gap-2 rounded-2xl bg-surface/95 px-4 py-3 shadow-lg ring-1 ring-line backdrop-blur transition-transform duration-300 hover:-translate-y-0.5"
+              className="absolute bottom-4 left-4 flex items-center gap-2.5 rounded-2xl bg-surface/95 px-3.5 py-2.5 shadow-xl ring-1 ring-black/5 backdrop-blur transition-transform duration-300 hover:-translate-y-0.5"
             >
               <BadgeCheck className="h-6 w-6" style={{ color: p.accent }} />
               <div className="text-xs">
