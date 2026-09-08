@@ -122,7 +122,9 @@
           "d": "AI finds the right place from a single request."
         }
       }
-    }
+    },
+    "trustLabel": "Financial partners",
+    "trustMore": "and others"
   },
   "search": {
     "title": "Search results",

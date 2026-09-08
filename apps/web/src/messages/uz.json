@@ -122,7 +122,9 @@
           "d": "Sun’iy intellekt kerakli joyni bir so‘rovda topib beradi."
         }
       }
-    }
+    },
+    "trustLabel": "Moliyaviy hamkorlar",
+    "trustMore": "va boshqalar"
   },
   "search": {
     "title": "Qidiruv natijalari",

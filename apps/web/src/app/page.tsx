@@ -4,6 +4,7 @@ import { Sparkles, ArrowRight, Send, BadgeCheck, ShieldCheck, Clock, MapPin } fr
 import { getLocale, getTranslations } from 'next-intl/server';
 import { api, type Category, type Vendor, type Facets } from '@/lib/api';
 import { VendorCard } from '@/components/vendor-card';
+import { CategoryIcon } from '@/components/category-icon';
 import { Reveal } from '@/components/reveal';
 import { RotatingWord } from '@/components/rotating-word';
 import { StatsRow, type Stat } from '@/components/stats-row';
@@ -108,6 +109,24 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ===== SOCIAL PROOF — real moliyaviy hamkorlar ===== */}
+      <section className="border-y border-line bg-surface/60">
+        <div className="container-wide py-8 md:py-10">
+          <p className="text-center text-[11px] font-bold uppercase tracking-[0.15em] text-muted">{t('trustLabel')}</p>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+            {['Kafil Sug‘urta', 'Ipoteka Bank', 'Uzum Nasiya'].map((b) => (
+              <span
+                key={b}
+                className="font-display text-base font-bold text-muted/70 transition hover:text-brand sm:text-lg"
+              >
+                {b}
+              </span>
+            ))}
+            <span className="text-sm text-muted/60">{t('trustMore')}</span>
+          </div>
+        </div>
+      </section>
+
       {/* ===== YAQINDA KO'RILGAN ===== */}
       <RecentlyViewed />
 
@@ -188,7 +207,7 @@ async function HeroChips() {
           href={`/qidiruv?category=${c.slug}`}
           className="chip bg-surface/10 text-white/85 border border-white/15 transition hover:bg-surface/20"
         >
-          <span>{c.icon}</span> {c.name}
+          <CategoryIcon slug={c.slug} className="h-3.5 w-3.5 text-teal-300" /> {c.name}
         </Link>
       ))}
     </>
@@ -253,8 +272,8 @@ async function CategoriesGrid() {
             href={`/qidiruv?category=${c.slug}`}
             className="group flex flex-col items-center gap-3 rounded-xl border border-line bg-surface p-5 transition-all duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-card"
           >
-            <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand/[0.06] text-2xl transition-all duration-300 group-hover:bg-brand/10 group-hover:scale-105">
-              {c.icon}
+            <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand/[0.06] text-brand transition-all duration-300 group-hover:bg-brand/10 group-hover:scale-105">
+              <CategoryIcon slug={c.slug} className="h-7 w-7" />
             </span>
             <span className="text-center text-sm font-semibold text-ink leading-tight">{c.name}</span>
           </Link>
