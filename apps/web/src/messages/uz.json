@@ -141,7 +141,14 @@
     "locating": "Aniqlanmoqda…",
     "geoError": "Joylashuv aniqlanmadi. Brauzerda ruxsat bering.",
     "price": "Narx",
-    "som": "so‘m"
+    "som": "so‘m",
+    "foundSuffix": "ta joy topildi",
+    "sort": "Saralash",
+    "sortPopular": "Ommabop",
+    "sortNearby": "Avval yaqin",
+    "sortAz": "A–Z",
+    "nearMe": "Menga yaqin",
+    "allShown": "Barchasi ko'rsatildi"
   },
   "hero": {
     "m1": "30 soniyada bron",
@@ -991,6 +998,11 @@
       "reviews": "Sharhlar",
       "doctors": "Mutaxassislar",
       "experience": "Yillik tajriba"
+    },
+    "taxi": {
+      "call": "Taksi chaqirish",
+      "hint": "Yandex Go · manzil oldindan tayyor",
+      "short": "Taksi"
     }
   },
   "pwa": {

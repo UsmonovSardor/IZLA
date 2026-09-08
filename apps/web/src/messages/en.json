@@ -141,7 +141,14 @@
     "locating": "Locating…",
     "geoError": "Could not get your location. Allow access in the browser.",
     "price": "Price",
-    "som": "UZS"
+    "som": "UZS",
+    "foundSuffix": "places found",
+    "sort": "Sort",
+    "sortPopular": "Popular",
+    "sortNearby": "Nearest first",
+    "sortAz": "A–Z",
+    "nearMe": "Near me",
+    "allShown": "All results shown"
   },
   "hero": {
     "m1": "Book in 30 seconds",
@@ -991,6 +998,11 @@
       "reviews": "Reviews",
       "doctors": "Specialists",
       "experience": "Years experience"
+    },
+    "taxi": {
+      "call": "Order a taxi",
+      "hint": "Yandex Go · destination prefilled",
+      "short": "Taxi"
     }
   },
   "pwa": {

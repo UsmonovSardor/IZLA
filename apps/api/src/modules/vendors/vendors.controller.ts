@@ -14,13 +14,15 @@ export class VendorsController {
   @ApiQuery({ name: 'q', required: false })
   @ApiQuery({ name: 'lat', required: false })
   @ApiQuery({ name: 'lng', required: false })
-  @ApiQuery({ name: 'sort', required: false, enum: ['rating', 'distance', 'popular'] })
+  @ApiQuery({ name: 'sort', required: false, enum: ['rating', 'distance', 'popular', 'az'] })
   @ApiQuery({ name: 'verified', required: false, type: Boolean })
   @ApiQuery({ name: 'minRating', required: false, type: Number })
   @ApiQuery({ name: 'priceMin', required: false, type: Number })
   @ApiQuery({ name: 'priceMax', required: false, type: Number })
   @ApiQuery({ name: 'openNow', required: false, type: Boolean })
   @ApiQuery({ name: 'radiusKm', required: false, type: Number })
+  @ApiQuery({ name: 'page', required: false, type: Number, description: '1-based sahifa (infinite scroll)' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'sahifa hajmi (default 24, max 60)' })
   @ApiQuery({ name: 'lang', required: false, enum: ['uz', 'ru', 'en'] })
   list(
     @Query('category') category?: string,
@@ -28,16 +30,21 @@ export class VendorsController {
     @Query('q') q?: string,
     @Query('lat') lat?: string,
     @Query('lng') lng?: string,
-    @Query('sort') sort?: 'rating' | 'distance' | 'popular',
+    @Query('sort') sort?: 'rating' | 'distance' | 'popular' | 'az',
     @Query('verified') verified?: string,
     @Query('minRating') minRating?: string,
     @Query('priceMin') priceMin?: string,
     @Query('priceMax') priceMax?: string,
     @Query('openNow') openNow?: string,
     @Query('radiusKm') radiusKm?: string,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
     @Query('lang') lang?: string,
     @Headers('accept-language') acceptLanguage?: string,
   ) {
+    // Paginatsiya: page berilsa skip/take hisoblanadi; berilmasa eski xatti-harakat (take default).
+    const take = limit ? Math.min(Math.max(Number(limit) || 24, 1), 60) : undefined;
+    const skip = page && take ? Math.max((Number(page) || 1) - 1, 0) * take : undefined;
     return this.vendors.list({
       category,
       district,
@@ -51,6 +58,8 @@ export class VendorsController {
       priceMax: priceMax ? Number(priceMax) : undefined,
       openNow: openNow === 'true' ? true : undefined,
       radiusKm: radiusKm ? Number(radiusKm) : undefined,
+      take,
+      skip,
       lang: resolveLang(lang, acceptLanguage),
     });
   }

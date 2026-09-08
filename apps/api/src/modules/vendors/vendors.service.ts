@@ -10,8 +10,9 @@ export interface VendorQuery {
   q?: string;
   lat?: number;
   lng?: number;
-  sort?: 'rating' | 'distance' | 'popular';
+  sort?: 'rating' | 'distance' | 'popular' | 'az';
   take?: number;
+  skip?: number;
   lang?: Lang;
   verified?: boolean;
   minRating?: number;
@@ -99,10 +100,11 @@ export class VendorsService {
   async list(query: VendorQuery) {
     const lang: Lang = query.lang ?? 'uz';
     const take = query.take ?? 50;
+    const skip = query.skip ?? 0;
 
     // ── Matnli qidiruv → intellektual (full-text + ko'p-maydon + ranking) ──
     if (query.q && query.q.trim()) {
-      const ids = await this.searchIds(query, take);
+      const ids = await this.searchIds(query, take, skip);
       if (ids.length === 0) return [];
       const vendors = await this.prisma.vendor.findMany({
         where: { id: { in: ids } },
@@ -141,13 +143,19 @@ export class VendorsService {
     const needsPostFilter = query.openNow || hasGeo;
     const vendors = await this.prisma.vendor.findMany({
       where,
-      take: needsPostFilter ? Math.max(take * 5, 200) : take,
+      // Post-filtr (openNow/radius) JS'da qirqilгani uchun skip+take ni qoplaydigan
+      // kengroq oyna olamiz; oddiy holatda esa to'g'ridan-to'g'ri skip/take.
+      ...(needsPostFilter
+        ? { take: Math.max((skip + take) * 4, 200) }
+        : { skip, take }),
       include: { category: { select: CATEGORY_SELECT } },
       // Take-rate: pullik tariflar (PREMIUM→PRO→FREE) yuqori joylashadi (featured placement).
       orderBy:
         query.sort === 'rating'
           ? [{ plan: 'desc' }, { rating: 'desc' }]
-          : [{ plan: 'desc' }, { createdAt: 'desc' }],
+          : query.sort === 'az'
+            ? [{ name: 'asc' }]
+            : [{ plan: 'desc' }, { createdAt: 'desc' }],
     });
 
     // shape() masofani hisoblaydi va sort (masofa/reyting) qo'llaydi.
@@ -157,7 +165,8 @@ export class VendorsService {
       const r = query.radiusKm!;
       result = result.filter((v) => v.distanceKm != null && v.distanceKm <= r);
     }
-    return needsPostFilter ? result.slice(0, take) : result;
+    // Post-filtr holatida sahifani JS'da kesamiz; oddiy holatda DB allaqachon kesган.
+    return needsPostFilter ? result.slice(skip, skip + take) : result;
   }
 
   /** Lokalizatsiya + masofa hisoblash + (kerak bo'lsa) saralash (masofa/reyting). */
@@ -187,7 +196,7 @@ export class VendorsService {
    * (nom, tavsif, tuman, kategoriya uz/ru/en, xizmatlar nomi) + pg_trgm typo-tolerantlik
    * (similarity/word_similarity) + ILIKE recall + ranking. Relevantlik bo'yicha tartiblangan id'lar.
    */
-  private async searchIds(query: VendorQuery, take: number): Promise<string[]> {
+  private async searchIds(query: VendorQuery, take: number, skip = 0): Promise<string[]> {
     const term = query.q!.trim();
     const like = `%${term}%`;
 
@@ -240,7 +249,7 @@ export class VendorsService {
         + rating / 5.0
         + (CASE plan WHEN 'PREMIUM' THEN 0.4 WHEN 'PRO' THEN 0.2 ELSE 0 END)
       ) DESC
-      LIMIT ${take}
+      LIMIT ${take} OFFSET ${skip}
     `);
     return rows.map((r) => r.id);
   }
