@@ -32,6 +32,11 @@ jobs:
       - name: Generate Prisma client
         run: pnpm --filter @izla/db generate
 
+      # Xavfsizlik: yangi CRITICAL zaiflik CI'ni bloklaydi (mavjud build-vaqti
+      # high'lar override bilan monitoring ostida). Haftalik Dependabot ham bor.
+      - name: Security audit (prod deps)
+        run: pnpm audit --prod --audit-level critical
+
       - name: Typecheck
         run: pnpm typecheck
 

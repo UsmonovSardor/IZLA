@@ -1,0 +1,19 @@
+version: 2
+updates:
+  # npm/pnpm bog'liqliklari — haftalik yangilanish tekshiruvi (xavfsizlik + versiya)
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # Kichik/patch yangilanishlarni bitta PR'ga birlashtirish (shovqin kam)
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+  # GitHub Actions versiyalari
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
