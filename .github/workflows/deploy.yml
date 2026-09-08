@@ -1,0 +1,43 @@
+name: Deploy (Railway)
+
+# Production avto-deploy: main'ga push'da API + Web Railway'ga chiqadi.
+# Qo'lda ham ishga tushirish mumkin (workflow_dispatch).
+#
+# TALAB: GitHub repo → Settings → Secrets → Actions → `RAILWAY_TOKEN`
+#   (Railway → Project → Settings → Tokens → production muhitiga scoped token).
+# Token bo'lmasa bu workflow ishlamaydi (qo'lda `railway up` ishlayveradi).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy API + Web
+    runs-on: ubuntu-latest
+    env:
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Guard — RAILWAY_TOKEN mavjudligini tekshir
+        run: |
+          if [ -z "$RAILWAY_TOKEN" ]; then
+            echo "::error::RAILWAY_TOKEN secret o'rnatilmagan — deploy o'tkazib yuborildi."
+            exit 1
+          fi
+
+      - name: Railway CLI o'rnatish
+        run: npm i -g @railway/cli
+
+      # API avval (sxema o'zgarsa migrate deploy + seed Dockerfile CMD'da avtomat).
+      - name: Deploy API
+        run: railway up --service api --ci
+
+      - name: Deploy Web
+        run: railway up --service web --ci
