@@ -35,8 +35,11 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
-      - name: Unit tests
+      - name: Unit tests (API)
         run: pnpm --filter @izla/api test
+
+      - name: Unit tests (web — utils, i18n parity, komponentlar)
+        run: pnpm --filter @izla/web test
 
       - name: Build
         run: pnpm build
