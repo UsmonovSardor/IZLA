@@ -28,9 +28,15 @@ interface Props {
 /** Dentaire uslubidagi boy hero — bizning navy/brand palitrada, framer animatsiya bilan. */
 export function VendorHero(p: Props) {
   const reduce = useReducedMotion();
-  const float = reduce
-    ? {}
-    : { animate: { y: [0, -10, 0] }, transition: { duration: 4, repeat: Infinity, ease: 'easeInOut' as const } };
+  // Bir martalik nozik kirish (keyin STATIK — cheksiz suzish yo'q). delay = stagger.
+  const enter = (delay: number) =>
+    reduce
+      ? { initial: false as const }
+      : {
+          initial: { opacity: 0, y: 10, scale: 0.96 },
+          animate: { opacity: 1, y: 0, scale: 1 },
+          transition: { duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] as const },
+        };
 
   return (
     <section
@@ -110,8 +116,8 @@ export function VendorHero(p: Props) {
             <div className="absolute inset-0 bg-gradient-to-t from-navy/25 to-transparent" />
           </motion.div>
 
-          {/* Reyting kartasi (yuqori o'ng) */}
-          <motion.div {...float} className="absolute -right-3 top-8 rounded-2xl bg-surface/95 px-4 py-3 shadow-lg ring-1 ring-line backdrop-blur">
+          {/* Reyting kartasi (yuqori o'ng) — statik, nozik hover ko'tarilish */}
+          <motion.div {...enter(0.25)} className="absolute -right-3 top-8 rounded-2xl bg-surface/95 px-4 py-3 shadow-lg ring-1 ring-line backdrop-blur transition-transform duration-300 hover:-translate-y-0.5">
             <div className="flex items-center gap-1 text-amber-400">
               {[0, 1, 2, 3, 4].map((i) => <Star key={i} className="h-3 w-3 fill-current" />)}
             </div>
@@ -122,8 +128,8 @@ export function VendorHero(p: Props) {
           {/* Tasdiqlangan / tashkil etilgan (pastki chap) */}
           {(p.verified || p.established) && (
             <motion.div
-              {...(reduce ? {} : { animate: { y: [0, 8, 0] }, transition: { duration: 4.5, repeat: Infinity, ease: 'easeInOut' as const } })}
-              className="absolute -left-3 bottom-10 flex items-center gap-2 rounded-2xl bg-surface/95 px-4 py-3 shadow-lg ring-1 ring-line backdrop-blur"
+              {...enter(0.4)}
+              className="absolute -left-3 bottom-10 flex items-center gap-2 rounded-2xl bg-surface/95 px-4 py-3 shadow-lg ring-1 ring-line backdrop-blur transition-transform duration-300 hover:-translate-y-0.5"
             >
               <BadgeCheck className="h-6 w-6" style={{ color: p.accent }} />
               <div className="text-xs">
