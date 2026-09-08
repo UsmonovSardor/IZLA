@@ -46,7 +46,9 @@
     "reviews": "{count} отзывов",
     "loading": "Загрузка данных…",
     "login": "Войти",
-    "back": "Назад"
+    "back": "Назад",
+    "skipToContent": "Перейти к содержимому",
+    "primaryNav": "Основное меню"
   },
   "lang": {
     "switchLabel": "Выбрать язык"

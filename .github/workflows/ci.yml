@@ -47,9 +47,8 @@ jobs:
           NEXT_PUBLIC_API_URL: https://api.example.com
 
   lint:
-    name: Lint (non-blocking)
+    name: Lint
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -58,5 +57,5 @@ jobs:
           node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Lint web
+      - name: Lint web (0 error majburiy)
         run: pnpm --filter @izla/web lint

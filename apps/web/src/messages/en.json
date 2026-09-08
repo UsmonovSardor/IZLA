@@ -46,7 +46,9 @@
     "reviews": "{count} reviews",
     "loading": "Loading…",
     "login": "Sign in",
-    "back": "Back"
+    "back": "Back",
+    "skipToContent": "Skip to content",
+    "primaryNav": "Primary navigation"
   },
   "lang": {
     "switchLabel": "Select language"

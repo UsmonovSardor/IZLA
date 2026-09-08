@@ -54,6 +54,34 @@
 
 html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
 
+/* ===== A11y: global klaviatura fokus halqasi (WCAG 2.4.7) =====
+   Faqat klaviatura navigatsiyasida ko'rinadi (:focus-visible) — sichqoncha bosishda emas. */
+:focus-visible {
+  outline: 2px solid #2563EB;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+main:focus,
+main:focus-visible { outline: none; } /* skip-link nishoni — halqa kerak emas */
+
+/* Kontentga o'tish havolasi — fokusgacha yashirin, Tab bosilganda chiqadi (WCAG 2.4.1) */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  transform: translateY(-160%);
+  border-radius: 10px;
+  background: #2563EB;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+  transition: transform 0.18s ease;
+}
+.skip-link:focus { transform: translateY(0); }
+
 /* Forma maydoni (input/select/textarea) — qayta ishlatiladigan uslub */
 .fld {
   width: 100%;

@@ -50,6 +50,9 @@ const nextConfig = {
   outputFileTracingRoot: path.join(__dirname, '../../'),
   poweredByHeader: false,
   compress: true,
+  // Lint alohida CI qadami (`pnpm --filter @izla/web lint`) — production build
+  // deprecated `next lint` plumbing'iga bog'lanmaydi (senior amaliyot).
+  eslint: { ignoreDuringBuilds: true },
   // Ko'p ishlatiladigan kutubxonalarni per-import tree-shake (bundle kichrayadi)
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],

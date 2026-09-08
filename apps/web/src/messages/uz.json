@@ -46,7 +46,9 @@
     "reviews": "{count} sharh",
     "loading": "Ma'lumot yuklanmoqda…",
     "login": "Kirish",
-    "back": "Orqaga"
+    "back": "Orqaga",
+    "skipToContent": "Kontentga o‘tish",
+    "primaryNav": "Asosiy menyu"
   },
   "lang": {
     "switchLabel": "Tilni tanlash"

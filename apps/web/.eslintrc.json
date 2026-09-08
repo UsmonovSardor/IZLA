@@ -1,1 +1,6 @@
-{ "extends": "next/core-web-vitals" }
+{
+  "extends": "next/core-web-vitals",
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "ignorePatterns": [".next/", "node_modules/", "next-env.d.ts", "*.config.*"]
+}

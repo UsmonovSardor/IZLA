@@ -113,6 +113,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <AuthProvider>
           <FavoritesProvider>
           <SavedJobsProvider>
+            {/* A11y: klaviatura foydalanuvchilari uchun kontentga o'tish (WCAG 2.4.1) */}
+            <a href="#main" className="skip-link">{t('common.skipToContent')}</a>
+
             {/* Qiymat-taklif lentasi — eng tepada (navbar'dan yuqorida), kafil uslubi */}
             <HeroMarquee />
 
@@ -124,7 +127,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     <Logo />
                   </Link>
                 </div>
-                <nav className="hidden md:flex items-center gap-1 text-sm font-medium text-ink">
+                <nav aria-label={t('common.primaryNav')} className="hidden md:flex items-center gap-1 text-sm font-medium text-ink">
                   {navLinks.map((l) => (
                     <Link
                       key={l.href}
@@ -145,7 +148,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               </div>
             </header>
 
-            <main>{children}</main>
+            <main id="main" tabIndex={-1}>{children}</main>
 
             {/* ⌘K panel + AI yordamchi — initial bundle'dan chiqarilgan, idle'da yuklanadi */}
             <DeferredWidgets />
