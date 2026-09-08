@@ -30,15 +30,6 @@ async function safe<T>(p: Promise<T>, fallback: T): Promise<T> {
   }
 }
 
-const TILE_GRADIENTS = [
-  'from-blue-500/15 to-indigo-500/15',
-  'from-teal-500/15 to-emerald-500/15',
-  'from-fuchsia-500/15 to-pink-500/15',
-  'from-amber-500/15 to-orange-500/15',
-  'from-violet-500/15 to-purple-500/15',
-  'from-cyan-500/15 to-sky-500/15',
-];
-
 export default async function HomePage() {
   const t = await getTranslations('home');
   const tc = await getTranslations('common');
@@ -222,11 +213,13 @@ async function HeroStats() {
     safe<Facets>(api.facets('', locale), { total: 0, categories: [] }),
   ]);
   const placesTotal = facets.total || 50;
+  // Brend intizomi: barcha stat ikonlari yagona brand→teal gradientda (kamalak yo'q).
+  const grad = { from: '#2563EB', to: '#14B8A6', numGrad: 'linear-gradient(120deg,#5eead4,#ffffff)' };
   const stats: Stat[] = [
-    { iconKey: 'pin', value: `${placesTotal}+`, label: t('statPlaces'), from: '#2563EB', to: '#14B8A6', numGrad: 'linear-gradient(120deg,#5eead4,#ffffff)' },
-    { iconKey: 'sparkles', value: `${categories.length || 12}`, label: t('statDirections'), from: '#3b82f6', to: '#6366f1', numGrad: 'linear-gradient(120deg,#93c5fd,#ffffff)' },
-    { iconKey: 'shield', value: '100%', label: t('statSecure'), from: '#7c3aed', to: '#a855f7', numGrad: 'linear-gradient(120deg,#c4b5fd,#ffffff)' },
-    { iconKey: 'clock', value: '24/7', label: t('statBooking'), from: '#f59e0b', to: '#f97316', numGrad: 'linear-gradient(120deg,#fcd34d,#ffffff)' },
+    { iconKey: 'pin', value: `${placesTotal}+`, label: t('statPlaces'), ...grad },
+    { iconKey: 'sparkles', value: `${categories.length || 12}`, label: t('statDirections'), ...grad },
+    { iconKey: 'shield', value: '100%', label: t('statSecure'), ...grad },
+    { iconKey: 'clock', value: '24/7', label: t('statBooking'), ...grad },
   ];
   return <StatsRow stats={stats} light />;
 }
@@ -258,9 +251,9 @@ async function CategoriesGrid() {
         <Reveal key={c.id} delay={i * 40}>
           <Link
             href={`/qidiruv?category=${c.slug}`}
-            className={`group flex flex-col items-center gap-3 rounded-xl border border-line bg-gradient-to-br ${TILE_GRADIENTS[i % TILE_GRADIENTS.length]} p-5 transition-all duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-card`}
+            className="group flex flex-col items-center gap-3 rounded-xl border border-line bg-surface p-5 transition-all duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-card"
           >
-            <span className="grid h-14 w-14 place-items-center rounded-2xl bg-surface text-2xl shadow-sm transition-transform group-hover:scale-110">
+            <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand/[0.06] text-2xl transition-all duration-300 group-hover:bg-brand/10 group-hover:scale-105">
               {c.icon}
             </span>
             <span className="text-center text-sm font-semibold text-ink leading-tight">{c.name}</span>

@@ -1943,7 +1943,20 @@
         }
       },
       "plansTitle": "Oddiy, shaffof tariflar",
-      "plansSubtitle": "Oylik obuna. Istalgan vaqtda o‘zgartiring. Yashirin to‘lovlarsiz."
+      "plansSubtitle": "Oylik obuna. Istalgan vaqtda o‘zgartiring. Yashirin to‘lovlarsiz.",
+      "preview": {
+        "title": "Daromad konsoli",
+        "revenue": "Jami daromad",
+        "mrr": "MRR (oylik)",
+        "leads": "Leadlar",
+        "live": "Jonli"
+      },
+      "trust": {
+        "channels": "daromad kanali",
+        "revenue": "daromad manbasi",
+        "selfServe": "o‘zi boshqaradi",
+        "billing": "cheksiz mahsulot"
+      }
     },
     "portal": {
       "metaTitle": "Izla Biznes portali",

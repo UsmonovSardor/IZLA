@@ -5,10 +5,11 @@ import { Reveal } from '@/components/reveal';
 /** "Qanday ishlaydi" — 3 bosqich (qidir → bron → bahramand bo'l). */
 export async function HowItWorks() {
   const t = await getTranslations('home.how');
+  // Brend intizomi: brand → teal progressiyasi (kamalak yo'q — yagona rang oilasi).
   const steps = [
-    { icon: Search, k: 'search', grad: 'from-blue-500 to-indigo-500' },
-    { icon: CalendarCheck, k: 'book', grad: 'from-teal-500 to-emerald-500' },
-    { icon: Sparkles, k: 'enjoy', grad: 'from-fuchsia-500 to-pink-500' },
+    { icon: Search, k: 'search', grad: 'from-brand to-brand-500' },
+    { icon: CalendarCheck, k: 'book', grad: 'from-brand to-teal' },
+    { icon: Sparkles, k: 'enjoy', grad: 'from-teal to-teal-600' },
   ];
   return (
     <section className="container-wide py-16">
@@ -41,11 +42,12 @@ export async function HowItWorks() {
 /** "Nega Izla" — 4 qiymat taklifi. */
 export async function WhyIzla() {
   const t = await getTranslations('home.why');
+  // Brend intizomi: brand / teal / violet (aksent) — amber olib tashlandi.
   const items = [
-    { icon: BadgeCheck, k: 'verified', color: 'text-teal-500', bg: 'bg-teal-50' },
-    { icon: ShieldCheck, k: 'secure', color: 'text-brand', bg: 'bg-brand-50' },
-    { icon: Zap, k: 'fast', color: 'text-amber-500', bg: 'bg-amber-50' },
-    { icon: Bot, k: 'ai', color: 'text-violet-500', bg: 'bg-violet-50' },
+    { icon: BadgeCheck, k: 'verified', color: 'text-teal-600', bg: 'bg-teal/[0.08]' },
+    { icon: ShieldCheck, k: 'secure', color: 'text-brand', bg: 'bg-brand/[0.07]' },
+    { icon: Zap, k: 'fast', color: 'text-brand', bg: 'bg-brand/[0.07]' },
+    { icon: Bot, k: 'ai', color: 'text-violet', bg: 'bg-violet/[0.08]' },
   ];
   return (
     <section className="container-wide py-8">

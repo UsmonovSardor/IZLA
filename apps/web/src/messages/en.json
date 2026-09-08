@@ -1943,7 +1943,20 @@
         }
       },
       "plansTitle": "Simple, transparent plans",
-      "plansSubtitle": "Monthly subscription. Change anytime. No hidden fees."
+      "plansSubtitle": "Monthly subscription. Change anytime. No hidden fees.",
+      "preview": {
+        "title": "Revenue console",
+        "revenue": "Total revenue",
+        "mrr": "MRR (monthly)",
+        "leads": "Leads",
+        "live": "Live"
+      },
+      "trust": {
+        "channels": "revenue channels",
+        "revenue": "revenue sources",
+        "selfServe": "self-serve",
+        "billing": "products (Enterprise)"
+      }
     },
     "portal": {
       "metaTitle": "Izla Business portal",
