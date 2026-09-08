@@ -35,7 +35,7 @@ export function Gallery({ heading, subheading, photos, accent }: { heading: stri
           <Reveal key={i} delay={i * 60}>
             <button
               onClick={() => setOpen(i)}
-              className={`group relative block w-full overflow-hidden rounded-2xl ${i % 5 === 0 ? 'aspect-[4/5]' : 'aspect-square'}`}
+              className="group relative block aspect-square w-full overflow-hidden rounded-2xl ring-1 ring-line"
             >
               <Image src={src} alt="" fill className="object-cover transition duration-500 group-hover:scale-105" sizes="(max-width:640px) 45vw, 22vw" />
               <span className="absolute inset-0 bg-[#0B1F33]/0 transition group-hover:bg-[#0B1F33]/15" />
