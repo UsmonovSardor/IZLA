@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
+import dynamic from 'next/dynamic';
 import { Link } from 'next-view-transitions';
 import Image from 'next/image';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
@@ -21,7 +22,17 @@ import {
 } from 'lucide-react';
 import { api, type Vendor, type Facets } from '@/lib/api';
 import { vendorsQS, type SearchFilters, type SortKey } from '@/lib/search';
-import { VendorMap } from './vendor-map';
+
+// Xarita og'ir (maplibre-gl ~200KB) — faqat kerak bo'lganda (klientda) yuklanadi.
+// Shu bois /qidiruv boshlang'ich chunk'i yengil, TTI tez.
+const VendorMap = dynamic(() => import('./vendor-map').then((m) => m.VendorMap), {
+  ssr: false,
+  loading: () => (
+    <div className="grid h-full min-h-[400px] place-items-center rounded-2xl border border-line bg-surface">
+      <Loader2 className="h-6 w-6 animate-spin text-brand" />
+    </div>
+  ),
+});
 
 type Props = {
   initialVendors: Vendor[];
