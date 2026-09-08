@@ -1,4 +1,5 @@
 import { IsArray, IsBoolean, IsIn, IsInt, IsNumber, IsObject, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
+import { Type } from 'class-transformer';
 
 /** Homiy kompaniyasini ro'yxatdan o'tkazish (onboarding). PENDING holatda yaratiladi. */
 export class RegisterPartnerDto {
@@ -100,6 +101,8 @@ export class UpdateNasiyaProviderDto {
 export class LeadFilterDto {
   @IsOptional() @IsIn(['insurance', 'mortgage', 'nasiya']) channel?: 'insurance' | 'mortgage' | 'nasiya';
   @IsOptional() @IsString() status?: string;
+  // Payload'ni cheklaydi (CPL inbox hajmi o'sishi bilan) — 1..200, standart 100.
+  @IsOptional() @Type(() => Number) @IsInt() @Min(1) @Max(200) limit?: number;
 }
 
 // ─── Self-serve: bank + ipoteka dasturi boshqaruvi ──────────────────────────

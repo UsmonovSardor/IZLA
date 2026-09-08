@@ -255,8 +255,9 @@ export class PartnerService {
   }
 
   // ─── Birlashgan lead inbox (3 kanal) ──────────────────────────────────────
-  async leads(userId: string, partnerId: string, filter: { channel?: string; status?: string } = {}) {
+  async leads(userId: string, partnerId: string, filter: { channel?: string; status?: string; limit?: number } = {}) {
     await this.assertMember(userId, partnerId);
+    const limit = Math.min(200, Math.max(1, filter.limit ?? 100));
     const [insurerIds, bankIds, nasiyaIds] = await Promise.all([
       this.prisma.insurer.findMany({ where: { partnerId }, select: { id: true } }),
       this.prisma.bank.findMany({ where: { partnerId }, select: { id: true } }),
@@ -275,7 +276,7 @@ export class PartnerService {
         ? this.prisma.insurancePolicy.findMany({
             where: { product: { insurerId: { in: insIds } }, ...(filter.status ? { status: filter.status as never } : {}) },
             orderBy: { createdAt: 'desc' },
-            take: 100,
+            take: limit,
             select: {
               id: true, premium: true, status: true, createdAt: true, delivery: true, billedAmount: true,
               user: { select: { name: true, phone: true } },
@@ -287,7 +288,7 @@ export class PartnerService {
         ? this.prisma.mortgageLead.findMany({
             where: { program: { bankId: { in: bnkIds } }, ...(filter.status ? { status: filter.status as never } : {}) },
             orderBy: { createdAt: 'desc' },
-            take: 100,
+            take: limit,
             select: {
               id: true, amount: true, status: true, createdAt: true, name: true, phone: true, delivery: true, billedAmount: true,
               program: { select: { name: true, bank: { select: { name: true } } } },
@@ -298,7 +299,7 @@ export class PartnerService {
         ? this.prisma.nasiyaLead.findMany({
             where: { providerId: { in: nsIds }, ...(filter.status ? { status: filter.status as never } : {}) },
             orderBy: { createdAt: 'desc' },
-            take: 100,
+            take: limit,
             select: {
               id: true, amount: true, status: true, createdAt: true, name: true, phone: true, delivery: true, billedAmount: true,
               provider: { select: { name: true } },
