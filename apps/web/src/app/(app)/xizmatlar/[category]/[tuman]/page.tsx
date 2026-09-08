@@ -7,6 +7,7 @@ import { MapPin, ArrowRight, ChevronRight } from 'lucide-react';
 import { api, type Category, type Vendor } from '@/lib/api';
 import { VendorCard } from '@/components/vendor-card';
 import { Reveal } from '@/components/reveal';
+import { CategoryIcon } from '@/components/category-icon';
 import { JsonLd } from '@/components/json-ld';
 import { abs, breadcrumbJsonLd } from '@/lib/seo';
 import { districtSlug, findDistrictBySlug } from '@/lib/geo';
@@ -76,7 +77,7 @@ export default async function LandingPage({ params }: { params: Promise<Params> 
       <nav className="flex flex-wrap items-center gap-1 text-sm text-muted">
         <Link href="/" className="hover:text-brand">Izla</Link>
         <ChevronRight size={14} className="text-slate-300" />
-        <Link href={`/qidiruv?category=${category.slug}`} className="hover:text-brand">{category.icon} {category.name}</Link>
+        <Link href={`/qidiruv?category=${category.slug}`} className="inline-flex items-center gap-1 hover:text-brand"><CategoryIcon slug={category.slug} className="h-3.5 w-3.5" /> {category.name}</Link>
         <ChevronRight size={14} className="text-slate-300" />
         <span className="font-medium text-navy">{district}</span>
       </nav>
@@ -130,7 +131,7 @@ export default async function LandingPage({ params }: { params: Promise<Params> 
           {otherCategories.map((c) => (
             <Link key={c.slug} href={`/xizmatlar/${c.slug}/${p.tuman}`}
               className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm text-navy transition hover:border-brand-200 hover:text-brand">
-              <span>{c.icon}</span> {c.name}
+              <CategoryIcon slug={c.slug} className="h-4 w-4 text-brand" /> {c.name}
             </Link>
           ))}
         </div>

@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { MapPin } from 'lucide-react';
 import { api, type Category } from '@/lib/api';
 import { Reveal } from '@/components/reveal';
+import { CategoryIcon } from '@/components/category-icon';
 import { districtSlug } from '@/lib/geo';
 
 export const dynamic = 'force-dynamic';
@@ -37,7 +38,7 @@ export default async function XizmatlarHub() {
           <Reveal key={c.slug} delay={i * 30}>
             <section className="rounded-2xl border border-line bg-surface p-5">
               <Link href={`/qidiruv?category=${c.slug}`} className="inline-flex items-center gap-2 font-display text-lg font-bold text-navy hover:text-brand">
-                <span className="text-xl">{c.icon}</span> {c.name}
+                <CategoryIcon slug={c.slug} className="h-5 w-5 text-brand" /> {c.name}
               </Link>
               <div className="mt-3 flex flex-wrap gap-2">
                 {districts.map((d) => (

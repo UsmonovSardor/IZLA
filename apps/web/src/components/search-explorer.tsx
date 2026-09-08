@@ -19,9 +19,11 @@ import {
   Check,
   ArrowUpDown,
   Clock,
+  Sparkles,
 } from 'lucide-react';
 import { api, type Vendor, type Facets } from '@/lib/api';
 import { vendorsQS, type SearchFilters, type SortKey } from '@/lib/search';
+import { CategoryIcon } from '@/components/category-icon';
 
 // Xarita og'ir (maplibre-gl ~200KB) — faqat kerak bo'lganda (klientda) yuklanadi.
 // Shu bois /qidiruv boshlang'ich chunk'i yengil, TTI tez.
@@ -218,7 +220,6 @@ export function SearchExplorer({ initialVendors, facets, filters, pageSize }: Pr
         <div className="no-scrollbar -mx-1 flex items-center gap-2 overflow-x-auto px-1 pb-2.5">
           <CatChip
             active={!filters.category}
-            icon="✨"
             label={tc('all')}
             count={facets.total}
             onClick={() => setParams({ category: null })}
@@ -227,7 +228,7 @@ export function SearchExplorer({ initialVendors, facets, filters, pageSize }: Pr
             <CatChip
               key={c.slug}
               active={filters.category === c.slug}
-              icon={c.icon}
+              slug={c.slug}
               label={c.name}
               count={c.count}
               onClick={() => setParams({ category: filters.category === c.slug ? null : c.slug })}
@@ -399,13 +400,13 @@ export function SearchExplorer({ initialVendors, facets, filters, pageSize }: Pr
 
 function CatChip({
   active,
-  icon,
+  slug,
   label,
   count,
   onClick,
 }: {
   active: boolean;
-  icon?: string;
+  slug?: string;
   label: string;
   count: number;
   onClick: () => void;
@@ -419,7 +420,7 @@ function CatChip({
           : 'border-line bg-surface text-navy hover:border-brand/40 hover:bg-brand-50'
       }`}
     >
-      {icon && <span className="text-[15px] leading-none">{icon}</span>}
+      {slug ? <CategoryIcon slug={slug} className="h-4 w-4" /> : <Sparkles className="h-4 w-4" />}
       <span className="whitespace-nowrap">{label}</span>
       <span
         className={`rounded-full px-1.5 text-[11px] font-semibold tabular-nums ${

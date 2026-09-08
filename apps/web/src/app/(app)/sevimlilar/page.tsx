@@ -9,6 +9,7 @@ import { Heart, Loader2, BadgeCheck, Star, MapPin, Compass } from 'lucide-react'
 import { useAuth } from '@/components/auth-provider';
 import { useFavorites } from '@/components/favorites-provider';
 import { FavoriteButton } from '@/components/favorite-button';
+import { CategoryIcon } from '@/components/category-icon';
 import { api, type Vendor } from '@/lib/api';
 import { VendorGridSkeleton } from '@/components/skeletons';
 
@@ -74,7 +75,7 @@ function FavVendorCard({ v, reviews }: { v: Vendor; rating: string; reviews: str
           <Image src={cover} alt={v.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" sizes="(max-width:640px) 100vw, 25vw" />
           <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-navy/10 to-transparent" />
           {v.category && (
-            <span className="chip absolute top-3 left-3 bg-surface/85 text-navy shadow-sm backdrop-blur"><span>{v.category.icon}</span>{v.category.name}</span>
+            <span className="chip absolute top-3 left-3 bg-surface/85 text-navy shadow-sm backdrop-blur"><CategoryIcon slug={v.category.slug} className="h-3.5 w-3.5 text-brand" />{v.category.name}</span>
           )}
           <div className="absolute top-2.5 right-2.5"><FavoriteButton vendorId={v.id} /></div>
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-3.5">
