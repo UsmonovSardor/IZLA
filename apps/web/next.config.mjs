@@ -39,10 +39,12 @@ const csp = [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
-  "frame-ancestors 'none'",
+  // Telegram Mini App (/tg) Telegram webview/iframe ichida yuklanadi — Telegram
+  // origin'lariga embed ruxsati (boshqa hollarda clickjacking himoyasi saqlanadi).
+  "frame-ancestors 'self' https://web.telegram.org https://*.telegram.org",
   "form-action 'self'",
-  // Next.js gidratsiya inline skriptlaridan foydalanadi + 2GIS SDK loader
-  `script-src 'self' 'unsafe-inline' https://eu-assets.i.posthog.com${MAP_2GIS}`,
+  // Next.js gidratsiya inline skriptlari + Telegram WebApp SDK + 2GIS SDK loader
+  `script-src 'self' 'unsafe-inline' https://telegram.org https://eu-assets.i.posthog.com${MAP_2GIS}`,
   "style-src 'self' 'unsafe-inline'",
   // Xarita raster tayllari (ne2_shaded) + sprite PNG + 2GIS tayl/sprite
   `img-src 'self' data: blob: https://images.unsplash.com https://picsum.photos ${MAP_ORIGIN}${MAP_2GIS} https://lh3.googleusercontent.com https://t.me`,
@@ -56,7 +58,9 @@ const csp = [
 
 const securityHeaders = [
   { key: 'X-Content-Type-Options', value: 'nosniff' },
-  { key: 'X-Frame-Options', value: 'DENY' },
+  // Telegram embed'iga ruxsat (modern brauzerlar frame-ancestors'ga tayanadi); eski
+  // brauzerlarda same-origin himoyasi saqlanadi.
+  { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   { key: 'X-DNS-Prefetch-Control', value: 'on' },
   { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },

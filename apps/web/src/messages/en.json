@@ -339,15 +339,87 @@
     "leadError": "Sending failed. Please try again."
   },
   "tg": {
-    "title": "Izla Mini App",
-    "greeting": "Hi, {name}!",
-    "confirmed": "✓ verified",
-    "openInTg": "Open inside Telegram — all services are here.",
-    "categories": "Categories",
-    "search": "Search",
-    "realEstate": "Real estate",
-    "authNote": "For auth, TELEGRAM_BOT_TOKEN must be set in the backend .env.",
-    "anonUser": "User"
+    "anonUser": "Guest",
+    "tabs": {
+      "home": "Home",
+      "search": "Search",
+      "bookings": "Bookings",
+      "profile": "Profile"
+    },
+    "card": {
+      "reviews": "{n} reviews"
+    },
+    "home": {
+      "hi": "Hi, {name}!",
+      "sub": "What service do you need today?",
+      "searchPlaceholder": "Search services or places…",
+      "categories": "Categories",
+      "top": "Top places",
+      "all": "All",
+      "recommended": "Recommended"
+    },
+    "search": {
+      "allCategories": "All",
+      "emptyTitle": "Nothing found",
+      "emptySub": "Try another word or category",
+      "count": "{n} results"
+    },
+    "status": {
+      "PENDING": "Pending",
+      "CONFIRMED": "Confirmed",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    },
+    "auth": {
+      "needTitle": "Sign in required",
+      "needSub": "Sign in to your account to continue",
+      "login": "Sign in"
+    },
+    "pay": {
+      "title": "Payment",
+      "amount": "Amount",
+      "choose": "Choose a payment method",
+      "redirecting": "Redirecting…",
+      "failed": "Couldn't start payment",
+      "secure": "Payments secured via Payme and Click",
+      "later": "Later"
+    },
+    "booking": {
+      "failed": "Couldn't book",
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "duration": "{min} min",
+      "pickDate": "Pick a date",
+      "pickTime": "Pick a time",
+      "noSlots": "No free slots on this day",
+      "confirm": "Book now"
+    },
+    "profile": {
+      "via": {
+        "phone": "via Phone",
+        "telegram": "via Telegram",
+        "google": "via Google"
+      },
+      "coins": "Coins",
+      "invited": "Invited",
+      "yourCode": "Your code",
+      "share": "Share",
+      "shareText": "Izla — all services in one app. Join!",
+      "referHint": "Get {reward} coins for each friend",
+      "favorites": "Favorites",
+      "noFavorites": "No favorites yet",
+      "language": "Language",
+      "logout": "Log out"
+    },
+    "vendor": {
+      "notFound": "Place not found",
+      "services": "Services",
+      "book": "Book",
+      "reviews": "Reviews",
+      "bookedTitle": "Booking received!",
+      "bookedSub": "You can view your bookings in the Bookings tab",
+      "ok": "Got it"
+    }
   },
   "assistant": {
     "title": "Izla AI assistant",

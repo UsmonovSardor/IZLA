@@ -16,6 +16,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { FavoritesNavIcon } from '@/components/favorites-nav-icon';
 import { NotificationsBell } from '@/components/notifications-bell';
 import { Footer } from '@/components/footer';
+import { ChromeGate } from '@/components/chrome-gate';
 import { Logo } from '@/components/logo';
 import { DeferredWidgets } from '@/components/deferred-widgets';
 import { PwaRegister } from '@/components/pwa-register';
@@ -106,76 +107,80 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           }}
         />
       </head>
-      <body className="font-sans min-h-screen bg-bg bg-aurora-soft pb-20 md:pb-0">
+      <body className="font-sans min-h-screen bg-bg bg-aurora-soft">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
           <ToastProvider>
           <AuthProvider>
           <FavoritesProvider>
           <SavedJobsProvider>
-            {/* A11y: klaviatura foydalanuvchilari uchun kontentga o'tish (WCAG 2.4.1) */}
-            <a href="#main" className="skip-link">{t('common.skipToContent')}</a>
-
-            {/* Qiymat-taklif lentasi — eng tepada (navbar'dan yuqorida), kafil uslubi */}
-            <HeroMarquee />
-
-            <header className="sticky top-0 z-40 border-b border-white/50 bg-surface/70 backdrop-blur-xl">
-              <div className="container-wide h-16 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2 shrink-0">
-                  <HeaderBack />
-                  <Link href="/" aria-label="Izla.uz" className="shrink-0">
-                    <Logo />
-                  </Link>
-                </div>
-                <nav aria-label={t('common.primaryNav')} className="hidden md:flex items-center gap-1 text-sm font-medium text-ink">
-                  {navLinks.map((l) => (
+            <ChromeGate
+              skipLink={
+                /* A11y: klaviatura foydalanuvchilari uchun kontentga o'tish (WCAG 2.4.1) */
+                <a href="#main" className="skip-link">{t('common.skipToContent')}</a>
+              }
+              /* Qiymat-taklif lentasi — eng tepada (navbar'dan yuqorida) */
+              marquee={<HeroMarquee />}
+              header={
+                <header className="sticky top-0 z-40 border-b border-white/50 bg-surface/70 backdrop-blur-xl">
+                  <div className="container-wide h-16 flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-2 shrink-0">
+                      <HeaderBack />
+                      <Link href="/" aria-label="Izla.uz" className="shrink-0">
+                        <Logo />
+                      </Link>
+                    </div>
+                    <nav aria-label={t('common.primaryNav')} className="hidden md:flex items-center gap-1 text-sm font-medium text-ink">
+                      {navLinks.map((l) => (
+                        <Link
+                          key={l.href}
+                          href={l.href}
+                          className="rounded-full px-4 py-2 text-muted transition hover:bg-brand-50 hover:text-brand"
+                        >
+                          {l.label}
+                        </Link>
+                      ))}
+                    </nav>
+                    <div className="flex items-center gap-2">
+                      <NotificationsBell />
+                      <FavoritesNavIcon />
+                      <ThemeToggle />
+                      <LanguageSwitcher />
+                      <HeaderAuth />
+                    </div>
+                  </div>
+                </header>
+              }
+              extras={
+                <>
+                  {/* ⌘K panel + AI yordamchi — idle'da yuklanadi */}
+                  <DeferredWidgets />
+                  {/* PWA: service worker + o'rnatish banneri */}
+                  <PwaRegister />
+                  {/* Analitika (PostHog — kalitsiz o'chiq) + Web Vitals RUM */}
+                  <Analytics />
+                  <WebVitals />
+                </>
+              }
+              footer={<Footer />}
+              mobileNav={
+                /* Mobil bottom-nav (TZ: mobil-birinchi) */
+                <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/50 bg-surface/80 backdrop-blur-xl grid grid-cols-4 h-16">
+                  {mobileTabs.map((tab) => (
                     <Link
-                      key={l.href}
-                      href={l.href}
-                      className="rounded-full px-4 py-2 text-muted transition hover:bg-brand-50 hover:text-brand"
+                      key={tab.href}
+                      href={tab.href}
+                      className="flex flex-col items-center justify-center gap-0.5 text-[11px] text-muted hover:text-brand"
                     >
-                      {l.label}
+                      <tab.icon className="h-5 w-5" />
+                      {tab.label}
                     </Link>
                   ))}
                 </nav>
-                <div className="flex items-center gap-2">
-                  <NotificationsBell />
-                  <FavoritesNavIcon />
-                  <ThemeToggle />
-                  <LanguageSwitcher />
-                  <HeaderAuth />
-                </div>
-              </div>
-            </header>
-
-            <main id="main" tabIndex={-1}>{children}</main>
-
-            {/* ⌘K panel + AI yordamchi — initial bundle'dan chiqarilgan, idle'da yuklanadi */}
-            <DeferredWidgets />
-
-            {/* PWA: service worker registratsiyasi + o'rnatish banneri */}
-            <PwaRegister />
-
-            {/* Analitika (PostHog — kalitsiz o'chiq) + Web Vitals RUM */}
-            <Analytics />
-            <WebVitals />
-
-            {/* Footer */}
-            <Footer />
-
-            {/* Mobil bottom-nav (TZ: mobil-birinchi) */}
-            <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-white/50 bg-surface/80 backdrop-blur-xl grid grid-cols-4 h-16">
-              {mobileTabs.map((tab) => (
-                <Link
-                  key={tab.href}
-                  href={tab.href}
-                  className="flex flex-col items-center justify-center gap-0.5 text-[11px] text-muted hover:text-brand"
-                >
-                  <tab.icon className="h-5 w-5" />
-                  {tab.label}
-                </Link>
-              ))}
-            </nav>
+              }
+            >
+              {children}
+            </ChromeGate>
           </SavedJobsProvider>
           </FavoritesProvider>
           </AuthProvider>

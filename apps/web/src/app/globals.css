@@ -210,6 +210,22 @@ body { background-color: var(--c-bg); color: var(--c-ink); }
 .marquee-mask:hover .marquee-track { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
 
+/* ===== Telegram Mini App (native shell) ===== */
+.tg-shell { height: var(--tg-vh, 100dvh); }
+/* Scrollbar'siz gorizontal skroll (rail/chip) */
+.tg-noscroll { -ms-overflow-style: none; scrollbar-width: none; }
+.tg-noscroll::-webkit-scrollbar { display: none; }
+/* Bottom tab-bar — pastki safe-area (iPhone home indikatori) */
+.tg-tabbar { padding-bottom: env(safe-area-inset-bottom); }
+/* Bottom-sheet + backdrop animatsiyasi */
+@keyframes tg-sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes tg-fade-in { from { opacity: 0; } to { opacity: 1; } }
+.tg-sheet { animation: tg-sheet-up .28s cubic-bezier(.22, 1, .36, 1); }
+.tg-fade { animation: tg-fade-in .2s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .tg-sheet, .tg-fade { animation: none; }
+}
+
 /* ===== MapLibre popup (premium vendor mini-karta) ===== */
 .izla-popup .maplibregl-popup-content {
   padding: 0;

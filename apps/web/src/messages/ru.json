@@ -339,15 +339,87 @@
     "leadError": "Ошибка отправки. Попробуйте снова."
   },
   "tg": {
-    "title": "Izla Mini App",
-    "greeting": "Привет, {name}!",
-    "confirmed": "✓ подтверждён",
-    "openInTg": "Откройте внутри Telegram — все услуги здесь.",
-    "categories": "Категории",
-    "search": "Поиск",
-    "realEstate": "Недвижимость",
-    "authNote": "Для авторизации TELEGRAM_BOT_TOKEN должен быть настроен в backend .env.",
-    "anonUser": "Пользователь"
+    "anonUser": "Гость",
+    "tabs": {
+      "home": "Главная",
+      "search": "Поиск",
+      "bookings": "Брони",
+      "profile": "Профиль"
+    },
+    "card": {
+      "reviews": "{n} отзывов"
+    },
+    "home": {
+      "hi": "Привет, {name}!",
+      "sub": "Какая услуга нужна сегодня?",
+      "searchPlaceholder": "Найти услугу или место…",
+      "categories": "Категории",
+      "top": "Топ места",
+      "all": "Все",
+      "recommended": "Рекомендуем"
+    },
+    "search": {
+      "allCategories": "Все",
+      "emptyTitle": "Ничего не найдено",
+      "emptySub": "Попробуйте другое слово или категорию",
+      "count": "{n} результатов"
+    },
+    "status": {
+      "PENDING": "Ожидает",
+      "CONFIRMED": "Подтверждено",
+      "COMPLETED": "Завершено",
+      "CANCELLED": "Отменено"
+    },
+    "auth": {
+      "needTitle": "Требуется вход",
+      "needSub": "Войдите в аккаунт, чтобы продолжить",
+      "login": "Войти"
+    },
+    "pay": {
+      "title": "Оплата",
+      "amount": "Сумма оплаты",
+      "choose": "Выберите способ оплаты",
+      "redirecting": "Переход…",
+      "failed": "Не удалось начать оплату",
+      "secure": "Платежи защищены через Payme и Click",
+      "later": "Позже"
+    },
+    "booking": {
+      "failed": "Не удалось забронировать",
+      "today": "Сегодня",
+      "tomorrow": "Завтра",
+      "duration": "{min} мин",
+      "pickDate": "Выберите дату",
+      "pickTime": "Выберите время",
+      "noSlots": "На этот день нет свободного времени",
+      "confirm": "Забронировать"
+    },
+    "profile": {
+      "via": {
+        "phone": "Через телефон",
+        "telegram": "Через Telegram",
+        "google": "Через Google"
+      },
+      "coins": "Монеты",
+      "invited": "Приглашено",
+      "yourCode": "Ваш код",
+      "share": "Поделиться",
+      "shareText": "Izla — все услуги в одном приложении. Присоединяйтесь!",
+      "referHint": "Получайте {reward} монет за каждого друга",
+      "favorites": "Избранное",
+      "noFavorites": "Пока нет избранного",
+      "language": "Язык",
+      "logout": "Выйти"
+    },
+    "vendor": {
+      "notFound": "Место не найдено",
+      "services": "Услуги",
+      "book": "Бронь",
+      "reviews": "Отзывы",
+      "bookedTitle": "Бронь принята!",
+      "bookedSub": "Свои брони можно посмотреть в разделе «Брони»",
+      "ok": "Понятно"
+    }
   },
   "assistant": {
     "title": "Izla AI-ассистент",

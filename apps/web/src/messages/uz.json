@@ -339,15 +339,87 @@
     "leadError": "Yuborishda xatolik. Qayta urinib ko'ring."
   },
   "tg": {
-    "title": "Izla Mini App",
-    "greeting": "Salom, {name}!",
-    "confirmed": "✓ tasdiqlangan",
-    "openInTg": "Telegram ichida oching — barcha xizmatlar shu yerda.",
-    "categories": "Kategoriyalar",
-    "search": "Qidiruv",
-    "realEstate": "Ko'chmas mulk",
-    "authNote": "Auth uchun TELEGRAM_BOT_TOKEN backend .env'da sozlangan bo'lishi kerak.",
-    "anonUser": "Foydalanuvchi"
+    "anonUser": "Mehmon",
+    "tabs": {
+      "home": "Asosiy",
+      "search": "Qidiruv",
+      "bookings": "Bronlar",
+      "profile": "Profil"
+    },
+    "card": {
+      "reviews": "{n} sharh"
+    },
+    "home": {
+      "hi": "Salom, {name}!",
+      "sub": "Bugun qanday xizmat kerak?",
+      "searchPlaceholder": "Xizmat yoki joy qidiring…",
+      "categories": "Kategoriyalar",
+      "top": "Top joylar",
+      "all": "Barchasi",
+      "recommended": "Tavsiya etamiz"
+    },
+    "search": {
+      "allCategories": "Barchasi",
+      "emptyTitle": "Hech narsa topilmadi",
+      "emptySub": "Boshqa so‘z yoki kategoriya bilan urinib ko‘ring",
+      "count": "{n} ta natija"
+    },
+    "status": {
+      "PENDING": "Kutilmoqda",
+      "CONFIRMED": "Tasdiqlangan",
+      "COMPLETED": "Yakunlangan",
+      "CANCELLED": "Bekor qilingan"
+    },
+    "auth": {
+      "needTitle": "Kirish talab qilinadi",
+      "needSub": "Davom etish uchun hisobingizga kiring",
+      "login": "Kirish"
+    },
+    "pay": {
+      "title": "To‘lov",
+      "amount": "To‘lov summasi",
+      "choose": "To‘lov usulini tanlang",
+      "redirecting": "Yo‘naltirilmoqda…",
+      "failed": "To‘lovni boshlab bo‘lmadi",
+      "secure": "To‘lovlar Payme va Click orqali himoyalangan",
+      "later": "Keyinroq"
+    },
+    "booking": {
+      "failed": "Bron qilib bo‘lmadi",
+      "today": "Bugun",
+      "tomorrow": "Ertaga",
+      "duration": "{min} daqiqa",
+      "pickDate": "Sanani tanlang",
+      "pickTime": "Vaqtni tanlang",
+      "noSlots": "Bu kunda bo‘sh vaqt yo‘q",
+      "confirm": "Bron qilish"
+    },
+    "profile": {
+      "via": {
+        "phone": "Telefon orqali",
+        "telegram": "Telegram orqali",
+        "google": "Google orqali"
+      },
+      "coins": "Tanga",
+      "invited": "Taklif qilingan",
+      "yourCode": "Sizning kodingiz",
+      "share": "Ulashish",
+      "shareText": "Izla — barcha xizmatlar bitta ilovada. Qo‘shiling!",
+      "referHint": "Har bir do‘st uchun {reward} tanga oling",
+      "favorites": "Sevimlilar",
+      "noFavorites": "Hozircha sevimlilar yo‘q",
+      "language": "Til",
+      "logout": "Chiqish"
+    },
+    "vendor": {
+      "notFound": "Joy topilmadi",
+      "services": "Xizmatlar",
+      "book": "Bron",
+      "reviews": "Sharhlar",
+      "bookedTitle": "Bron qabul qilindi!",
+      "bookedSub": "Bronlaringizni «Bronlar» bo‘limida ko‘rishingiz mumkin",
+      "ok": "Tushunarli"
+    }
   },
   "assistant": {
     "title": "Izla AI yordamchi",
