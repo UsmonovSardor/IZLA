@@ -419,6 +419,63 @@
       "bookedTitle": "Бронь принята!",
       "bookedSub": "Свои брони можно посмотреть в разделе «Брони»",
       "ok": "Понятно"
+    },
+    "services": {
+      "title": "Услуги",
+      "realEstate": "Недвижимость",
+      "jobs": "Работа",
+      "nasiya": "Рассрочка",
+      "mortgage": "Ипотека",
+      "insurance": "Страхование",
+      "soon": "Скоро"
+    },
+    "common": {
+      "apply": "Оставить заявку",
+      "name": "Ваше имя",
+      "phone": "Телефон",
+      "send": "Отправить",
+      "applyDone": "Заявка принята!",
+      "from": "от",
+      "loadMore": "Ещё",
+      "back": "Назад"
+    },
+    "property": {
+      "title": "Недвижимость",
+      "emptyTitle": "Объявления не найдены",
+      "emptySub": "Попробуйте позже",
+      "rooms": "{n} комн.",
+      "area": "{n} м²",
+      "floor": "{a}/{b} этаж",
+      "readiness": "Готовность {p}%",
+      "developer": "Застройщик",
+      "detail": "Подробнее",
+      "notFound": "Объявление не найдено"
+    },
+    "jobs": {
+      "title": "Работа",
+      "emptyTitle": "Вакансии не найдены",
+      "emptySub": "Попробуйте позже",
+      "remote": "Удалённо",
+      "salaryFrom": "от",
+      "apply": "Откликнуться",
+      "applied": "Отклик отправлен",
+      "applyDone": "Ваш отклик отправлен!",
+      "coverNote": "Сопроводительное письмо (необязательно)",
+      "coverPlaceholder": "Пара слов о себе…",
+      "views": "{n} просмотров",
+      "notFound": "Вакансия не найдена",
+      "exp": {
+        "NONE": "Без опыта",
+        "JUNIOR": "Junior",
+        "MIDDLE": "Middle",
+        "SENIOR": "Senior"
+      },
+      "emp": {
+        "FULL_TIME": "Полная занятость",
+        "PART_TIME": "Частичная",
+        "CONTRACT": "Контракт",
+        "INTERNSHIP": "Стажировка"
+      }
     }
   },
   "assistant": {

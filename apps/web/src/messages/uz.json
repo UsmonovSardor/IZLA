@@ -419,6 +419,63 @@
       "bookedTitle": "Bron qabul qilindi!",
       "bookedSub": "Bronlaringizni «Bronlar» bo‘limida ko‘rishingiz mumkin",
       "ok": "Tushunarli"
+    },
+    "services": {
+      "title": "Xizmatlar",
+      "realEstate": "Uy-joy",
+      "jobs": "Ish",
+      "nasiya": "Nasiya",
+      "mortgage": "Ipoteka",
+      "insurance": "Sug‘urta",
+      "soon": "Tez orada"
+    },
+    "common": {
+      "apply": "Ariza qoldirish",
+      "name": "Ismingiz",
+      "phone": "Telefon",
+      "send": "Yuborish",
+      "applyDone": "Arizangiz qabul qilindi!",
+      "from": "dan",
+      "loadMore": "Yana",
+      "back": "Orqaga"
+    },
+    "property": {
+      "title": "Uy-joy",
+      "emptyTitle": "E’lonlar topilmadi",
+      "emptySub": "Keyinroq qayta urinib ko‘ring",
+      "rooms": "{n} xona",
+      "area": "{n} m²",
+      "floor": "{a}/{b}-qavat",
+      "readiness": "Tayyorlik {p}%",
+      "developer": "Quruvchi",
+      "detail": "Batafsil",
+      "notFound": "E’lon topilmadi"
+    },
+    "jobs": {
+      "title": "Ish",
+      "emptyTitle": "Vakansiyalar topilmadi",
+      "emptySub": "Keyinroq qayta urinib ko‘ring",
+      "remote": "Masofaviy",
+      "salaryFrom": "maoshdan",
+      "apply": "Ariza topshirish",
+      "applied": "Ariza topshirilgan",
+      "applyDone": "Arizangiz yuborildi!",
+      "coverNote": "Qisqa xat (ixtiyoriy)",
+      "coverPlaceholder": "O‘zingiz haqingizda bir-ikki jumla…",
+      "views": "{n} ko‘rildi",
+      "notFound": "Vakansiya topilmadi",
+      "exp": {
+        "NONE": "Tajriba shart emas",
+        "JUNIOR": "Junior",
+        "MIDDLE": "Middle",
+        "SENIOR": "Senior"
+      },
+      "emp": {
+        "FULL_TIME": "To‘liq stavka",
+        "PART_TIME": "Yarim stavka",
+        "CONTRACT": "Shartnoma",
+        "INTERNSHIP": "Amaliyot"
+      }
     }
   },
   "assistant": {

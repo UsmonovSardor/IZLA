@@ -7,6 +7,7 @@ import { api, type Category, type Vendor } from '@/lib/api';
 import { useTg } from '@/components/tg/tg-app';
 import { TgScreen, TgSection } from '@/components/tg/tg-screen';
 import { TgVendorCard } from '@/components/tg/tg-vendor-card';
+import { TgServices } from '@/components/tg/tg-services';
 import { Skel } from '@/components/tg/tg-ui';
 import { haptic } from '@/lib/telegram';
 
@@ -44,6 +45,11 @@ export default function TgHome() {
         <Search className="h-5 w-5 text-brand" />
         <span className="text-[15px]">{t('home.searchPlaceholder')}</span>
       </Link>
+
+      {/* Xizmatlar — super-app vertikallari */}
+      <TgSection title={t('services.title')}>
+        <TgServices />
+      </TgSection>
 
       {/* Kategoriyalar — gorizontal skroll */}
       <TgSection title={t('home.categories')}>

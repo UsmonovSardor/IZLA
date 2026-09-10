@@ -419,6 +419,63 @@
       "bookedTitle": "Booking received!",
       "bookedSub": "You can view your bookings in the Bookings tab",
       "ok": "Got it"
+    },
+    "services": {
+      "title": "Services",
+      "realEstate": "Real estate",
+      "jobs": "Jobs",
+      "nasiya": "BNPL",
+      "mortgage": "Mortgage",
+      "insurance": "Insurance",
+      "soon": "Soon"
+    },
+    "common": {
+      "apply": "Apply",
+      "name": "Your name",
+      "phone": "Phone",
+      "send": "Send",
+      "applyDone": "Your request was received!",
+      "from": "from",
+      "loadMore": "More",
+      "back": "Back"
+    },
+    "property": {
+      "title": "Real estate",
+      "emptyTitle": "No listings found",
+      "emptySub": "Try again later",
+      "rooms": "{n} rooms",
+      "area": "{n} m²",
+      "floor": "floor {a}/{b}",
+      "readiness": "{p}% ready",
+      "developer": "Developer",
+      "detail": "Details",
+      "notFound": "Listing not found"
+    },
+    "jobs": {
+      "title": "Jobs",
+      "emptyTitle": "No jobs found",
+      "emptySub": "Try again later",
+      "remote": "Remote",
+      "salaryFrom": "from",
+      "apply": "Apply",
+      "applied": "Applied",
+      "applyDone": "Your application was sent!",
+      "coverNote": "Cover note (optional)",
+      "coverPlaceholder": "A couple of words about yourself…",
+      "views": "{n} views",
+      "notFound": "Job not found",
+      "exp": {
+        "NONE": "No experience",
+        "JUNIOR": "Junior",
+        "MIDDLE": "Middle",
+        "SENIOR": "Senior"
+      },
+      "emp": {
+        "FULL_TIME": "Full-time",
+        "PART_TIME": "Part-time",
+        "CONTRACT": "Contract",
+        "INTERNSHIP": "Internship"
+      }
     }
   },
   "assistant": {
