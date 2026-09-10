@@ -124,7 +124,14 @@
       }
     },
     "trustLabel": "Moliyaviy hamkorlar",
-    "trustMore": "va boshqalar"
+    "trustMore": "va boshqalar",
+    "trustSub": "Ishonchli banklar, sug‘urta va nasiya hamkorlari — bir platformada",
+    "partnerTypes": {
+      "sugurta": "Sug‘urta",
+      "bank": "Bank",
+      "nasiya": "Nasiya",
+      "tolov": "To‘lov"
+    }
   },
   "search": {
     "title": "Qidiruv natijalari",

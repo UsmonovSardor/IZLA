@@ -10,6 +10,7 @@ import { RotatingWord } from '@/components/rotating-word';
 import { StatsRow, type Stat } from '@/components/stats-row';
 import { SearchAutocomplete } from '@/components/search-autocomplete';
 import { HowItWorks, WhyIzla } from '@/components/home/value-sections';
+import { FinancialPartners } from '@/components/home/financial-partners';
 import { RecentlyViewed } from '@/components/home/recently-viewed';
 import { HeroVideo } from '@/components/hero-video';
 import { VendorGridSkeleton, Sk } from '@/components/skeletons';
@@ -109,24 +110,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== SOCIAL PROOF — real moliyaviy hamkorlar ===== */}
-      <section className="border-y border-line bg-surface/60">
-        <div className="container-wide py-8 md:py-10">
-          <p className="text-center text-[11px] font-bold uppercase tracking-[0.15em] text-muted">{t('trustLabel')}</p>
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-            {['Kafil Sug‘urta', 'Ipoteka Bank', 'Uzum Nasiya'].map((b) => (
-              <span
-                key={b}
-                className="font-display text-base font-bold text-muted/70 transition hover:text-brand sm:text-lg"
-              >
-                {b}
-              </span>
-            ))}
-            <span className="text-sm text-muted/60">{t('trustMore')}</span>
-          </div>
-        </div>
-      </section>
-
       {/* ===== YAQINDA KO'RILGAN ===== */}
       <RecentlyViewed />
 
@@ -155,8 +138,13 @@ export default async function HomePage() {
         <Rails restoranTitle={t('restoranTitle')} gozallikTitle={t('gozallikTitle')} allLabel={allLabel} />
       </Suspense>
 
-      {/* ===== QANDAY ISHLAYDI / NEGA IZLA ===== */}
+      {/* ===== QANDAY ISHLAYDI ===== */}
       <HowItWorks />
+
+      {/* ===== MOLIYAVIY HAMKORLAR (silliq karusel) — Nega Izla'dan oldin ===== */}
+      <FinancialPartners />
+
+      {/* ===== NEGA IZLA ===== */}
       <WhyIzla />
 
       {/* ===== CTA ===== */}

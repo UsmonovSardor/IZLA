@@ -124,7 +124,14 @@
       }
     },
     "trustLabel": "Financial partners",
-    "trustMore": "and others"
+    "trustMore": "and others",
+    "trustSub": "Trusted banks, insurers and BNPL — all on one platform",
+    "partnerTypes": {
+      "sugurta": "Insurance",
+      "bank": "Bank",
+      "nasiya": "BNPL",
+      "tolov": "Payments"
+    }
   },
   "search": {
     "title": "Search results",
