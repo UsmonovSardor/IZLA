@@ -437,7 +437,11 @@
       "applyDone": "Your request was received!",
       "from": "from",
       "loadMore": "More",
-      "back": "Back"
+      "back": "Back",
+      "months": "{n} mo",
+      "reset": "Reset",
+      "yes": "Yes",
+      "no": "No"
     },
     "property": {
       "title": "Real estate",
@@ -475,6 +479,61 @@
         "PART_TIME": "Part-time",
         "CONTRACT": "Contract",
         "INTERNSHIP": "Internship"
+      }
+    },
+    "nasiya": {
+      "title": "BNPL",
+      "amount": "Amount",
+      "term": "Term",
+      "monthly": "Monthly",
+      "total": "Total",
+      "overpay": "Markup",
+      "markup": "Markup {p}%",
+      "apply": "Apply",
+      "choose": "Choose term",
+      "notAvailable": "Not available for this amount",
+      "emptyTitle": "No providers found",
+      "calcHint": "Pick amount and term — see the monthly payment"
+    },
+    "mortgage": {
+      "title": "Mortgage",
+      "emptyTitle": "No programs found",
+      "rate": "Annual rate",
+      "perMonth": "/mo",
+      "term": "Term",
+      "minDown": "Down {p}%",
+      "price": "Property price",
+      "down": "Down payment",
+      "calc": "Calculate",
+      "monthly": "Monthly payment",
+      "total": "Total payable",
+      "overpay": "Overpayment",
+      "loan": "Loan amount",
+      "apply": "Apply",
+      "subsidized": "Subsidized",
+      "detail": "Calculate & apply",
+      "notFound": "Program not found"
+    },
+    "insurance": {
+      "title": "Insurance",
+      "emptyTitle": "No products found",
+      "priceFrom": "from",
+      "coverage": "Coverage",
+      "premium": "Premium",
+      "insuredSum": "Insured sum",
+      "buy": "Buy",
+      "bought": "Purchased",
+      "all": "All",
+      "features": "Features",
+      "term": "Term",
+      "notFound": "Product not found",
+      "types": {
+        "OSAGO": "OSAGO",
+        "KASKO": "KASKO",
+        "TRAVEL": "Travel",
+        "PROPERTY": "Property",
+        "ACCIDENT": "Accident",
+        "HEALTH": "Health"
       }
     }
   },

@@ -15,9 +15,9 @@ interface Svc {
 const SERVICES: Svc[] = [
   { key: 'realEstate', href: '/tg/uylar', icon: Building2, color: 'text-brand', bg: 'bg-brand/[0.08]' },
   { key: 'jobs', href: '/tg/ish', icon: Briefcase, color: 'text-teal-600', bg: 'bg-teal/[0.1]' },
-  { key: 'nasiya', href: '/tg/nasiya', icon: CreditCard, color: 'text-violet', bg: 'bg-violet/[0.1]', soon: true },
-  { key: 'mortgage', href: '/tg/ipoteka', icon: Landmark, color: 'text-brand-600', bg: 'bg-brand/[0.08]', soon: true },
-  { key: 'insurance', href: '/tg/sugurta', icon: ShieldCheck, color: 'text-teal-600', bg: 'bg-teal/[0.1]', soon: true },
+  { key: 'nasiya', href: '/tg/nasiya', icon: CreditCard, color: 'text-violet', bg: 'bg-violet/[0.1]' },
+  { key: 'mortgage', href: '/tg/ipoteka', icon: Landmark, color: 'text-brand-600', bg: 'bg-brand/[0.08]' },
+  { key: 'insurance', href: '/tg/sugurta', icon: ShieldCheck, color: 'text-teal-600', bg: 'bg-teal/[0.1]' },
 ];
 
 export function TgServices() {

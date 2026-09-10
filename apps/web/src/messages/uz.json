@@ -437,7 +437,11 @@
       "applyDone": "Arizangiz qabul qilindi!",
       "from": "dan",
       "loadMore": "Yana",
-      "back": "Orqaga"
+      "back": "Orqaga",
+      "months": "{n} oy",
+      "reset": "Tozalash",
+      "yes": "Ha",
+      "no": "Yo‘q"
     },
     "property": {
       "title": "Uy-joy",
@@ -475,6 +479,61 @@
         "PART_TIME": "Yarim stavka",
         "CONTRACT": "Shartnoma",
         "INTERNSHIP": "Amaliyot"
+      }
+    },
+    "nasiya": {
+      "title": "Nasiya",
+      "amount": "Summa",
+      "term": "Muddat",
+      "monthly": "Oylik to‘lov",
+      "total": "Jami",
+      "overpay": "Ustama",
+      "markup": "Ustama {p}%",
+      "apply": "Ariza qoldirish",
+      "choose": "Muddatni tanlang",
+      "notAvailable": "Bu summaga mavjud emas",
+      "emptyTitle": "Provayderlar topilmadi",
+      "calcHint": "Summa va muddatni tanlang — oylik to‘lovni ko‘ring"
+    },
+    "mortgage": {
+      "title": "Ipoteka",
+      "emptyTitle": "Dasturlar topilmadi",
+      "rate": "Yillik stavka",
+      "perMonth": "oyiga",
+      "term": "Muddat",
+      "minDown": "Boshlang‘ich {p}%",
+      "price": "Uy narxi",
+      "down": "Boshlang‘ich to‘lov",
+      "calc": "Hisoblash",
+      "monthly": "Oylik to‘lov",
+      "total": "Jami to‘lov",
+      "overpay": "Ortiqcha to‘lov",
+      "loan": "Kredit summasi",
+      "apply": "Ariza qoldirish",
+      "subsidized": "Subsidiyalangan",
+      "detail": "Hisoblash va ariza",
+      "notFound": "Dastur topilmadi"
+    },
+    "insurance": {
+      "title": "Sug‘urta",
+      "emptyTitle": "Mahsulotlar topilmadi",
+      "priceFrom": "narxdan",
+      "coverage": "Qoplama",
+      "premium": "Sug‘urta mukofoti",
+      "insuredSum": "Sug‘urta summasi",
+      "buy": "Sotib olish",
+      "bought": "Sotib olindi",
+      "all": "Barchasi",
+      "features": "Imkoniyatlar",
+      "term": "Muddat",
+      "notFound": "Mahsulot topilmadi",
+      "types": {
+        "OSAGO": "OSAGO",
+        "KASKO": "KASKO",
+        "TRAVEL": "Sayohat",
+        "PROPERTY": "Mulk",
+        "ACCIDENT": "Baxtsiz hodisa",
+        "HEALTH": "Salomatlik"
       }
     }
   },
