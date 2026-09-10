@@ -105,7 +105,7 @@ export default function TgNasiya() {
                     </div>
                     <div className="text-right text-[12px] text-muted">
                       <p>{t('nasiya.overpay')}: <span className="font-semibold text-ink">{formatUZS(r.overpayment)}</span></p>
-                      <p>{t('nasiya.markup', { p: (r.markupPct * 100).toFixed(0) })}</p>
+                      <p>{t('nasiya.markup', { p: r.markupPct.toFixed(0) })}</p>
                     </div>
                   </div>
                   <div className="mt-3">
