@@ -362,7 +362,9 @@
       "allCategories": "Все",
       "emptyTitle": "Ничего не найдено",
       "emptySub": "Попробуйте другое слово или категорию",
-      "count": "{n} результатов"
+      "count": "{n} результатов",
+      "sortRating": "Рейтинг",
+      "sortReviews": "Отзывы"
     },
     "status": {
       "PENDING": "Ожидает",
@@ -453,7 +455,16 @@
       "readiness": "Готовность {p}%",
       "developer": "Застройщик",
       "detail": "Подробнее",
-      "notFound": "Объявление не найдено"
+      "notFound": "Объявление не найдено",
+      "all": "Все",
+      "types": {
+        "SECONDARY": "Вторичка",
+        "NEW": "Новостройка",
+        "CONSTRUCTION": "Строится"
+      },
+      "sortNew": "Новые",
+      "sortCheap": "Дешевле",
+      "sortExpensive": "Дороже"
     },
     "jobs": {
       "title": "Работа",

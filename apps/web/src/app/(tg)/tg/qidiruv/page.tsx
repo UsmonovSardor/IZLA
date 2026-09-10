@@ -14,6 +14,7 @@ function SearchInner() {
   const params = useSearchParams();
   const [q, setQ] = useState('');
   const [cat, setCat] = useState<string>(params.get('category') ?? '');
+  const [sort, setSort] = useState<'rating' | 'reviews'>('rating');
   const [categories, setCategories] = useState<Category[]>([]);
   const [vendors, setVendors] = useState<Vendor[] | null>(null);
 
@@ -44,6 +45,13 @@ function SearchInner() {
       clearTimeout(h);
     };
   }, [qs, locale, q]);
+
+  const sorted = useMemo(() => {
+    if (!vendors) return null;
+    return [...vendors].sort((a, b) =>
+      sort === 'reviews' ? b.reviewCount - a.reviewCount : b.rating - a.rating,
+    );
+  }, [vendors, sort]);
 
   return (
     <TgScreen large title={t('tabs.search')}>
@@ -79,21 +87,27 @@ function SearchInner() {
         </div>
       )}
 
+      {/* Saralash */}
+      <div className="mt-2 flex gap-2">
+        <Chip active={sort === 'rating'} onClick={() => setSort('rating')}>{t('search.sortRating')}</Chip>
+        <Chip active={sort === 'reviews'} onClick={() => setSort('reviews')}>{t('search.sortReviews')}</Chip>
+      </div>
+
       {/* Natijalar */}
       <div className="mt-4">
-        {!vendors ? (
+        {!sorted ? (
           <div className="space-y-3">
             {Array.from({ length: 5 }).map((_, i) => (
               <Skel key={i} className="h-24 rounded-2xl" />
             ))}
           </div>
-        ) : vendors.length === 0 ? (
+        ) : sorted.length === 0 ? (
           <TgEmpty icon={SearchX} title={t('search.emptyTitle')} sub={t('search.emptySub')} />
         ) : (
           <>
-            <p className="mb-3 text-[13px] text-muted">{t('search.count', { n: vendors.length })}</p>
+            <p className="mb-3 text-[13px] text-muted">{t('search.count', { n: sorted.length })}</p>
             <div className="space-y-3">
-              {vendors.map((v) => (
+              {sorted.map((v) => (
                 <TgVendorCard key={v.id} v={v} variant="list" />
               ))}
             </div>

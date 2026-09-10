@@ -362,7 +362,9 @@
       "allCategories": "Barchasi",
       "emptyTitle": "Hech narsa topilmadi",
       "emptySub": "Boshqa so‘z yoki kategoriya bilan urinib ko‘ring",
-      "count": "{n} ta natija"
+      "count": "{n} ta natija",
+      "sortRating": "Reyting",
+      "sortReviews": "Ko‘p sharh"
     },
     "status": {
       "PENDING": "Kutilmoqda",
@@ -453,7 +455,16 @@
       "readiness": "Tayyorlik {p}%",
       "developer": "Quruvchi",
       "detail": "Batafsil",
-      "notFound": "E’lon topilmadi"
+      "notFound": "E’lon topilmadi",
+      "all": "Barchasi",
+      "types": {
+        "SECONDARY": "Ikkilamchi",
+        "NEW": "Yangi",
+        "CONSTRUCTION": "Qurilishda"
+      },
+      "sortNew": "Yangi",
+      "sortCheap": "Arzon",
+      "sortExpensive": "Qimmat"
     },
     "jobs": {
       "title": "Ish",

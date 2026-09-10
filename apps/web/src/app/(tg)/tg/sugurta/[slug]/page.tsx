@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { BadgeCheck, Check, ShieldCheck, CheckCircle2 } from 'lucide-react';
@@ -7,11 +7,13 @@ import { api, type InsuranceProductDetail, type InsuranceQuote } from '@/lib/api
 import { formatUZS } from '@/lib/utils';
 import { haptic } from '@/lib/telegram';
 import { useAuth } from '@/components/auth-provider';
+import { optGroup, fieldLabelKey } from '@/lib/insurance-meta';
 import { TgScreen } from '@/components/tg/tg-screen';
 import { Chip, Skel, TgButton, Sheet } from '@/components/tg/tg-ui';
 
 export default function TgInsuranceDetail() {
   const t = useTranslations('tg');
+  const ts = useTranslations('sugurta');
   const params = useParams<{ slug: string }>();
   const slug = params?.slug;
   const { user, openLogin } = useAuth();
@@ -48,7 +50,18 @@ export default function TgInsuranceDetail() {
   const premium = quote?.premium ?? p?.preview.premium ?? 0;
   const insuredSum = quote?.insuredSum ?? p?.preview.insuredSum ?? 0;
 
-  const label = useMemo(() => (name: string) => name.charAt(0).toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1'), []);
+  // Sayt bilan bir xil labellar: sugurta.fields.* + sugurta.opt.<group>.<value> (3 til)
+  function fieldLabel(name: string): string {
+    if (!p) return name;
+    const k = `fields.${fieldLabelKey(p.type, name)}`;
+    return ts.has(k) ? ts(k) : name.charAt(0).toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1');
+  }
+  function optLabel(name: string, val: string): string {
+    if (!p) return val;
+    const g = optGroup(p.type, name);
+    const k = g ? `opt.${g}.${val}` : '';
+    return g && ts.has(k) ? ts(k) : val;
+  }
 
   async function buy() {
     if (!p) return;
@@ -93,11 +106,11 @@ export default function TgInsuranceDetail() {
         <div className="mt-5 space-y-4 rounded-2xl border border-line bg-surface p-4">
           {p.form.map((field) => (
             <div key={field.name}>
-              <label className="text-[13px] font-semibold text-navy">{label(field.name)}</label>
+              <label className="text-[13px] font-semibold text-navy">{fieldLabel(field.name)}</label>
               {field.kind === 'select' && (
                 <div className="mt-1.5 flex flex-wrap gap-2">
                   {(field.options ?? []).map((opt) => (
-                    <Chip key={opt} active={String(form[field.name]) === opt} onClick={() => setForm((s) => ({ ...s, [field.name]: opt }))}>{opt}</Chip>
+                    <Chip key={opt} active={String(form[field.name]) === opt} onClick={() => setForm((s) => ({ ...s, [field.name]: opt }))}>{optLabel(field.name, opt)}</Chip>
                   ))}
                 </div>
               )}

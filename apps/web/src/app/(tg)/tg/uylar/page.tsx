@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'next-view-transitions';
 import { useTranslations } from 'next-intl';
 import { Building2, Maximize2, BedDouble, MapPin, ImageOff } from 'lucide-react';
@@ -7,7 +7,10 @@ import { api, type Property } from '@/lib/api';
 import { formatUZS } from '@/lib/utils';
 import { haptic } from '@/lib/telegram';
 import { TgScreen } from '@/components/tg/tg-screen';
-import { Skel, TgEmpty } from '@/components/tg/tg-ui';
+import { Chip, Skel, TgEmpty } from '@/components/tg/tg-ui';
+
+const TYPES = ['SECONDARY', 'NEW', 'CONSTRUCTION'] as const;
+type SortKey = 'new' | 'cheap' | 'expensive';
 
 function PropertyCard({ p }: { p: Property }) {
   const t = useTranslations('tg.property');
@@ -45,29 +48,52 @@ function PropertyCard({ p }: { p: Property }) {
 
 export default function TgProperties() {
   const t = useTranslations('tg');
+  const [type, setType] = useState('');
+  const [sort, setSort] = useState<SortKey>('new');
   const [items, setItems] = useState<Property[] | null>(null);
 
   useEffect(() => {
-    api.properties().then(setItems).catch(() => setItems([]));
-  }, []);
+    let alive = true;
+    setItems(null);
+    api.properties(type ? `?type=${type}` : '')
+      .then((r) => alive && setItems(r)).catch(() => alive && setItems([]));
+    return () => { alive = false; };
+  }, [type]);
+
+  const sorted = useMemo(() => {
+    if (!items) return null;
+    if (sort === 'new') return items;
+    const arr = [...items].sort((a, b) => Number(a.price) - Number(b.price));
+    return sort === 'cheap' ? arr : arr.reverse();
+  }, [items, sort]);
 
   return (
     <TgScreen title={t('property.title')}>
-      {!items ? (
-        <div className="space-y-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Skel key={i} className="h-64 rounded-2xl" />
-          ))}
-        </div>
-      ) : items.length === 0 ? (
-        <TgEmpty icon={Building2} title={t('property.emptyTitle')} sub={t('property.emptySub')} />
-      ) : (
-        <div className="space-y-4">
-          {items.map((p) => (
-            <PropertyCard key={p.id} p={p} />
-          ))}
-        </div>
-      )}
+      {/* Tur filtri */}
+      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 tg-noscroll">
+        <Chip active={type === ''} onClick={() => setType('')}>{t('property.all')}</Chip>
+        {TYPES.map((ty) => (
+          <Chip key={ty} active={type === ty} onClick={() => setType(type === ty ? '' : ty)}>{t(`property.types.${ty}`)}</Chip>
+        ))}
+      </div>
+      {/* Saralash */}
+      <div className="mt-2 flex gap-2">
+        {(['new', 'cheap', 'expensive'] as SortKey[]).map((s) => (
+          <Chip key={s} active={sort === s} onClick={() => setSort(s)}>
+            {t(s === 'new' ? 'property.sortNew' : s === 'cheap' ? 'property.sortCheap' : 'property.sortExpensive')}
+          </Chip>
+        ))}
+      </div>
+
+      <div className="mt-4">
+        {!sorted ? (
+          <div className="space-y-4">{Array.from({ length: 4 }).map((_, i) => <Skel key={i} className="h-64 rounded-2xl" />)}</div>
+        ) : sorted.length === 0 ? (
+          <TgEmpty icon={Building2} title={t('property.emptyTitle')} sub={t('property.emptySub')} />
+        ) : (
+          <div className="space-y-4">{sorted.map((p) => <PropertyCard key={p.id} p={p} />)}</div>
+        )}
+      </div>
     </TgScreen>
   );
 }

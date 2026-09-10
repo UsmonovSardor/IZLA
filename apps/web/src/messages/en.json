@@ -362,7 +362,9 @@
       "allCategories": "All",
       "emptyTitle": "Nothing found",
       "emptySub": "Try another word or category",
-      "count": "{n} results"
+      "count": "{n} results",
+      "sortRating": "Rating",
+      "sortReviews": "Reviews"
     },
     "status": {
       "PENDING": "Pending",
@@ -453,7 +455,16 @@
       "readiness": "{p}% ready",
       "developer": "Developer",
       "detail": "Details",
-      "notFound": "Listing not found"
+      "notFound": "Listing not found",
+      "all": "All",
+      "types": {
+        "SECONDARY": "Secondary",
+        "NEW": "New",
+        "CONSTRUCTION": "Construction"
+      },
+      "sortNew": "Newest",
+      "sortCheap": "Cheapest",
+      "sortExpensive": "Priciest"
     },
     "jobs": {
       "title": "Jobs",
